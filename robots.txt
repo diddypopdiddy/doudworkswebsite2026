@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.doudworks.com/sitemap.xml
+Sitemap: https://www.vincedoud.com/sitemap.xml
