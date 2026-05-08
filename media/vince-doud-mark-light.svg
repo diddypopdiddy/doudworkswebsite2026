@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" role="img" aria-labelledby="title">
+  <title>Vince Doud</title>
+  <rect width="500" height="300" fill="transparent" />
+  <circle cx="88" cy="150" r="58" fill="#fbfaf6" />
+  <text
+    x="88"
+    y="166"
+    text-anchor="middle"
+    fill="#161616"
+    font-family="Archivo, Arial, sans-serif"
+    font-size="48"
+    font-weight="800"
+  >VD</text>
+  <text
+    x="170"
+    y="132"
+    fill="#fbfaf6"
+    font-family="Archivo, Arial, sans-serif"
+    font-size="42"
+    font-weight="800"
+  >Vince Doud</text>
+  <text
+    x="171"
+    y="176"
+    fill="#d9ded8"
+    font-family="Public Sans, Arial, sans-serif"
+    font-size="22"
+    font-weight="700"
+  >AI Production Framework</text>
+</svg>
