@@ -1,51 +1,38 @@
-# DoudWorks Booking Form Setup
+# Vince Doud Contact Form Setup
 
-This site is now prepared to submit the booking form to a Google Apps Script web app.
+The Contact page now uses a native form that collects the context needed before sending a booking link:
 
-## What this setup does
+- Name
+- Email
+- Role
+- School / district / organization
+- Timeline
+- Support type
+- What they are trying to solve
 
-- Stores every submission as a new row in your Google Sheet
-- Sends notification emails to:
-  - `vinceandrewdoud@gmail.com`
-  - `doudworks@gmail.com`
-- Keeps the form styled as part of the DoudWorks site
+The public page does not show a direct email address or phone number. The live form is connected to the Google Apps Script web app in this folder; use this guide if the endpoint ever needs to be recreated or replaced.
 
-## Files already prepared
+## Files involved
 
-- Site form: `/Users/diddypopdiddy/Desktop/codedprojects/3.5 doud works/book.html`
-- Form submit logic: `/Users/diddypopdiddy/Desktop/codedprojects/3.5 doud works/script.js`
-- Google Apps Script code to paste: `/Users/diddypopdiddy/Desktop/codedprojects/3.5 doud works/google-apps-script/Code.gs`
+- Contact page: `/Users/diddypopdiddy/Documents/Codex/Projects/Vince Doud/02_Media/Website/book.html`
+- Shared form behavior: `/Users/diddypopdiddy/Documents/Codex/Projects/Vince Doud/02_Media/Website/script.js`
+- Email endpoint script: `/Users/diddypopdiddy/Documents/Codex/Projects/Vince Doud/02_Media/Website/google-apps-script/Code.gs`
 
-## Google Sheet to use
+## Recreate or replace the form endpoint
 
-- [Booking Intake Sheet](https://docs.google.com/spreadsheets/d/13EajUXNK91WYnKCIqHL1MI3JqoSb9FNulbGH8TOYh5w/edit?usp=sharing)
-
-## Setup steps
-
-1. Open your Google Sheet.
-2. In the sheet, click `Extensions` -> `Apps Script`.
-3. Replace the default script with the contents of `google-apps-script/Code.gs`.
-4. Save the project.
-5. Click `Deploy` -> `New deployment`.
-6. Choose type: `Web app`.
-7. Description: `DoudWorks booking intake`.
-8. Execute as: `Me`.
-9. Who has access: `Anyone`.
-10. Deploy and authorize the script.
-11. Copy the web app URL.
-12. Open `/Users/diddypopdiddy/Desktop/codedprojects/3.5 doud works/book.html`.
-13. Find `data-form-endpoint="PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE"`.
-14. Replace that placeholder with your deployed web app URL.
+1. Create or open the Google Sheet that should collect inquiries.
+2. Open Apps Script from that Sheet.
+3. Paste in `google-apps-script/Code.gs`.
+4. In `Code.gs`, update `NOTIFICATION_RECIPIENTS` if the notification inbox should change.
+5. Deploy as a Web App.
+6. Set access to "Anyone" so the public site can submit the form.
+7. Copy the Web App URL.
+8. In `book.html`, paste that URL into the contact form's `data-endpoint=""` value.
 
 ## Test checklist
 
-1. Submit the form on the Book page.
-2. Confirm a new row appears in the sheet.
-3. Confirm both emails receive a notification.
-4. Confirm the on-page success message appears.
-
-## Notes
-
-- The script will create a tab named `Form Responses` if it does not exist.
-- If you redeploy Apps Script and get a new web app URL, update `data-form-endpoint` in `book.html`.
-- If email notifications do not arrive immediately, check spam/promotions first.
+1. Load `book.html`.
+2. Submit a short test message.
+3. Confirm the message appears in the Sheet.
+4. Confirm the private inbox receives the email notification.
+5. If the page says the endpoint is not connected, the `data-endpoint` value is still blank.

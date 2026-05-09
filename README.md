@@ -1,16 +1,28 @@
-# DoudWorks Website
+# Vince Doud Website
 
-Static multi-page marketing site for DoudWorks. No build step is required.
+Static multi-page expert profile and offer site for Vince Doud. No build step is required.
 
 ## Files
 
 - `index.html`: homepage
-- `services.html`: workshop menu and booking formats
-- `approach.html`: DoudWorks framework and learning model
+- `services.html`: workshop menu and service formats
+- `speaking.html`: speaking and presentation path
+- `approach.html`: AI Production Framework and learning model
 - `about.html`: founder story and credibility
-- `book.html`: contact and booking page
+- `book.html`: contact page
+- `ai-permit-to-ai-license.html`: flagship series landing page
+- `ai-permit-game.html`: AI Permit Game product/inquiry page
+- `district-ai-professional-development.html`: district buyer landing page
+- `responsible-ai-for-schools.html`: responsible-use landing page
+- `ai-workflow-training-for-educators.html`: workflow training landing page
+- `faq.html`: format and delivery FAQ
 - `styles.css`: shared design system and responsive layout
-- `script.js`: mobile nav, reveal animations, and booking form behavior
+- `script.js`: mobile nav, reveal animations, CTA tracking, and contact form behavior
+- `MEDIA_BRIDGE.md`: plain workflow for linking published YouTube videos/resources to relevant website pages and back from YouTube descriptions
+
+## Media bridge
+
+Use `MEDIA_BRIDGE.md` after a video or resource is public. The bridge is not a technical integration; it is the editorial workflow for linking relevant website pages to YouTube and linking YouTube descriptions back to the site.
 
 ## Run locally
 
@@ -39,9 +51,17 @@ This project is ready for standard static hosting.
 2. Point the GoDaddy DNS records to that host.
 3. Keep the canonical URLs and sitemap aligned with the final domain.
 
-## Content to review before launch
+## Analytics
 
-- Confirm the preferred phone number and email address.
-- Replace any copy that should be more specific to your services or audience.
-- If you use Calendly or another scheduler, swap the mail-based booking flow in `book.html` and `script.js` for that link or embed.
-- Add real photos or branded graphics if you want richer visual storytelling.
+This site is wired for [Plausible](https://plausible.io/) using the `vincedoud.com` domain.
+
+- The script is included in the page heads.
+- CTA and contact clicks are tracked in `script.js`.
+- Data will start appearing once the domain is added and verified in Plausible.
+
+## Content to review after launch
+
+- The Contact page form is connected to the private Google Apps Script sending endpoint.
+- Confirm the exact published name for Camden County Educational Services Commission if you want to keep that on-site.
+- Add any additional attributed testimonials, district names, or logos you have permission to publish.
+- If you replace the contact endpoint later, update `book.html`, `script.js`, and `BOOKING-SETUP.md` together.
