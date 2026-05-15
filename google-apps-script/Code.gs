@@ -3,7 +3,7 @@ const NOTIFICATION_RECIPIENTS = ["vinceandrewdoud@gmail.com"];
 
 function doPost(e) {
   try {
-    const payload = JSON.parse(e.postData.contents || "{}");
+    const payload = parsePayload_(e);
 
     if (payload.website) {
       return jsonResponse_({
@@ -45,6 +45,39 @@ function doGet() {
     ok: true,
     message: "Website contact endpoint is running."
   });
+}
+
+function parsePayload_(e) {
+  const contents = (e && e.postData && e.postData.contents) || "";
+  const type = (e && e.postData && e.postData.type) || "";
+
+  if (contents && type.indexOf("application/json") !== -1) {
+    return JSON.parse(contents);
+  }
+
+  if (contents && contents.charAt(0) === "{") {
+    return JSON.parse(contents);
+  }
+
+  if (e && e.parameter && Object.keys(e.parameter).length) {
+    return e.parameter;
+  }
+
+  if (contents) {
+    return contents.split("&").reduce(function (payload, pair) {
+      const parts = pair.split("=");
+      const key = decodeURIComponent((parts[0] || "").replace(/\+/g, " "));
+      const value = decodeURIComponent((parts.slice(1).join("=") || "").replace(/\+/g, " "));
+
+      if (key) {
+        payload[key] = value;
+      }
+
+      return payload;
+    }, {});
+  }
+
+  return {};
 }
 
 function getOrCreateSheet_() {

@@ -12,6 +12,8 @@ The Contact page now uses a native form that collects the context needed before 
 
 The public page does not show a direct email address or phone number. The live form is connected to the Google Apps Script web app in this folder; use this guide if the endpoint ever needs to be recreated or replaced.
 
+The form uses JavaScript for the best in-page experience, but the HTML also has a real `action` and `method="post"` fallback. If the Apps Script code changes, keep JSON submissions and normal form-encoded submissions supported.
+
 ## Files involved
 
 - Contact page: `/Users/diddypopdiddy/Documents/Codex/Projects/Vince Doud/02_Media/Website/book.html`
@@ -27,7 +29,7 @@ The public page does not show a direct email address or phone number. The live f
 5. Deploy as a Web App.
 6. Set access to "Anyone" so the public site can submit the form.
 7. Copy the Web App URL.
-8. In `book.html`, paste that URL into the contact form's `data-endpoint=""` value.
+8. In `book.html`, paste that URL into both the contact form's `data-endpoint=""` value and its `action=""` value.
 
 ## Test checklist
 
@@ -36,3 +38,4 @@ The public page does not show a direct email address or phone number. The live f
 3. Confirm the message appears in the Sheet.
 4. Confirm the private inbox receives the email notification.
 5. If the page says the endpoint is not connected, the `data-endpoint` value is still blank.
+6. If you redeploy the Apps Script endpoint, confirm a normal browser form submission still works as a no-JavaScript fallback.

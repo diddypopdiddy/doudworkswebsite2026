@@ -4,8 +4,8 @@
   --surface: rgba(255, 255, 255, 0.7);
   --surface-strong: rgba(255, 255, 255, 0.92);
   --ink: #161616;
-  --ink-soft: #4c4a45;
-  --ink-faint: #635f57;
+  --ink-soft: #403d38;
+  --ink-faint: #565148;
   --panel: #171817;
   --panel-soft: #2f3430;
   --accent: #7c2222;
@@ -1581,6 +1581,25 @@ p {
   .js .menu-toggle {
     display: inline-flex;
     margin-left: auto;
+    width: auto;
+    min-width: 4.3rem;
+    padding: 0 0.95rem;
+    border: 1px solid rgba(22, 22, 22, 0.2);
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 8px 22px rgba(30, 28, 23, 0.07);
+  }
+
+  .js .menu-toggle::after {
+    content: "Menu";
+    color: var(--ink);
+    font-family: "Archivo", system-ui, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .js .menu-toggle span {
+    display: none;
   }
 
   .site-nav {
@@ -2640,6 +2659,10 @@ body[data-page="book"] .site-footer {
   font-size: 1rem;
 }
 
+.detail-row:not([open]) .detail-content {
+  display: none;
+}
+
 .detail-content p {
   max-width: 38rem;
 }
@@ -3199,6 +3222,18 @@ body[data-page="book"] .site-footer {
     grid-template-columns: 1fr;
   }
 
+  .about-photo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-photo-grid img {
+    max-width: 18rem;
+  }
+
+  .about-credibility {
+    max-width: 100%;
+  }
+
   .home-route-grid a:nth-child(odd) {
     border-right: 0;
   }
@@ -3319,7 +3354,7 @@ body:not(.index-page) .site-shell {
 
 .home-hero {
   position: relative;
-  min-height: clamp(500px, 54vw, 630px);
+  min-height: clamp(390px, 42vw, 500px);
   display: grid;
   align-items: center;
   border-bottom: 0;
@@ -3339,7 +3374,7 @@ body:not(.index-page) .site-shell {
   width: auto;
   margin: 0;
   max-width: 42rem;
-  padding: clamp(4rem, 7vw, 6.5rem) clamp(1.5rem, 5.8vw, 4.7rem);
+  padding: clamp(2.8rem, 4.8vw, 4.6rem) clamp(1.5rem, 5.8vw, 4.7rem);
   display: grid;
   align-content: center;
 }
@@ -3365,16 +3400,16 @@ body:not(.index-page) .site-shell {
 }
 
 .home-hero h1 {
-  max-width: 12ch;
+  max-width: 15ch;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.75rem, 4.7vw, 4.7rem);
+  font-size: clamp(2.25rem, 3.6vw, 3.65rem);
   font-weight: 500;
   line-height: 1.08;
   letter-spacing: -0.025em;
 }
 
 .home-hero-copy > p:not(.home-kicker) {
-  max-width: 24rem;
+  max-width: 31rem;
   margin-top: 1.45rem;
   color: var(--ink-soft);
   font-size: clamp(1rem, 1.25vw, 1.12rem);
@@ -3666,6 +3701,28 @@ body:not(.index-page) .site-shell {
   background: #fbfaf6;
 }
 
+.home-proof {
+  padding: clamp(1rem, 2.4vw, 1.6rem) clamp(1.5rem, 5vw, 4.25rem);
+  border-top: 1px solid rgba(22, 22, 22, 0.08);
+  border-bottom: 1px solid rgba(22, 22, 22, 0.08);
+  background: rgba(251, 250, 246, 0.72);
+}
+
+.home-proof-list {
+  max-width: 1180px;
+  margin: 0 auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.home-proof-list span {
+  border: 1px solid rgba(22, 22, 22, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.42);
+  color: var(--ink-soft);
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  line-height: 1.35;
+}
+
 .home-routes .home-section-copy {
   margin: 0 auto;
   text-align: center;
@@ -3840,7 +3897,7 @@ body:not(.index-page) .site-nav .nav-cta.is-active {
 }
 
 body:not(.index-page) .page-hero {
-  padding: clamp(3.75rem, 6.5vw, 6rem) 0 clamp(3.25rem, 5vw, 4.5rem);
+  padding: clamp(3.2rem, 5.6vw, 5.1rem) 0 clamp(2.8rem, 4.4vw, 3.8rem);
   border-bottom: 1px solid rgba(22, 22, 22, 0.08);
   background:
     linear-gradient(90deg, transparent, rgba(232, 227, 216, 0.42)),
@@ -3876,7 +3933,7 @@ body:not(.index-page) .page-hero-copy p:last-child {
 }
 
 body:not(.index-page) .page-sheet .section {
-  padding: clamp(3rem, 5.8vw, 4.7rem) 0;
+  padding: clamp(2.5rem, 5vw, 4rem) 0;
 }
 
 body:not(.index-page) .page-sheet .section + .section,
@@ -3931,7 +3988,7 @@ body:not(.index-page) .cta-inner {
 }
 
 .about-photo-section {
-  padding-top: clamp(3rem, 5.8vw, 4.7rem);
+  padding-top: clamp(2.4rem, 4.8vw, 3.7rem);
 }
 
 .about-photo-grid {
@@ -3954,6 +4011,26 @@ body:not(.index-page) .cta-inner {
 .about-photo-grid p {
   align-self: center;
   max-width: 26rem;
+}
+
+.about-credibility {
+  display: grid;
+  gap: 0.9rem;
+  max-width: 36rem;
+}
+
+.about-credibility h2 {
+  max-width: 18ch;
+  margin: 0;
+}
+
+.about-credibility ul {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--ink-soft);
+  font-weight: 650;
 }
 
 body:not(.index-page) .site-footer,
@@ -4398,8 +4475,8 @@ body:not(.index-page) .cta-inner {
   }
 
   .home-hero h1 {
-    max-width: 12.5ch;
-    font-size: clamp(2.35rem, 10.6vw, 3.45rem);
+    max-width: 15.5ch;
+    font-size: clamp(2.05rem, 9.2vw, 3.05rem);
     line-height: 1.1;
     letter-spacing: 0;
   }
@@ -4450,6 +4527,10 @@ body:not(.index-page) .cta-inner {
     border: 1px solid rgba(22, 22, 22, 0.08);
   }
 
+  .home-proof-list {
+    grid-template-columns: 1fr;
+  }
+
   .home-route-grid small {
     max-width: 27rem;
     font-size: 0.95rem;
@@ -4469,6 +4550,18 @@ body:not(.index-page) .cta-inner {
     margin: -0.15rem 1rem 1rem;
     font-size: 0.96rem;
   }
+
+  .about-photo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-photo-grid img {
+    max-width: 18rem;
+  }
+
+  .about-credibility {
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 560px) {
@@ -4479,5 +4572,36 @@ body:not(.index-page) .cta-inner {
   .home-brand small {
     max-width: 18ch;
     line-height: 1.2;
+  }
+}
+
+@media (max-width: 860px) {
+  body:not(.index-page) .header-inner {
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  body:not(.index-page) .brand {
+    flex: 1 1 auto;
+  }
+
+  body:not(.index-page) .menu-toggle {
+    flex: 0 0 auto;
+  }
+
+  body:not(.index-page) .site-nav {
+    flex: 1 0 100%;
+    width: 100%;
+    margin-top: 0.75rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(22, 22, 22, 0.08);
+    align-items: stretch;
+  }
+
+  body:not(.index-page) .site-nav a,
+  body:not(.index-page) .site-nav .nav-cta {
+    width: 100%;
+    justify-content: flex-start;
+    text-align: left;
   }
 }

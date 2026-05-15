@@ -164,7 +164,7 @@ if (contactForm) {
     event.preventDefault();
 
     const formData = new FormData(contactForm);
-    const endpoint = (contactForm.dataset.endpoint || "").trim();
+    const endpoint = (contactForm.dataset.endpoint || contactForm.action || "").trim();
     const payload = Object.fromEntries(
       Array.from(formData.entries()).map(([key, value]) => [
         key,
