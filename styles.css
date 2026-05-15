@@ -4605,3 +4605,162 @@ body:not(.index-page) .cta-inner {
     text-align: left;
   }
 }
+
+/* Interior page contrast pass */
+body:not(.index-page) .section-heading,
+body:not(.index-page) .section-heading-centered {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+  max-width: 46rem;
+  margin-bottom: clamp(1.8rem, 4vw, 2.8rem);
+}
+
+body:not(.index-page) .section-heading-centered {
+  margin-right: auto;
+  margin-left: auto;
+  justify-items: center;
+  text-align: center;
+}
+
+body:not(.index-page) .section-heading .eyebrow,
+body:not(.index-page) .section-heading h2,
+body:not(.index-page) .section-heading .section-copy {
+  grid-column: 1;
+}
+
+body:not(.index-page) .page-sheet .section {
+  position: relative;
+}
+
+body:not(.index-page) .page-sheet .section-toned,
+body:not(.index-page) .page-sheet .proof-band {
+  border-top: 1px solid rgba(22, 22, 22, 0.08);
+  border-bottom: 1px solid rgba(22, 22, 22, 0.08);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(124, 34, 34, 0.055), transparent 36%),
+    var(--paper-deep);
+}
+
+body:not(.index-page) .page-sheet .section + .section,
+body:not(.index-page) .page-sheet .section-toned + .section,
+body:not(.index-page) .page-sheet .proof-band + .section {
+  border-top: 1px solid rgba(22, 22, 22, 0.08);
+}
+
+body:not(.index-page) .page-sheet .card,
+body:not(.index-page) .page-sheet .service-card,
+body:not(.index-page) .page-sheet .service-detail,
+body:not(.index-page) .page-sheet .split-panel .panel-light,
+body:not(.index-page) .page-sheet .split-panel .panel-dark,
+body:not(.index-page) .page-sheet .timeline-item,
+body:not(.index-page) .form-card,
+body:not(.index-page) .contact-panel .panel {
+  padding: clamp(1.15rem, 2.4vw, 1.55rem);
+  border: 1px solid rgba(22, 22, 22, 0.11);
+  border-radius: 8px;
+  background: rgba(251, 250, 246, 0.72);
+  box-shadow: 0 1px 0 rgba(22, 22, 22, 0.035);
+}
+
+body:not(.index-page) .page-sheet .section-toned .card,
+body:not(.index-page) .page-sheet .section-toned .service-card,
+body:not(.index-page) .page-sheet .section-toned .service-detail,
+body:not(.index-page) .page-sheet .section-toned .split-panel .panel-light,
+body:not(.index-page) .page-sheet .section-toned .timeline-item {
+  background: rgba(255, 255, 255, 0.68);
+}
+
+body:not(.index-page) .page-sheet .service-card::before {
+  display: block;
+}
+
+body:not(.index-page) .page-sheet .service-label,
+body:not(.index-page) .page-sheet .card-kicker,
+body:not(.index-page) .page-sheet .panel-label {
+  color: var(--accent);
+}
+
+body:not(.index-page) .detail-row {
+  border: 1px solid rgba(22, 22, 22, 0.11);
+  border-radius: 8px;
+  background: rgba(251, 250, 246, 0.72);
+}
+
+body:not(.index-page) .detail-row[open],
+body:not(.index-page) .detail-row:has(summary:focus-visible) {
+  border-color: rgba(124, 34, 34, 0.24);
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.services-overview-section {
+  overflow: hidden;
+}
+
+.services-overview-heading {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 48rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.services-overview-heading h2 {
+  max-width: 21ch;
+  font-family: var(--display-font);
+  font-size: clamp(2rem, 3.8vw, 3.35rem);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.services-overview-heading p:not(.eyebrow) {
+  max-width: 42rem;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+
+.services-card-grid {
+  gap: clamp(0.9rem, 2vw, 1.25rem);
+}
+
+body:not(.index-page) .page-sheet .service-card-featured {
+  grid-column: 1 / -1;
+  min-height: clamp(15rem, 24vw, 19rem);
+  display: grid;
+  align-content: center;
+  gap: 0.9rem;
+  border-color: rgba(124, 34, 34, 0.2);
+  background:
+    radial-gradient(circle at 86% 18%, rgba(124, 34, 34, 0.11), transparent 34%),
+    rgba(255, 255, 255, 0.72);
+}
+
+body:not(.index-page) .page-sheet .service-card-featured h3 {
+  max-width: 18ch;
+  font-family: var(--display-font);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 500;
+  line-height: 0.98;
+}
+
+body:not(.index-page) .page-sheet .service-card-featured p:not(.service-label) {
+  max-width: 46rem;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+}
+
+.services-detail-section {
+  background: rgba(251, 250, 246, 0.72);
+}
+
+.services-detail-heading {
+  max-width: 42rem;
+}
+
+@media (max-width: 720px) {
+  .services-overview-heading h2,
+  body:not(.index-page) .page-sheet .service-card-featured h3 {
+    max-width: 100%;
+  }
+
+  body:not(.index-page) .page-sheet .service-card-featured {
+    min-height: auto;
+  }
+}
