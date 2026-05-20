@@ -17,8 +17,18 @@ The form uses JavaScript for the best in-page experience, but the HTML also has 
 ## Files involved
 
 - Contact page: `/Users/diddypopdiddy/Documents/Codex/Projects/Vince Doud/02_Media/Website/book.html`
+- Paid public workshop section: `/Users/diddypopdiddy/Documents/Codex/Projects/Vince Doud/02_Media/Website/services.html#live-ai-workshops`
 - Shared form behavior: `/Users/diddypopdiddy/Documents/Codex/Projects/Vince Doud/02_Media/Website/script.js`
 - Email endpoint script: `/Users/diddypopdiddy/Documents/Codex/Projects/Vince Doud/02_Media/Website/google-apps-script/Code.gs`
+
+## Workshop registration links
+
+The live workshop section on `services.html` points to the public Calendly event types:
+
+- AI Modes Workshop: `https://calendly.com/hello-vincedoud/ai-modes-workshop`
+- AI Tool Mode Workshop: `https://calendly.com/hello-vincedoud/ai-tool-mode-workshop`
+
+Do not add Stripe payment links directly to the website. Payment should stay inside the Calendly event flow once Calendly and Stripe are connected.
 
 ## Recreate or replace the form endpoint
 

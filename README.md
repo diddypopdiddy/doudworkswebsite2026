@@ -6,6 +6,7 @@ Static multi-page expert profile and offer site for Vince Doud. No build step is
 
 - `index.html`: homepage
 - `services.html`: workshop menu and service formats
+- `live-ai-workshops.html`: noindex bridge that sends old workshop links to `services.html#live-ai-workshops`
 - `speaking.html`: speaking and presentation path
 - `approach.html`: AI Production Framework and learning model
 - `about.html`: founder story and credibility
@@ -62,6 +63,7 @@ This site is wired for [Plausible](https://plausible.io/) using the `vincedoud.c
 ## Content to review after launch
 
 - The Contact page form is connected to the private Google Apps Script sending endpoint.
+- Live workshop registration links are connected in `services.html`; keep Stripe payment collection inside Calendly after the account-level Stripe connection is finished.
 - Confirm the exact published name for Camden County Educational Services Commission if you want to keep that on-site.
 - Add any additional attributed testimonials, district names, or logos you have permission to publish.
 - If you replace the contact endpoint later, update `book.html`, `script.js`, and `BOOKING-SETUP.md` together.
