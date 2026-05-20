@@ -3,9 +3,6 @@ document.documentElement.classList.add("js");
 const menuToggle = document.querySelector("[data-menu-toggle]");
 const siteNav = document.querySelector(".site-nav");
 const siteHeader = document.querySelector(".site-header");
-const homeHeader = document.querySelector(".home-header");
-const homeNav = document.querySelector(".home-nav");
-let homeMenuToggle = document.querySelector("[data-home-menu-toggle]");
 const currentPage = document.body.dataset.page || "unknown";
 const mainContent = document.querySelector("main");
 
@@ -52,59 +49,6 @@ if (menuToggle && siteNav) {
   });
 }
 
-const closeHomeMenu = () => {
-  if (!homeMenuToggle || !homeNav) {
-    return;
-  }
-
-  homeNav.classList.remove("is-open");
-  homeMenuToggle.setAttribute("aria-expanded", "false");
-};
-
-if (homeHeader && homeNav) {
-  if (!homeNav.id) {
-    homeNav.id = "home-navigation";
-  }
-
-  if (!homeMenuToggle) {
-    homeMenuToggle = document.createElement("button");
-    homeMenuToggle.type = "button";
-    homeMenuToggle.className = "home-menu-toggle";
-    homeMenuToggle.setAttribute("data-home-menu-toggle", "");
-    homeMenuToggle.setAttribute("aria-label", "Toggle primary navigation");
-    homeMenuToggle.setAttribute("aria-expanded", "false");
-    homeMenuToggle.setAttribute("aria-controls", homeNav.id);
-    homeMenuToggle.innerHTML = "<span></span><span></span><span></span>";
-
-    homeHeader.insertBefore(homeMenuToggle, homeNav);
-  }
-
-  homeMenuToggle.addEventListener("click", () => {
-    const isOpen = homeNav.classList.toggle("is-open");
-    homeMenuToggle.setAttribute("aria-expanded", String(isOpen));
-
-    if (isOpen) {
-      trackEvent("Home Mobile Navigation Opened", { page: currentPage });
-    }
-  });
-
-  homeNav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", closeHomeMenu);
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeHomeMenu();
-    }
-  });
-
-  document.addEventListener("click", (event) => {
-    if (!homeHeader.contains(event.target)) {
-      closeHomeMenu();
-    }
-  });
-}
-
 if (siteHeader) {
   const syncHeaderState = () => {
     siteHeader.classList.toggle("is-scrolled", window.scrollY > 12);
@@ -136,7 +80,7 @@ const describeHref = (href) => {
 };
 
 document
-  .querySelectorAll("a[href$='book.html']")
+  .querySelectorAll("a[href*='book.html']")
   .forEach((link) => {
     link.addEventListener("click", () => {
       const href = link.getAttribute("href") || "";
@@ -154,6 +98,19 @@ const contactForm = document.querySelector("[data-contact-form]");
 if (contactForm) {
   const statusNode = contactForm.querySelector("[data-contact-status]");
   const submitButton = contactForm.querySelector("button[type='submit']");
+  const formatSelect = contactForm.querySelector("select[name='format']");
+  const workshopParam = new URLSearchParams(window.location.search).get("workshop");
+  const workshopFormatMap = {
+    "ai-modes": "Live AI Workshop: AI Modes Workshop",
+    "ai-tool-mode": "Live AI Workshop: AI Tool Mode Workshop",
+    "public-workshops": "Live AI Workshops: next date notifications",
+    "private-team": "Private team training"
+  };
+
+  if (formatSelect && workshopParam && workshopFormatMap[workshopParam]) {
+    formatSelect.value = workshopFormatMap[workshopParam];
+  }
+
   const setStatus = (message) => {
     if (statusNode) {
       statusNode.textContent = message;
