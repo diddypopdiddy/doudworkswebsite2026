@@ -2714,7 +2714,7 @@ body[data-page="book"] .site-footer {
 
 .permit-breakdown-card {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr);
   gap: clamp(1.5rem, 4vw, 3rem);
   padding: clamp(1.35rem, 3vw, 2rem);
   border: 1px solid rgba(22, 22, 22, 0.11);
@@ -2736,6 +2736,7 @@ body[data-page="book"] .site-footer {
 }
 
 .permit-breakdown-card h3,
+.permit-breakdown-card h4,
 .permit-breakdown-card p {
   margin: 0;
 }
@@ -2749,6 +2750,15 @@ body[data-page="book"] .site-footer {
   line-height: 1.1;
 }
 
+.permit-breakdown-card h4 {
+  color: var(--accent-strong);
+  font-family: "Archivo", system-ui, sans-serif;
+  font-size: clamp(1rem, 1.35vw, 1.18rem);
+  font-weight: 850;
+  letter-spacing: 0;
+  line-height: 1.15;
+}
+
 .permit-breakdown-card p {
   max-width: 35rem;
   color: var(--ink-soft);
@@ -2757,6 +2767,28 @@ body[data-page="book"] .site-footer {
 
 .permit-breakdown-card .outcome-list {
   margin-top: 0.2rem;
+}
+
+.license-path-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.8rem, 1.8vw, 1.1rem);
+}
+
+.license-path-card {
+  display: grid;
+  gap: 0.65rem;
+  align-content: start;
+  min-width: 0;
+  padding: clamp(0.9rem, 1.5vw, 1.1rem);
+  border: 1px solid rgba(22, 22, 22, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.66);
+}
+
+.license-path-card p {
+  font-size: 0.95rem;
+  line-height: 1.48;
 }
 
 @media (max-width: 1024px) {
@@ -2807,7 +2839,8 @@ body[data-page="book"] .site-footer {
 }
 
 @media (max-width: 760px) {
-  .permit-breakdown-card {
+  .permit-breakdown-card,
+  .license-path-grid {
     grid-template-columns: 1fr;
   }
 
