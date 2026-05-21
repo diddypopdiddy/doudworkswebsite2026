@@ -25,13 +25,13 @@ The form uses JavaScript for the best in-page experience, but the HTML also has 
 
 The live workshop section on `services.html` points to the public Calendly event types:
 
-- AI Modes Workshop: `https://calendly.com/hello-vincedoud/ai-modes-workshop`
-- AI Tool Mode Workshop: `https://calendly.com/hello-vincedoud/ai-tool-mode-workshop`
+- Earn Your AI Permit: `https://calendly.com/hello-vincedoud/ai-modes-workshop`
+- Build Toward Your AI License: `https://calendly.com/hello-vincedoud/ai-tool-mode-workshop`
 
 Public pricing shown on the website should match the Calendly payment settings:
 
-- AI Modes Workshop: $99/person
-- AI Tool Mode Workshop: $149/person
+- Earn Your AI Permit: $99/person
+- Build Toward Your AI License: $149/person
 
 Do not add Stripe payment links directly to the website. Payment should stay inside the Calendly event flow once Calendly and Stripe are connected.
 
