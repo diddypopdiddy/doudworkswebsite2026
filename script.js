@@ -101,8 +101,8 @@ if (contactForm) {
   const formatSelect = contactForm.querySelector("select[name='format']");
   const workshopParam = new URLSearchParams(window.location.search).get("workshop");
   const workshopFormatMap = {
-    "ai-modes": "Live AI Workshop: AI Modes Workshop",
-    "ai-tool-mode": "Live AI Workshop: AI Tool Mode Workshop",
+    "ai-modes": "Live AI Workshop: Earn Your AI Permit",
+    "ai-tool-mode": "Live AI Workshop: Build Toward Your AI License",
     "public-workshops": "Live AI Workshops: next date notifications",
     "private-team": "Private team training"
   };
