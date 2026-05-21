@@ -14,6 +14,12 @@
   --accent-mist: rgba(124, 34, 34, 0.07);
   --sage: #7c2222;
   --sage-mist: rgba(124, 34, 34, 0.08);
+  --canvas: #fbfaf6;
+  --band: #e8e3d8;
+  --card-surface: #fffdf8;
+  --card-hover: #fffaf2;
+  --line-soft: rgba(22, 22, 22, 0.1);
+  --line-strong: rgba(22, 22, 22, 0.14);
   --border: rgba(22, 22, 22, 0.08);
   --border-strong: rgba(22, 22, 22, 0.13);
   --shadow: 0 24px 64px rgba(30, 28, 23, 0.09);
@@ -4487,12 +4493,34 @@ body:not(.index-page) .cta-inner {
 .home-step-card:focus-visible,
 .home-route-grid a:hover,
 .home-route-grid a:focus-visible,
+.permit-fit-card:hover,
+.permit-fit-card:focus-visible,
 .detail-row:has(summary:focus-visible),
 .detail-row[open],
 .detail-row-link:hover,
 .detail-row-link:focus-visible {
   border-color: rgba(124, 34, 34, 0.22);
   background: rgba(255, 255, 255, 0.58);
+}
+
+.home-step-card:hover,
+.home-step-card:focus-visible,
+.home-route-grid a:hover,
+.home-route-grid a:focus-visible,
+.permit-fit-card:hover,
+.permit-fit-card:focus-visible {
+  box-shadow:
+    0 16px 36px rgba(124, 34, 34, 0.08),
+    0 0 0 1px rgba(124, 34, 34, 0.14);
+  transform: translateY(-2px);
+}
+
+.permit-fit-card {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  min-height: 10rem;
+  text-decoration: none;
 }
 
 .detail-row {
@@ -4518,6 +4546,7 @@ body:not(.index-page) .cta-inner {
   .home-menu-toggle,
   .home-route-grid a,
   .home-step-card,
+  .permit-fit-card,
   .detail-row {
     transition:
       background-color 180ms ease,
@@ -4962,6 +4991,11 @@ body:not(.index-page) .detail-row-link:focus-visible {
   box-shadow: 0 1px 0 rgba(22, 22, 22, 0.035);
 }
 
+.workshop-offer-card > div:first-child {
+  display: grid;
+  gap: 0.45rem;
+}
+
 .workshop-offer-card h3 {
   max-width: 12ch;
   margin-top: 0.35rem;
@@ -4977,6 +5011,25 @@ body:not(.index-page) .detail-row-link:focus-visible {
   font-size: 1.02rem;
   font-weight: 700;
   line-height: 1.45;
+}
+
+.workshop-quick-facts {
+  margin: 0;
+  color: var(--accent);
+  font-family: "Archivo", system-ui, sans-serif;
+  font-size: 0.94rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+@media (min-width: 901px) {
+  .workshop-offer-card > div:first-child {
+    grid-template-rows: 1.15rem 6.7rem 2rem;
+  }
+
+  .workshop-card-lede {
+    max-width: none;
+  }
 }
 
 .workshop-meta {
@@ -5063,4 +5116,163 @@ body:not(.index-page) .detail-row-link:focus-visible {
     width: 100%;
     justify-content: center;
   }
+}
+
+/* Warm editorial surface system */
+body,
+.site-shell,
+.page-sheet,
+.home-hero,
+.home-routes,
+.home-footer,
+.index-page .site-header,
+.index-page .site-header.is-scrolled,
+body:not(.index-page) .site-header,
+body:not(.index-page) .site-header.is-scrolled,
+body:not(.index-page) .page-hero,
+body:not(.index-page) .page-sheet,
+body:not(.index-page) .page-sheet .section {
+  background: var(--canvas);
+}
+
+.header-inner,
+.index-page .header-inner,
+body:not(.index-page) .header-inner {
+  background: rgba(251, 250, 246, 0.92);
+}
+
+.home-pathway,
+.home-proof,
+.home-conversation,
+body:not(.index-page) .page-sheet .section-toned,
+body:not(.index-page) .page-sheet .proof-band,
+.live-workshops-section,
+.services-detail-section {
+  background: var(--band);
+}
+
+.home-step-card,
+.home-route-grid a,
+.home-proof-list span,
+.permit-breakdown-card,
+.workshop-offer-card,
+body:not(.index-page) .page-sheet .card,
+body:not(.index-page) .page-sheet .service-card,
+body:not(.index-page) .page-sheet .service-detail,
+body:not(.index-page) .page-sheet .split-panel .panel-light,
+body:not(.index-page) .page-sheet .split-panel .panel-dark,
+body:not(.index-page) .page-sheet .timeline-item,
+body:not(.index-page) .form-card,
+body:not(.index-page) .contact-panel .panel,
+body:not(.index-page) .detail-row,
+body:not(.index-page) .cta-inner {
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  background: var(--card-surface);
+  box-shadow: 0 1px 0 rgba(22, 22, 22, 0.035);
+}
+
+.workshop-meta div {
+  border-color: var(--line-soft);
+  background: var(--canvas);
+}
+
+.home-step-card:hover,
+.home-step-card:focus-visible,
+.home-route-grid a:hover,
+.home-route-grid a:focus-visible,
+.permit-fit-card:hover,
+.permit-fit-card:focus-visible,
+body:not(.index-page) .detail-row[open],
+body:not(.index-page) .detail-row:has(summary:focus-visible),
+body:not(.index-page) .detail-row-link:hover,
+body:not(.index-page) .detail-row-link:focus-visible {
+  border-color: rgba(124, 34, 34, 0.26);
+  background: var(--card-hover);
+}
+
+body:not(.index-page) .page-sheet .section + .section,
+body:not(.index-page) .page-sheet .section-toned + .section,
+body:not(.index-page) .page-sheet .proof-band + .section {
+  border-top: 1px solid var(--line-soft);
+}
+
+body:not(.index-page) .cta-inner {
+  border-color: rgba(73, 26, 26, 0.46);
+  background: linear-gradient(135deg, var(--accent-strong) 0%, var(--accent) 100%);
+  color: #fff;
+  box-shadow: 0 18px 42px rgba(73, 26, 26, 0.16);
+}
+
+body:not(.index-page) .cta-inner h2,
+body:not(.index-page) .cta-inner .eyebrow {
+  color: #fff;
+}
+
+body:not(.index-page) .cta-inner .button-primary {
+  border-color: rgba(255, 255, 255, 0.72);
+  background: var(--card-surface);
+  color: var(--accent-strong);
+}
+
+body:not(.index-page) .cta-inner .button-primary:hover,
+body:not(.index-page) .cta-inner .button-primary:focus-visible {
+  background: #fff;
+}
+
+body:not(.index-page) .cta-inner .button-secondary {
+  border-color: rgba(255, 255, 255, 0.46);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+body[data-page="approach"] .page-sheet .detail-index-section,
+body[data-page="about"] .page-sheet .about-photo-section,
+body[data-page="about"] .page-sheet .detail-index-section {
+  background: var(--band);
+}
+
+body[data-page="approach"] .detail-index-section .detail-row,
+body[data-page="about"] .detail-index-section .detail-row {
+  border-color: var(--line-strong);
+  background: var(--card-surface);
+  box-shadow:
+    0 14px 32px rgba(30, 28, 23, 0.055),
+    0 1px 0 rgba(22, 22, 22, 0.035);
+}
+
+body[data-page="approach"] .detail-index-section .detail-row[open],
+body[data-page="approach"] .detail-index-section .detail-row:has(summary:focus-visible),
+body[data-page="approach"] .detail-index-section .detail-row:hover,
+body[data-page="about"] .detail-index-section .detail-row[open],
+body[data-page="about"] .detail-index-section .detail-row:has(summary:focus-visible),
+body[data-page="about"] .detail-index-section .detail-row:hover {
+  border-color: rgba(124, 34, 34, 0.28);
+  background: var(--card-hover);
+}
+
+.workshop-offer-card {
+  position: relative;
+  overflow: hidden;
+  border-color: var(--line-strong);
+  background: #fff;
+  box-shadow:
+    0 18px 42px rgba(30, 28, 23, 0.09),
+    0 1px 0 rgba(22, 22, 22, 0.04);
+}
+
+.workshop-offer-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 4px;
+  background: var(--accent);
+}
+
+.workshop-offer-card:hover,
+.workshop-offer-card:focus-within {
+  border-color: rgba(124, 34, 34, 0.3);
+  box-shadow:
+    0 22px 50px rgba(73, 26, 26, 0.12),
+    0 1px 0 rgba(22, 22, 22, 0.04);
 }
