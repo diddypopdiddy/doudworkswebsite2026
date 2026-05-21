@@ -25,13 +25,15 @@ The form uses JavaScript for the best in-page experience, but the HTML also has 
 
 The live workshop section on `services.html` points to the public Calendly event types:
 
-- AI Permit Lab: Design Thinking with AI Modes: `https://calendly.com/hello-vincedoud/ai-modes-workshop`
-- AI License Lab: Building Real AI Workflows: `https://calendly.com/hello-vincedoud/ai-tool-mode-workshop`
+- Design Thinking with AI: Earn Your AI Permit: `https://calendly.com/hello-vincedoud/ai-modes-workshop`
+- AI License Lab: Build Your Own AI Workflow: `https://calendly.com/hello-vincedoud/ai-tool-mode-workshop`
+- AI License Lab: Bring It Into Your Classroom: `https://calendly.com/hello-vincedoud/ai-license-classroom-workshop`
 
 Public pricing shown on the website should match the Calendly payment settings:
 
-- AI Permit Lab: Design Thinking with AI Modes: $99/person
-- AI License Lab: Building Real AI Workflows: $149/person
+- Design Thinking with AI: Earn Your AI Permit: $99/person
+- AI License Lab: Build Your Own AI Workflow: $149/person
+- AI License Lab: Bring It Into Your Classroom: $149/person
 
 Do not add Stripe payment links directly to the website. Payment should stay inside the Calendly event flow once Calendly and Stripe are connected.
 
