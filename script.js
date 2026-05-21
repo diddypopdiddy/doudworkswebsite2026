@@ -102,7 +102,7 @@ if (contactForm) {
   const workshopParam = new URLSearchParams(window.location.search).get("workshop");
   const workshopFormatMap = {
     "ai-modes": "Live AI Workshop: Earn Your AI Permit",
-    "ai-tool-mode": "Live AI Workshop: Build Toward Your AI License",
+    "ai-tool-mode": "Live AI Workshop: AI License Lab",
     "public-workshops": "Live AI Workshops: next date notifications",
     "private-team": "Private team training"
   };
