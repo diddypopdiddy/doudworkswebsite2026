@@ -3237,7 +3237,6 @@ body[data-page="book"] .site-footer {
   gap: 2rem;
   align-items: end;
   padding-bottom: 2.5rem;
-  border-bottom: 1px solid var(--border-strong);
 }
 
 .about-photo-grid img {
