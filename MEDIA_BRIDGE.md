@@ -22,6 +22,7 @@ When a video is published:
 | Video/resource topic | Website page path | Why it belongs there |
 | --- | --- | --- |
 | Returning to the classroom / Vince origin story | `about.html`, `index.html` | Builds trust in Vince as the classroom-grounded voice behind the work. |
+| Outside Cat / leverage without dependency | `index.html`, `about.html`, `speaking.html`, `approach.html` | Makes the philosophy visible without turning it into a separate product or competing pathway. |
 | Context-aware teacher AI support | `approach.html`, `ai-workflow-training-for-educators.html` | Shows how the AI Production Framework becomes practical teacher workflow support. |
 | AI Permit -> AI License / camera analogy | `ai-permit-to-ai-license.html`, `ai-permit-game.html`, `approach.html` | Explains the framework and gives visitors a concrete reason to explore the Permit/License path. |
 | Responsible AI, privacy, verification, guardrails | `responsible-ai-for-schools.html`, `faq.html` | Turns caution into practical guidance for schools and districts. |
