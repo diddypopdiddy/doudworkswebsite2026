@@ -5112,6 +5112,22 @@ body:not(.index-page) .detail-row-link:focus-visible {
   line-height: 1.45;
 }
 
+.workshop-variant-list {
+  display: grid;
+  gap: 0.38rem;
+  margin: 0.1rem 0 0;
+  padding-left: 1.05rem;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.workshop-variant-list strong {
+  color: var(--ink);
+  font-weight: 850;
+}
+
 .workshop-quick-facts {
   margin: 0;
   color: var(--accent);
@@ -5119,6 +5135,16 @@ body:not(.index-page) .detail-row-link:focus-visible {
   font-size: 0.94rem;
   font-weight: 800;
   letter-spacing: 0;
+}
+
+.workshop-variant-actions {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.workshop-variant-actions .button {
+  width: 100%;
+  justify-content: center;
 }
 
 @media (min-width: 901px) {
@@ -5189,6 +5215,19 @@ body:not(.index-page) .detail-row-link:focus-visible {
 }
 
 @media (max-width: 560px) {
+  .workshop-offer-grid,
+  .workshop-offer-card,
+  .workshop-offer-card > *,
+  .workshop-offer-card > div:first-child,
+  .workshop-card-lede,
+  .workshop-variant-list,
+  .workshop-quick-facts,
+  .detail-summary {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
+
   body:not(.index-page) .page-hero-copy p:last-child,
   .live-workshops-copy p:not(.eyebrow) {
     width: min(100%, 20rem);
