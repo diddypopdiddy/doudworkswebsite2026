@@ -3,32 +3,32 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Vince Doud | Teacher, creator, classroom AI explorer</title>
+    <title>Projects | Vince Doud</title>
     <meta
       name="description"
       content="Classroom practice, useful resources, videos, and local AI experiments from teacher and creator Vince Doud."
     />
     <meta name="theme-color" content="#111417" />
-    <meta property="og:title" content="Vince Doud | Teacher, creator, classroom AI explorer" />
+    <meta property="og:title" content="Projects | Vince Doud" />
     <meta
       property="og:description"
       content="Classroom practice, useful resources, videos, and local AI experiments from teacher and creator Vince Doud."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.vincedoud.com/" />
+    <meta property="og:url" content="https://www.vincedoud.com/projects.html" />
     <meta
       property="og:image"
       content="https://www.vincedoud.com/media/home/interactive-teacher-desk-v2-phone.png"
     />
     <meta property="og:site_name" content="Vince Doud" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="canonical" href="https://www.vincedoud.com/" />
+    <link rel="canonical" href="https://www.vincedoud.com/projects.html" />
     <link rel="icon" href="media/brand/vd-utility-avatar.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="portfolio-stage-v2.css?v=20260731-8" />
     <script src="portfolio-stage-v2.js?v=20260731-8" defer></script>
   </head>
-  <body class="portfolio-stage " data-initial-view="home">
-    <a class="skip-link" href="#home-content">Skip to content</a>
+  <body class="portfolio-stage has-layer" data-initial-view="projects">
+    <a class="skip-link" href="#main">Skip to content</a>
 
     <div class="stage-app" data-stage-app>
       <header class="stage-header">
@@ -66,7 +66,7 @@
         id="home-content"
         data-home-stage
         tabindex="-1"
-        role="main"
+        aria-hidden="true" inert
       >
         <h1 class="visually-hidden">
           Vince Doud — teacher, creator, and classroom AI explorer
@@ -138,12 +138,12 @@
 
       <div class="layer-scrim" aria-hidden="true"></div>
 
-      <div id="main" class="layer-host" tabindex="-1" aria-hidden="true">
+      <div id="main" class="layer-host" tabindex="-1" role="main">
         <section
           class="stage-layer projects-layer is-project-neutral"
           data-view="projects"
           aria-labelledby="projects-title"
-          hidden
+          data-initial-visible
         >
           <button
             class="layer-close"

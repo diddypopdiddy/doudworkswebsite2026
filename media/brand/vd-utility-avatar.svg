@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+
+  <style>
+    @font-face {
+      font-family: "Inter";
+      src: url("./InterVariable.ttf") format("truetype");
+      font-weight: 100 900;
+      font-style: normal;
+    }
+    .inter { font-family: "Inter", Arial, sans-serif; }
+    .editorial { font-family: "Charter", Georgia, serif; }
+    .label { font-size: 14px; font-weight: 650; letter-spacing: 1.5px; }
+    .section-number { font-size: 17px; font-weight: 750; fill: #B86533; letter-spacing: 1px; }
+    .section-title { font-size: 17px; font-weight: 750; fill: #171B1F; letter-spacing: 1.2px; }
+    .body { font-size: 18px; font-weight: 430; fill: #171B1F; }
+    .small { font-size: 13px; font-weight: 450; fill: #646B70; }
+    .micro { font-size: 11px; font-weight: 650; fill: #646B70; letter-spacing: .8px; }
+  </style>
+  <rect width="512" height="512" fill="#FFFFFF"/>
+
+    <g aria-label="VD utility avatar">
+      <rect x="16" y="16" width="480" height="480" rx="76.8" fill="#3157C8"/>
+      <text x="256" y="332.8" class="inter" fill="#FFFFFF"
+        font-size="230.39999999999998" font-weight="720" letter-spacing="-8.064"
+        text-anchor="middle">VD</text>
+      <rect x="324.16" y="243.52"
+        width="32.64" height="32.64" fill="#B86533"/>
+    </g>
+</svg>
