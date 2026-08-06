@@ -1,5 +1,5 @@
 const SHEET_NAME = "Contact Inquiries";
-const NOTIFICATION_RECIPIENTS = ["vinceandrewdoud@gmail.com"];
+const NOTIFICATION_RECIPIENTS = ["hello@vincedoud.com"];
 
 function doPost(e) {
   try {
