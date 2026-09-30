@@ -1,0 +1,401 @@
+{
+  "gameTitle": "Signal City Road Rally",
+  "familyBrand": "The AI Permit Game",
+  "modes": [
+    {
+      "id": "idea",
+      "label": "Idea Mode",
+      "hint": "Explore possibilities before choosing a path."
+    },
+    {
+      "id": "learning",
+      "label": "Learning Mode",
+      "hint": "Understand, study, or build skill."
+    },
+    {
+      "id": "feedback",
+      "label": "Feedback Mode",
+      "hint": "Improve work that already exists."
+    },
+    {
+      "id": "tool",
+      "label": "Tool Mode",
+      "hint": "Turn information into a useful output."
+    },
+    {
+      "id": "practice",
+      "label": "Practice Mode",
+      "hint": "Rehearse a situation before real life."
+    }
+  ],
+  "safetyLenses": [
+    {
+      "id": "prompt",
+      "label": "Tune the Prompt",
+      "hint": "Add task, context, format, limits, or audience."
+    },
+    {
+      "id": "privacy",
+      "label": "Keep It Private",
+      "hint": "Remove names, passwords, records, and personal details."
+    },
+    {
+      "id": "claim",
+      "label": "Check the Claim",
+      "hint": "Verify facts, quotes, sources, dates, and current information."
+    },
+    {
+      "id": "fair",
+      "label": "Make It Fair",
+      "hint": "Watch for bias, overreliance, disclosure, and honest use."
+    }
+  ],
+  "gameLengths": {
+    "quick": {
+      "label": "Quick",
+      "minutes": "10-15 min",
+      "modeTarget": 3,
+      "safetyTarget": 2
+    },
+    "standard": {
+      "label": "Standard",
+      "minutes": "20-30 min",
+      "modeTarget": 5,
+      "safetyTarget": 4
+    },
+    "full": {
+      "label": "Full",
+      "minutes": "30-40 min",
+      "modeTarget": 5,
+      "safetyTarget": 4
+    }
+  },
+  "boardSpaces": [
+    {
+      "spaceId": 0,
+      "label": "Start Line",
+      "type": "Start",
+      "x": 47.2,
+      "y": 88.4,
+      "nextSpaceId": 1
+    },
+    {
+      "spaceId": 1,
+      "label": "Idea Avenue",
+      "type": "Mode Stop",
+      "x": 29,
+      "y": 77,
+      "nextSpaceId": 2
+    },
+    {
+      "spaceId": 2,
+      "label": "Privacy Tunnel",
+      "type": "Signal Check",
+      "lockedLens": "Keep It Private",
+      "x": 18,
+      "y": 57,
+      "nextSpaceId": 3
+    },
+    {
+      "spaceId": 3,
+      "label": "Construction Detour",
+      "type": "Detour",
+      "complication": "The first answer sounds useful, but it skips an important limit.",
+      "x": 29,
+      "y": 34,
+      "nextSpaceId": 4
+    },
+    {
+      "spaceId": 4,
+      "label": "Shortcut Bridge",
+      "type": "Shortcut",
+      "complication": "Before the reveal, the crew may wager one Mile Token on the explanation.",
+      "x": 49,
+      "y": 22,
+      "nextSpaceId": 5
+    },
+    {
+      "spaceId": 5,
+      "label": "Hazard Hill",
+      "type": "Hazard",
+      "x": 70,
+      "y": 31,
+      "nextSpaceId": 6
+    },
+    {
+      "spaceId": 6,
+      "label": "Merge Lane",
+      "type": "Merge Lane",
+      "complication": "Another player may ride shotgun by adding one improvement before the vote.",
+      "x": 81,
+      "y": 53,
+      "nextSpaceId": 7
+    },
+    {
+      "spaceId": 7,
+      "label": "Pit Stop",
+      "type": "Pit Stop",
+      "x": 70,
+      "y": 76,
+      "nextSpaceId": 8
+    },
+    {
+      "spaceId": 8,
+      "label": "Claim Check Corner",
+      "type": "Signal Check",
+      "lockedLens": "Check the Claim",
+      "x": 50,
+      "y": 82,
+      "nextSpaceId": 9
+    },
+    {
+      "spaceId": 9,
+      "label": "Green Light Gate",
+      "type": "Green Light Gate",
+      "x": 50,
+      "y": 55,
+      "nextSpaceId": 1
+    }
+  ],
+  "connections": [
+    [0, 1],
+    [1, 2],
+    [2, 3],
+    [3, 4],
+    [4, 5],
+    [5, 6],
+    [6, 7],
+    [7, 8],
+    [8, 9],
+    [9, 1]
+  ],
+  "scenarioCards": [
+    {
+      "id": "SCN-01",
+      "title": "Science Fair Start",
+      "scenario": "Your group needs a science fair project that fits your time, materials, and interests.",
+      "likelyStrong": "Idea Mode helps the crew generate several possible project directions before choosing one.",
+      "alsoWorksIf": "Learning Mode works if the first need is understanding the science topics before brainstorming.",
+      "watchOutFor": "Do not let AI pick the whole project without checking what the group can actually build.",
+      "discussionPrompt": "What kind of AI help would you choose first?"
+    },
+    {
+      "id": "SCN-02",
+      "title": "History Poster",
+      "scenario": "A student has a history poster topic but the first AI answer is too vague to use.",
+      "likelyStrong": "Feedback Mode helps improve the draft direction without taking over the poster.",
+      "alsoWorksIf": "Tune the Prompt matters if the crew names audience, format, limits, and facts to check.",
+      "watchOutFor": "A confident answer can still include facts that need verification.",
+      "discussionPrompt": "How should the crew ask for help without asking AI to finish the work?"
+    },
+    {
+      "id": "SCN-03",
+      "title": "Club Announcement",
+      "scenario": "The robotics club needs a short announcement for the morning bulletin.",
+      "likelyStrong": "Tool Mode fits because the crew is turning known details into a useful format.",
+      "alsoWorksIf": "Feedback Mode works if there is already a rough announcement to improve.",
+      "watchOutFor": "Make sure names, meeting details, and permission-sensitive information are safe to share.",
+      "discussionPrompt": "What information should be included, and what should stay private?"
+    },
+    {
+      "id": "SCN-04",
+      "title": "Difficult Conversation",
+      "scenario": "A student wants to practice asking a teacher for help after missing several assignments.",
+      "likelyStrong": "Practice Mode fits because the student can rehearse respectful words before real life.",
+      "alsoWorksIf": "Feedback Mode works if the student already wrote a message and wants it improved.",
+      "watchOutFor": "The message should sound like the student, not like a fake adult script.",
+      "discussionPrompt": "What would be useful to practice before the real conversation?"
+    },
+    {
+      "id": "SCN-05",
+      "title": "Current Event Claim",
+      "scenario": "AI gives a strong-sounding explanation of a current event for class discussion.",
+      "likelyStrong": "Learning Mode can help explain the topic, but Check the Claim should guide the turn.",
+      "alsoWorksIf": "Tool Mode works if the crew makes a source-checking list before using the explanation.",
+      "watchOutFor": "Current events change quickly, so date, source, and evidence matter.",
+      "discussionPrompt": "What should the crew verify before trusting the answer?"
+    },
+    {
+      "id": "SCN-06",
+      "title": "Study Plan",
+      "scenario": "A student has a quiz in three days and wants a simple plan for studying.",
+      "likelyStrong": "Tool Mode fits because AI can organize the available time into a practical plan.",
+      "alsoWorksIf": "Learning Mode works if the student needs concepts explained before planning.",
+      "watchOutFor": "The plan should match the actual class notes, not replace studying.",
+      "discussionPrompt": "What details would make the plan realistic?"
+    },
+    {
+      "id": "SCN-07",
+      "title": "Group Slide Deck",
+      "scenario": "A team has notes for a presentation but needs help turning them into clear slides.",
+      "likelyStrong": "Tool Mode helps organize the notes into headings, order, and speaker cues.",
+      "alsoWorksIf": "Feedback Mode works if a draft deck already exists.",
+      "watchOutFor": "AI should not invent evidence or make one group member's work disappear.",
+      "discussionPrompt": "What should the crew provide so the slides stay accurate?"
+    },
+    {
+      "id": "SCN-08",
+      "title": "Book Reflection",
+      "scenario": "A student needs to write a reflection on a book chapter they actually read.",
+      "likelyStrong": "Idea Mode can help brainstorm angles while the student keeps the real reflection.",
+      "alsoWorksIf": "Feedback Mode works if the student brings their own rough paragraph first.",
+      "watchOutFor": "The reflection should not pretend AI read or felt the chapter for the student.",
+      "discussionPrompt": "How can AI support the student's thinking without replacing it?"
+    },
+    {
+      "id": "SCN-09",
+      "title": "Community Survey",
+      "scenario": "A class wants to summarize survey responses about improving the school courtyard.",
+      "likelyStrong": "Tool Mode fits because AI can help group and summarize responses.",
+      "alsoWorksIf": "Make It Fair matters if the crew checks whose voices might be missing.",
+      "watchOutFor": "Names and private details should be removed before using AI.",
+      "discussionPrompt": "What should be removed or checked before summarizing?"
+    },
+    {
+      "id": "SCN-10",
+      "title": "Interview Practice",
+      "scenario": "A student wants to prepare for a short interview about joining a youth program.",
+      "likelyStrong": "Practice Mode fits because AI can simulate questions and help the student rehearse.",
+      "alsoWorksIf": "Feedback Mode works if the student already has draft answers.",
+      "watchOutFor": "Practice should build confidence, not create answers the student cannot explain.",
+      "discussionPrompt": "What kind of rehearsal would make the student more ready?"
+    }
+  ],
+  "roadMoveCards": [
+    {
+      "id": "RM-01",
+      "title": "Add the Missing Details",
+      "lens": "Tune the Prompt",
+      "prompt": "Name the task, audience, format, and limits before asking for AI help.",
+      "likelyStrong": "A tuned prompt gives AI enough direction while keeping the human goal clear.",
+      "alsoWorksIf": "The crew can also ask AI what details are missing before sending a full prompt.",
+      "watchOutFor": "A vague prompt can produce a vague answer that looks more useful than it is.",
+      "discussionPrompt": "What one detail would improve the prompt most?"
+    },
+    {
+      "id": "RM-02",
+      "title": "Use an Example",
+      "lens": "Tune the Prompt",
+      "prompt": "Add one example of the style, level, or format you want.",
+      "likelyStrong": "An example helps the AI match the desired output without guessing.",
+      "alsoWorksIf": "A checklist of must-have parts can work when there is no example.",
+      "watchOutFor": "The example should guide the answer, not become copied work.",
+      "discussionPrompt": "What example would make this request clearer?"
+    },
+    {
+      "id": "RM-03",
+      "title": "Remove Private Details",
+      "lens": "Keep It Private",
+      "prompt": "Strip names, accounts, records, addresses, and unnecessary personal details.",
+      "likelyStrong": "Private information should be removed before using an AI tool.",
+      "alsoWorksIf": "The crew can replace sensitive details with placeholders like Student A or School Event.",
+      "watchOutFor": "If the detail is not needed for the task, do not share it.",
+      "discussionPrompt": "What detail should be removed first?"
+    },
+    {
+      "id": "RM-04",
+      "title": "Share Only What Is Needed",
+      "lens": "Keep It Private",
+      "prompt": "Use the smallest amount of information needed to get useful help.",
+      "likelyStrong": "Limiting context reduces privacy risk while still supporting the task.",
+      "alsoWorksIf": "A teacher-approved tool or offline discussion may be better for sensitive cases.",
+      "watchOutFor": "Convenience is not a reason to paste private records into a tool.",
+      "discussionPrompt": "What does AI actually need to know here?"
+    },
+    {
+      "id": "RM-05",
+      "title": "Verify the Source",
+      "lens": "Check the Claim",
+      "prompt": "Name what fact, quote, date, or source should be checked before trusting the answer.",
+      "likelyStrong": "Important claims should be verified against reliable sources.",
+      "alsoWorksIf": "The crew can ask AI to list claims that need checking, then verify outside the tool.",
+      "watchOutFor": "AI can sound confident while being wrong or outdated.",
+      "discussionPrompt": "Which claim matters enough to check?"
+    },
+    {
+      "id": "RM-06",
+      "title": "Find the Evidence",
+      "lens": "Check the Claim",
+      "prompt": "Ask what evidence would prove or weaken the answer.",
+      "likelyStrong": "Evidence keeps the crew from accepting a claim just because it sounds polished.",
+      "alsoWorksIf": "A source date or author check can be enough for a quick classroom turn.",
+      "watchOutFor": "A list of sources from AI still needs real checking.",
+      "discussionPrompt": "What evidence would make this answer more trustworthy?"
+    },
+    {
+      "id": "RM-07",
+      "title": "Keep the Human Voice",
+      "lens": "Make It Fair",
+      "prompt": "Explain how the final work will stay honest and human-owned.",
+      "likelyStrong": "The player should keep responsibility for the decision, voice, and final work.",
+      "alsoWorksIf": "Disclosure or teacher rules can guide how AI support is used.",
+      "watchOutFor": "AI support becomes unfair when it hides authorship or replaces learning.",
+      "discussionPrompt": "What part must stay the student's own work?"
+    },
+    {
+      "id": "RM-08",
+      "title": "Check Who Is Missing",
+      "lens": "Make It Fair",
+      "prompt": "Look for missing perspectives, bias, or people affected by the answer.",
+      "likelyStrong": "Fair use means noticing who benefits, who is left out, and what impact the answer has.",
+      "alsoWorksIf": "The crew can ask for counterexamples or perspectives to review critically.",
+      "watchOutFor": "More polished wording can hide an unfair or incomplete idea.",
+      "discussionPrompt": "Whose perspective should the crew consider?"
+    }
+  ],
+  "hazardCards": [
+    {
+      "id": "HZ-01",
+      "title": "Construction Zone Prompt",
+      "scenario": "The crew asked AI for help, but the request only said, \"help with my project.\"",
+      "lockedLens": "Tune the Prompt",
+      "complication": "The answer is messy because the request is missing topic, audience, format, and limits.",
+      "likelyStrong": "Tune the Prompt is the strongest safety move because the request needs direction first.",
+      "alsoWorksIf": "Learning Mode can work if the crew uses the moment to learn what a better prompt needs.",
+      "watchOutFor": "Do not blame the tool before checking whether the request was clear.",
+      "discussionPrompt": "What detail would clear the construction zone?"
+    },
+    {
+      "id": "HZ-02",
+      "title": "Privacy Pothole",
+      "scenario": "The useful example includes a student's name, schedule, and family detail.",
+      "lockedLens": "Keep It Private",
+      "complication": "The crew must remove personal details before asking for help.",
+      "likelyStrong": "Keep It Private is the strongest safety move because the risk is unnecessary personal information.",
+      "alsoWorksIf": "Tool Mode can work after the private details are replaced with placeholders.",
+      "watchOutFor": "A good answer is not worth sharing sensitive information.",
+      "discussionPrompt": "What should be changed before the crew continues?"
+    },
+    {
+      "id": "HZ-03",
+      "title": "Foggy Fact",
+      "scenario": "AI gives a neat statistic, but nobody knows where it came from.",
+      "lockedLens": "Check the Claim",
+      "complication": "The crew must decide what evidence would make the statistic usable.",
+      "likelyStrong": "Check the Claim is strongest because the answer needs source, date, and evidence.",
+      "alsoWorksIf": "Learning Mode can work if the crew treats the statistic as a question to investigate.",
+      "watchOutFor": "A statistic without a source can steer the whole answer wrong.",
+      "discussionPrompt": "What proof would clear the fog?"
+    },
+    {
+      "id": "HZ-04",
+      "title": "Unfair Shortcut",
+      "scenario": "AI offers to write the final answer in a way that hides the student's role.",
+      "lockedLens": "Make It Fair",
+      "complication": "The crew needs a fair support move, not a replacement for the student's work.",
+      "likelyStrong": "Make It Fair is strongest because the issue is honesty, authorship, and learning.",
+      "alsoWorksIf": "Feedback Mode can work if the student brings their own draft first.",
+      "watchOutFor": "A polished answer can still be unfair if it hides who did the thinking.",
+      "discussionPrompt": "What support would be fair instead?"
+    }
+  ],
+  "finalChallenge": {
+    "id": "GATE-01",
+    "title": "Green Light Gate",
+    "scenario": "The crew reaches the city gate. Choose one real AI help move for a school, home, or community task and explain how to use it responsibly.",
+    "likelyStrong": "A gate answer names the help type, gives a reason, chooses a Road Move, and names one risk.",
+    "alsoWorksIf": "Different modes can work if the crew explains the need and handles the risk.",
+    "watchOutFor": "Do not treat the permit as proof of mastery. It is a playful completion marker.",
+    "discussionPrompt": "What AI help fits, and what keeps it responsible?"
+  }
+}

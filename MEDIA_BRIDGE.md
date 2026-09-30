@@ -27,6 +27,23 @@ When a video is published:
 | AI Permit -> AI License / camera analogy | `ai-permit-to-ai-license.html`, `ai-permit-game.html`, `approach.html` | Explains the framework and gives visitors a concrete reason to explore the Permit/License path. |
 | Responsible AI, privacy, verification, guardrails | `responsible-ai-for-schools.html`, `faq.html` | Turns caution into practical guidance for schools and districts. |
 | Workshops, PD, speaking, district support | `services.html`, `speaking.html`, `district-ai-professional-development.html` | Lets a viewer move from video trust to a real conversation. |
+| Current AI and teaching videos | `video.html#current-videos` | Keeps the current editorial direction visible on Vince's own site while YouTube handles playback. |
+| Earlier school and community productions | `video.html#earlier-productions` | Shows the video-production history behind Vince's present teacher-and-creator practice. |
+
+## Curated Video Page v1
+
+The local v1 implementation uses native click-to-play YouTube embeds. It does not host MP4 files, autoplay videos, change YouTube visibility, or automatically import the full channel.
+
+| Page section | Video | YouTube ID | Website status |
+| --- | --- | --- | --- |
+| Current video notes | Stop Guessing. Start Thinking With AI | `vKA2qXPYfh0` | Included locally |
+| Current video notes | The First AI Workflow Every Teacher Should Try | `kksTxTWgFgc` | Included locally |
+| Current video notes | Do You Have Your AI Permit? | `Y6OU8uHxtV4` | Included locally |
+| Earlier video production | A Look Inside the Classroom: Featuring Mrs. Masi | `9ObHMZeJn2U` | Included locally; YouTube visibility unchanged |
+| Earlier video production | Class of 1948: WDAS — White & Gold Newspaper Radio Broadcast | `mfoS0qqcGyk` | Included locally; YouTube visibility unchanged |
+| Earlier video production | Meet Your Principal: Dr. Adams | `YeLPUHBcy0k` | Included locally; YouTube visibility unchanged |
+
+Student work is not part of v1. It remains gated by permission, creator-credit, Vince-role, student-privacy, and media-rights review.
 
 ## Link Copy Examples
 
@@ -39,5 +56,5 @@ When a video is published:
 
 - Draft production packets.
 - Private media reviews.
-- Unlisted videos that are still under review.
+- Unlisted videos whose inclusion has not been deliberately reviewed and approved.
 - Resources with student information, private district information, or unverified claims.

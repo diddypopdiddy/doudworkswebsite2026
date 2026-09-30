@@ -1,0 +1,485 @@
+{
+  "gameTitle": "The AI Road Test",
+  "familyBrand": "The AI Permit Game",
+  "winCondition": {
+    "correctPerCategory": 2,
+    "correctTotal": 8,
+    "pointsPerCorrect": 100,
+    "startingGas": 100,
+    "gasLostPerWrong": 25
+  },
+  "start": {
+    "x": 34.5,
+    "y": 88.6
+  },
+  "categories": [
+    {
+      "id": "prompting",
+      "label": "Prompting",
+      "icon": "💬",
+      "color": "#f2b134",
+      "description": "Give AI a clear job, useful context, and smart limits."
+    },
+    {
+      "id": "ethics",
+      "label": "Ethics",
+      "icon": "⚖",
+      "color": "#ef5b4c",
+      "description": "Use AI honestly, fairly, and with human responsibility."
+    },
+    {
+      "id": "privacy",
+      "label": "Data & Privacy",
+      "icon": "▣",
+      "color": "#2eb7a5",
+      "description": "Protect personal information and share only what is needed."
+    },
+    {
+      "id": "verification",
+      "label": "Verification",
+      "icon": "⌕",
+      "color": "#4c8fe8",
+      "description": "Check claims, sources, dates, and evidence before trusting AI."
+    }
+  ],
+  "spaces": [
+    { "id": 0, "category": "prompting", "x": 56.55, "y": 88.7 },
+    { "id": 1, "category": "ethics", "x": 72.05, "y": 88.7 },
+    { "id": 2, "category": "privacy", "x": 88.15, "y": 88.7 },
+    { "id": 3, "category": "verification", "x": 88.1, "y": 72.3 },
+    { "id": 4, "category": "prompting", "x": 88.1, "y": 57.45 },
+    { "id": 5, "category": "ethics", "x": 88.1, "y": 42.75 },
+    { "id": 6, "category": "privacy", "x": 88.1, "y": 28.15 },
+    { "id": 7, "category": "verification", "x": 88.1, "y": 11.65 },
+    { "id": 8, "category": "ethics", "x": 72.05, "y": 11.65 },
+    { "id": 9, "category": "prompting", "x": 56.55, "y": 11.65 },
+    { "id": 10, "category": "privacy", "x": 41.05, "y": 11.65 },
+    { "id": 11, "category": "ethics", "x": 27.35, "y": 11.65 },
+    { "id": 12, "category": "verification", "x": 11.55, "y": 11.65 },
+    { "id": 13, "category": "prompting", "x": 11.55, "y": 32.1 },
+    { "id": 14, "category": "privacy", "x": 11.55, "y": 52.75 },
+    { "id": 15, "category": "ethics", "x": 27.35, "y": 52.75 },
+    { "id": 16, "category": "verification", "x": 41.05, "y": 52.75 },
+    { "id": 17, "category": "privacy", "x": 56.55, "y": 52.75 },
+    { "id": 18, "category": "ethics", "x": 56.55, "y": 32.2 },
+    { "id": 19, "category": "verification", "x": 56.55, "y": 70.55 }
+  ],
+  "questions": [
+    {
+      "id": "P-01",
+      "category": "prompting",
+      "question": "You ask AI, “Help me with my science project.” What is the best next move?",
+      "options": [
+        "Add the topic, grade level, goal, materials, and the kind of help you want",
+        "Type the same request in all capital letters",
+        "Ask AI to finish the entire project",
+        "Remove every detail so AI can be more creative"
+      ],
+      "correctIndex": 0,
+      "explanation": "A useful prompt names the task, context, constraints, and desired output."
+    },
+    {
+      "id": "P-02",
+      "category": "prompting",
+      "question": "Which prompt gives AI the clearest audience and format?",
+      "options": [
+        "Tell me about recycling",
+        "Write something good about recycling",
+        "Explain recycling in five bullet points for a sixth-grade class",
+        "Give me every fact about recycling"
+      ],
+      "correctIndex": 2,
+      "explanation": "The audience, length, and format make the request clear and usable."
+    },
+    {
+      "id": "P-03",
+      "category": "prompting",
+      "question": "AI’s first answer sounds too advanced. What should you do?",
+      "options": [
+        "Accept it because AI probably knows best",
+        "Ask it to rewrite the answer for your grade level and define difficult terms",
+        "Delete the assignment",
+        "Keep asking “Why?” with no context"
+      ],
+      "correctIndex": 1,
+      "explanation": "A follow-up prompt can adjust the reading level and clarify exactly what needs to change."
+    },
+    {
+      "id": "P-04",
+      "category": "prompting",
+      "question": "You want feedback without having AI replace your writing. Which prompt is strongest?",
+      "options": [
+        "Write a perfect paragraph for me",
+        "Make this better",
+        "Grade me and do not explain why",
+        "Point out two unclear sentences and ask me questions that will help me revise them"
+      ],
+      "correctIndex": 3,
+      "explanation": "The prompt keeps you as the writer while asking AI for specific, useful feedback."
+    },
+    {
+      "id": "P-05",
+      "category": "prompting",
+      "question": "Why might you include an example in a prompt?",
+      "options": [
+        "It shows the style or format you are aiming for",
+        "It guarantees every fact will be correct",
+        "It lets you skip reviewing the answer",
+        "It makes private information safe to share"
+      ],
+      "correctIndex": 0,
+      "explanation": "An example helps AI understand the desired style or structure, but you still need to review the result."
+    },
+    {
+      "id": "P-06",
+      "category": "prompting",
+      "question": "A big task keeps producing messy answers. What is the best prompting strategy?",
+      "options": [
+        "Add random words to the prompt",
+        "Ask for everything in one giant response",
+        "Break the task into smaller steps and handle one step at a time",
+        "Let AI decide what the assignment means"
+      ],
+      "correctIndex": 2,
+      "explanation": "Breaking a complex task into clear steps makes each request easier to guide and check."
+    },
+    {
+      "id": "P-07",
+      "category": "prompting",
+      "question": "Which detail is most useful when asking AI to build a three-day study plan?",
+      "options": [
+        "Your favorite color",
+        "The topics, available time, quiz date, and materials you must use",
+        "A friend’s password",
+        "A request to make the plan impossible to change"
+      ],
+      "correctIndex": 1,
+      "explanation": "A realistic plan needs the actual topics, schedule, deadline, and learning materials."
+    },
+    {
+      "id": "P-08",
+      "category": "prompting",
+      "question": "What is a smart limit to include when asking AI for presentation ideas?",
+      "options": [
+        "Use as many slides as possible",
+        "Invent any missing sources",
+        "Make every decision for the group",
+        "Suggest no more than five ideas that can be completed with our available time"
+      ],
+      "correctIndex": 3,
+      "explanation": "A clear limit keeps the answer focused on options your group can actually use."
+    },
+    {
+      "id": "E-01",
+      "category": "ethics",
+      "question": "AI writes a full response for an assignment that should show your thinking. What is the most ethical move?",
+      "options": [
+        "Submit it unchanged and do not mention AI",
+        "Use it as a thinking aid, write your own response, and follow your teacher’s AI rules",
+        "Change two words and claim it is entirely yours",
+        "Ask AI to make it harder to detect"
+      ],
+      "correctIndex": 1,
+      "explanation": "Ethical use keeps the learning and final responsibility with you and follows the rules for disclosure."
+    },
+    {
+      "id": "E-02",
+      "category": "ethics",
+      "question": "An AI image generator keeps showing only one kind of person as a “scientist.” What should you do?",
+      "options": [
+        "Notice the bias, revise the request, and review the results critically",
+        "Assume the images represent every scientist",
+        "Hide the pattern from the group",
+        "Use the first image because it was fastest"
+      ],
+      "correctIndex": 0,
+      "explanation": "Fair AI use means noticing biased patterns and taking steps to include missing perspectives."
+    },
+    {
+      "id": "E-03",
+      "category": "ethics",
+      "question": "Who is responsible for a decision made with help from AI?",
+      "options": [
+        "Nobody, because a computer was involved",
+        "Only the company that made the AI",
+        "The human using the advice and the people responsible for the decision",
+        "The AI chatbot itself"
+      ],
+      "correctIndex": 2,
+      "explanation": "Humans remain responsible for reviewing AI output and for the real-world decisions they make."
+    },
+    {
+      "id": "E-04",
+      "category": "ethics",
+      "question": "Your group uses AI to organize shared notes. What keeps the work fair?",
+      "options": [
+        "Let one person take credit for everything",
+        "Erase the original contributions",
+        "Hide the use of AI even if disclosure is required",
+        "Keep everyone’s contributions visible and agree on how AI will be used"
+      ],
+      "correctIndex": 3,
+      "explanation": "Fair group work preserves people’s contributions and uses shared rules everyone understands."
+    },
+    {
+      "id": "E-05",
+      "category": "ethics",
+      "question": "A friend asks you to make an AI voice clip that sounds like your principal saying something fake. What is the best response?",
+      "options": [
+        "Do it if the clip is short",
+        "Refuse because impersonation can deceive and harm people",
+        "Post it first and explain later",
+        "Make it sound even more realistic"
+      ],
+      "correctIndex": 1,
+      "explanation": "Using AI to impersonate someone without permission can deceive others and cause real harm."
+    },
+    {
+      "id": "E-06",
+      "category": "ethics",
+      "question": "When should you tell an audience that AI helped create something?",
+      "options": [
+        "When the rules, context, or audience expects disclosure",
+        "Never",
+        "Only when the result has a typo",
+        "Only after someone catches you"
+      ],
+      "correctIndex": 0,
+      "explanation": "Honest disclosure follows the rules and helps the audience understand how the work was made."
+    },
+    {
+      "id": "E-07",
+      "category": "ethics",
+      "question": "AI suggests a punishment for a student. What is the safest ethical approach?",
+      "options": [
+        "Use it immediately because AI is neutral",
+        "Let AI make the final decision",
+        "Have responsible adults review the facts, rules, possible bias, and impact",
+        "Avoid telling the student how the choice was made"
+      ],
+      "correctIndex": 2,
+      "explanation": "High-impact decisions need human judgment, due process, context, and a careful bias check."
+    },
+    {
+      "id": "E-08",
+      "category": "ethics",
+      "question": "AI produces an idea that closely copies a living artist’s distinctive work. What is the strongest next move?",
+      "options": [
+        "Claim you invented the style",
+        "Remove the artist’s name but copy everything else",
+        "Sell it immediately",
+        "Create a more original direction and respect the artist’s work and usage rules"
+      ],
+      "correctIndex": 3,
+      "explanation": "Ethical creation respects other people’s work and pushes toward an original result."
+    },
+    {
+      "id": "D-01",
+      "category": "privacy",
+      "question": "You want AI to help summarize a student incident report. What should you do first?",
+      "options": [
+        "Paste the full report with names and contact details",
+        "Remove identifying details and use only an approved tool and process",
+        "Post the report publicly",
+        "Add more private details for context"
+      ],
+      "correctIndex": 1,
+      "explanation": "Sensitive records require approved tools, minimal information, and removal of identifying details."
+    },
+    {
+      "id": "D-02",
+      "category": "privacy",
+      "question": "Which item should never be placed in an AI prompt?",
+      "options": [
+        "A public book title",
+        "A made-up character name",
+        "A question about fractions",
+        "Your password or login code"
+      ],
+      "correctIndex": 3,
+      "explanation": "Passwords and login codes are secrets and should never be shared with an AI tool."
+    },
+    {
+      "id": "D-03",
+      "category": "privacy",
+      "question": "AI needs an example email to help improve the tone. What is the safest approach?",
+      "options": [
+        "Replace names and private details with placeholders before sharing",
+        "Include everyone’s addresses and phone numbers",
+        "Upload the whole inbox",
+        "Use a stranger’s real email instead"
+      ],
+      "correctIndex": 0,
+      "explanation": "Placeholders preserve the useful structure without exposing personal information."
+    },
+    {
+      "id": "D-04",
+      "category": "privacy",
+      "question": "What does “share only what is needed” mean?",
+      "options": [
+        "Share every file in case one becomes useful",
+        "Share the smallest amount of information required for the task",
+        "Share private information if the answer will be faster",
+        "Let the tool decide what it wants"
+      ],
+      "correctIndex": 1,
+      "explanation": "Data minimization reduces risk by limiting the information sent to a tool."
+    },
+    {
+      "id": "D-05",
+      "category": "privacy",
+      "question": "A photo includes a student ID badge and a home address on a package. Before using the photo with AI, you should:",
+      "options": [
+        "Upload it at full size",
+        "Add the student’s schedule",
+        "Crop or blur the private details—or do not upload the photo",
+        "Assume nobody will notice"
+      ],
+      "correctIndex": 2,
+      "explanation": "Images can expose private information too; remove sensitive details or keep the image out of the tool."
+    },
+    {
+      "id": "D-06",
+      "category": "privacy",
+      "question": "You are unsure whether a school AI tool is approved for student data. What should you do?",
+      "options": [
+        "Use it secretly",
+        "Ask a teacher or responsible adult and check the school’s approved-tool rules",
+        "Create a fake account with another person’s name",
+        "Upload the data and delete it later"
+      ],
+      "correctIndex": 1,
+      "explanation": "When data rules are unclear, pause and confirm the approved tool and process first."
+    },
+    {
+      "id": "D-07",
+      "category": "privacy",
+      "question": "Why can location information be sensitive?",
+      "options": [
+        "It can reveal where someone lives, studies, or spends time",
+        "It always makes an AI answer incorrect",
+        "It changes the font in the answer",
+        "It is only private on weekends"
+      ],
+      "correctIndex": 0,
+      "explanation": "Location can reveal routines and personal places, so it should be shared only when truly necessary and safe."
+    },
+    {
+      "id": "D-08",
+      "category": "privacy",
+      "question": "Which prompt uses privacy-safe placeholder language?",
+      "options": [
+        "Write about Maria Lopez at 14 Oak Street",
+        "Use student ID 482917 and this medical note",
+        "Summarize Student A’s fictional schedule without real names or records",
+        "Remember my password for next time"
+      ],
+      "correctIndex": 2,
+      "explanation": "A generic placeholder can provide useful context without revealing a real person’s identity."
+    },
+    {
+      "id": "V-01",
+      "category": "verification",
+      "question": "AI gives you a surprising statistic with no source. What should you do?",
+      "options": [
+        "Use it because it sounds confident",
+        "Ask for evidence and verify it with a reliable source",
+        "Repeat it until it feels true",
+        "Remove the number but keep the claim"
+      ],
+      "correctIndex": 1,
+      "explanation": "A confident statistic still needs a real, reliable source that you check yourself."
+    },
+    {
+      "id": "V-02",
+      "category": "verification",
+      "question": "What matters most when checking AI information about a current event?",
+      "options": [
+        "The answer’s font",
+        "How quickly AI responded",
+        "The source, publication date, and whether multiple reliable reports agree",
+        "Whether the answer is long"
+      ],
+      "correctIndex": 2,
+      "explanation": "Current events change quickly, so source quality, date, and corroboration matter."
+    },
+    {
+      "id": "V-03",
+      "category": "verification",
+      "question": "AI provides a quotation for your history project. What is the strongest check?",
+      "options": [
+        "Find the quote in the original or a trustworthy primary source",
+        "Trust the quotation marks",
+        "Use it if it sounds old-fashioned",
+        "Ask AI to repeat it twice"
+      ],
+      "correctIndex": 0,
+      "explanation": "Quotes should be checked against the original source for exact wording and context."
+    },
+    {
+      "id": "V-04",
+      "category": "verification",
+      "question": "AI lists three articles, but one link does not exist. What does that tell you?",
+      "options": [
+        "The other links must be perfect",
+        "The missing article is probably secret",
+        "Links are never useful",
+        "AI can invent citations, so every source needs to be opened and checked"
+      ],
+      "correctIndex": 3,
+      "explanation": "AI can fabricate convincing citations; verify that each source exists and actually supports the claim."
+    },
+    {
+      "id": "V-05",
+      "category": "verification",
+      "question": "AI solves a math problem. How should you verify the result?",
+      "options": [
+        "Check the steps and calculate the answer another way",
+        "Accept it if the answer is bold",
+        "Skip the work because AI already did it",
+        "Choose the largest number"
+      ],
+      "correctIndex": 0,
+      "explanation": "Reviewing the reasoning and using a second method can catch confident calculation errors."
+    },
+    {
+      "id": "V-06",
+      "category": "verification",
+      "question": "An online image might be AI-generated or edited. What is the best first check?",
+      "options": [
+        "Count the image’s colors",
+        "Trace the original source and compare reliable reporting or context",
+        "Believe the caption automatically",
+        "Share it quickly before it disappears"
+      ],
+      "correctIndex": 1,
+      "explanation": "Source tracing and reliable context are stronger than guessing from appearance alone."
+    },
+    {
+      "id": "V-07",
+      "category": "verification",
+      "question": "Two trustworthy sources disagree. What should you do?",
+      "options": [
+        "Pick the one you like",
+        "Ask AI to hide the disagreement",
+        "Compare their evidence, dates, methods, and areas of agreement",
+        "Assume both are completely false"
+      ],
+      "correctIndex": 2,
+      "explanation": "Disagreement is a reason to inspect evidence and context more carefully, not to ignore it."
+    },
+    {
+      "id": "V-08",
+      "category": "verification",
+      "question": "Which source is usually strongest for confirming what a new school policy actually says?",
+      "options": [
+        "An anonymous comment",
+        "A meme",
+        "AI’s summary with no link",
+        "The official published policy document"
+      ],
+      "correctIndex": 3,
+      "explanation": "The official document is the primary source for the policy’s actual language."
+    }
+  ]
+}

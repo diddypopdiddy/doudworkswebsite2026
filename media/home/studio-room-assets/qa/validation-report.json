@@ -1,0 +1,310 @@
+{
+  "canvas": [
+    1536,
+    1024
+  ],
+  "layers": [
+    {
+      "file": "00-room-shell.png",
+      "mode": "RGB",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "corner_alpha": [
+        255,
+        255,
+        255,
+        255
+      ]
+    },
+    {
+      "file": "01-rugs.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        203,
+        343,
+        1274,
+        835
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "file": "02-art-station.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        536,
+        112,
+        800,
+        383
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "file": "03-stereo-console.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        815,
+        187,
+        1005,
+        407
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "file": "04-bookshelf.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        1018,
+        314,
+        1117,
+        464
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "file": "05-whiteboard.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        1125,
+        367,
+        1271,
+        550
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "file": "06-skateboards.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        1285,
+        496,
+        1428,
+        690
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "file": "07-desk-station.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        934,
+        514,
+        1162,
+        724
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "file": "08-drum-kit.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        271,
+        429,
+        484,
+        635
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "file": "09-keyboard.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        410,
+        396,
+        554,
+        524
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "file": "10-organ.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        273,
+        612,
+        498,
+        835
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "file": "11-guitar-rig.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        531,
+        707,
+        681,
+        899
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "file": "12-camera-tripod.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        823,
+        710,
+        930,
+        879
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "file": "13-softbox.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        944,
+        695,
+        1145,
+        956
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "file": "14-contact-shadows.png",
+      "mode": "RGBA",
+      "size": [
+        1536,
+        1024
+      ],
+      "alpha_bounds": [
+        0,
+        0,
+        1536,
+        1024
+      ],
+      "corner_alpha": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "composite": "composite-preview.png",
+  "contact_sheet": "layer-contact-sheet.png"
+}

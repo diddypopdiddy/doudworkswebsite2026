@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Art | Vince Doud</title>
+    <meta name="description" content="A growing archive of Vince Doud's visual work and experiments." />
+    <meta name="theme-color" content="#090b0d" />
+    <link rel="icon" href="media/brand/vd-utility-avatar.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="portfolio.css?v=archive-room-4" />
+    <script src="script.js?v=archive-room-4" defer></script>
+  </head>
+  <body data-page="art">
+    <a class="skip-link" href="#main">Skip to art archive</a>
+    <div class="room-app room-app--overlay">
+      <div class="room-background" aria-hidden="true"></div>
+      <a class="room-backdrop-link" href="index.html" aria-label="Return home"></a>
+      <header class="room-header">
+        <a class="back-link" href="projects.html">←&nbsp;&nbsp; Projects</a>
+        <nav class="room-nav" aria-label="Primary"><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
+        <details class="mobile-nav"><summary>Explore</summary><nav aria-label="Mobile navigation"><a href="projects.html">Projects</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav></details>
+      </header>
+
+      <main id="main" class="archive-main" data-backdrop-home onclick="if (!event.target.closest('.archive-window')) window.location.href='index.html'">
+        <section class="archive-window archive-window--wide" aria-labelledby="art-title" data-gallery>
+          <h1 id="art-title" class="archive-title">Art</h1>
+          <p class="archive-subtitle">Visual work, experiments, and things made by hand.</p>
+          <figure class="gallery-feature"><img data-gallery-feature src="media/art-placeholders/abstract-study.jpg" alt="Abstract mixed-media study in blue, gray, graphite, and orange" /></figure>
+          <div class="gallery-thumbs" aria-label="Artwork previews">
+            <button class="gallery-thumb" type="button" data-gallery-thumb data-full="media/art-placeholders/abstract-study.jpg" data-alt="Abstract mixed-media study in blue, gray, graphite, and orange"><img src="media/art-placeholders/abstract-study.jpg" alt="Abstract painting preview" /></button>
+            <button class="gallery-thumb" type="button" data-gallery-thumb data-full="media/art-placeholders/ink-structure.jpg" data-alt="Loose architectural ink and graphite construction drawing"><img src="media/art-placeholders/ink-structure.jpg" alt="Ink drawing preview" /></button>
+            <button class="gallery-thumb" type="button" data-gallery-thumb data-full="media/art-placeholders/material-object.jpg" data-alt="Small material sculpture made from concrete, cobalt pigment, and brass"><img src="media/art-placeholders/material-object.jpg" alt="Sculptural object preview" /></button>
+            <button class="gallery-thumb" type="button" data-gallery-thumb data-full="media/art-placeholders/blue-door-photo.jpg" data-alt="Documentary photograph of a concrete studio building with a blue door"><img src="media/art-placeholders/blue-door-photo.jpg" alt="Documentary photograph preview" /></button>
+            <button class="gallery-thumb" type="button" data-gallery-thumb data-full="media/art-placeholders/sketchbook-spread.jpg" data-alt="Open working sketchbook with drawings, paper scraps, and paint tests"><img src="media/art-placeholders/sketchbook-spread.jpg" alt="Sketchbook preview" /></button>
+          </div>
+          <div class="gallery-controls"><button class="gallery-control" type="button" data-gallery-previous aria-label="Previous artwork">←</button><span class="gallery-count" data-gallery-count>1 / 5</span><button class="gallery-control" type="button" data-gallery-next aria-label="Next artwork">→</button></div>
+          <p class="archive-note"><strong>Archive preview</strong>These are temporary visual stand-ins. Full dates, materials, notes, and Vince's actual work will replace them as the collection is cataloged.</p>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

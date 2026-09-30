@@ -1,0 +1,544 @@
+{
+  "info": {
+    "checked": "2026-09-27",
+    "elLoboPublicVideos": 62,
+    "woodburySelections": 4,
+    "elLoboPaginationComplete": true,
+    "woodburyPending": [
+      "Mr. Jones retirement",
+      "Justin Timberlake",
+      "Woodbury yearbook archive"
+    ],
+    "releaseMetadata": "Matched Apple Music/iTunes track listings; unresolved releases remain explicitly unconfirmed."
+  },
+  "videos": [
+    {
+      "id": "wAELib0i6pc",
+      "title": "Arctic Monkeys-Temptation Greets You Like Your Naughty Friend (Drum Reproduction)",
+      "sourceUrl": "https://www.youtube.com/watch?v=wAELib0i6pc",
+      "release": "Brianstorm - Single",
+      "releaseSource": "https://music.apple.com/us/album/temptation-greets-you-like-your-naughty-friend/251054049?i=251054310&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "3joCpMucsgg",
+      "title": "Arctic Monkeys-Leave Before The Lights Come On (Drum Cover)",
+      "sourceUrl": "https://www.youtube.com/watch?v=3joCpMucsgg",
+      "release": "Leave Before the Lights Come On - EP",
+      "releaseSource": "https://music.apple.com/us/album/leave-before-the-lights-come-on/178359939?i=178359944&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "n5YdGyoMgok",
+      "title": "Arctic Monkeys-Balaclava (Drum)",
+      "sourceUrl": "https://www.youtube.com/watch?v=n5YdGyoMgok",
+      "release": "Favourite Worst Nightmare",
+      "releaseSource": "https://music.apple.com/us/album/balaclava/251499221?i=251499387&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "mMa2XGCcSaE",
+      "title": "Arctic Monkeys - View from the Afternoon (drum cover)",
+      "sourceUrl": "https://www.youtube.com/watch?v=mMa2XGCcSaE",
+      "release": "Whatever People Say I Am, That's What I'm Not",
+      "releaseSource": "https://music.apple.com/us/album/the-view-from-the-afternoon/111153953?i=111153346&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "GsHSHD_UPBY",
+      "title": "Stevie Wonder-Ribbon in the Sky cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=GsHSHD_UPBY",
+      "release": "Original Musiquarium",
+      "releaseSource": "https://music.apple.com/us/album/ribbon-in-the-sky-1982-musiquarium-version/1440757544?i=1440757565&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "t-7kiwuzXPw",
+      "title": "Chim Chim Cher-ee",
+      "sourceUrl": "https://www.youtube.com/watch?v=t-7kiwuzXPw",
+      "release": "Mary Poppins (Original Motion Picture Soundtrack)",
+      "releaseSource": "https://music.apple.com/us/album/chim-chim-cher-ee/1440796512?i=1440796680&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "bKPvgHamBiE",
+      "title": "Bei Mir Bist du Schon cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=bKPvgHamBiE",
+      "release": null,
+      "releaseSource": null,
+      "embeddable": true
+    },
+    {
+      "id": "iWt-CJsJyUw",
+      "title": "Bobby Hebb-Sunny (Cover)",
+      "sourceUrl": "https://www.youtube.com/watch?v=iWt-CJsJyUw",
+      "release": "Sunny",
+      "releaseSource": "https://music.apple.com/us/album/sunny/1440918582?i=1440918584&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "BYOar_8NCoY",
+      "title": "Sly & The Family Stone-If You Want Me To Stay (cover)",
+      "sourceUrl": "https://www.youtube.com/watch?v=BYOar_8NCoY",
+      "release": "Fresh",
+      "releaseSource": "https://music.apple.com/us/album/if-you-want-me-to-stay/216546627?i=216546781&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "0NQs01Fxp0w",
+      "title": "Boney M - Rapsutin Drum Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=0NQs01Fxp0w",
+      "release": "Nightflight to Venus (2007 Remastered Version)",
+      "releaseSource": "https://music.apple.com/us/album/rasputin-2007-remastered-version/250727571?i=250727626&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "vFsyHJkmfcU",
+      "title": "Alex Turner-Stuck on the Puzzle Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=vFsyHJkmfcU",
+      "release": "Submarine - EP",
+      "releaseSource": "https://music.apple.com/us/album/stuck-on-the-puzzle/422325910?i=422326077&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "B8-7LOTimC8",
+      "title": "Paul McCartney Wings - Bip Bop Link Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=B8-7LOTimC8",
+      "release": "Wild Life (2018 Remaster)",
+      "releaseSource": "https://music.apple.com/us/album/bip-bop-link/1446532408?i=1446532419&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "QAwAh0Fhnu4",
+      "title": "Portugal. The Man - Head Is a Flame (Cool With It) Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=QAwAh0Fhnu4",
+      "release": "In the Mountain In the Cloud",
+      "releaseSource": "https://music.apple.com/us/album/head-is-a-flame-cool-with-it/439947544?i=439947616&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "h_tQCbuGzyg",
+      "title": "The Yardbirds-I'm Not Talking cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=h_tQCbuGzyg",
+      "release": "The Yardbirds Story",
+      "releaseSource": "https://music.apple.com/us/album/im-not-talking/659693808?i=659695131&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "vE1dNisI3Wo",
+      "title": "Portugal. The Man-Once Was One cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=vE1dNisI3Wo",
+      "release": "In the Mountain In the Cloud",
+      "releaseSource": "https://music.apple.com/us/album/once-was-one/439947544?i=439947637&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "zV8Hr49CR3k",
+      "title": "Portugal. The Man-Share With Me The Sun",
+      "sourceUrl": "https://www.youtube.com/watch?v=zV8Hr49CR3k",
+      "release": "In the Mountain In the Cloud",
+      "releaseSource": "https://music.apple.com/us/album/share-with-me-the-sun/439947544?i=439947640&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "hzWaQ_q31aw",
+      "title": "Portugal. The Man-Chicago cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=hzWaQ_q31aw",
+      "release": "Waiter: \"You Vultures!\"",
+      "releaseSource": "https://music.apple.com/us/album/chicago/1442222711?i=1442223556&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "LBBYOOvfrdw",
+      "title": "The Yardbirds-Chris' Number",
+      "sourceUrl": "https://www.youtube.com/watch?v=LBBYOOvfrdw",
+      "release": "The Yardbirds Story",
+      "releaseSource": "https://music.apple.com/us/album/chris-number/659693808?i=659696665&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "-dSRozuqZ6g",
+      "title": "Portugal. The Man-Sleep Forever Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=-dSRozuqZ6g",
+      "release": "In the Mountain In the Cloud",
+      "releaseSource": "https://music.apple.com/us/album/sleep-forever/439947544?i=439947643&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "ry013sE91T8",
+      "title": "The New Vaudeville Band - Winchester Cathedral cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=ry013sE91T8",
+      "release": "British Invasion Greatest Hits",
+      "releaseSource": "https://music.apple.com/us/album/winchester-cathedral/1571518448?i=1571518762&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "WGaku9ZORdc",
+      "title": "Portugal. The Man - The Pines",
+      "sourceUrl": "https://www.youtube.com/watch?v=WGaku9ZORdc",
+      "release": "Devil Say I, I Say Air - EP",
+      "releaseSource": "https://music.apple.com/us/album/the-pines/1445157289?i=1445157292&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "SAH4tmjUJZs",
+      "title": "Portugal. The Man-Waiter",
+      "sourceUrl": "https://www.youtube.com/watch?v=SAH4tmjUJZs",
+      "release": "Waiter: \"You Vultures!\"",
+      "releaseSource": "https://music.apple.com/us/album/waiter/1442222711?i=1442223450&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "bD3TulxcyJQ",
+      "title": "Stevie Wonder-Sir Duke cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=bD3TulxcyJQ",
+      "release": "Songs in the Key of Life",
+      "releaseSource": "https://music.apple.com/us/album/sir-duke/1440788438?i=1440788542&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "hatxhWldG_A",
+      "title": "The Ventures-Walk Don't Run Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=hatxhWldG_A",
+      "release": "Walk Don't Run",
+      "releaseSource": "https://music.apple.com/us/album/walk-dont-run/1443065914?i=1443066594&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "0XvMVQrIURQ",
+      "title": "The Beatles-Girl cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=0XvMVQrIURQ",
+      "release": "Rubber Soul",
+      "releaseSource": "https://music.apple.com/us/album/girl/1441164359?i=1441164634&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "e2cEIo2lKRs",
+      "title": "Stevie Wonder-Which Way The Wind",
+      "sourceUrl": "https://www.youtube.com/watch?v=e2cEIo2lKRs",
+      "release": "Eivets Rednow",
+      "releaseSource": "https://music.apple.com/us/album/which-way-the-wind/1444040074?i=1444040424&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "cjBS18zpWjk",
+      "title": "Portugal. The Man - Gold Magic Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=cjBS18zpWjk",
+      "release": "It's Complicated Being a Wizard",
+      "releaseSource": "https://music.apple.com/us/album/gold-magic/1537511216?i=1537511626&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "eq3EemJIMSI",
+      "title": "Portugal. The Man - My Mind Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=eq3EemJIMSI",
+      "release": "Church Mouth",
+      "releaseSource": "https://music.apple.com/us/album/my-mind/1443592747?i=1443593384&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "iLHoYyfhxoA",
+      "title": "Kay Kay and His Weathered Underground-Oh Lord, I Hate You California",
+      "sourceUrl": "https://www.youtube.com/watch?v=iLHoYyfhxoA",
+      "release": "Introducing Kay Kay and His Weathered Underground",
+      "releaseSource": "https://music.apple.com/us/album/oh-lord-i-hate-you-california/419150646?i=419150678&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "4E_3pAnD8bs",
+      "title": "Arctic Monkeys - Riot Van Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=4E_3pAnD8bs",
+      "release": "Whatever People Say I Am, That's What I'm Not",
+      "releaseSource": "https://music.apple.com/us/album/riot-van/111153953?i=111153559&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "XKyQhI3Wx6s",
+      "title": "The Mamas and The Papas-Words of Love cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=XKyQhI3Wx6s",
+      "release": "The Mamas & the Papas",
+      "releaseSource": "https://music.apple.com/us/album/words-of-love-single-version/1423333392?i=1423333811&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "Tmbey9ImMdg",
+      "title": "Arctic Monkeys-Too Much To Ask cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=Tmbey9ImMdg",
+      "release": "Fluorescent Adolescent - EP",
+      "releaseSource": "https://music.apple.com/us/album/too-much-to-ask/262507666?i=262507938&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "f4qv_04-a-Y",
+      "title": "Sam Spence-Life on the Wildside",
+      "sourceUrl": "https://www.youtube.com/watch?v=f4qv_04-a-Y",
+      "release": null,
+      "releaseSource": null,
+      "embeddable": true
+    },
+    {
+      "id": "ZLU1SsWfieY",
+      "title": "Portugal. The Man-1000 Years",
+      "sourceUrl": "https://www.youtube.com/watch?v=ZLU1SsWfieY",
+      "release": "American Ghetto",
+      "releaseSource": "https://music.apple.com/us/album/1000-years/1537511660?i=1537511667&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "21EZQq5RdHw",
+      "title": "John Mayer-Daughters Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=21EZQq5RdHw",
+      "release": "Heavier Things",
+      "releaseSource": "https://music.apple.com/us/album/daughters/199049977?i=199051362&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "icoRMFpgCSE",
+      "title": "Burt Bacharach-I Say a Little Prayer cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=icoRMFpgCSE",
+      "release": "Reach Out",
+      "releaseSource": "https://music.apple.com/us/album/i-say-a-little-prayer/1444031258?i=1444032038&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "6bHJVbtkd2Q",
+      "title": "Grizzly Bear-While You Wait For The Others cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=6bHJVbtkd2Q",
+      "release": "Veckatimest (Bonus Tracks)",
+      "releaseSource": "https://music.apple.com/us/album/while-you-wait-for-the-others-bbc-maida-vale-session/336895732?i=336895958&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "d9kPn2yNGTc",
+      "title": "Kay Kay and His Weathered Underground-One Ought To See",
+      "sourceUrl": "https://www.youtube.com/watch?v=d9kPn2yNGTc",
+      "release": "Kay Kay and His Weathered Underground",
+      "releaseSource": "https://music.apple.com/us/album/one-ought-to-see/277998016?i=277998140&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "tBYlZgmqD1E",
+      "title": "The Beach Boys-In My Room Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=tBYlZgmqD1E",
+      "release": "Surfer Girl",
+      "releaseSource": "https://music.apple.com/us/album/in-my-room/1442921264?i=1442921414&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "TjToLJ1lAiU",
+      "title": "The Last Shadow Puppets-Meeting Place cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=TjToLJ1lAiU",
+      "release": "The Age of the Understatement",
+      "releaseSource": "https://music.apple.com/us/album/the-meeting-place/278689654?i=278689768&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "uakDJ4-YapA",
+      "title": "kay kay and his weathered underground-hey momma cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=uakDJ4-YapA",
+      "release": "Kay Kay and His Weathered Underground",
+      "releaseSource": "https://music.apple.com/us/album/hey-momma/277998016?i=277998025&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "DcXuNjlsOnE",
+      "title": "Portugal. The Man-Created Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=DcXuNjlsOnE",
+      "release": "Censored Colors",
+      "releaseSource": "https://music.apple.com/us/album/created/1537511514?i=1537511709&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "ya3PzbUKzPE",
+      "title": "Arctic Monkeys- Cornerstone Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=ya3PzbUKzPE",
+      "release": "Humbug",
+      "releaseSource": "https://music.apple.com/us/album/cornerstone/330283015?i=330283361&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "vSZbVyhFnvk",
+      "title": "Arctic Monkeys-The Fire & The Thud Cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=vSZbVyhFnvk",
+      "release": "Humbug",
+      "releaseSource": "https://music.apple.com/us/album/fire-and-the-thud/330283015?i=330283329&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "Vs_FqJpEky0",
+      "title": "Portugal. The Man-Horse Warming Party",
+      "sourceUrl": "https://www.youtube.com/watch?v=Vs_FqJpEky0",
+      "release": "Waiter: \"You Vultures!\"",
+      "releaseSource": "https://music.apple.com/us/album/horse-warming-party/1442222711?i=1442223752&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "FSrVnO_74c8",
+      "title": "Portugal. The Man - Marching With 6",
+      "sourceUrl": "https://www.youtube.com/watch?v=FSrVnO_74c8",
+      "release": "Waiter: \"You Vultures!\"",
+      "releaseSource": "https://music.apple.com/us/album/marching-with-6/1442222711?i=1442223327&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "4nZm0ouoq8Y",
+      "title": "The Beatles-Michelle",
+      "sourceUrl": "https://www.youtube.com/watch?v=4nZm0ouoq8Y",
+      "release": "Rubber Soul",
+      "releaseSource": "https://music.apple.com/us/album/michelle/1441164359?i=1441164629&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "UMnOFHt4Eac",
+      "title": "Portugal. The Man-The Woods cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=UMnOFHt4Eac",
+      "release": "The Majestic Majesty",
+      "releaseSource": "https://music.apple.com/us/album/the-woods-acoustic/1537511235?i=1537511442&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "71MDRs-3e7E",
+      "title": "Portugal. The Man-Lovers In Love",
+      "sourceUrl": "https://www.youtube.com/watch?v=71MDRs-3e7E",
+      "release": "The Satanic Satanist",
+      "releaseSource": "https://music.apple.com/us/album/lovers-in-love/1537511193?i=1537511505&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "0PhDY_NTLug",
+      "title": "Garbage-Cherry Lips (Go Baby Go) cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=0PhDY_NTLug",
+      "release": "Beautiful Garbage",
+      "releaseSource": "https://music.apple.com/us/album/cherry-lips-go-baby-go/1442994320?i=1442994334&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "iMta9k9y1KQ",
+      "title": "Portugal. The Man-Sun Brother",
+      "sourceUrl": "https://www.youtube.com/watch?v=iMta9k9y1KQ",
+      "release": "Church Mouth",
+      "releaseSource": "https://music.apple.com/us/album/sun-brother-excerpt/1443592747?i=1443593632&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "iFidw52_eHY",
+      "title": "The Watusi",
+      "sourceUrl": "https://www.youtube.com/watch?v=iFidw52_eHY",
+      "release": null,
+      "releaseSource": null,
+      "embeddable": true
+    },
+    {
+      "id": "mJ3aEUHJHO8",
+      "title": "Arctic Monkeys-Leave Before The Lights Come On",
+      "sourceUrl": "https://www.youtube.com/watch?v=mJ3aEUHJHO8",
+      "release": "Leave Before the Lights Come On - EP",
+      "releaseSource": "https://music.apple.com/us/album/leave-before-the-lights-come-on/178359939?i=178359944&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "rVYYUTv9JzI",
+      "title": "The Monkees-Alvin",
+      "sourceUrl": "https://www.youtube.com/watch?v=rVYYUTv9JzI",
+      "release": "The Birds, The Bees & The Monkees",
+      "releaseSource": "https://music.apple.com/us/album/alvin/23419749?i=23419828&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "-09aFXsV-RI",
+      "title": "Portugal. The Man-People Say",
+      "sourceUrl": "https://www.youtube.com/watch?v=-09aFXsV-RI",
+      "release": "The Satanic Satanist",
+      "releaseSource": "https://music.apple.com/us/album/people-say/1537511193?i=1537511501&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "j0MtAxLfrtw",
+      "title": "Portugal. the Man-People Say",
+      "sourceUrl": "https://www.youtube.com/watch?v=j0MtAxLfrtw",
+      "release": "The Satanic Satanist",
+      "releaseSource": "https://music.apple.com/us/album/people-say/1537511193?i=1537511501&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "v6bSqDW6qmI",
+      "title": "Arctic Monkeys-Balaclava cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=v6bSqDW6qmI",
+      "release": "Favourite Worst Nightmare",
+      "releaseSource": "https://music.apple.com/us/album/balaclava/251499221?i=251499387&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "93nt8UgXGgU",
+      "title": "Portugal. The Man-People Say",
+      "sourceUrl": "https://www.youtube.com/watch?v=93nt8UgXGgU",
+      "release": "The Satanic Satanist",
+      "releaseSource": "https://music.apple.com/us/album/people-say/1537511193?i=1537511501&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "DhPrYXEBRUQ",
+      "title": "Arctic Monkeys- Pretty Visitors",
+      "sourceUrl": "https://www.youtube.com/watch?v=DhPrYXEBRUQ",
+      "release": "Humbug",
+      "releaseSource": "https://music.apple.com/us/album/pretty-visitors/330283015?i=330283382&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "A1SD6j_HRMo",
+      "title": "The Last Shadow Puppets- Gas Dance (drum cover)",
+      "sourceUrl": "https://www.youtube.com/watch?v=A1SD6j_HRMo",
+      "release": "Standing Next to Me - EP",
+      "releaseSource": "https://music.apple.com/us/album/gas-dance/284483061?i=284483099&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "K4prIObhVp0",
+      "title": "Gerry and the Pacemakers-It's gonna be Alright cover",
+      "sourceUrl": "https://www.youtube.com/watch?v=K4prIObhVp0",
+      "release": "A's B's & EP's",
+      "releaseSource": "https://music.apple.com/us/album/its-gonna-be-alright/697072232?i=697072831&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "f3V3sieqyzQ",
+      "title": "the last shadow puppets- calm like you (cover)",
+      "sourceUrl": "https://www.youtube.com/watch?v=f3V3sieqyzQ",
+      "release": "The Age of the Understatement",
+      "releaseSource": "https://music.apple.com/us/album/calm-like-you/278689654?i=278689719&uo=4",
+      "embeddable": true
+    },
+    {
+      "id": "to_zBCm_o8g",
+      "title": "My Lesson Plan - God’s Plan (School Edition)",
+      "sourceUrl": "https://www.youtube.com/watch?v=to_zBCm_o8g",
+      "release": null,
+      "releaseSource": null,
+      "embeddable": true
+    },
+    {
+      "id": "DprNcY86Coo",
+      "title": "Drake - Fake Love (Parody Video/School Edition)",
+      "sourceUrl": "https://www.youtube.com/watch?v=DprNcY86Coo",
+      "release": null,
+      "releaseSource": null,
+      "embeddable": true
+    },
+    {
+      "id": "V41fqY6B2Bs",
+      "title": "MRS. DUNHAM - HAPPY (RETIREMENT)",
+      "sourceUrl": "https://www.youtube.com/watch?v=V41fqY6B2Bs",
+      "release": null,
+      "releaseSource": null,
+      "embeddable": true
+    },
+    {
+      "id": "BWTXYswihYU",
+      "title": "Woodbury Elementary Schools-THE S.L.A.G. SONG",
+      "sourceUrl": "https://www.youtube.com/watch?v=BWTXYswihYU",
+      "release": null,
+      "releaseSource": null,
+      "embeddable": true
+    }
+  ]
+}

@@ -1,22 +1,6 @@
 document.documentElement.classList.add("js");
 
-const menuToggle = document.querySelector("[data-menu-toggle]");
-const siteNav = document.querySelector(".site-nav");
-const siteHeader = document.querySelector(".site-header");
 const currentPage = document.body.dataset.page || "unknown";
-const mainContent = document.querySelector("main");
-
-if (mainContent && !mainContent.id) {
-  mainContent.id = "main-content";
-}
-
-if (mainContent && !document.querySelector(".skip-link")) {
-  const skipLink = document.createElement("a");
-  skipLink.className = "skip-link";
-  skipLink.href = `#${mainContent.id}`;
-  skipLink.textContent = "Skip to main content";
-  document.body.insertBefore(skipLink, document.body.firstChild);
-}
 
 const trackEvent = (eventName, props = {}) => {
   if (typeof window.plausible === "function") {
@@ -24,177 +8,106 @@ const trackEvent = (eventName, props = {}) => {
   }
 };
 
-const closeMenu = () => {
-  if (!menuToggle || !siteNav) {
-    return;
-  }
-
-  siteNav.classList.remove("is-open");
-  menuToggle.setAttribute("aria-expanded", "false");
-};
-
-if (menuToggle && siteNav) {
-  menuToggle.addEventListener("click", () => {
-    const isOpen = siteNav.classList.toggle("is-open");
-    menuToggle.setAttribute("aria-expanded", String(isOpen));
-    if (isOpen) {
-      trackEvent("Mobile Navigation Opened", { page: currentPage });
-    }
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeMenu();
-    }
-  });
-}
-
-if (siteHeader) {
-  const syncHeaderState = () => {
-    siteHeader.classList.toggle("is-scrolled", window.scrollY > 12);
-  };
-
-  syncHeaderState();
-  window.addEventListener("scroll", syncHeaderState, { passive: true });
-}
-
-document.querySelectorAll("[data-page-link]").forEach((link) => {
-  if (link.dataset.pageLink === currentPage) {
-    link.classList.add("is-active");
-    link.setAttribute("aria-current", "page");
-  }
-
-  link.addEventListener("click", closeMenu);
-});
-
-document.querySelectorAll("[data-year]").forEach((node) => {
-  node.textContent = String(new Date().getFullYear());
-});
-
-const describeHref = (href) => {
-  if (!href) {
-    return "unknown";
-  }
-
-  return href.replace(/^https?:\/\/www\.vincedoud\.com\//, "");
-};
-
-document
-  .querySelectorAll("a[href*='book.html']")
-  .forEach((link) => {
-    link.addEventListener("click", () => {
-      const href = link.getAttribute("href") || "";
-
-      trackEvent("Contact CTA Clicked", {
-        page: currentPage,
-        href: describeHref(href),
-        label: link.textContent.trim().replace(/\s+/g, " ")
-      });
+document.querySelectorAll("[data-track]").forEach((link) => {
+  link.addEventListener("click", () => {
+    trackEvent(link.dataset.track || "Portfolio Link Opened", {
+      page: currentPage,
+      href: link.getAttribute("href") || "",
+      label: link.textContent.trim().replace(/\s+/g, " ")
     });
   });
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  document.querySelectorAll("details[open]").forEach((details) => {
+    details.open = false;
+  });
+});
+
+const lightSwitch = document.querySelector("[data-light-switch]");
+
+if (lightSwitch) {
+  lightSwitch.addEventListener("click", () => {
+    const isOn = lightSwitch.getAttribute("aria-pressed") === "true";
+    lightSwitch.setAttribute("aria-pressed", String(!isOn));
+    lightSwitch.setAttribute("aria-label", isOn ? "Turn the key light on" : "Turn the key light off");
+    lightSwitch.closest(".room-app")?.classList.toggle("is-key-light-on", !isOn);
+  });
+}
+
+document.querySelectorAll("[data-backdrop-home]").forEach((backdrop) => {
+  backdrop.addEventListener("click", (event) => {
+    if (event.target !== backdrop && event.target.closest(".archive-window")) return;
+    window.location.href = "index.html";
+  });
+});
+
+const gallery = document.querySelector("[data-gallery]");
+
+if (gallery) {
+  const feature = gallery.querySelector("[data-gallery-feature]");
+  const count = gallery.querySelector("[data-gallery-count]");
+  const thumbs = Array.from(gallery.querySelectorAll("[data-gallery-thumb]"));
+  const previous = gallery.querySelector("[data-gallery-previous]");
+  const next = gallery.querySelector("[data-gallery-next]");
+  let activeIndex = 0;
+
+  const selectArtwork = (index, { focus = false } = {}) => {
+    activeIndex = (index + thumbs.length) % thumbs.length;
+    const selected = thumbs[activeIndex];
+    const image = selected.querySelector("img");
+
+    feature.src = selected.dataset.full || image.src;
+    feature.alt = selected.dataset.alt || image.alt;
+    count.textContent = `${activeIndex + 1} / ${thumbs.length}`;
+
+    thumbs.forEach((thumb, thumbIndex) => {
+      thumb.setAttribute("aria-current", String(thumbIndex === activeIndex));
+    });
+
+    if (focus) selected.focus();
+  };
+
+  thumbs.forEach((thumb, index) => {
+    thumb.addEventListener("click", () => selectArtwork(index));
+  });
+
+  previous?.addEventListener("click", () => selectArtwork(activeIndex - 1));
+  next?.addEventListener("click", () => selectArtwork(activeIndex + 1));
+  selectArtwork(0);
+}
 
 const contactForm = document.querySelector("[data-contact-form]");
 
 if (contactForm) {
   const statusNode = contactForm.querySelector("[data-contact-status]");
-  const submitButton = contactForm.querySelector("button[type='submit']");
-  const formatSelect = contactForm.querySelector("select[name='format']");
-  const workshopParam = new URLSearchParams(window.location.search).get("workshop");
-  const workshopFormatMap = {
-    "ai-modes": "Live AI Workshop: Earn Your AI Permit",
-    "ai-modes-action": "Live AI Workshop: AI Modes in Action",
-    "ai-tool-mode": "Live AI Workshop: AI License Lab - Workflow Variant",
-    "ai-license-classroom": "Live AI Workshop: AI License Lab - Classroom Variant",
-    "public-workshops": "Live AI Workshops: next date notifications",
-    "private-team": "Private team training"
-  };
 
-  if (formatSelect && workshopParam && workshopFormatMap[workshopParam]) {
-    formatSelect.value = workshopFormatMap[workshopParam];
-  }
-
-  const setStatus = (message) => {
-    if (statusNode) {
-      statusNode.textContent = message;
-    }
-  };
-
-  contactForm.addEventListener("submit", async (event) => {
+  contactForm.addEventListener("submit", (event) => {
     event.preventDefault();
-
     const formData = new FormData(contactForm);
-    const endpoint = (contactForm.dataset.endpoint || contactForm.action || "").trim();
-    const payload = Object.fromEntries(
-      Array.from(formData.entries()).map(([key, value]) => [
-        key,
-        String(value || "").trim()
-      ])
-    );
-    const website = payload.website || "";
-
+    const website = String(formData.get("website") || "").trim();
     if (website) {
       contactForm.reset();
-      setStatus("Message sent.");
       return;
     }
 
-    if (!endpoint) {
-      setStatus("This form is staged, but the private sending endpoint still needs to be connected before launch.");
-      trackEvent("Contact Form Missing Endpoint", { page: currentPage });
-      return;
-    }
+    const name = String(formData.get("name") || "Website visitor").trim();
+    const replyTo = String(formData.get("email") || "").trim();
+    const message = String(formData.get("message") || "").trim();
+    const subject = `Website note from ${name}`;
+    const body = [
+      "Hi Vince,",
+      "",
+      message,
+      "",
+      `From: ${name}`,
+      `Reply to: ${replyTo}`,
+      `Page: ${window.location.href}`
+    ].join("\n");
 
-    if (submitButton) {
-      submitButton.disabled = true;
-    }
-
-    setStatus("Sending...");
-
-    try {
-      await fetch(endpoint, {
-        method: "POST",
-        mode: "no-cors",
-        body: JSON.stringify({
-          ...payload,
-          source: window.location.href,
-          submittedAt: new Date().toISOString()
-        })
-      });
-
-      contactForm.reset();
-      setStatus("Message sent.");
-      trackEvent("Contact Form Submitted", { page: currentPage });
-    } catch (error) {
-      setStatus("Message could not send. Try again in a minute.");
-      trackEvent("Contact Form Error", { page: currentPage });
-    } finally {
-      if (submitButton) {
-        submitButton.disabled = false;
-      }
-    }
+    if (statusNode) statusNode.textContent = "Opening your email app…";
+    trackEvent("Contact Email Draft Opened", { page: currentPage });
+    window.location.href = `mailto:hello@vincedoud.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   });
-}
-
-const revealNodes = document.querySelectorAll(".reveal");
-
-if ("IntersectionObserver" in window) {
-  const observer = new IntersectionObserver(
-    (entries, observe) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
-
-        entry.target.classList.add("is-visible");
-        observe.unobserve(entry.target);
-      });
-    },
-    {
-      threshold: 0.15
-    }
-  );
-
-  revealNodes.forEach((node) => observer.observe(node));
-} else {
-  revealNodes.forEach((node) => node.classList.add("is-visible"));
 }

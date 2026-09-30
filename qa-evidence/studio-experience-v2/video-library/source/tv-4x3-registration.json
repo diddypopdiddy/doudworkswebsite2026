@@ -1,0 +1,18 @@
+{
+  "canvas": [
+    1400,
+    1200
+  ],
+  "screenPercent": {
+    "left": 14.179104477611942,
+    "top": 9.950248756218908,
+    "width": 71.64179104477611,
+    "height": 62.68656716417911
+  },
+  "screenAspect": "4:3",
+  "screenDimensions": [
+    9.6,
+    7.2
+  ],
+  "derivedFrom": "tv-2010s.blend; x geometry scaled 0.75; original preserved"
+}

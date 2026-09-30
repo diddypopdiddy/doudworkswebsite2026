@@ -1,0 +1,102 @@
+{
+  "master": "master-studio-room-cartoon-v3-thin-contours.png",
+  "masterCanvas": {
+    "width": 1522,
+    "height": 1033
+  },
+  "masterSha256": "22a04f25dffb0c920efc76626a85b2574c7780de4e0fb6686dbc9e0da0681be5",
+  "contract": "Resting scene uses the untouched master. Masks affect hover/focus overlays only.",
+  "layers": [
+    {
+      "id": "teaching",
+      "mask": "mask-teaching.png",
+      "overlay": "overlay-teaching.png",
+      "sourceBounds": [
+        350,
+        105,
+        700,
+        430
+      ],
+      "maskSha256": "734609c9b972bbaad3d0055718ad1e6e014e45907e29f3219dcf552832f39a5b",
+      "overlaySha256": "7f177f774c864f8d592ebe1b898fd3751f59864fcc9bc75c153b8bbc395e9b16"
+    },
+    {
+      "id": "work",
+      "mask": "mask-work.png",
+      "overlay": "overlay-work.png",
+      "sourceBounds": [
+        690,
+        45,
+        1090,
+        365
+      ],
+      "maskSha256": "7f9e9a302b19ecc9c37796d26351c3cf4b06835aad620e2e6913efff12192db5",
+      "overlaySha256": "32e166bdb9b54928be731a13c1cfbf25a2cb0b3f0ff8b3fd42424e048f8858e0"
+    },
+    {
+      "id": "about",
+      "mask": "mask-about.png",
+      "overlay": "overlay-about.png",
+      "sourceBounds": [
+        1050,
+        65,
+        1320,
+        365
+      ],
+      "maskSha256": "0094f5b58a567cf9cbcd3bfa2bd6160ffca7556398512c318ee4e2b6b7fbcabd",
+      "overlaySha256": "ec8d585ff52f4953dfff81c32f026c3069d913a206ca067c6960ddd3fa4fcc5e"
+    },
+    {
+      "id": "experiments",
+      "mask": "mask-experiments.png",
+      "overlay": "overlay-experiments.png",
+      "sourceBounds": [
+        1265,
+        150,
+        1522,
+        440
+      ],
+      "maskSha256": "050917ba03b5b4e9f3a58194d51f3c0642ae58e5d4a23089f5749382444eb497",
+      "overlaySha256": "4d1593a1ecd862b5c67aa35dfc28a27298670312e02282d47e418ff975517734"
+    },
+    {
+      "id": "music",
+      "mask": "mask-music.png",
+      "overlay": "overlay-music.png",
+      "sourceBounds": [
+        165,
+        475,
+        770,
+        1033
+      ],
+      "maskSha256": "c6180e2cc41d355ede3122f264e7933bc0d31dc9b6641bf38d3404f8b07a13c2",
+      "overlaySha256": "8123cee0be794fa51847e7fe0b254726743488d8277c6bfe5e2d926af4dcf240"
+    },
+    {
+      "id": "ai",
+      "mask": "mask-ai.png",
+      "overlay": "overlay-ai.png",
+      "sourceBounds": [
+        1030,
+        345,
+        1490,
+        780
+      ],
+      "maskSha256": "a6947e8e572dbb0ce56b7ab76446e918374d0a00be635f37b3315ec56b45ae26",
+      "overlaySha256": "894899094862a38120ab67fb5e51004c843c5a7afe30fa9d38c3d2f770bf23ca"
+    },
+    {
+      "id": "video",
+      "mask": "mask-video.png",
+      "overlay": "overlay-video.png",
+      "sourceBounds": [
+        955,
+        585,
+        1150,
+        975
+      ],
+      "maskSha256": "5a48715d4f073a2d64a0f6dca9e863d90ab2d2d919f56b2da55f45d1cf70c3c6",
+      "overlaySha256": "4568a18c6876df495364705952389ddf840e4fe639baee9abb7c05cb6154901a"
+    }
+  ]
+}

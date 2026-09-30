@@ -1,0 +1,720 @@
+{
+  "items": [
+    {
+      "index": 0,
+      "pickNumber": 1,
+      "title": "Color stripe composition",
+      "confirmedTitle": false,
+      "category": "Paintings",
+      "medium": "Paint on wood",
+      "year": null,
+      "dimensions": "4 \u00d7 1 ft",
+      "file": "pick-001.jpg",
+      "width": 2400,
+      "height": 568,
+      "sourceWidth": 3117,
+      "sourceHeight": 738,
+      "placeholder": false,
+      "physical": {
+        "width": 1.2192,
+        "height": 0.3048,
+        "unit": "m",
+        "mount": "wood",
+        "status": "owner",
+        "depth": 0.019
+      },
+      "display": "wall"
+    },
+    {
+      "index": 1,
+      "pickNumber": 2,
+      "title": "Dense colored circles",
+      "confirmedTitle": false,
+      "category": "Paintings",
+      "medium": "Paint on canvas",
+      "year": null,
+      "dimensions": "24 \u00d7 24 in",
+      "file": "pick-002.jpg",
+      "width": 2400,
+      "height": 1637,
+      "sourceWidth": 3081,
+      "sourceHeight": 2102,
+      "placeholder": false,
+      "physical": {
+        "width": 0.6096,
+        "height": 0.6096,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "owner",
+        "depth": 0.032,
+        "uvCorners": [
+          [
+            0.186,
+            0.062
+          ],
+          [
+            0.792,
+            0.056
+          ],
+          [
+            0.793,
+            0.948
+          ],
+          [
+            0.191,
+            0.952
+          ]
+        ]
+      },
+      "display": "wall"
+    },
+    {
+      "index": 2,
+      "pickNumber": 7,
+      "title": "Figure and sky composition",
+      "confirmedTitle": false,
+      "category": "Paintings",
+      "medium": "Paint on wood",
+      "year": null,
+      "dimensions": "4 \u00d7 1 ft",
+      "file": "pick-003.jpg",
+      "width": 2384,
+      "height": 1436,
+      "sourceWidth": 2384,
+      "sourceHeight": 1436,
+      "placeholder": false,
+      "physical": {
+        "width": 1.2192,
+        "height": 0.3048,
+        "unit": "m",
+        "mount": "wood",
+        "status": "owner",
+        "depth": 0.019
+      },
+      "display": "wall"
+    },
+    {
+      "index": 3,
+      "pickNumber": 9,
+      "title": "Flag composition",
+      "confirmedTitle": false,
+      "category": "Paintings",
+      "medium": null,
+      "year": null,
+      "dimensions": null,
+      "file": "pick-004.jpg",
+      "width": 2250,
+      "height": 1620,
+      "sourceWidth": 2250,
+      "sourceHeight": 1620,
+      "placeholder": false,
+      "physical": {
+        "width": 0.6096,
+        "height": 0.438912,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "provisional",
+        "depth": 0.032
+      },
+      "display": "wall"
+    },
+    {
+      "index": 4,
+      "pickNumber": 10,
+      "title": "Long horizontal composition",
+      "confirmedTitle": false,
+      "category": "Paintings",
+      "medium": "Paint on wood",
+      "year": null,
+      "dimensions": "4 \u00d7 1 ft",
+      "file": "pick-005.jpg",
+      "width": 2400,
+      "height": 325,
+      "sourceWidth": 3752,
+      "sourceHeight": 508,
+      "placeholder": false,
+      "physical": {
+        "width": 1.2192,
+        "height": 0.3048,
+        "unit": "m",
+        "mount": "wood",
+        "status": "owner",
+        "depth": 0.019
+      },
+      "display": "wall"
+    },
+    {
+      "index": 5,
+      "pickNumber": 23,
+      "title": "Self Portrait",
+      "confirmedTitle": true,
+      "category": "Paintings",
+      "medium": "Acrylic on canvas",
+      "year": "circa 2010",
+      "dimensions": "3 \u00d7 3 ft",
+      "file": "pick-006.jpg",
+      "width": 1980,
+      "height": 1980,
+      "sourceWidth": 1980,
+      "sourceHeight": 1980,
+      "placeholder": false,
+      "physical": {
+        "width": 0.9144,
+        "height": 0.9144,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "owner",
+        "depth": 0.032
+      },
+      "display": "wall"
+    },
+    {
+      "index": 6,
+      "pickNumber": 24,
+      "title": "Self Portrait",
+      "confirmedTitle": true,
+      "category": "Paintings",
+      "medium": "Acrylic on canvas",
+      "year": "circa 2010",
+      "dimensions": "3 \u00d7 3 ft",
+      "file": "pick-007.jpg",
+      "width": 2022,
+      "height": 1986,
+      "sourceWidth": 2022,
+      "sourceHeight": 1986,
+      "placeholder": false,
+      "physical": {
+        "width": 0.9144,
+        "height": 0.9144,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "owner",
+        "depth": 0.032
+      },
+      "display": "wall"
+    },
+    {
+      "index": 7,
+      "pickNumber": 28,
+      "title": "Seated skeleton",
+      "confirmedTitle": false,
+      "category": "Drawings",
+      "medium": "Graphite on paper",
+      "year": null,
+      "dimensions": "Approx. 24 \u00d7 36 in",
+      "file": "pick-008.jpg",
+      "width": 1690,
+      "height": 2400,
+      "sourceWidth": 1950,
+      "sourceHeight": 2770,
+      "placeholder": false,
+      "physical": {
+        "width": 0.6096,
+        "height": 0.9144,
+        "unit": "m",
+        "mount": "paper",
+        "status": "owner-approximate",
+        "depth": 0.00035
+      },
+      "display": "hidden"
+    },
+    {
+      "index": 8,
+      "pickNumber": 36,
+      "title": "Skull study",
+      "confirmedTitle": false,
+      "category": "Drawings",
+      "medium": "Graphite on paper",
+      "year": null,
+      "dimensions": "Approx. 24 \u00d7 36 in",
+      "file": "pick-009.jpg",
+      "width": 1814,
+      "height": 2400,
+      "sourceWidth": 2069,
+      "sourceHeight": 2738,
+      "placeholder": false,
+      "physical": {
+        "width": 0.6096,
+        "height": 0.9144,
+        "unit": "m",
+        "mount": "paper",
+        "status": "owner-approximate",
+        "depth": 0.00035
+      },
+      "display": "hidden"
+    },
+    {
+      "index": 9,
+      "pickNumber": 64,
+      "title": "Scanned collage studies",
+      "confirmedTitle": false,
+      "category": "Collage & Mixed Media",
+      "medium": "Collage on paper",
+      "year": null,
+      "dimensions": "Approx. 9 \u00d7 11 in",
+      "file": "pick-010.jpg",
+      "width": 1874,
+      "height": 2400,
+      "sourceWidth": 2482,
+      "sourceHeight": 3178,
+      "placeholder": false,
+      "physical": {
+        "width": 0.2286,
+        "height": 0.2794,
+        "unit": "m",
+        "mount": "paper",
+        "status": "owner-approximate",
+        "depth": 0.00035
+      },
+      "display": "hidden"
+    },
+    {
+      "index": 10,
+      "pickNumber": 65,
+      "title": "Scanned collage studies",
+      "confirmedTitle": false,
+      "category": "Collage & Mixed Media",
+      "medium": "Collage on paper",
+      "year": null,
+      "dimensions": "Approx. 9 \u00d7 11 in",
+      "file": "pick-011.jpg",
+      "width": 1750,
+      "height": 2400,
+      "sourceWidth": 2322,
+      "sourceHeight": 3184,
+      "placeholder": false,
+      "physical": {
+        "width": 0.2286,
+        "height": 0.2794,
+        "unit": "m",
+        "mount": "paper",
+        "status": "owner-approximate",
+        "depth": 0.00035
+      },
+      "display": "hidden"
+    },
+    {
+      "index": 11,
+      "pickNumber": 67,
+      "title": "Scanned collage studies",
+      "confirmedTitle": false,
+      "category": "Collage & Mixed Media",
+      "medium": "Collage on paper",
+      "year": null,
+      "dimensions": "Approx. 9 \u00d7 11 in",
+      "file": "pick-012.jpg",
+      "width": 1847,
+      "height": 2400,
+      "sourceWidth": 2209,
+      "sourceHeight": 2871,
+      "placeholder": false,
+      "physical": {
+        "width": 0.2286,
+        "height": 0.2794,
+        "unit": "m",
+        "mount": "paper",
+        "status": "owner-approximate",
+        "depth": 0.00035
+      },
+      "display": "hidden"
+    },
+    {
+      "index": 12,
+      "pickNumber": 78,
+      "title": "The Third Sibling",
+      "confirmedTitle": true,
+      "category": "Objects & Design",
+      "medium": "Handmade clock",
+      "year": null,
+      "dimensions": "Approx. 12 in diameter",
+      "file": "third-sibling-cutout.png",
+      "width": 1254,
+      "height": 1254,
+      "sourceWidth": 2152,
+      "sourceHeight": 3095,
+      "placeholder": false,
+      "physical": {
+        "width": 0.3048,
+        "height": 0.3048,
+        "unit": "m",
+        "mount": "clock",
+        "status": "owner-approximate",
+        "depth": 0.02,
+        "uvBounds": [
+          0.013556618819776715,
+          0.023923444976076555,
+          0.988835725677831,
+          0.9768740031897927
+        ]
+      },
+      "sourcePhoto": "pick-013.jpg",
+      "presentationEdit": "Background extracted using imagegen; original photograph retained.",
+      "display": "hidden"
+    },
+    {
+      "index": 13,
+      "pickNumber": 101,
+      "title": "Get Down - sequence",
+      "confirmedTitle": false,
+      "category": "Photography & Sequences",
+      "medium": null,
+      "year": null,
+      "dimensions": null,
+      "file": "pick-014.jpg",
+      "width": 1267,
+      "height": 2400,
+      "sourceWidth": 2063,
+      "sourceHeight": 3908,
+      "placeholder": false,
+      "physical": {
+        "width": 0.2794,
+        "height": 0.5292501973164956,
+        "unit": "m",
+        "mount": "paper",
+        "status": "provisional",
+        "depth": 0.00035
+      },
+      "display": "hidden"
+    },
+    {
+      "index": 14,
+      "pickNumber": 105,
+      "title": "Get Down - sequence",
+      "confirmedTitle": false,
+      "category": "Photography & Sequences",
+      "medium": null,
+      "year": null,
+      "dimensions": null,
+      "file": "pick-015.jpg",
+      "width": 1267,
+      "height": 2400,
+      "sourceWidth": 2063,
+      "sourceHeight": 3908,
+      "placeholder": false,
+      "physical": {
+        "width": 0.2794,
+        "height": 0.5292501973164956,
+        "unit": "m",
+        "mount": "paper",
+        "status": "provisional",
+        "depth": 0.00035
+      },
+      "display": "hidden"
+    },
+    {
+      "index": 15,
+      "pickNumber": 128,
+      "title": "Swing and Miss - sequence",
+      "confirmedTitle": false,
+      "category": "Photography & Sequences",
+      "medium": null,
+      "year": null,
+      "dimensions": null,
+      "file": "pick-016.jpg",
+      "width": 2400,
+      "height": 775,
+      "sourceWidth": 2962,
+      "sourceHeight": 957,
+      "placeholder": false,
+      "physical": {
+        "width": 0.6096,
+        "height": 0.19685000000000002,
+        "unit": "m",
+        "mount": "paper",
+        "status": "provisional",
+        "depth": 0.00035
+      },
+      "display": "wall"
+    },
+    {
+      "index": 16,
+      "pickNumber": null,
+      "title": "Loretta",
+      "confirmedTitle": true,
+      "category": "Drawings",
+      "medium": "Oil pastel on board",
+      "year": "2018",
+      "dimensions": "32 \u00d7 32 in.",
+      "file": "loretta-gallery-v2.png",
+      "width": 1254,
+      "height": 1254,
+      "sourceWidth": 1380,
+      "sourceHeight": 1360,
+      "placeholder": false,
+      "physical": {
+        "width": 0.8128,
+        "height": 0.8128,
+        "unit": "m",
+        "mount": "board",
+        "status": "owner",
+        "depth": 0.006,
+        "depthStatus": "provisional",
+        "uvCorners": [
+          [
+            0.027,
+            0.027
+          ],
+          [
+            0.973,
+            0.027
+          ],
+          [
+            0.973,
+            0.973
+          ],
+          [
+            0.027,
+            0.973
+          ]
+        ],
+        "rectifiedTexture": true
+      },
+      "sourcePhoto": "Screenshot 2026-02-04 at 6.16.39\u202fPM.PNG",
+      "display": "wall",
+      "presentationEdit": "Built-in ImageGen square perspective correction and background extraction; original preserved offline only.",
+      "views": [
+        {
+          "file": "loretta-gallery-v2.png",
+          "label": "Artwork",
+          "width": 1254,
+          "height": 1254
+        }
+      ]
+    },
+    {
+      "index": 17,
+      "pickNumber": null,
+      "title": "Strategy",
+      "confirmedTitle": true,
+      "category": "Collage & Mixed Media",
+      "medium": "Objects on board",
+      "year": null,
+      "dimensions": "24 \u00d7 20 in.",
+      "file": "strategy-gallery-v2.png",
+      "width": 1374,
+      "height": 1145,
+      "sourceWidth": 5712,
+      "sourceHeight": 4284,
+      "placeholder": false,
+      "physical": {
+        "width": 0.6096,
+        "height": 0.508,
+        "unit": "m",
+        "mount": "board",
+        "status": "owner",
+        "depth": 0.03175,
+        "baseDepth": 0.009525,
+        "depthStatus": "photo-estimate",
+        "baseDepthStatus": "photo-estimate",
+        "relief": "strategy",
+        "uvCorners": [
+          [
+            0.016,
+            0.015
+          ],
+          [
+            0.982,
+            0.015
+          ],
+          [
+            0.982,
+            0.98
+          ],
+          [
+            0.016,
+            0.98
+          ]
+        ],
+        "reconstruction": "Photo-based relief; local contours and unmeasured surface depths are approximations, not a 3D scan.",
+        "rectifiedTexture": true,
+        "flatBoard": true
+      },
+      "views": [
+        {
+          "file": "strategy-gallery-v2.png",
+          "label": "Artwork",
+          "width": 1374,
+          "height": 1145
+        },
+        {
+          "file": "strategy-detail-1.jpg",
+          "label": "Raised objects",
+          "width": 4284,
+          "height": 5712
+        },
+        {
+          "file": "strategy-detail-2.jpg",
+          "label": "Hardware and bands",
+          "width": 4284,
+          "height": 5712
+        }
+      ],
+      "sourcePhoto": "strategy.jpg",
+      "presentationEdit": "ImageGen background removal, straight-on perspective correction, and diffuse lighting normalization. Original and detail photographs retained.",
+      "display": "wall"
+    },
+    {
+      "index": 18,
+      "pickNumber": null,
+      "title": "America #1",
+      "confirmedTitle": true,
+      "category": "Collage & Mixed Media",
+      "medium": "Paint, glue, and rubber bands on canvas",
+      "year": null,
+      "dimensions": "40 \u00d7 30 in. \u00b7 1\u00bd in. deep",
+      "file": "america-1-gallery-v2.png",
+      "width": 1448,
+      "height": 1086,
+      "sourceWidth": 5712,
+      "sourceHeight": 4284,
+      "placeholder": false,
+      "physical": {
+        "width": 1.016,
+        "height": 0.762,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "owner",
+        "depth": 0.0381,
+        "baseDepth": 0.034,
+        "depthStatus": "owner",
+        "baseDepthStatus": "photo-estimate",
+        "relief": "america-1",
+        "uvCorners": [
+          [
+            0.024861878453038673,
+            0.03959484346224673
+          ],
+          [
+            0.9668508287292817,
+            0.03959484346224673
+          ],
+          [
+            0.9668508287292817,
+            0.9686924493554327
+          ],
+          [
+            0.024861878453038673,
+            0.9686924493554327
+          ]
+        ],
+        "reconstruction": "Photo-based relief; local contours and unmeasured surface depths are approximations, not a 3D scan.",
+        "rectifiedTexture": true
+      },
+      "views": [
+        {
+          "file": "america-1-gallery-v2.png",
+          "label": "Artwork",
+          "width": 1448,
+          "height": 1086
+        },
+        {
+          "file": "america-1-detail.jpg",
+          "label": "Rubber-band detail",
+          "width": 4284,
+          "height": 5712
+        }
+      ],
+      "sourcePhoto": "america-1.jpg",
+      "presentationEdit": "Built-in ImageGen background extraction; original photograph retained as a separate viewer option.",
+      "display": "wall"
+    },
+    {
+      "index": 19,
+      "pickNumber": null,
+      "title": "America #2",
+      "confirmedTitle": true,
+      "category": "Collage & Mixed Media",
+      "medium": "Flag and plastic bags on canvas",
+      "year": null,
+      "dimensions": "48 \u00d7 24 in. \u00b7 up to approx. 4 in. deep",
+      "file": "america-2-gallery-v2.png",
+      "width": 1774,
+      "height": 887,
+      "sourceWidth": 5712,
+      "sourceHeight": 4284,
+      "placeholder": false,
+      "physical": {
+        "width": 1.2192,
+        "height": 0.6096,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "owner",
+        "depth": 0.1016,
+        "baseDepth": 0.0254,
+        "depthStatus": "owner-approximate",
+        "baseDepthStatus": "photo-estimate",
+        "relief": "america-2",
+        "uvCorners": [
+          [
+            0.03269447576099211,
+            0.04847801578354005
+          ],
+          [
+            0.9695603156708005,
+            0.04847801578354005
+          ],
+          [
+            0.9695603156708005,
+            0.9301014656144306
+          ],
+          [
+            0.03269447576099211,
+            0.9301014656144306
+          ]
+        ],
+        "reconstruction": "Photo-based relief; local contours and unmeasured surface depths are approximations, not a 3D scan.",
+        "rectifiedTexture": true
+      },
+      "views": [
+        {
+          "file": "america-2-gallery-v2.png",
+          "label": "Artwork",
+          "width": 1774,
+          "height": 887
+        },
+        {
+          "file": "america-2-detail-1.jpg",
+          "label": "Right side",
+          "width": 5712,
+          "height": 4284
+        },
+        {
+          "file": "america-2-detail-2.jpg",
+          "label": "Left side",
+          "width": 5712,
+          "height": 4284
+        }
+      ],
+      "sourcePhoto": "america-2.jpg",
+      "presentationEdit": "Built-in ImageGen background extraction; original photograph retained as a separate viewer option.",
+      "display": "wall"
+    },
+    {
+      "index": 20,
+      "pickNumber": null,
+      "title": "Stolen",
+      "confirmedTitle": true,
+      "category": "Painting",
+      "medium": "Oil on canvas",
+      "year": null,
+      "dimensions": "48 \u00d7 48 in. \u00b7 1\u00bd in. deep",
+      "file": "stolen.jpg",
+      "width": 2432,
+      "height": 2388,
+      "sourceWidth": 2432,
+      "sourceHeight": 2388,
+      "placeholder": false,
+      "display": "wall",
+      "physical": {
+        "width": 1.2192,
+        "height": 1.2192,
+        "depth": 0.0381,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "owner",
+        "depthStatus": "owner"
+      },
+      "sourcePhoto": "/Volumes/One Touch/10_LIBRARY/Document Archives/Documents/uhoh 2012 septmber 5th/20122/newest art 20120/lost baby.jpg"
+    }
+  ]
+}
