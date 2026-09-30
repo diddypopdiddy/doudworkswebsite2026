@@ -1,10 +1,10 @@
-import {mountVideoLibrary} from './video-library/library.js?v=20260930-artwork-only-v1';
+import {mountVideoLibrary} from './video-library/library.js?v=20260930-sk8maps-reel-v2';
 import './homepage-art.js?v=20260927';
 import './homepage-whiteboard.js?v=20260927';
 import './homepage-hotspots.js?v=20260926';
-import {projectCategories, previews, artworks, tracks} from './content.js?v=20260930-artwork-only-v1';
+import {projectCategories, previews, artworks, tracks} from './content.js?v=20260930-sk8maps-reel-v2';
 import {StudioPlayer} from './player.js?v=20260927-minimal-music';
-import {renderInfo} from './about-contact.js?v=20260930-artwork-only-v1';
+import {renderInfo} from './about-contact.js?v=20260930-sk8maps-reel-v2';
 const $=s=>document.querySelector(s);
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const shell=$('#subpage-shell'),content=$('#subpage-content'),panel=$('#subpage-panel'),room=$('#room-world'),viewport=$('.room-viewport');
@@ -45,7 +45,9 @@ function moveRoom(category) {
 function spaceNav() {
   return `<nav class="space-nav" aria-label="Explore another space">${Object.entries(categories).map(([key,value])=>`<button type="button" data-space="${key}" ${key===active?'aria-current="page"':''}>${esc(value.label)}</button>`).join('')}</nav>`;
 }
+function pauseProjectPreview(){content.querySelectorAll('video[data-project-video]').forEach(video=>video.pause());}
 function renderProjects() {
+  pauseProjectPreview();
   const category=categories[active]; const project=category.projects.find(p=>p.id===projectId)||category.projects[0];
   projectId=project?.id||null;
   const title=active==='ai'?'AI projects':category.label;
@@ -53,17 +55,21 @@ function renderProjects() {
   let detail='';
   if(project) {
     const image=previews[project.id];
+    const reel=project.video;
+    const videoPreview=reel?`<video data-project-video controls playsinline preload="metadata" poster="../../media/projects/${esc(reel.poster)}" aria-label="${esc(reel.label)}" aria-describedby="project-video-note"><source src="../../media/projects/${esc(reel.src)}" type="video/mp4"/>Your browser can open the reel using the link below.</video>`:'';
     const action=project.action||(project.id==='interactive-video-textbook'?'Open textbook':project.id==='ai-road-test'?'Play the game':project.status.includes('PDF')?'Read the guide':'Explore project');
     const destination=project.href;
     const localEdition=localReview&&project.localHref;
     const overview=`<div class="workspace-overview"><p class="eyebrow">SK8MAPS</p><h3>A place for the<br>teaching day.</h3><div class="workspace-steps"><span>Plan</span><span>Teach</span><span>Revisit</span></div><p>Calendar · Lessons · Resources</p></div>`;
     detail=`<div class="project-selector" role="group" aria-label="${esc(category.label)} projects">${category.projects.map((p,i)=>`<button type="button" data-project="${p.id}" aria-pressed="${p.id===projectId}"><span>${String(i+1).padStart(2,'0')}</span>${esc(p.name)}</button>`).join('')}</div>
     <article class="project-feature" aria-labelledby="project-heading">
-    <div class="project-preview">${project.overview?overview:image?`<img src="../../media/projects/${image}" alt="${esc(project.name)} preview" />`:`<div class="project-cover"><span>${esc(category.label)}</span><strong>${esc(project.name)}</strong><p>${esc(project.status)}</p></div>`}</div>
-    <div class="project-description"><div><p class="eyebrow">${esc(project.status)}</p><h3 id="project-heading">${esc(project.name)}</h3><p class="lede">${esc(project.summary)}</p>${project.highlights?`<ul class="project-highlights">${project.highlights.map(item=>`<li>${esc(item)}</li>`).join('')}</ul>`:''}</div><div class="project-access">${destination?`<a class="primary-link" href="${esc(destination)}" target="_blank" rel="noopener noreferrer">${esc(action)} <span aria-hidden="true">↗</span></a>`:''}${project.accessNote?`<p class="project-access-note">${esc(project.accessNote)}</p>`:''}${localEdition?`<a class="published-edition" href="${esc(project.localHref)}" target="_blank" rel="noopener noreferrer">Local review ↗</a>${project.localNote?`<p class="project-access-note">${esc(project.localNote)}</p>`:''}`:''}</div></div></article>`;
+    <div class="project-preview">${reel?videoPreview:project.overview?overview:image?`<img src="../../media/projects/${image}" alt="${esc(project.name)} preview" />`:`<div class="project-cover"><span>${esc(category.label)}</span><strong>${esc(project.name)}</strong><p>${esc(project.status)}</p></div>`}</div>
+    <div class="project-description"><div><p class="eyebrow">${esc(project.status)}</p><h3 id="project-heading">${esc(project.name)}</h3><p class="lede">${esc(project.summary)}</p>${reel?`<p class="project-video-note" id="project-video-note">10-second interface reel · Play to watch with sound. <a href="../../media/projects/${esc(reel.src)}" target="_blank" rel="noopener noreferrer">Open the reel ↗</a></p>`:''}${project.highlights?`<ul class="project-highlights">${project.highlights.map(item=>`<li>${esc(item)}</li>`).join('')}</ul>`:''}</div><div class="project-access">${destination?`<a class="primary-link" href="${esc(destination)}" target="_blank" rel="noopener noreferrer">${esc(action)} <span aria-hidden="true">↗</span></a>`:''}${project.accessNote?`<p class="project-access-note">${esc(project.accessNote)}</p>`:''}${localEdition?`<a class="published-edition" href="${esc(project.localHref)}" target="_blank" rel="noopener noreferrer">Local review ↗</a>${project.localNote?`<p class="project-access-note">${esc(project.localNote)}</p>`:''}`:''}</div></div></article>`;
   } else detail='<div class="project-cover empty-space"><span>Work in progress</span><strong>More to explore soon.</strong></div>';
   content.innerHTML=`<div class="projects-page"><p class="eyebrow">Vince Doud / ${esc(category.label)}</p><h2 id="subpage-title">${title}</h2>${detail}${spaceNav()}</div>`;
 }
+content.addEventListener('play',event=>{if(event.target.matches('video[data-project-video]'))player.audio.pause();},true);
+player.audio.addEventListener('play',pauseProjectPreview);
 let videoLibrary=null;
 function destroyVideo(){videoLibrary?.dispose();videoLibrary=null;}
 let gallery=null,galleryGeneration=0;
@@ -71,7 +77,7 @@ function destroyGallery(){galleryGeneration++;gallery?.dispose();gallery=null;}
 function renderArt(initial=-1) {
   const generation=++galleryGeneration;
   content.innerHTML='<div class="gallery-loading"><p id="subpage-title">Opening the gallery…</p></div>';
-  import('./gallery-walk/gallery-compact-ui.js?v=20260930-artwork-only-v1').then(({mountGallery})=>{
+  import('./gallery-walk/gallery-compact-ui.js?v=20260930-sk8maps-reel-v2').then(({mountGallery})=>{
     if(active!=='art'||generation!==galleryGeneration)return;
     const restoreFocus=content.contains(document.activeElement);
     gallery=mountGallery(content,artworks,initial,index=>{artIndex=index;writeRoute('art',index<0?null:String(index+1),true);});
@@ -83,7 +89,7 @@ function openSpace(category,{id,historyChange=true,opener}={}) {
   clearTimeout(closeTimer); closeSpaceMenu(); shell.classList.remove('is-closing','art-expanded');
   const wasOpen=shell.open,changed=active!==category;
   if(!wasOpen)lastOpener=opener?.closest('#projects-menu')?$('[data-projects-toggle]'):opener?.closest('#mobile-menu')?$('.menu-button'):opener||document.activeElement;
-  player.unmount(); destroyGallery(); destroyVideo(); active=category;projectId=id||categories[category]?.projects[0]?.id||null;
+  player.unmount(); pauseProjectPreview(); destroyGallery(); destroyVideo(); active=category;projectId=id||categories[category]?.projects[0]?.id||null;
   if(category==='ai'&&['ai-production-framework','ai-permit-field-guide'].includes(id))projectId='ai-educator-playbook';
   if(category==='teaching'&&['agentic-continuity','lesson-planner-app'].includes(id))projectId='sk8maps';
   if(category==='art')artIndex=id?Math.max(0,(parseInt(id,10)||1)-1):-1;
@@ -109,7 +115,7 @@ function closeSpace(updateHistory=true) {
   closeSpaceMenu();
   if(updateHistory)history.pushState(null,'',location.pathname+location.search);
   shell.classList.remove('art-expanded');shell.classList.add('is-closing');room.classList.remove('is-exploring');
-  player.unmount();destroyGallery();destroyVideo();active=null;
+  player.unmount();pauseProjectPreview();destroyGallery();destroyVideo();active=null;
   clearTimeout(closeTimer);
   closeTimer=setTimeout(()=> {
     shell.close();shell.classList.remove('is-closing');document.body.classList.remove('subpage-open');

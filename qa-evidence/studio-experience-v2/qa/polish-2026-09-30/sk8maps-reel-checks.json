@@ -1,0 +1,97 @@
+{
+  "preview": "http://127.0.0.1:8001/#teaching/sk8maps",
+  "checks": [
+    {
+      "name": "starts paused with controls, poster, metadata preload and inline attribute",
+      "passed": true,
+      "observed": {
+        "autoplay": false,
+        "controls": true,
+        "duration": 10,
+        "paused": true,
+        "poster": "http://127.0.0.1:8001/media/projects/sk8maps-interface-poster.png",
+        "src": "http://127.0.0.1:8001/media/projects/sk8maps-interface.mp4",
+        "time": 0
+      }
+    },
+    {
+      "name": "native reel playback reaches end without media error",
+      "passed": true,
+      "observed": {
+        "ended": true,
+        "time": 10
+      }
+    },
+    {
+      "name": "starting reel pauses playing iPod music",
+      "passed": true,
+      "observed": {
+        "audioPaused": true,
+        "videoPaused": false
+      }
+    },
+    {
+      "name": "resuming iPod pauses reel",
+      "passed": true,
+      "observed": {
+        "audioPaused": false,
+        "videoPaused": true
+      }
+    },
+    {
+      "name": "switching projects stops reel; revisiting stays paused",
+      "passed": true
+    },
+    {
+      "name": "390px mobile full-frame paused preview without document overflow",
+      "passed": true,
+      "observed": {
+        "paused": true,
+        "scrollWidth": 390,
+        "videoHeight": 248.25,
+        "videoWidth": 331,
+        "width": 390
+      }
+    },
+    {
+      "name": "320px mobile full-frame paused preview without document overflow",
+      "passed": true,
+      "observed": {
+        "paused": true,
+        "scrollWidth": 320,
+        "videoHeight": 207.75,
+        "videoWidth": 277,
+        "width": 320
+      }
+    },
+    {
+      "name": "final 320px reel keeps native 16:9 frame",
+      "passed": true,
+      "observed": {
+        "overflow": false,
+        "paused": true,
+        "ratio": 1.777734375
+      }
+    },
+    {
+      "name": "readable direct native-video fallback; private workspace remains unlinked",
+      "passed": true,
+      "href": "media/projects/sk8maps-interface.mp4"
+    },
+    {
+      "name": "final 390px reel keeps native 16:9 frame",
+      "passed": true,
+      "observed": {
+        "overflow": false,
+        "ratio": 1.7777777777777777
+      }
+    },
+    {
+      "name": "closing and reopening studio stops reel and never auto-resumes",
+      "passed": true
+    }
+  ],
+  "reducedMotion": "No autoplay or animated poster; play begins only through native visitor input, independent of motion preference.",
+  "sound": "Native sound controls and iPod/reel mutual pause verified. No perceptual listening audit: local audio extraction was unavailable.",
+  "console": []
+}

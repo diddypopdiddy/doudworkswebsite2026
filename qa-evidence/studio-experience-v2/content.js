@@ -80,7 +80,8 @@ export const projectCategories = {
         summary: "My teaching workspace for keeping the plan connected to the school day. I develop and revise lessons with Codex; SK8MAPS organizes the saved work into calendars, daily lessons, class views, and a resource library.",
         highlights: ["Plan from school schedules, curriculum, and teacher-selected sources.", "See lessons by day, week, class, and project stage.", "Present editable opening slides and run classroom timers.", "Keep resources, class notes, and project timelines together."],
         status: "Private teaching workspace",
-        accessNote: "Built for my classroom. This is a project overview; the workspace and classroom records stay private.",
+        accessNote: "Built for my classroom. The reel shows approved lesson-planning views; access to the workspace stays private.",
+        video: {src: "sk8maps-interface.mp4", poster: "sk8maps-interface-poster.png", label: "SK8MAPS interface reel"},
         overview: true
       }
     ]

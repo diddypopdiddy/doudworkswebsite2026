@@ -1,0 +1,180 @@
+TAP version 13
+# Subtest: every room is reachable through real doorways, in both directions
+ok 1 - every room is reachable through real doorways, in both directions
+  ---
+  duration_ms: 274.323583
+  ...
+# Subtest: walking cannot tunnel through a wall, including large frame deltas
+ok 2 - walking cannot tunnel through a wall, including large frame deltas
+  ---
+  duration_ms: 1.768791
+  ...
+# Subtest: doorways are passable while adjacent walls are solid
+ok 3 - doorways are passable while adjacent walls are solid
+  ---
+  duration_ms: 0.385459
+  ...
+# Subtest: routes around the off-center doorway actually arrive using collision movement
+ok 4 - routes around the off-center doorway actually arrive using collision movement
+  ---
+  duration_ms: 11.754875
+  ...
+# Subtest: each artwork has a reachable viewing position
+ok 5 - each artwork has a reachable viewing position
+  ---
+  duration_ms: 75.513334
+  ...
+# Subtest: movement follows camera heading and diagonal speed stays normalized
+ok 6 - movement follows camera heading and diagonal speed stays normalized
+  ---
+  duration_ms: 1.184167
+  ...
+# Subtest: two physical rooms have the intended footprint
+ok 7 - two physical rooms have the intended footprint
+  ---
+  duration_ms: 2.795083
+  ...
+# Subtest: every room route arrives through real openings using collision movement
+ok 8 - every room route arrives through real openings using collision movement
+  ---
+  duration_ms: 33.568666
+  ...
+# Subtest: all twenty-one source records retain stable identities and measured sizes
+ok 9 - all twenty-one source records retain stable identities and measured sizes
+  ---
+  duration_ms: 7.740458
+  ...
+# Subtest: only wall works have supports, opaque mounting, and neighbor clearance
+ok 10 - only wall works have supports, opaque mounting, and neighbor clearance
+  ---
+  duration_ms: 4.98025
+  ...
+# Subtest: each wall work has a usable viewing position inside its room
+ok 11 - each wall work has a usable viewing position inside its room
+  ---
+  duration_ms: 50.694292
+  ...
+# Subtest: only hung works are active and retired sources have no portfolio
+ok 12 - only hung works are active and retired sources have no portfolio
+  ---
+  duration_ms: 0.514416
+  ...
+# Subtest: dimensional works retain owner sizes and only the requested artwork view
+ok 13 - dimensional works retain owner sizes and only the requested artwork view
+  ---
+  duration_ms: 0.731334
+  ...
+# Subtest: Stolen faces the entrance with paired works on opposing side walls
+ok 14 - Stolen faces the entrance with paired works on opposing side walls
+  ---
+  duration_ms: 0.208625
+  ...
+# Subtest: all ten imported albums have complete, ordered track lists
+ok 15 - all ten imported albums have complete, ordered track lists
+  ---
+  duration_ms: 4.667375
+  ...
+# Subtest: every imported audio file exactly matches its recorded source hash
+ok 16 - every imported audio file exactly matches its recorded source hash
+  ---
+  duration_ms: 436.242375
+  ...
+# Subtest: album queue filters original indexes, and automatic playback stops at album end
+ok 17 - album queue filters original indexes, and automatic playback stops at album end
+  ---
+  duration_ms: 1.276084
+  ...
+# Subtest: all songs includes entire library; stale/empty selection cannot pick unrelated tracks
+ok 18 - all songs includes entire library; stale/empty selection cannot pick unrelated tracks
+  ---
+  duration_ms: 0.395875
+  ...
+# Subtest: Sun Brother ID maps to its own watch link and next title
+ok 19 - Sun Brother ID maps to its own watch link and next title
+  ---
+  duration_ms: 3.476333
+  ...
+# Subtest: queue has no wraps and skips failures only ahead of the current item
+ok 20 - queue has no wraps and skips failures only ahead of the current item
+  ---
+  duration_ms: 0.43475
+  ...
+# Subtest: only a played video ending advances, once, not on error or initial ended state
+ok 21 - only a played video ending advances, once, not on error or initial ended state
+  ---
+  duration_ms: 3.518791
+  ...
+# Subtest: unavailable video settles once; errors do not masquerade as completion
+ok 22 - unavailable video settles once; errors do not masquerade as completion
+  ---
+  duration_ms: 0.427542
+  ...
+# Subtest: stale iframe events cannot change the new video, caption, or link
+ok 23 - stale iframe events cannot change the new video, caption, or link
+  ---
+  duration_ms: 0.316042
+  ...
+# Subtest: catalog IDs and direct links are unique and consistent
+ok 24 - catalog IDs and direct links are unique and consistent
+  ---
+  duration_ms: 1.2905
+  ...
+# Subtest: player sends one ID, never an independent YouTube playlist
+ok 25 - player sends one ID, never an independent YouTube playlist
+  ---
+  duration_ms: 24.9915
+  ...
+# Subtest: known unplayable embeds are excluded without excluding Sun Brother
+ok 26 - known unplayable embeds are excluded without excluding Sun Brother
+  ---
+  duration_ms: 0.496333
+  ...
+# Subtest: only current playing events confirm playback, never iframe readiness
+ok 27 - only current playing events confirm playback, never iframe readiness
+  ---
+  duration_ms: 6.989542
+  ...
+# Subtest: clockwise crossing the seam stays a small positive movement
+ok 28 - clockwise crossing the seam stays a small positive movement
+  ---
+  duration_ms: 3.594333
+  ...
+# Subtest: counterclockwise crossing the seam stays negative
+ok 29 - counterclockwise crossing the seam stays negative
+  ---
+  duration_ms: 0.425875
+  ...
+# Subtest: small pointer moves accumulate into one scroll step
+ok 30 - small pointer moves accumulate into one scroll step
+  ---
+  duration_ms: 0.307583
+  ...
+# Subtest: direction reversal cancels partial movement
+ok 31 - direction reversal cancels partial movement
+  ---
+  duration_ms: 0.15575
+  ...
+# Subtest: quick circular gesture produces multiple steps and preserves remainder
+ok 32 - quick circular gesture produces multiple steps and preserves remainder
+  ---
+  duration_ms: 0.27275
+  ...
+# Subtest: menu selection clamps at both ends
+ok 33 - menu selection clamps at both ends
+  ---
+  duration_ms: 3.183792
+  ...
+# Subtest: unloaded or invalid audio times have readable fallbacks
+ok 34 - unloaded or invalid audio times have readable fallbacks
+  ---
+  duration_ms: 3.572083
+  ...
+1..34
+# tests 34
+# suites 0
+# pass 34
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 968.099833

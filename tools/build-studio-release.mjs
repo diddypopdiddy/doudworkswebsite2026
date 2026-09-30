@@ -28,6 +28,7 @@ manifest.items=manifest.items.map(item=>{
   return publicItem;
 });
 for(const name of new Set(Object.values(projectCategories).flatMap(category=>category.projects.map(project=>previews[project.id]).filter(Boolean))))entries.set('media/projects/'+name,path.join(root,'media/projects',name));
+for(const project of Object.values(projectCategories).flatMap(category=>category.projects)){if(project.video)for(const name of [project.video.src,project.video.poster])entries.set('media/projects/'+name,path.join(root,'media/projects',name));}
 for(const name of ['media/brand/InterVariable.ttf','media/brand/INTER_LICENSE.txt','media/vince-doud-portrait-clean-v2.jpg'])entries.set(name,path.join(root,name));
 await rm(output,{recursive:true,force:true});
 const hashes=[];

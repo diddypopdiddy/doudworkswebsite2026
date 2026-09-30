@@ -25,7 +25,7 @@ Source preview: http://127.0.0.1:8000/qa-evidence/studio-experience-v2/
 
 Root-hosted release preview: http://127.0.0.1:8001/
 
-Build with `node tools/build-studio-release.mjs`, then validate with `node tools/check-studio-release.mjs`. The build produces `.release/studio-review/` (170 runtime files) and a separate hash inventory. It excludes QA, archives, tooling, source artwork originals, retired art, source-path provenance and unrelated projects. It relocates current runtime/media references for root hosting and preserves `CNAME`, `.nojekyll`, a return-home 404 and robots file.
+Build with `node tools/build-studio-release.mjs`, then validate with `node tools/check-studio-release.mjs`. The build produces `.release/studio-review/` (172 runtime files) and a separate hash inventory. It excludes QA, archives, tooling, source artwork originals, retired art, source-path provenance and unrelated projects. It relocates current runtime/media references for root hosting and preserves `CNAME`, `.nojekyll`, a return-home 404 and robots file.
 
 Existing GitHub Pages uses the public repository's `gh-pages` branch at `/`, custom domain `www.vincedoud.com`. Deployment requires a separately authorized review and update of that branch with the validated runtime package. This draft branch does not trigger Pages. Do not copy the entire development checkout to production.
 
@@ -36,3 +36,9 @@ For longer-term separation, develop and back up private project work separately,
 ## Artwork photo selection follow-up
 
 Per owner request, Strategy, America #1 and America #2 show only their main Artwork image. Removed viewer options: Raised objects, Hardware and bands, Rubber-band detail, Right side and Left side. Original detail image files remain recoverable in source and Git history; they are excluded from the current runtime package. Actual preview clicks verified all three main images load with no photo controls, unaffected Stolen loads and the 13-work inventory remains unchanged. Evidence: `qa/polish-2026-09-30/artwork-only-checks.json`.
+
+## Approved SK8MAPS reel
+
+The owner-approved `SK8MAPS-Interface.mp4` is copied byte-for-byte into `media/projects/sk8maps-interface.mp4`, with its existing Interface poster. The SK8MAPS card uses a native 16:9 player with controls, metadata preload, inline playback, no autoplay, and a visible direct-video fallback. Explanatory text and Private teaching workspace label remain; no private app link is added. The access note accurately identifies the approved captured lesson views while keeping workspace access private.
+
+Reel playback reaches the end. Starting the reel pauses iPod music; resuming music pauses the reel. Leaving the card/project or closing the studio stops the reel, and return does not auto-resume. Desktop and 320/390px checks verify full-frame layout, no document overflow and readable fallback. Motion stays opt-in under any preference. Native sound controls work; no perceptual listening audit was possible because local audio extraction was unavailable. Evidence: `sk8maps-reel-checks.json` and `sk8maps-reel-*.jpg` in the current QA directory. Build now includes 172 runtime files. Production remains unchanged.
