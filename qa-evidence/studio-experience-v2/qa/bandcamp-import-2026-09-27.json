@@ -1,0 +1,324 @@
+{
+  "files": [
+    {
+      "src": "audio/covers/content.jpg",
+      "sha256": "d63d019227e1b2944795f622659bd29d03fde289bf88df177565f682235f8541",
+      "bytes": 96761
+    },
+    {
+      "src": "audio/content/01-content-aa.mp3",
+      "sha256": "91657b1d97bef95d1625be40e798ddee9758f6da8b96a73150ecd13918fe7fc3",
+      "bytes": 2733870
+    },
+    {
+      "src": "audio/content/02-content-a.mp3",
+      "sha256": "f6d0817b947acc300e2c863e9cb4e2b6678c7ab2f9bdaac631e41f95e46609df",
+      "bytes": 2258232
+    },
+    {
+      "src": "audio/content/03-content-b.mp3",
+      "sha256": "f3580464e632f3373c626e3e2f2544fa3836c7a1ccfe6d55a2a50b8ccdd7fdf5",
+      "bytes": 1996590
+    },
+    {
+      "src": "audio/content/04-content-c.mp3",
+      "sha256": "8cb9fbce34f27763f70a68638dfd8d224a155982a4fa67a5ce0c71938f37b956",
+      "bytes": 3375855
+    },
+    {
+      "src": "audio/content/05-content-d.mp3",
+      "sha256": "d49632a44536fc7b7f9a35e5c6898f414ab7e11da0fb59ed82b84ef9092d4131",
+      "bytes": 1354604
+    },
+    {
+      "src": "audio/content/06-content-e.mp3",
+      "sha256": "baa056533e02cd074cf7446e67c19fc04f8f4ef8ef3ebe72f1efd3c2cd25c250",
+      "bytes": 1734947
+    },
+    {
+      "src": "audio/content/07-content-f.mp3",
+      "sha256": "e02de39b1d26945eaa00a8e5360a3cde5caf328381d2d39a5ca94daa5385fab1",
+      "bytes": 2472227
+    },
+    {
+      "src": "audio/content/08-content-s.mp3",
+      "sha256": "4972b4d49f2def480a6d1120012c3f46eadf43b6a22c4a3194d8387f2b3fd2d7",
+      "bytes": 4208012
+    },
+    {
+      "src": "audio/content/09-content-t.mp3",
+      "sha256": "fea93f94f60704552256f5973f7921d48afa0a563abe0e1c44861c90cf65850a",
+      "bytes": 3138036
+    },
+    {
+      "src": "audio/content/10-content-u.mp3",
+      "sha256": "75a978a4610f4b2b8a0d3c85e098f7775788a3c4fb6aa707b140ee858443fba0",
+      "bytes": 2852570
+    },
+    {
+      "src": "audio/covers/el-lobo-presents-uber-thurman.jpg",
+      "sha256": "d479541a769969b63d2ab9dc66129ea47214d9cf41cfa95eee615c16ba1be9f2",
+      "bytes": 111628
+    },
+    {
+      "src": "audio/el-lobo-presents-uber-thurman/01-one.mp3",
+      "sha256": "795a638eaa53f467ae80341278af8eb4262874d2da201ea8aa7f3747c0606266",
+      "bytes": 6680658
+    },
+    {
+      "src": "audio/el-lobo-presents-uber-thurman/02-two.mp3",
+      "sha256": "f8ecc66a1012d07ba4a5a35b4e50e612a73a5c6de4931a126c2b79f5d70d5c57",
+      "bytes": 1972766
+    },
+    {
+      "src": "audio/el-lobo-presents-uber-thurman/03-three.mp3",
+      "sha256": "8b0d9a6a7a63b487320fe5e36e0e574677494ce5ad1fbc409ccd05567d8c97ea",
+      "bytes": 3375855
+    },
+    {
+      "src": "audio/el-lobo-presents-uber-thurman/04-four.mp3",
+      "sha256": "cd7ee62f85b712b15d3cd86c7086d3ba2bf78ebe4179711b7cefa8e7e58e3ea9",
+      "bytes": 1212080
+    },
+    {
+      "src": "audio/el-lobo-presents-uber-thurman/05-five.mp3",
+      "sha256": "66b72ed4823aaa6dabc8f684c6c2e7b8514b210b37648f5bd31699bf54bb7039",
+      "bytes": 2828746
+    },
+    {
+      "src": "audio/el-lobo-presents-uber-thurman/06-three-one.mp3",
+      "sha256": "45367bae7044a69512e16f4bb191a023d64df3e997cea2749dfd7299bf859989",
+      "bytes": 2020413
+    },
+    {
+      "src": "audio/el-lobo-presents-uber-thurman/07-four-six.mp3",
+      "sha256": "64c312e3bc277907e80acf2ce29009437f0570c8c219fb7fc0cc3b456d022c1c",
+      "bytes": 2355199
+    },
+    {
+      "src": "audio/covers/there-it-is.jpg",
+      "sha256": "64d3939627c01b3651fce7502311bb7553b3b6ba70cf9296cb7c9eec6ef5334c",
+      "bytes": 93262
+    },
+    {
+      "src": "audio/there-it-is/01-abcs.mp3",
+      "sha256": "9b65f33c27fdee9fd9edcf43b755df836437605cc907a82e4557d5cb5a6cdc55",
+      "bytes": 747310
+    },
+    {
+      "src": "audio/there-it-is/02-more.mp3",
+      "sha256": "d2c0ce2837e9c34331a40efe774c141d7f128408fa56b1f73e4d52b643f4aa2d",
+      "bytes": 992234
+    },
+    {
+      "src": "audio/there-it-is/03-what-i-mean.mp3",
+      "sha256": "18df3566fe491bb6a25018ad9cf40454e2c5432df51be62dbceff9b8f598ad58",
+      "bytes": 2089377
+    },
+    {
+      "src": "audio/there-it-is/04-drug-on.mp3",
+      "sha256": "59465a061f8bc78c3fc69aeb8595f829f8c7d9ffcee38df8459b4854b3353148",
+      "bytes": 1158581
+    },
+    {
+      "src": "audio/there-it-is/05-told-you.mp3",
+      "sha256": "40bc2ec942beba4aec1cfbeb715760095e8d01f30d27987c52851a2928a60ee0",
+      "bytes": 710947
+    },
+    {
+      "src": "audio/there-it-is/06-i-think.mp3",
+      "sha256": "7bf297a1e144f7af62d2d50a1b2eeafc56b38e28ff2532d552e221db691c47c5",
+      "bytes": 1909654
+    },
+    {
+      "src": "audio/there-it-is/07-screwdriver-white.mp3",
+      "sha256": "13d68903ca29526dd4675f049ed08ab288242fc2a51ecb3dfd1e92ac2d83046e",
+      "bytes": 1747904
+    },
+    {
+      "src": "audio/there-it-is/08-simply-beautiful-green.mp3",
+      "sha256": "fc4627835db225e406e7db914421621b9e1a73ccc7755d1ec553b71113b32a12",
+      "bytes": 1895026
+    },
+    {
+      "src": "audio/there-it-is/09-magnolia.mp3",
+      "sha256": "37ddbbb8b64c039315ea3aef26712c49abdeec2b680118166dba2e3651576993",
+      "bytes": 1788446
+    },
+    {
+      "src": "audio/there-it-is/10-noli-squad.mp3",
+      "sha256": "1be46cd09ae7f7546abe85f2896f3df4a26f7fceb39459761812b9f55084e1e0",
+      "bytes": 2172132
+    },
+    {
+      "src": "audio/there-it-is/11-paramount.mp3",
+      "sha256": "185aedc418cac5ecd91dffe0f44d64f595841344a4b388271ee3b858eb7b9f16",
+      "bytes": 1580720
+    },
+    {
+      "src": "audio/there-it-is/12-mtp.mp3",
+      "sha256": "bff94663fd316e1aaf5aba2f328146257cbf757709e29707159f3414af9a354f",
+      "bytes": 1570689
+    },
+    {
+      "src": "audio/there-it-is/13-lil-stevie.mp3",
+      "sha256": "5bedc562445d3f379917a1eb66bcfedff513bdb450e2dd77bb9f1999a83f7936",
+      "bytes": 1199123
+    },
+    {
+      "src": "audio/covers/elep.jpg",
+      "sha256": "59e667c693da105ea12c3c397441145bd9e7d8230e17402d8a51b1348eecbf31",
+      "bytes": 71060
+    },
+    {
+      "src": "audio/elep/01-leavebefore.mp3",
+      "sha256": "7090d9282cf6af842800adb54ffc36075fb0223814a6fc937dc09736c6dc824c",
+      "bytes": 1166105
+    },
+    {
+      "src": "audio/elep/02-q-a.mp3",
+      "sha256": "e3afa37c45c8db5b2c6b3f8f45f5391658079a9248e8e19d4cb1ee4551b0f1cf",
+      "bytes": 1546448
+    },
+    {
+      "src": "audio/elep/03-mr-knowitall.mp3",
+      "sha256": "a15c9401912ef4b2497095dfd096c8663f2b7e941e709c52dc7e0ebf20ca3bee",
+      "bytes": 3210761
+    },
+    {
+      "src": "audio/elep/04-the-bruise.mp3",
+      "sha256": "ab0b0ae0d8529da6d270cb29fe9a912c78121b2517345a26fca29fd8f0c006d4",
+      "bytes": 1306957
+    },
+    {
+      "src": "audio/elep/05-anotherphoto.mp3",
+      "sha256": "0200c20191708140b01bd1f563caf716d86eb30de6005c91a4af8e48d4543066",
+      "bytes": 1568599
+    },
+    {
+      "src": "audio/covers/el-lobo-proudly-presents-el-lobo.jpg",
+      "sha256": "64e6df4a53f553b8347c37296e9c88d0ab043ee6bde8f3e22cd502a7e110932d",
+      "bytes": 64264
+    },
+    {
+      "src": "audio/el-lobo-proudly-presents-el-lobo/01-for-jim.mp3",
+      "sha256": "d77c362d718e16f1632eaca150b9aa76462fe54988c66582ab7f7005b29a684b",
+      "bytes": 2424998
+    },
+    {
+      "src": "audio/el-lobo-proudly-presents-el-lobo/02-el-lobo.mp3",
+      "sha256": "c7acb1e92605ee805fffc7614161ed63f5eb802f45a1eb24bbae78f0b752a391",
+      "bytes": 1141027
+    },
+    {
+      "src": "audio/el-lobo-proudly-presents-el-lobo/03-la-11-20-14-6-49-pm.mp3",
+      "sha256": "6d9b104ea658efb6c813f2a0d415e2598f885972cf333876c61511f7667beba4",
+      "bytes": 1687718
+    },
+    {
+      "src": "audio/el-lobo-proudly-presents-el-lobo/04-would-you.mp3",
+      "sha256": "ab96bd57d10919bc9446e631dda5f25ea11cc1700e3b0d9fc8c04bbc58ee9277",
+      "bytes": 1663894
+    },
+    {
+      "src": "audio/covers/gtgc.jpg",
+      "sha256": "282f426f80051e079ccd0978c1e50086b5e83b6fd53049868fa2829515695a12",
+      "bytes": 69767
+    },
+    {
+      "src": "audio/gtgc/01-untitled-track-introduction.mp3",
+      "sha256": "c55f1f9f6b41940c0e508bc627c50bf35f4f5facc8eafab59409a9ab1177f0a8",
+      "bytes": 734353
+    },
+    {
+      "src": "audio/gtgc/02-poison.mp3",
+      "sha256": "449b974f4a213ddae8798c8c269ab9508c44d44672f68abefba8b89489c583d8",
+      "bytes": 1118457
+    },
+    {
+      "src": "audio/gtgc/03-reading-pa.mp3",
+      "sha256": "2fe2fcb646fef876ad0decbe71acf5a31057e3b6c5aa0dcf65984011651cb193",
+      "bytes": 1676851
+    },
+    {
+      "src": "audio/gtgc/04-november-2012.mp3",
+      "sha256": "ebf7a6a8e65a24e59b98c987b1e703a743caad7b0bd285b200e95d3904db15ca",
+      "bytes": 1166105
+    },
+    {
+      "src": "audio/gtgc/05-moanin.mp3",
+      "sha256": "8043162be2c8bb8c9c96191b1ea37d470328ec070571834eb4e91e35ddcd7e98",
+      "bytes": 1676851
+    },
+    {
+      "src": "audio/gtgc/06-london-oil.mp3",
+      "sha256": "a769de0986f95805130f628068d0fc26a0eb3cc5d570b87ea7afc806554e5523",
+      "bytes": 1118457
+    },
+    {
+      "src": "audio/gtgc/07-jenga.mp3",
+      "sha256": "b38c013bdf9c4286891b8679988ff29b5c4f45c272f90e4293669a73303448e5",
+      "bytes": 1213752
+    },
+    {
+      "src": "audio/gtgc/08-i-ve-got-my-mind-set-on-you-my-sweet-lord.mp3",
+      "sha256": "91238c67f8d3172f6c5ea5b846984269f5cce0b4ec5fded17611072927073d97",
+      "bytes": 839261
+    },
+    {
+      "src": "audio/gtgc/09-untitled-track-2.mp3",
+      "sha256": "1a952ff2ef8ef034817981d9bed1d9cb8743aab77e6511ca9996c9d943affa12",
+      "bytes": 809586
+    },
+    {
+      "src": "audio/gtgc/10-the-onion.mp3",
+      "sha256": "6d60bb21c49eaf3e73efbe17f453efe99c81f548e9fbb6915ec6a8e710fd55c6",
+      "bytes": 690467
+    },
+    {
+      "src": "audio/gtgc/11-cmt.mp3",
+      "sha256": "0af76271f461ef74fce056420c957feee51ae39e89b9f6ecd493d7899e30c535",
+      "bytes": 280449
+    },
+    {
+      "src": "audio/covers/baby-steps.jpg",
+      "sha256": "3f8934ffdc0c83955090325e1f5d53c5ec556325a2b882fd5fb8cc1d2d56be4c",
+      "bytes": 64273
+    },
+    {
+      "src": "audio/baby-steps/01-i-m-late.mp3",
+      "sha256": "bd6f8a13f73fd48d339b88cac28aedbe158c1b49393bfa239ef320f211fadc0c",
+      "bytes": 840097
+    },
+    {
+      "src": "audio/baby-steps/02-el-lobo.mp3",
+      "sha256": "d1e08c3843e8c164321c977d49384166f77289a8b1ff7023a50aa8fc3ce94e84",
+      "bytes": 840097
+    },
+    {
+      "src": "audio/baby-steps/03-fudge-nugent.mp3",
+      "sha256": "7347f46e1308267e2b965fbc18b806adf35c1471a0f880634db32a9c79e13d01",
+      "bytes": 840097
+    },
+    {
+      "src": "audio/baby-steps/04-gary-on-a-mission.mp3",
+      "sha256": "ac5ed992c3733025be2ba2bd0a424f4dda19058d43925a50abc97b374830618e",
+      "bytes": 1398490
+    },
+    {
+      "src": "audio/baby-steps/05-cracking-jack.mp3",
+      "sha256": "7b318ead6d7208dd44c1b978a805e7c7cfae029ba99e65f888ba623ffbcc0807",
+      "bytes": 715127
+    },
+    {
+      "src": "audio/baby-steps/06-if-you-want-me-to-stay-where-is-the-money.mp3",
+      "sha256": "ee380f73ce467d27b3f50c55dfa46604131497197e82f9694c48696d02fa1624",
+      "bytes": 3073670
+    },
+    {
+      "src": "audio/baby-steps/07-untitled.mp3",
+      "sha256": "8601681cb8da6cf12efbd4d6f52cc60f13688840557d8666d71540ec32492982",
+      "bytes": 1118875
+    }
+  ]
+}

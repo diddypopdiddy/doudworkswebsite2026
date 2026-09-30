@@ -1,0 +1,269 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1250" viewBox="0 0 1800 1250" role="img" aria-labelledby="title desc">
+  <title id="title">TMS OS current workflow mind map</title>
+  <desc id="desc">A mind map showing how the teacher, Codex chat, project-local skills, project files, generated workspaces, and durable student artifacts work together in the current TMS OS setup.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f5ef; }
+      .title { font: 800 44px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1e2a35; }
+      .subtitle { font: 500 18px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #5f6873; }
+      .sectionTitle { font: 800 24px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1e2a35; }
+      .cardTitle { font: 800 20px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #1e2a35; }
+      .cardText { font: 500 15px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #2f3a45; }
+      .small { font: 500 13px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #52606d; }
+      .tiny { font: 600 12px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #52606d; }
+      .pillText { font: 800 12px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; letter-spacing: .3px; fill: #ffffff; }
+      .statusText { font: 700 12px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .card { stroke: #d9d6cc; stroke-width: 1.4; filter: url(#shadow); }
+      .thinCard { fill: #ffffff; stroke: #e2ded3; stroke-width: 1.2; }
+      .line { fill: none; stroke: #85909b; stroke-width: 2.5; }
+      .lineStrong { fill: none; stroke: #385f7e; stroke-width: 3; }
+      .dash { fill: none; stroke: #b8b0a4; stroke-width: 2; stroke-dasharray: 7 7; }
+      .flowNum { font: 800 20px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; fill: #ffffff; }
+      .pathText { font: 700 13px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; fill: #27313b; }
+    </style>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#1c2430" flood-opacity="0.10"/>
+    </filter>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto">
+      <path d="M 0 0 L 11 5.5 L 0 11 z" fill="#385f7e"/>
+    </marker>
+    <marker id="arrowMuted" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#85909b"/>
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1800" height="1250"/>
+
+  <text class="title" x="70" y="74">TMS OS Workflow Mind Map</text>
+  <text class="subtitle" x="70" y="106">Based only on the current project setup: Codex chat controls the work, project files hold truth, skills route the pattern, generated UI is a classroom shell.</text>
+
+  <!-- Top flow -->
+  <g transform="translate(70,145)">
+    <rect class="card" width="355" height="150" rx="8" fill="#ffffff"/>
+    <circle cx="34" cy="35" r="20" fill="#385f7e"/>
+    <text class="flowNum" x="28" y="42">1</text>
+    <text class="cardTitle" x="66" y="32">User / Teacher</text>
+    <text class="cardText" x="26" y="68">Starts the loop in chat:</text>
+    <text class="small" x="26" y="94">plan tomorrow, make slides, revise this,</text>
+    <text class="small" x="26" y="116">log what happened, set up periods,</text>
+    <text class="small" x="26" y="138">or refresh source truth.</text>
+  </g>
+
+  <g transform="translate(520,145)">
+    <rect class="card" width="355" height="150" rx="8" fill="#eef6fb"/>
+    <circle cx="34" cy="35" r="20" fill="#2f6f5e"/>
+    <text class="flowNum" x="27" y="42">2</text>
+    <text class="cardTitle" x="66" y="32">Codex Chat</text>
+    <text class="cardText" x="26" y="68">Acts as the control layer:</text>
+    <text class="small" x="26" y="94">chooses the relevant skill, reads only</text>
+    <text class="small" x="26" y="116">needed project files, preserves missing</text>
+    <text class="small" x="26" y="138">context instead of guessing.</text>
+  </g>
+
+  <g transform="translate(970,145)">
+    <rect class="card" width="355" height="150" rx="8" fill="#fff7e7"/>
+    <circle cx="34" cy="35" r="20" fill="#a55f2b"/>
+    <text class="flowNum" x="27" y="42">3</text>
+    <text class="cardTitle" x="66" y="32">Project-Local Skills</text>
+    <text class="cardText" x="26" y="68">Define the action pattern:</text>
+    <text class="small" x="26" y="94">daily workspace, renderer, student</text>
+    <text class="small" x="26" y="116">artifact delivery, revision, class setup,</text>
+    <text class="small" x="26" y="138">after-class logging, source refresh.</text>
+  </g>
+
+  <g transform="translate(1420,145)">
+    <rect class="card" width="310" height="150" rx="8" fill="#f3f0fa"/>
+    <circle cx="34" cy="35" r="20" fill="#675078"/>
+    <text class="flowNum" x="27" y="42">4</text>
+    <text class="cardTitle" x="66" y="32">Files + Records</text>
+    <text class="cardText" x="26" y="68">The result writes back:</text>
+    <text class="small" x="26" y="94">HTML/snapshot in outputs, registry</text>
+    <text class="small" x="26" y="116">entries for collected artifacts, and</text>
+    <text class="small" x="26" y="138">class memory only when approved.</text>
+  </g>
+
+  <path class="lineStrong" marker-end="url(#arrow)" d="M425 220 C455 220 485 220 510 220"/>
+  <path class="lineStrong" marker-end="url(#arrow)" d="M875 220 C905 220 935 220 960 220"/>
+  <path class="lineStrong" marker-end="url(#arrow)" d="M1325 220 C1358 220 1388 220 1410 220"/>
+
+  <!-- Skill trigger map -->
+  <g transform="translate(70,355)">
+    <rect class="card" width="795" height="500" rx="8" fill="#ffffff"/>
+    <text class="sectionTitle" x="28" y="42">When A Skill Triggers</text>
+    <text class="small" x="28" y="67">These are the current project-local routing rules, not a future app design.</text>
+
+    <g transform="translate(28,92)">
+      <rect width="739" height="50" rx="8" fill="#eef6fb" stroke="#c9dce8"/>
+      <rect width="154" height="50" rx="8" fill="#385f7e"/>
+      <text class="pillText" x="16" y="31">PLAN / MAKE</text>
+      <text class="cardText" x="176" y="21">tms-os-daily-workspace</text>
+      <text class="small" x="176" y="42">Triggers on plan tomorrow, opening board, slides, handout, activity, exit ticket.</text>
+    </g>
+
+    <g transform="translate(28,152)">
+      <rect width="739" height="50" rx="8" fill="#f7fbf8" stroke="#cfe1d8"/>
+      <rect width="154" height="50" rx="8" fill="#2f6f5e"/>
+      <text class="pillText" x="16" y="31">RENDER</text>
+      <text class="cardText" x="176" y="21">tms-os-workspace-renderer</text>
+      <text class="small" x="176" y="42">Used once lesson content is ready; writes the HTML shell and readable snapshot.</text>
+    </g>
+
+    <g transform="translate(28,212)">
+      <rect width="739" height="50" rx="8" fill="#fff7e7" stroke="#ecd8ba"/>
+      <rect width="154" height="50" rx="8" fill="#a55f2b"/>
+      <text class="pillText" x="16" y="31">COLLECT</text>
+      <text class="cardText" x="176" y="21">tms-os-student-artifact-delivery</text>
+      <text class="small" x="176" y="42">Triggers for digital exit tickets, Google Forms, LMS links, and response metadata.</text>
+    </g>
+
+    <g transform="translate(28,272)">
+      <rect width="739" height="50" rx="8" fill="#f3f0fa" stroke="#dbd1e8"/>
+      <rect width="154" height="50" rx="8" fill="#675078"/>
+      <text class="pillText" x="16" y="31">REVISE</text>
+      <text class="cardText" x="176" y="21">tms-os-revise-workspace</text>
+      <text class="small" x="176" y="42">Triggers on make shorter, add handout, change level, turn into slides, revise this.</text>
+    </g>
+
+    <g transform="translate(28,332)">
+      <rect width="739" height="50" rx="8" fill="#eef3f2" stroke="#d5dddd"/>
+      <rect width="154" height="50" rx="8" fill="#4f6970"/>
+      <text class="pillText" x="16" y="31">LOG</text>
+      <text class="cardText" x="176" y="21">tms-os-after-class-logger</text>
+      <text class="small" x="176" y="42">Triggers only when the teacher asks to log, save, update, or carry forward class results.</text>
+    </g>
+
+    <g transform="translate(28,392)">
+      <rect width="739" height="50" rx="8" fill="#f5f2ed" stroke="#ded5c7"/>
+      <rect width="154" height="50" rx="8" fill="#7a6a56"/>
+      <text class="pillText" x="16" y="31">SETUP / CHECK</text>
+      <text class="cardText" x="176" y="21">tms-os-class-setup + tms-os-source-refresh</text>
+      <text class="small" x="176" y="42">Trigger on schedule/period setup or current-source audit/refresh requests.</text>
+    </g>
+  </g>
+
+  <!-- File reference map -->
+  <g transform="translate(935,355)">
+    <rect class="card" width="795" height="500" rx="8" fill="#ffffff"/>
+    <text class="sectionTitle" x="28" y="42">When Codex References Project Files</text>
+    <text class="small" x="28" y="67">Codex reads the relevant layer at the moment that layer can change the output.</text>
+
+    <g transform="translate(32,98)">
+      <rect class="thinCard" width="340" height="78" rx="8"/>
+      <text class="cardText" x="18" y="26">Start and source rules</text>
+      <text class="pathText" x="18" y="50">README.md</text>
+      <text class="pathText" x="18" y="68">00_Start_Here/*</text>
+    </g>
+
+    <g transform="translate(422,98)">
+      <rect class="thinCard" width="340" height="78" rx="8"/>
+      <text class="cardText" x="18" y="26">Evidence base</text>
+      <text class="pathText" x="18" y="50">source_docs/source_index.md</text>
+      <text class="pathText" x="18" y="68">source_docs/audubon_public/*</text>
+    </g>
+
+    <g transform="translate(32,196)">
+      <rect class="thinCard" width="340" height="78" rx="8"/>
+      <text class="cardText" x="18" y="26">Curriculum and unit scope</text>
+      <text class="pathText" x="18" y="50">02_Master_Curriculum/*</text>
+      <text class="pathText" x="18" y="68">04_Units/**/unit_sequence.md</text>
+    </g>
+
+    <g transform="translate(422,196)">
+      <rect class="thinCard" width="340" height="78" rx="8"/>
+      <text class="cardText" x="18" y="26">Teacher defaults</text>
+      <text class="pathText" x="18" y="50">05_Teacher_Profile/global_defaults.md</text>
+      <text class="pathText" x="18" y="68">course_profile_template.md</text>
+    </g>
+
+    <g transform="translate(32,294)">
+      <rect class="thinCard" width="340" height="78" rx="8"/>
+      <text class="cardText" x="18" y="26">Live-class limits</text>
+      <text class="pathText" x="18" y="50">03_Classes_And_Periods/*</text>
+      <text class="pathText" x="18" y="68">06_Class_Memory/*</text>
+    </g>
+
+    <g transform="translate(422,294)">
+      <rect class="thinCard" width="340" height="78" rx="8"/>
+      <text class="cardText" x="18" y="26">Artifact shape and delivery</text>
+      <text class="pathText" x="18" y="50">07_Artifact_Templates/*</text>
+      <text class="pathText" x="18" y="68">08_Student_Artifacts/*</text>
+    </g>
+
+    <g transform="translate(32,392)">
+      <rect class="thinCard" width="730" height="70" rx="8"/>
+      <text class="cardText" x="18" y="26">Revision and continuity</text>
+      <text class="pathText" x="18" y="50">outputs/daily-workspace-*.html + outputs/*-snapshot.md + student_artifact_registry.csv</text>
+    </g>
+
+    <path class="dash" marker-end="url(#arrowMuted)" d="M372 137 L412 137"/>
+    <path class="dash" marker-end="url(#arrowMuted)" d="M372 235 L412 235"/>
+    <path class="dash" marker-end="url(#arrowMuted)" d="M372 333 L412 333"/>
+  </g>
+
+  <!-- Connecting center arrows -->
+  <path class="line" marker-end="url(#arrowMuted)" d="M462 295 C420 325 390 333 370 350"/>
+  <path class="line" marker-end="url(#arrowMuted)" d="M1058 295 C1110 318 1190 330 1280 350"/>
+  <path class="line" marker-end="url(#arrowMuted)" d="M690 295 C655 322 600 332 520 350"/>
+  <path class="line" marker-end="url(#arrowMuted)" d="M1195 295 C1260 322 1350 332 1450 350"/>
+
+  <!-- Lifecycle band -->
+  <g transform="translate(70,905)">
+    <rect class="card" width="1660" height="260" rx="8" fill="#ffffff"/>
+    <text class="sectionTitle" x="28" y="42">Current Lifecycle In This Project</text>
+    <text class="small" x="28" y="68">The active loop is file-backed and conservative: missing live context is surfaced, not filled in.</text>
+
+    <g transform="translate(34,102)">
+      <rect width="218" height="92" rx="8" fill="#eef6fb" stroke="#c9dce8"/>
+      <text class="cardText" x="18" y="28">1. Source context</text>
+      <text class="small" x="18" y="52">Audubon sources, curriculum,</text>
+      <text class="small" x="18" y="72">defaults, class gaps.</text>
+    </g>
+
+    <g transform="translate(280,102)">
+      <rect width="218" height="92" rx="8" fill="#f7fbf8" stroke="#cfe1d8"/>
+      <text class="cardText" x="18" y="28">2. Teacher direction</text>
+      <text class="small" x="18" y="52">Prompt in Codex; one quick</text>
+      <text class="small" x="18" y="72">question only if material.</text>
+    </g>
+
+    <g transform="translate(526,102)">
+      <rect width="218" height="92" rx="8" fill="#fff7e7" stroke="#ecd8ba"/>
+      <text class="cardText" x="18" y="28">3. Informed draft</text>
+      <text class="small" x="18" y="52">Skill-guided generation using</text>
+      <text class="small" x="18" y="72">needed project files.</text>
+    </g>
+
+    <g transform="translate(772,102)">
+      <rect width="218" height="92" rx="8" fill="#f3f0fa" stroke="#dbd1e8"/>
+      <text class="cardText" x="18" y="28">4. Workspace UI</text>
+      <text class="small" x="18" y="52">Temporary present, print, edit</text>
+      <text class="small" x="18" y="72">HTML shell in outputs.</text>
+    </g>
+
+    <g transform="translate(1018,102)">
+      <rect width="218" height="92" rx="8" fill="#eef3f2" stroke="#d5dddd"/>
+      <text class="cardText" x="18" y="28">5. Durable records</text>
+      <text class="small" x="18" y="52">Snapshot, registry, Form and</text>
+      <text class="small" x="18" y="72">Sheet links when collecting.</text>
+    </g>
+
+    <g transform="translate(1264,102)">
+      <rect width="318" height="92" rx="8" fill="#f5f2ed" stroke="#ded5c7"/>
+      <text class="cardText" x="18" y="28">6. After class continuity</text>
+      <text class="small" x="18" y="52">Teacher-approved summary can update</text>
+      <text class="small" x="18" y="72">class timelines; raw student data stays out.</text>
+    </g>
+
+    <path class="lineStrong" marker-end="url(#arrow)" d="M252 148 L270 148"/>
+    <path class="lineStrong" marker-end="url(#arrow)" d="M498 148 L516 148"/>
+    <path class="lineStrong" marker-end="url(#arrow)" d="M744 148 L762 148"/>
+    <path class="lineStrong" marker-end="url(#arrow)" d="M990 148 L1008 148"/>
+    <path class="lineStrong" marker-end="url(#arrow)" d="M1236 148 L1254 148"/>
+  </g>
+
+  <!-- Current observed status -->
+  <g transform="translate(70,1186)">
+    <rect width="1660" height="42" rx="8" fill="#1e2a35"/>
+    <text class="statusText" x="22" y="27">Observed current setup: 7 project-local skills; periods still TBD / not live yet; current daily workspace exists for 2026-05-19 shot size; one google_form_collect registry entry has live Form and Sheet links; raw student responses are not local project memory by default.</text>
+  </g>
+</svg>

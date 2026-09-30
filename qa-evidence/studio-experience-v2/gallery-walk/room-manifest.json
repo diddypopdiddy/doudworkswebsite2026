@@ -1,0 +1,428 @@
+{
+  "coordinateMapping": "Blender(x, -webZ, webY) -> WebXYZ",
+  "navigationStart": {
+    "position": [
+      0,
+      1.65,
+      3.7
+    ],
+    "lookAt": [
+      0,
+      1.65,
+      -5
+    ]
+  },
+  "rooms": [
+    {
+      "id": "front",
+      "name": "Storefront",
+      "bounds": {
+        "minX": -5,
+        "maxX": 5,
+        "minZ": -5,
+        "maxZ": 5
+      },
+      "waypoint": [
+        0,
+        1.65,
+        1.2
+      ]
+    },
+    {
+      "id": "middle",
+      "name": "Middle room",
+      "bounds": {
+        "minX": -5,
+        "maxX": 5,
+        "minZ": -14,
+        "maxZ": -5
+      },
+      "waypoint": [
+        0,
+        1.65,
+        -9.5
+      ]
+    },
+    {
+      "id": "back",
+      "name": "Back room",
+      "bounds": {
+        "minX": -5,
+        "maxX": 5,
+        "minZ": -21,
+        "maxZ": -14
+      },
+      "waypoint": [
+        0,
+        1.65,
+        -17.5
+      ]
+    },
+    {
+      "id": "side",
+      "name": "Side room",
+      "bounds": {
+        "minX": 5,
+        "maxX": 13,
+        "minZ": -5,
+        "maxZ": 5
+      },
+      "waypoint": [
+        9,
+        1.65,
+        0
+      ]
+    }
+  ],
+  "colliders": [
+    {
+      "minX": -5.15,
+      "maxX": 5.15,
+      "minZ": 4.95,
+      "maxZ": 5.25,
+      "name": "Storefront barrier"
+    },
+    {
+      "minX": -5.25,
+      "maxX": -4.95,
+      "minZ": -21.15,
+      "maxZ": 5.15,
+      "name": "Long left exterior wall"
+    },
+    {
+      "minX": -5.15,
+      "maxX": 5.15,
+      "minZ": -21.25,
+      "maxZ": -20.95,
+      "name": "Back exterior wall"
+    },
+    {
+      "minX": 4.95,
+      "maxX": 5.25,
+      "minZ": -21.15,
+      "maxZ": -4.85,
+      "name": "Middle right exterior wall"
+    },
+    {
+      "minX": 12.95,
+      "maxX": 13.25,
+      "minZ": -5.15,
+      "maxZ": 5.15,
+      "name": "Side exterior wall"
+    },
+    {
+      "minX": 4.85,
+      "maxX": 13.15,
+      "minZ": -5.25,
+      "maxZ": -4.95,
+      "name": "Side rear exterior wall"
+    },
+    {
+      "minX": -5.0,
+      "maxX": -1.5,
+      "minZ": -5.12,
+      "maxZ": -4.88,
+      "name": "Front-middle west pier"
+    },
+    {
+      "minX": 1.5,
+      "maxX": 5.0,
+      "minZ": -5.12,
+      "maxZ": -4.88,
+      "name": "Front-middle east pier"
+    },
+    {
+      "minX": -5.0,
+      "maxX": 0.5,
+      "minZ": -14.12,
+      "maxZ": -13.88,
+      "name": "Middle-back west pier"
+    },
+    {
+      "minX": 3.5,
+      "maxX": 5.0,
+      "minZ": -14.12,
+      "maxZ": -13.88,
+      "name": "Middle-back east pier"
+    },
+    {
+      "minX": 4.88,
+      "maxX": 5.12,
+      "minZ": -5.0,
+      "maxZ": -1.8,
+      "name": "Front-side south pier"
+    },
+    {
+      "minX": 4.88,
+      "maxX": 5.12,
+      "minZ": 1.8,
+      "maxZ": 5.0,
+      "name": "Front-side north pier"
+    },
+    {
+      "minX": -5.04,
+      "maxX": -4.72,
+      "minZ": 0.1,
+      "maxZ": 5.0,
+      "name": "Left storefront sill"
+    },
+    {
+      "minX": -3.075,
+      "maxX": -0.725,
+      "minZ": 1.99,
+      "maxZ": 2.51,
+      "name": "Front plywood bench"
+    },
+    {
+      "minX": -4.575,
+      "maxX": -2.725,
+      "minZ": -9.06,
+      "maxZ": -8.54,
+      "name": "Middle plywood bench"
+    },
+    {
+      "minX": 1.45,
+      "maxX": 3.65,
+      "minZ": -18.46,
+      "maxZ": -17.94,
+      "name": "Back reading bench"
+    },
+    {
+      "minX": 8.175,
+      "maxX": 10.625,
+      "minZ": 1.875,
+      "maxZ": 3.025,
+      "name": "Side zine table top"
+    }
+  ],
+  "items": [
+    {
+      "index": 0,
+      "sourceIndex": 0,
+      "position": [
+        -3.25,
+        1.73,
+        -4.84
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 1.5,
+      "height": 1.0,
+      "roomId": "front",
+      "file": "abstract-study.jpg",
+      "placeholder": true
+    },
+    {
+      "index": 1,
+      "sourceIndex": 1,
+      "position": [
+        3.15,
+        1.72,
+        -4.84
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 1.25,
+      "height": 0.8333,
+      "roomId": "front",
+      "file": "ink-structure.jpg",
+      "placeholder": true
+    },
+    {
+      "index": 2,
+      "sourceIndex": 2,
+      "position": [
+        -4.84,
+        1.72,
+        0.05
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ],
+      "width": 1.45,
+      "height": 0.9667,
+      "roomId": "front",
+      "file": "blue-door-photo.jpg",
+      "placeholder": true
+    },
+    {
+      "index": 3,
+      "sourceIndex": 3,
+      "position": [
+        -4.84,
+        1.72,
+        -9.4
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ],
+      "width": 1.58,
+      "height": 1.0533,
+      "roomId": "middle",
+      "file": "sketchbook-spread.jpg",
+      "placeholder": true
+    },
+    {
+      "index": 4,
+      "sourceIndex": 4,
+      "position": [
+        -2.35,
+        1.72,
+        -13.84
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 1.34,
+      "height": 0.8933,
+      "roomId": "middle",
+      "file": "material-object.jpg",
+      "placeholder": true
+    },
+    {
+      "index": 5,
+      "sourceIndex": 0,
+      "position": [
+        4.84,
+        1.72,
+        -10.4
+      ],
+      "normal": [
+        -1,
+        0,
+        0
+      ],
+      "width": 1.2,
+      "height": 0.8,
+      "roomId": "middle",
+      "file": "abstract-study.jpg",
+      "placeholder": true
+    },
+    {
+      "index": 6,
+      "sourceIndex": 1,
+      "position": [
+        -2.35,
+        1.72,
+        -14.16
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "width": 1.38,
+      "height": 0.92,
+      "roomId": "back",
+      "file": "ink-structure.jpg",
+      "placeholder": true
+    },
+    {
+      "index": 7,
+      "sourceIndex": 2,
+      "position": [
+        1.9,
+        1.72,
+        -20.84
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 1.6,
+      "height": 1.0667,
+      "roomId": "back",
+      "file": "blue-door-photo.jpg",
+      "placeholder": true
+    },
+    {
+      "index": 8,
+      "sourceIndex": 3,
+      "position": [
+        -4.84,
+        1.72,
+        -18.3
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ],
+      "width": 1.22,
+      "height": 0.8133,
+      "roomId": "back",
+      "file": "sketchbook-spread.jpg",
+      "placeholder": true
+    },
+    {
+      "index": 9,
+      "sourceIndex": 4,
+      "position": [
+        12.84,
+        1.72,
+        -2.8
+      ],
+      "normal": [
+        -1,
+        0,
+        0
+      ],
+      "width": 1.55,
+      "height": 1.0333,
+      "roomId": "side",
+      "file": "material-object.jpg",
+      "placeholder": true
+    },
+    {
+      "index": 10,
+      "sourceIndex": 0,
+      "position": [
+        8.8,
+        1.72,
+        4.84
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "width": 1.45,
+      "height": 0.9667,
+      "roomId": "side",
+      "file": "abstract-study.jpg",
+      "placeholder": true
+    },
+    {
+      "index": 11,
+      "sourceIndex": 1,
+      "position": [
+        5.16,
+        1.72,
+        3.15
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ],
+      "width": 1.25,
+      "height": 0.8333,
+      "roomId": "side",
+      "file": "ink-structure.jpg",
+      "placeholder": true
+    }
+  ]
+}

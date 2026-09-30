@@ -1,1 +1,17 @@
 .DS_Store
+.release/
+
+# Local tooling, preservation archives and credentials stay out of draft pushes.
+node_modules/
+.next/
+.wrangler/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+*.blend1
+archives/
+audits/
+design-drafts/
+.codex/
+.codex-mockups/

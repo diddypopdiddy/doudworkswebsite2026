@@ -1,0 +1,1269 @@
+{
+  "coordinateMapping": "Blender(x, -webZ, webY) -> WebXYZ",
+  "units": "meters",
+  "ceilingHeight": 2.8,
+  "lightFixtures": [
+    {
+      "artIndex": 0,
+      "roomId": "main",
+      "position": [
+        -1.5499999523162842,
+        2.3981480598449707,
+        -2.312147378921509
+      ],
+      "target": [
+        -1.5499999523162842,
+        1.7000000476837158,
+        -2.9160001277923584
+      ]
+    },
+    {
+      "artIndex": 1,
+      "roomId": "main",
+      "position": [
+        0.0,
+        2.3946645259857178,
+        -2.307875394821167
+      ],
+      "target": [
+        0.0,
+        1.6200000047683716,
+        -2.9030001163482666
+      ]
+    },
+    {
+      "artIndex": 2,
+      "roomId": "main",
+      "position": [
+        1.5499999523162842,
+        2.3981480598449707,
+        -2.312147378921509
+      ],
+      "target": [
+        1.5499999523162842,
+        1.7000000476837158,
+        -2.9160001277923584
+      ]
+    },
+    {
+      "artIndex": 3,
+      "roomId": "right",
+      "position": [
+        3.9000000953674316,
+        2.4021499156951904,
+        -0.9164932370185852
+      ],
+      "target": [
+        3.9000000953674316,
+        1.6200000047683716,
+        -1.683000087738037
+      ]
+    },
+    {
+      "artIndex": 4,
+      "roomId": "main",
+      "position": [
+        -1.6929810047149658,
+        2.409182548522949,
+        -1.600000023841858
+      ],
+      "target": [
+        -2.615999937057495,
+        1.6399999856948853,
+        -1.600000023841858
+      ]
+    },
+    {
+      "artIndex": 5,
+      "roomId": "main",
+      "position": [
+        -1.690423846244812,
+        2.4062387943267822,
+        0.05000000074505806
+      ],
+      "target": [
+        -2.6029999256134033,
+        1.5800000429153442,
+        0.05000000074505806
+      ]
+    },
+    {
+      "artIndex": 6,
+      "roomId": "main",
+      "position": [
+        1.690423846244812,
+        2.4062387943267822,
+        -1.6799999475479126
+      ],
+      "target": [
+        2.6029999256134033,
+        1.5800000429153442,
+        -1.6799999475479126
+      ]
+    },
+    {
+      "artIndex": 15,
+      "roomId": "main",
+      "position": [
+        1.6915102005004883,
+        2.4074597358703613,
+        1.5499999523162842
+      ],
+      "target": [
+        2.6376497745513916,
+        1.5800000429153442,
+        1.5499999523162842
+      ]
+    },
+    {
+      "artIndex": 16,
+      "roomId": "main",
+      "position": [
+        -1.6919479370117188,
+        2.407963514328003,
+        1.6200000047683716
+      ],
+      "target": [
+        -2.629000186920166,
+        1.600000023841858,
+        1.6200000047683716
+      ]
+    },
+    {
+      "artIndex": 17,
+      "roomId": "right",
+      "position": [
+        5.269999980926514,
+        2.4021599292755127,
+        -0.9165034294128418
+      ],
+      "target": [
+        5.269999980926514,
+        1.6200000047683716,
+        -1.683250069618225
+      ]
+    },
+    {
+      "artIndex": 18,
+      "roomId": "right",
+      "position": [
+        3.7200000286102295,
+        2.4023053646087646,
+        1.5166515111923218
+      ],
+      "target": [
+        3.7200000286102295,
+        1.6200000047683716,
+        2.2868998050689697
+      ]
+    },
+    {
+      "artIndex": 19,
+      "roomId": "right",
+      "position": [
+        5.300000190734863,
+        2.399733543395996,
+        1.5139343738555908
+      ],
+      "target": [
+        5.300000190734863,
+        1.6200000047683716,
+        2.2233998775482178
+      ]
+    },
+    {
+      "artIndex": 20,
+      "roomId": "right",
+      "position": [
+        5.322592258453369,
+        2.408719062805176,
+        0.0
+      ],
+      "target": [
+        6.256899833679199,
+        1.6200000047683716,
+        0.0
+      ]
+    }
+  ],
+  "navigationStart": {
+    "position": [
+      0,
+      1.65,
+      2.2
+    ],
+    "lookAt": [
+      0,
+      1.65,
+      -1.8
+    ]
+  },
+  "rooms": [
+    {
+      "id": "main",
+      "name": "Main room",
+      "bounds": {
+        "minX": -2.75,
+        "maxX": 2.75,
+        "minZ": -3.05,
+        "maxZ": 3.05
+      },
+      "waypoint": [
+        0,
+        1.65,
+        1.65
+      ]
+    },
+    {
+      "id": "right",
+      "name": "Flag room",
+      "bounds": {
+        "minX": 2.75,
+        "maxX": 6.41,
+        "minZ": -1.83,
+        "maxZ": 2.44
+      },
+      "waypoint": [
+        4.6,
+        1.65,
+        0.3
+      ]
+    }
+  ],
+  "colliders": [
+    {
+      "minX": -2.75,
+      "maxX": 2.75,
+      "minZ": 2.94,
+      "maxZ": 3.16,
+      "name": "STOREFRONT_FACADE_BARRIER"
+    },
+    {
+      "minX": -2.86,
+      "maxX": -2.64,
+      "minZ": -3.05,
+      "maxZ": 3.05,
+      "name": "WALL_MAIN_LEFT"
+    },
+    {
+      "minX": -2.75,
+      "maxX": 2.75,
+      "minZ": -3.16,
+      "maxZ": -2.94,
+      "name": "WALL_MAIN_REAR"
+    },
+    {
+      "minX": 2.64,
+      "maxX": 2.86,
+      "minZ": 0.84,
+      "maxZ": 3.05,
+      "name": "WALL_MAIN_RIGHT_FRONT"
+    },
+    {
+      "minX": 2.64,
+      "maxX": 2.86,
+      "minZ": -3.05,
+      "maxZ": -0.84,
+      "name": "WALL_MAIN_RIGHT_REAR"
+    },
+    {
+      "minX": 6.3,
+      "maxX": 6.52,
+      "minZ": -1.94,
+      "maxZ": 2.55,
+      "name": "WALL_RIGHT_OUTER"
+    },
+    {
+      "minX": 2.75,
+      "maxX": 6.41,
+      "minZ": 2.33,
+      "maxZ": 2.55,
+      "name": "WALL_RIGHT_FRONT"
+    },
+    {
+      "minX": 2.75,
+      "maxX": 6.41,
+      "minZ": -1.94,
+      "maxZ": -1.72,
+      "name": "WALL_RIGHT_BACK"
+    },
+    {
+      "minX": -1.625,
+      "maxX": -0.275,
+      "minZ": 1.99,
+      "maxZ": 2.41,
+      "name": "BENCH_MAIN_SEAT"
+    }
+  ],
+  "windows": [
+    {
+      "id": "facade-0",
+      "center": [
+        -1.86,
+        1.4,
+        2.955
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "width": 1.38,
+      "height": 1.92
+    },
+    {
+      "id": "facade-1",
+      "center": [
+        0,
+        1.4,
+        2.955
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "width": 1.38,
+      "height": 1.92
+    },
+    {
+      "id": "facade-2",
+      "center": [
+        1.86,
+        1.4,
+        2.955
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "width": 1.38,
+      "height": 1.92
+    }
+  ],
+  "facadeClipBoundary": {
+    "axis": "z",
+    "value": 3.05,
+    "inside": "min",
+    "reason": "storefront panes are the main facade"
+  },
+  "items": [
+    {
+      "index": 0,
+      "sourceIndex": 0,
+      "pickNumber": 1,
+      "display": "wall",
+      "position": [
+        -1.5499999523162842,
+        1.7000000476837158,
+        -2.9160001277923584
+      ],
+      "wallAnchor": [
+        -1.5499999523162842,
+        1.7000000476837158,
+        -2.940000057220459
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 1.2192,
+      "height": 0.3048,
+      "physical": {
+        "width": 1.2192,
+        "height": 0.3048,
+        "unit": "m",
+        "mount": "wood",
+        "status": "owner",
+        "depth": 0.019
+      },
+      "imageWidth": 2400,
+      "imageHeight": 568,
+      "sourceWidth": 3117,
+      "sourceHeight": 738,
+      "roomId": "main",
+      "file": "pick-001.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 1,
+      "sourceIndex": 1,
+      "pickNumber": 2,
+      "display": "wall",
+      "position": [
+        0.0,
+        1.6200000047683716,
+        -2.9030001163482666
+      ],
+      "wallAnchor": [
+        0.0,
+        1.6200000047683716,
+        -2.940000057220459
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 0.6096,
+      "height": 0.6096,
+      "physical": {
+        "width": 0.6096,
+        "height": 0.6096,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "owner",
+        "depth": 0.032,
+        "uvCorners": [
+          [
+            0.186,
+            0.062
+          ],
+          [
+            0.792,
+            0.056
+          ],
+          [
+            0.793,
+            0.948
+          ],
+          [
+            0.191,
+            0.952
+          ]
+        ]
+      },
+      "imageWidth": 2400,
+      "imageHeight": 1637,
+      "sourceWidth": 3081,
+      "sourceHeight": 2102,
+      "roomId": "main",
+      "file": "pick-002.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 2,
+      "sourceIndex": 2,
+      "pickNumber": 7,
+      "display": "wall",
+      "position": [
+        1.5499999523162842,
+        1.7000000476837158,
+        -2.9160001277923584
+      ],
+      "wallAnchor": [
+        1.5499999523162842,
+        1.7000000476837158,
+        -2.940000057220459
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 1.2192,
+      "height": 0.3048,
+      "physical": {
+        "width": 1.2192,
+        "height": 0.3048,
+        "unit": "m",
+        "mount": "wood",
+        "status": "owner",
+        "depth": 0.019
+      },
+      "imageWidth": 2384,
+      "imageHeight": 1436,
+      "sourceWidth": 2384,
+      "sourceHeight": 1436,
+      "roomId": "main",
+      "file": "pick-003.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 3,
+      "sourceIndex": 3,
+      "pickNumber": 9,
+      "display": "wall",
+      "position": [
+        3.9000000953674316,
+        1.6200000047683716,
+        -1.683000087738037
+      ],
+      "wallAnchor": [
+        3.9000000953674316,
+        1.6200000047683716,
+        -1.7200000286102295
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 0.6096,
+      "height": 0.438912,
+      "physical": {
+        "width": 0.6096,
+        "height": 0.438912,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "provisional",
+        "depth": 0.032
+      },
+      "imageWidth": 2250,
+      "imageHeight": 1620,
+      "sourceWidth": 2250,
+      "sourceHeight": 1620,
+      "roomId": "right",
+      "file": "pick-004.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 4,
+      "sourceIndex": 4,
+      "pickNumber": 10,
+      "display": "wall",
+      "position": [
+        -2.615999937057495,
+        1.6399999856948853,
+        -1.600000023841858
+      ],
+      "wallAnchor": [
+        -2.6399998664855957,
+        1.6399999856948853,
+        -1.600000023841858
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ],
+      "width": 1.2192,
+      "height": 0.3048,
+      "physical": {
+        "width": 1.2192,
+        "height": 0.3048,
+        "unit": "m",
+        "mount": "wood",
+        "status": "owner",
+        "depth": 0.019
+      },
+      "imageWidth": 2400,
+      "imageHeight": 325,
+      "sourceWidth": 3752,
+      "sourceHeight": 508,
+      "roomId": "main",
+      "file": "pick-005.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 5,
+      "sourceIndex": 5,
+      "pickNumber": 23,
+      "display": "wall",
+      "position": [
+        -2.6029999256134033,
+        1.5800000429153442,
+        0.05000000074505806
+      ],
+      "wallAnchor": [
+        -2.6399998664855957,
+        1.5800000429153442,
+        0.05000000074505806
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ],
+      "width": 0.9144,
+      "height": 0.9144,
+      "physical": {
+        "width": 0.9144,
+        "height": 0.9144,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "owner",
+        "depth": 0.032
+      },
+      "imageWidth": 1980,
+      "imageHeight": 1980,
+      "sourceWidth": 1980,
+      "sourceHeight": 1980,
+      "roomId": "main",
+      "file": "pick-006.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 6,
+      "sourceIndex": 6,
+      "pickNumber": 24,
+      "display": "wall",
+      "position": [
+        2.6029999256134033,
+        1.5800000429153442,
+        -1.6799999475479126
+      ],
+      "wallAnchor": [
+        2.6399998664855957,
+        1.5800000429153442,
+        -1.6799999475479126
+      ],
+      "normal": [
+        -1,
+        0,
+        0
+      ],
+      "width": 0.9144,
+      "height": 0.9144,
+      "physical": {
+        "width": 0.9144,
+        "height": 0.9144,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "owner",
+        "depth": 0.032
+      },
+      "imageWidth": 2022,
+      "imageHeight": 1986,
+      "sourceWidth": 2022,
+      "sourceHeight": 1986,
+      "roomId": "main",
+      "file": "pick-007.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 7,
+      "sourceIndex": 7,
+      "pickNumber": 28,
+      "display": "hidden",
+      "position": [
+        0,
+        1.65,
+        0
+      ],
+      "wallAnchor": [
+        0,
+        1.65,
+        0
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 0.6096,
+      "height": 0.9144,
+      "physical": {
+        "width": 0.6096,
+        "height": 0.9144,
+        "unit": "m",
+        "mount": "paper",
+        "status": "owner-approximate",
+        "depth": 0.00035
+      },
+      "imageWidth": 1690,
+      "imageHeight": 2400,
+      "sourceWidth": 1950,
+      "sourceHeight": 2770,
+      "roomId": "main",
+      "file": "pick-008.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 8,
+      "sourceIndex": 8,
+      "pickNumber": 36,
+      "display": "hidden",
+      "position": [
+        0,
+        1.65,
+        0
+      ],
+      "wallAnchor": [
+        0,
+        1.65,
+        0
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 0.6096,
+      "height": 0.9144,
+      "physical": {
+        "width": 0.6096,
+        "height": 0.9144,
+        "unit": "m",
+        "mount": "paper",
+        "status": "owner-approximate",
+        "depth": 0.00035
+      },
+      "imageWidth": 1814,
+      "imageHeight": 2400,
+      "sourceWidth": 2069,
+      "sourceHeight": 2738,
+      "roomId": "main",
+      "file": "pick-009.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 9,
+      "sourceIndex": 9,
+      "pickNumber": 64,
+      "display": "hidden",
+      "position": [
+        0,
+        1.65,
+        0
+      ],
+      "wallAnchor": [
+        0,
+        1.65,
+        0
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 0.2286,
+      "height": 0.2794,
+      "physical": {
+        "width": 0.2286,
+        "height": 0.2794,
+        "unit": "m",
+        "mount": "paper",
+        "status": "owner-approximate",
+        "depth": 0.00035
+      },
+      "imageWidth": 1874,
+      "imageHeight": 2400,
+      "sourceWidth": 2482,
+      "sourceHeight": 3178,
+      "roomId": "main",
+      "file": "pick-010.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 10,
+      "sourceIndex": 10,
+      "pickNumber": 65,
+      "display": "hidden",
+      "position": [
+        0,
+        1.65,
+        0
+      ],
+      "wallAnchor": [
+        0,
+        1.65,
+        0
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 0.2286,
+      "height": 0.2794,
+      "physical": {
+        "width": 0.2286,
+        "height": 0.2794,
+        "unit": "m",
+        "mount": "paper",
+        "status": "owner-approximate",
+        "depth": 0.00035
+      },
+      "imageWidth": 1750,
+      "imageHeight": 2400,
+      "sourceWidth": 2322,
+      "sourceHeight": 3184,
+      "roomId": "main",
+      "file": "pick-011.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 11,
+      "sourceIndex": 11,
+      "pickNumber": 67,
+      "display": "hidden",
+      "position": [
+        0,
+        1.65,
+        0
+      ],
+      "wallAnchor": [
+        0,
+        1.65,
+        0
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 0.2286,
+      "height": 0.2794,
+      "physical": {
+        "width": 0.2286,
+        "height": 0.2794,
+        "unit": "m",
+        "mount": "paper",
+        "status": "owner-approximate",
+        "depth": 0.00035
+      },
+      "imageWidth": 1847,
+      "imageHeight": 2400,
+      "sourceWidth": 2209,
+      "sourceHeight": 2871,
+      "roomId": "main",
+      "file": "pick-012.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 12,
+      "sourceIndex": 12,
+      "pickNumber": 78,
+      "display": "hidden",
+      "position": [
+        0,
+        1.65,
+        0
+      ],
+      "wallAnchor": [
+        0,
+        1.65,
+        0
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 0.3048,
+      "height": 0.3048,
+      "physical": {
+        "width": 0.3048,
+        "height": 0.3048,
+        "unit": "m",
+        "mount": "clock",
+        "status": "owner-approximate",
+        "depth": 0.02,
+        "uvBounds": [
+          0.013556618819776715,
+          0.023923444976076555,
+          0.988835725677831,
+          0.9768740031897927
+        ]
+      },
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceWidth": 2152,
+      "sourceHeight": 3095,
+      "roomId": "main",
+      "file": "third-sibling-cutout.png",
+      "placeholder": false
+    },
+    {
+      "index": 13,
+      "sourceIndex": 13,
+      "pickNumber": 101,
+      "display": "hidden",
+      "position": [
+        0,
+        1.65,
+        0
+      ],
+      "wallAnchor": [
+        0,
+        1.65,
+        0
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 0.2794,
+      "height": 0.5292501973164956,
+      "physical": {
+        "width": 0.2794,
+        "height": 0.5292501973164956,
+        "unit": "m",
+        "mount": "paper",
+        "status": "provisional",
+        "depth": 0.00035
+      },
+      "imageWidth": 1267,
+      "imageHeight": 2400,
+      "sourceWidth": 2063,
+      "sourceHeight": 3908,
+      "roomId": "main",
+      "file": "pick-014.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 14,
+      "sourceIndex": 14,
+      "pickNumber": 105,
+      "display": "hidden",
+      "position": [
+        0,
+        1.65,
+        0
+      ],
+      "wallAnchor": [
+        0,
+        1.65,
+        0
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 0.2794,
+      "height": 0.5292501973164956,
+      "physical": {
+        "width": 0.2794,
+        "height": 0.5292501973164956,
+        "unit": "m",
+        "mount": "paper",
+        "status": "provisional",
+        "depth": 0.00035
+      },
+      "imageWidth": 1267,
+      "imageHeight": 2400,
+      "sourceWidth": 2063,
+      "sourceHeight": 3908,
+      "roomId": "main",
+      "file": "pick-015.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 15,
+      "sourceIndex": 15,
+      "pickNumber": 128,
+      "display": "wall",
+      "position": [
+        2.6376497745513916,
+        1.5800000429153442,
+        1.5499999523162842
+      ],
+      "wallAnchor": [
+        2.6399998664855957,
+        1.5800000429153442,
+        1.5499999523162842
+      ],
+      "normal": [
+        -1,
+        0,
+        0
+      ],
+      "width": 0.6096,
+      "height": 0.19685000000000002,
+      "physical": {
+        "width": 0.6096,
+        "height": 0.19685000000000002,
+        "unit": "m",
+        "mount": "paper",
+        "status": "provisional",
+        "depth": 0.00035
+      },
+      "imageWidth": 2400,
+      "imageHeight": 775,
+      "sourceWidth": 2962,
+      "sourceHeight": 957,
+      "roomId": "main",
+      "file": "pick-016.jpg",
+      "placeholder": false
+    },
+    {
+      "index": 16,
+      "sourceIndex": 16,
+      "pickNumber": null,
+      "display": "wall",
+      "position": [
+        -2.629000186920166,
+        1.600000023841858,
+        1.6200000047683716
+      ],
+      "wallAnchor": [
+        -2.640000104904175,
+        1.600000023841858,
+        1.6200000047683716
+      ],
+      "normal": [
+        1,
+        0,
+        0
+      ],
+      "width": 0.8128,
+      "height": 0.8128,
+      "physical": {
+        "width": 0.8128,
+        "height": 0.8128,
+        "unit": "m",
+        "mount": "board",
+        "status": "owner",
+        "depth": 0.006,
+        "depthStatus": "provisional",
+        "uvCorners": [
+          [
+            0.027,
+            0.027
+          ],
+          [
+            0.973,
+            0.027
+          ],
+          [
+            0.973,
+            0.973
+          ],
+          [
+            0.027,
+            0.973
+          ]
+        ],
+        "rectifiedTexture": true
+      },
+      "imageWidth": 1254,
+      "imageHeight": 1254,
+      "sourceWidth": 1380,
+      "sourceHeight": 1360,
+      "roomId": "main",
+      "file": "loretta-gallery-v2.png",
+      "placeholder": false
+    },
+    {
+      "index": 17,
+      "sourceIndex": 17,
+      "pickNumber": null,
+      "display": "wall",
+      "position": [
+        5.269999980926514,
+        1.6200000047683716,
+        -1.6832500286102294
+      ],
+      "wallAnchor": [
+        5.269999980926514,
+        1.6200000047683716,
+        -1.7200000286102295
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "width": 0.6096,
+      "height": 0.508,
+      "physical": {
+        "width": 0.6096,
+        "height": 0.508,
+        "unit": "m",
+        "mount": "board",
+        "status": "owner",
+        "depth": 0.03175,
+        "baseDepth": 0.009525,
+        "depthStatus": "photo-estimate",
+        "baseDepthStatus": "photo-estimate",
+        "relief": "strategy",
+        "uvCorners": [
+          [
+            0.016,
+            0.015
+          ],
+          [
+            0.982,
+            0.015
+          ],
+          [
+            0.982,
+            0.98
+          ],
+          [
+            0.016,
+            0.98
+          ]
+        ],
+        "reconstruction": "Photo-based relief; local contours and unmeasured surface depths are approximations, not a 3D scan.",
+        "rectifiedTexture": true,
+        "flatBoard": true
+      },
+      "imageWidth": 1374,
+      "imageHeight": 1145,
+      "sourceWidth": 5712,
+      "sourceHeight": 4284,
+      "roomId": "right",
+      "file": "strategy-gallery-v2.png",
+      "placeholder": false
+    },
+    {
+      "index": 18,
+      "sourceIndex": 18,
+      "pickNumber": null,
+      "display": "wall",
+      "position": [
+        3.7200000286102295,
+        1.6200000047683716,
+        2.2868999237060548
+      ],
+      "wallAnchor": [
+        3.7200000286102295,
+        1.6200000047683716,
+        2.3299999237060547
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "width": 1.016,
+      "height": 0.762,
+      "physical": {
+        "width": 1.016,
+        "height": 0.762,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "owner",
+        "depth": 0.0381,
+        "baseDepth": 0.034,
+        "depthStatus": "owner",
+        "baseDepthStatus": "photo-estimate",
+        "relief": "america-1",
+        "uvCorners": [
+          [
+            0.024861878453038673,
+            0.03959484346224673
+          ],
+          [
+            0.9668508287292817,
+            0.03959484346224673
+          ],
+          [
+            0.9668508287292817,
+            0.9686924493554327
+          ],
+          [
+            0.024861878453038673,
+            0.9686924493554327
+          ]
+        ],
+        "reconstruction": "Photo-based relief; local contours and unmeasured surface depths are approximations, not a 3D scan.",
+        "rectifiedTexture": true
+      },
+      "imageWidth": 1448,
+      "imageHeight": 1086,
+      "sourceWidth": 5712,
+      "sourceHeight": 4284,
+      "roomId": "right",
+      "file": "america-1-gallery-v2.png",
+      "placeholder": false
+    },
+    {
+      "index": 19,
+      "sourceIndex": 19,
+      "pickNumber": null,
+      "display": "wall",
+      "position": [
+        5.300000190734863,
+        1.6200000047683716,
+        2.223399923706055
+      ],
+      "wallAnchor": [
+        5.300000190734863,
+        1.6200000047683716,
+        2.3299999237060547
+      ],
+      "normal": [
+        0,
+        0,
+        -1
+      ],
+      "width": 1.2192,
+      "height": 0.6096,
+      "physical": {
+        "width": 1.2192,
+        "height": 0.6096,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "owner",
+        "depth": 0.1016,
+        "baseDepth": 0.0254,
+        "depthStatus": "owner-approximate",
+        "baseDepthStatus": "photo-estimate",
+        "relief": "america-2",
+        "uvCorners": [
+          [
+            0.03269447576099211,
+            0.04847801578354005
+          ],
+          [
+            0.9695603156708005,
+            0.04847801578354005
+          ],
+          [
+            0.9695603156708005,
+            0.9301014656144306
+          ],
+          [
+            0.03269447576099211,
+            0.9301014656144306
+          ]
+        ],
+        "reconstruction": "Photo-based relief; local contours and unmeasured surface depths are approximations, not a 3D scan.",
+        "rectifiedTexture": true
+      },
+      "imageWidth": 1774,
+      "imageHeight": 887,
+      "sourceWidth": 5712,
+      "sourceHeight": 4284,
+      "roomId": "right",
+      "file": "america-2-gallery-v2.png",
+      "placeholder": false
+    },
+    {
+      "index": 20,
+      "sourceIndex": 20,
+      "pickNumber": null,
+      "display": "wall",
+      "position": [
+        6.256899833679199,
+        1.6200000047683716,
+        0.0
+      ],
+      "wallAnchor": [
+        6.299999713897705,
+        1.6200000047683716,
+        -0.0
+      ],
+      "normal": [
+        -1,
+        0,
+        0
+      ],
+      "width": 1.2192,
+      "height": 1.2192,
+      "physical": {
+        "width": 1.2192,
+        "height": 1.2192,
+        "depth": 0.0381,
+        "unit": "m",
+        "mount": "canvas",
+        "status": "owner",
+        "depthStatus": "owner"
+      },
+      "imageWidth": 2432,
+      "imageHeight": 2388,
+      "sourceWidth": 2432,
+      "sourceHeight": 2388,
+      "roomId": "right",
+      "file": "stolen.jpg",
+      "placeholder": false
+    }
+  ]
+}

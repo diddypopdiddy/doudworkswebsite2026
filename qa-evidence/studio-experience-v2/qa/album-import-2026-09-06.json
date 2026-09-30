@@ -1,0 +1,172 @@
+[
+  {
+    "src": "audio/happy-birthday-to-me/01-this-is-30.mp3",
+    "sha256": "8e64414636cc31f107a34fcf9c9d278565e68e6497fcea1aa8abbee59c0c543b",
+    "bytes": 1047404
+  },
+  {
+    "src": "audio/happy-birthday-to-me/02-30-flirty.mp3",
+    "sha256": "168ddd5bc7d80947102383845058e1173f98833135a513cacae5e7cd754ac3eb",
+    "bytes": 1397236
+  },
+  {
+    "src": "audio/happy-birthday-to-me/03-30-is-the-new-20.mp3",
+    "sha256": "46e4d914c2ccd484f5e1985d4beb94ef7130faf3885095f98cbd963ff6c61e5c",
+    "bytes": 1308629
+  },
+  {
+    "src": "audio/happy-birthday-to-me/04-age-is-not-a-destination-its-a-journey.mp3",
+    "sha256": "c84553bc2a362f2f2f362a027ef8866c62177e5f53d51d457a94a411fa86f5fd",
+    "bytes": 1281043
+  },
+  {
+    "src": "audio/happy-birthday-to-me/05-dirty-30.mp3",
+    "sha256": "721e1df747a9e9a69231935a829f5b9f098e70bee7df4662ec85281a70be9a18",
+    "bytes": 1536834
+  },
+  {
+    "src": "audio/happy-birthday-to-me/06-it-took-30-years-to-look-this-good.mp3",
+    "sha256": "177e8d9281b20b05e2ad30365386dbcf9eda8d1a0174cb314b5c9999b975b5f7",
+    "bytes": 1205811
+  },
+  {
+    "src": "audio/happy-birthday-to-me/07-bonus-track-magnolia-s-drum-solo.mp3",
+    "sha256": "39d2e82a8b321151882edfcfe0e84eeed8515be99903955528b201c0838b3391",
+    "bytes": 1676851
+  },
+  {
+    "src": "audio/fully-proper/01-1.mp3",
+    "sha256": "95b879309084af4ddf9043feb1599c62f3e95d04ebdcb61e09a1d09d3198b284",
+    "bytes": 1070810
+  },
+  {
+    "src": "audio/fully-proper/02-2.mp3",
+    "sha256": "06986d56f327b7395db62a76222e14648ac18d1b723e4022f1aeb5e3b36bcfaf",
+    "bytes": 1570271
+  },
+  {
+    "src": "audio/fully-proper/03-3.mp3",
+    "sha256": "1cb75fe1d2afde6642debcc49ac6633a099cbcb268542bc95054d1f4765162ed",
+    "bytes": 690467
+  },
+  {
+    "src": "audio/fully-proper/04-4.mp3",
+    "sha256": "e162b555e2e5f85d3561d74a58087e770bf01d5aa99fcb27d2f1b864ca4df287",
+    "bytes": 975933
+  },
+  {
+    "src": "audio/fully-proper/05-5.mp3",
+    "sha256": "ba58bae4d6dabc3f4e25ffb69efad796ee2c7cbb1f558db8f32bbfac1c17bfe7",
+    "bytes": 1855737
+  },
+  {
+    "src": "audio/fully-proper/06-6.mp3",
+    "sha256": "f61c935fd27f3de4395d5ea8c73ada2ac09fa9b53f702481d6e5144dfdcf4e51",
+    "bytes": 1879561
+  },
+  {
+    "src": "audio/fully-proper/07-7.mp3",
+    "sha256": "f62eeee3038cf8dc6a9daedb8a414aa66e57dd9a7e46f4426b84df6356ae4dc2",
+    "bytes": 1665566
+  },
+  {
+    "src": "audio/fully-proper/08-8.mp3",
+    "sha256": "77032a978c81dd06bfdb7510194914555e932fd70276a21b3c7c6bdf02b95edf",
+    "bytes": 2283728
+  },
+  {
+    "src": "audio/fully-proper/09-9.mp3",
+    "sha256": "ec5445f91c17662847601f1d6304695bdf97f04bbfbeadda19c519861f235d8b",
+    "bytes": 1284805
+  },
+  {
+    "src": "audio/fully-proper/10-10.mp3",
+    "sha256": "cd3abcc6fe8dd243ed5242e446b350c3171d1c4301031de2822e64db2a8d81ca",
+    "bytes": 1594095
+  },
+  {
+    "src": "audio/fully-proper/11-11.mp3",
+    "sha256": "f368bbc5f450bd329acef8cb83252db0f7112dddcc920391a505825c577f8629",
+    "bytes": 1784266
+  },
+  {
+    "src": "audio/fully-proper/12-12.mp3",
+    "sha256": "c13d86690257561444053c39ef726ed7128f8ba927cd285ed60ea1e23ee49ba1",
+    "bytes": 1380100
+  },
+  {
+    "src": "audio/fully-proper/13-13.mp3",
+    "sha256": "91a9401b879ce35d606eeff908b8bd5dd94d0119262a5d65cf0b7a45febf9614",
+    "bytes": 547943
+  },
+  {
+    "src": "audio/fully-proper/14-14.mp3",
+    "sha256": "3d8fe9160c89aa97d428b575fbfc3ac1b9dc2e7660587a1c4f11d97fc3f27df1",
+    "bytes": 524119
+  },
+  {
+    "src": "audio/fully-proper/15-15.mp3",
+    "sha256": "64c8b1f77c4014a35096939e623a8b69d0595e8468ae804b89c42c9dce7becee",
+    "bytes": 880639
+  },
+  {
+    "src": "audio/fully-proper/16-16.mp3",
+    "sha256": "0d0d019eb9fa796df4b47cc9cd1593db4dedfd7f58933fa4ecf971dc294c6bd2",
+    "bytes": 1570271
+  },
+  {
+    "src": "audio/right-here-ideas/01-skipping-steps.mp3",
+    "sha256": "088d0f32bce9ca79c772e61c5d5666fad5ac9a674cbcd12b799c43dde37b0601",
+    "bytes": 2757275
+  },
+  {
+    "src": "audio/right-here-ideas/02-land-of-those-people.mp3",
+    "sha256": "e250f058b0d2e51fbea77785b408dbc5e9a962afe0f5b27ca0e7bdd91c7238ba",
+    "bytes": 3852746
+  },
+  {
+    "src": "audio/right-here-ideas/03-day-old-watermelon.mp3",
+    "sha256": "98901d378e6ec0672ed7da7c6b940c93a5f40d089e65cdbd6b520fcf867e685c",
+    "bytes": 1546448
+  },
+  {
+    "src": "audio/right-here-ideas/04-wake-walking.mp3",
+    "sha256": "1e22fd95a7a15af5bf4517be9832e15134bc82ced128023ee6f251f3811ee148",
+    "bytes": 1736619
+  },
+  {
+    "src": "audio/right-here-ideas/05-too-times.mp3",
+    "sha256": "cf61f0378cf3c2ce205206dab8713d7558585a474d5eb8f227b3859f5d6e0eb9",
+    "bytes": 2069732
+  },
+  {
+    "src": "audio/right-here-ideas/06-taking-shadows.mp3",
+    "sha256": "73f9deab489fb708830b1d0d5cc890bfd11a9b8b772f4c78c4d65f8b78344d32",
+    "bytes": 1736619
+  },
+  {
+    "src": "audio/right-here-ideas/07-nap.mp3",
+    "sha256": "baf78e6e58d7374451a54d5d7af004e4c351974f214b6673b69fee626710617f",
+    "bytes": 1403923
+  },
+  {
+    "src": "audio/right-here-ideas/08-protest-yourself.mp3",
+    "sha256": "119541b2c3e0509832a7a1bd93b652e704919c6cac92465fc09b125a4341cdd8",
+    "bytes": 3210761
+  },
+  {
+    "src": "audio/right-here-ideas/09-stealing-phrases.mp3",
+    "sha256": "cda148b4659aa5a8d574428cb38d50f74b29e1a3d7238d13a63d2288f13e6bab",
+    "bytes": 1950614
+  },
+  {
+    "src": "audio/right-here-ideas/10-magnolia.mp3",
+    "sha256": "0ed593c4274d2a7b479bd33a74133bf93e12c4006662774f2046eb2ca98ebe64",
+    "bytes": 1854066
+  },
+  {
+    "src": "audio/right-here-ideas/11-pace.mp3",
+    "sha256": "22d659f7a3e08f365142a381e17e29916c6b55839dc3bb1f1ed5125455e9a943",
+    "bytes": 1734947
+  }
+]

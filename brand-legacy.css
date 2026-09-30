@@ -1,0 +1,239 @@
+@font-face {
+  font-family: "Inter";
+  src: url("media/brand/InterVariable.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --paper: #fbfaf7;
+  --paper-deep: #f1eee6;
+  --surface: rgba(255, 255, 255, 0.86);
+  --surface-strong: #ffffff;
+  --ink: #171b1f;
+  --ink-soft: #3f454a;
+  --ink-faint: #646b70;
+  --panel: #171b1f;
+  --panel-soft: #31373c;
+  --accent: #3157c8;
+  --accent-strong: #171b1f;
+  --accent-soft: #e6eafa;
+  --accent-mist: rgba(49, 87, 200, 0.07);
+  --sage: #3157c8;
+  --sage-mist: rgba(49, 87, 200, 0.08);
+  --canvas: #ffffff;
+  --band: #f1eee6;
+  --card-surface: #ffffff;
+  --card-hover: #fbfaf7;
+  --line-soft: rgba(100, 107, 112, 0.16);
+  --line-strong: rgba(100, 107, 112, 0.28);
+  --border: rgba(100, 107, 112, 0.16);
+  --border-strong: rgba(100, 107, 112, 0.28);
+  --shadow: none;
+  --shadow-soft: none;
+  --display-font: "Inter", Arial, sans-serif;
+}
+
+body {
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "Inter", Arial, sans-serif;
+}
+
+body::before {
+  opacity: 0.32;
+  background:
+    linear-gradient(rgba(49, 87, 200, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(49, 87, 200, 0.03) 1px, transparent 1px);
+  background-size: 88px 88px;
+}
+
+.site-shell h1,
+.site-shell h2,
+.site-shell h3,
+.site-shell .brand-text::before,
+.site-shell .site-nav a {
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.site-shell h1,
+.site-shell h2,
+.site-shell h3 {
+  font-weight: 700;
+  letter-spacing: -0.022em;
+}
+
+.site-header,
+.site-header.is-scrolled {
+  position: sticky;
+  background: rgba(251, 250, 247, 0.96);
+  box-shadow: none;
+}
+
+.header-inner {
+  padding: 0.76rem 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 4px solid #3157c8;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.brand {
+  gap: 0.8rem;
+}
+
+.brand-lockup {
+  display: block;
+  width: 142px;
+  height: 35px;
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+
+.brand-logo,
+.brand-logo-dark {
+  display: block;
+  width: 142px;
+  height: 35px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.brand-logo-light {
+  display: none;
+}
+
+.brand-text::before {
+  display: none;
+  content: none;
+}
+
+.brand-text small {
+  color: var(--ink-faint);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.site-nav {
+  gap: 0.45rem;
+}
+
+.site-nav a {
+  color: var(--ink-faint);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  border-radius: 0;
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible,
+.site-nav a.is-active {
+  color: var(--ink);
+  background: rgba(49, 87, 200, 0.08);
+}
+
+.site-nav .nav-cta,
+.site-nav .nav-cta:hover,
+.site-nav .nav-cta:focus-visible,
+.site-nav .nav-cta.is-active {
+  color: #ffffff;
+  background: #171b1f;
+  border-color: #171b1f;
+}
+
+.hero-home,
+.page-hero {
+  background: var(--paper);
+}
+
+.page-hero::before {
+  background: linear-gradient(
+    120deg,
+    rgba(251, 250, 247, 0.99) 0%,
+    rgba(251, 250, 247, 0.94) 58%,
+    rgba(49, 87, 200, 0.12) 100%
+  );
+}
+
+.eyebrow {
+  color: #3157c8;
+}
+
+.button,
+.button-primary,
+.button-secondary,
+.card,
+.service-card,
+.feature-card,
+.proof-card,
+.quote-card,
+.contact-card,
+.form-card {
+  box-shadow: none;
+}
+
+.button-primary {
+  color: #ffffff;
+  background: #171b1f;
+  border-color: #171b1f;
+}
+
+.button-primary:hover,
+.button-primary:focus-visible {
+  color: #ffffff;
+  background: #3157c8;
+  border-color: #3157c8;
+}
+
+.button-secondary {
+  color: #171b1f;
+  background: #ffffff;
+  border-color: #d6d8d6;
+}
+
+.page-hero-copy h1,
+.hero-home h1 {
+  color: #171b1f;
+}
+
+.section-kicker,
+.step-number,
+.card-eyebrow,
+.meta-label {
+  color: #3157c8;
+}
+
+.site-footer {
+  border-top-color: #d6d8d6;
+}
+
+@media (max-width: 780px) {
+  .header-inner {
+    padding-inline: 0;
+  }
+
+  .brand-lockup,
+  .brand-logo,
+  .brand-logo-dark {
+    width: 126px;
+    height: 31px;
+  }
+
+  .brand-text small {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

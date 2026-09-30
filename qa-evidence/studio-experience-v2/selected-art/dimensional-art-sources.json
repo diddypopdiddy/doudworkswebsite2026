@@ -1,0 +1,82 @@
+[
+  {
+    "source": "red.JPG",
+    "file": "strategy.jpg",
+    "sha256": "a846e7fc91e846d2898fd3bd0ffc0226f085b42597494fea35079eaf3673c918",
+    "width": 5712,
+    "height": 4284,
+    "orientation": 1,
+    "displayWidth": 5712,
+    "displayHeight": 4284
+  },
+  {
+    "source": "red detail 1.JPG",
+    "file": "strategy-detail-1.jpg",
+    "sha256": "91990a5348291a70a438ef3944885c88b45d51893664fec59ea96e0234a3921e",
+    "width": 5712,
+    "height": 4284,
+    "orientation": 6,
+    "displayWidth": 4284,
+    "displayHeight": 5712
+  },
+  {
+    "source": "red detail 2.JPG",
+    "file": "strategy-detail-2.jpg",
+    "sha256": "ce4c9965be4c6019dcc89bf132726f54db6536cea7dd5393e82ac37c96ecbdbf",
+    "width": 5712,
+    "height": 4284,
+    "orientation": 6,
+    "displayWidth": 4284,
+    "displayHeight": 5712
+  },
+  {
+    "source": "flag 1.JPG",
+    "file": "america-1.jpg",
+    "sha256": "ea1b59097709e384da2b8d6cbbe257e658a9d4ec1ebda5f24f4f7e6670487dc5",
+    "width": 5712,
+    "height": 4284,
+    "orientation": 1,
+    "displayWidth": 5712,
+    "displayHeight": 4284
+  },
+  {
+    "source": "flag 1 detail.JPG",
+    "file": "america-1-detail.jpg",
+    "sha256": "d5092e06fb68878f3473a6e4582a356190371049f20c049e62c3699d3deb2be6",
+    "width": 5712,
+    "height": 4284,
+    "orientation": 6,
+    "displayWidth": 4284,
+    "displayHeight": 5712
+  },
+  {
+    "source": "flag 2.JPG",
+    "file": "america-2.jpg",
+    "sha256": "f05c49eae089632e0264d9c63279e411c0db7c2bef7b2fc82c62f0a2d87fb39c",
+    "width": 5712,
+    "height": 4284,
+    "orientation": 1,
+    "displayWidth": 5712,
+    "displayHeight": 4284
+  },
+  {
+    "source": "flag 2 detial.JPG",
+    "file": "america-2-detail-1.jpg",
+    "sha256": "a3e4ef937142ab4ae3d00d4219da7c5c10609b949bb3f957557d6a1d870310e9",
+    "width": 5712,
+    "height": 4284,
+    "orientation": 1,
+    "displayWidth": 5712,
+    "displayHeight": 4284
+  },
+  {
+    "source": "flag 2 detail.JPG",
+    "file": "america-2-detail-2.jpg",
+    "sha256": "da6e77c96a6a32f8acd59241da57d2bd2fc6b8393bc4b7987b1dc5bbee314d77",
+    "width": 5712,
+    "height": 4284,
+    "orientation": 1,
+    "displayWidth": 5712,
+    "displayHeight": 4284
+  }
+]

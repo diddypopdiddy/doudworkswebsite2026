@@ -1,0 +1,23 @@
+{
+  "name": "Vince Doud studio room layered render",
+  "canvas": { "width": 1536, "height": 1024 },
+  "registration": { "x": 0, "y": 0 },
+  "source": "source/studio-room-reference-1536x1024.png",
+  "layers": [
+    { "file": "layers/00-room-shell.png", "label": "Room shell", "group": "architecture", "defaultVisible": true },
+    { "file": "layers/01-rugs.png", "label": "Rugs", "group": "floor", "defaultVisible": true },
+    { "file": "layers/14-contact-shadows.png", "label": "Contact shadows", "group": "lighting", "defaultVisible": true },
+    { "file": "layers/02-art-station.png", "label": "Art station", "group": "creative", "defaultVisible": true },
+    { "file": "layers/03-stereo-console.png", "label": "Stereo console", "group": "creative", "defaultVisible": true },
+    { "file": "layers/04-bookshelf.png", "label": "Bookshelf", "group": "creative", "defaultVisible": true },
+    { "file": "layers/05-whiteboard.png", "label": "Whiteboard", "group": "wall", "defaultVisible": true },
+    { "file": "layers/06-skateboards.png", "label": "Skateboards", "group": "wall", "defaultVisible": true },
+    { "file": "layers/07-desk-station.png", "label": "Desk station", "group": "work", "defaultVisible": true },
+    { "file": "layers/08-drum-kit.png", "label": "Drum kit", "group": "music", "defaultVisible": true },
+    { "file": "layers/09-keyboard.png", "label": "Keyboard", "group": "music", "defaultVisible": true },
+    { "file": "layers/10-organ.png", "label": "Organ", "group": "music", "defaultVisible": true },
+    { "file": "layers/11-guitar-rig.png", "label": "Guitar rig", "group": "music", "defaultVisible": true },
+    { "file": "layers/12-camera-tripod.png", "label": "Camera + tripod", "group": "production", "defaultVisible": true },
+    { "file": "layers/13-softbox.png", "label": "Softbox", "group": "production", "defaultVisible": true }
+  ]
+}

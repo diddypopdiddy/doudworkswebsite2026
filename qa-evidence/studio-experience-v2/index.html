@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en" data-app="vince-studio-experience-v2">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Vince Doud's interactive studio: teaching, video, AI, music, and useful things in progress."
+    />
+    <meta name="theme-color" content="#171b1f" />
+    <title>Vince Doud | Interactive Studio</title>
+    <link rel="icon" href="vd-utility-avatar.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css?v=20260930-sk8maps-reel-v2" />
+    <link rel="stylesheet" href="gallery-walk/gallery.css?v=final-gallery-v6-20260927" />
+    <link rel="stylesheet" href="video-library/library.css?v=queue-sync-v1" />
+    <script type="module" src="script.js?v=20260930-sk8maps-reel-v2"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#studio-scene">Skip to the studio</a>
+
+    <header class="site-header" aria-label="Primary navigation">
+      <button class="brand-button" type="button" data-home aria-label="Studio homepage">
+        <img src="vince-doud-name-only.png" alt="Vince Doud" />
+      </button>
+
+      <nav class="site-nav" aria-label="Portfolio sections">
+        <div class="projects-nav">
+          <button type="button" data-projects-toggle aria-expanded="false" aria-controls="projects-menu">Projects</button>
+          <div class="projects-menu" id="projects-menu" hidden aria-label="Project categories">
+            <button type="button" data-page="projects" data-category="art">Art</button>
+            <button type="button" data-page="projects" data-category="music">Music</button>
+            <button type="button" data-page="projects" data-category="video">Video</button>
+            <button type="button" data-page="projects" data-category="teaching">Teaching</button>
+            <button type="button" data-page="projects" data-category="ai">AI</button>
+            <button type="button" data-page="projects" data-category="custom">Custom Builds</button>
+          </div>
+        </div>
+        <button type="button" data-page="about">About</button>
+        <button type="button" data-page="contact">Contact</button>
+      </nav>
+
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-menu">
+        <span>Explore</span>
+        <svg aria-hidden="true" viewBox="0 0 20 20"><path d="M3 6h14M3 10h14M3 14h14" /></svg>
+      </button>
+    </header>
+
+    <div class="mobile-menu" id="mobile-menu" hidden>
+      <button type="button" data-page="projects" data-category="art">Art</button>
+      <button type="button" data-page="projects" data-category="music">Music</button>
+      <button type="button" data-page="projects" data-category="video">Video</button>
+      <button type="button" data-page="projects" data-category="teaching">Teaching</button>
+      <button type="button" data-page="projects" data-category="ai">AI</button>
+      <button type="button" data-page="projects" data-category="custom">Custom Builds</button>
+      <button type="button" data-page="about">About</button>
+      <button type="button" data-page="contact">Contact</button>
+    </div>
+
+    <main class="room-app" id="studio-scene" tabindex="-1">
+      <h1 class="sr-only">Vince Doud’s studio</h1>
+      <div class="room-viewport" aria-label="Interactive bird's-eye view of Vince Doud's creative studio">
+        <div class="room-world" id="room-world">
+          <img
+            class="room-image"
+            src="master-studio-room-cartoon-v3-thin-contours.png"
+            alt="A bird's-eye studio room with Loretta on the art table, a record console, books, a handwritten daily lesson whiteboard, skateboards, music gear, drum kit, keyboard, production desk, camera, and softbox lighting."
+          />
+
+          <div class="room-highlights" aria-hidden="true">
+            <img class="room-highlight room-highlight--art" src="highlight-pack/overlay-teaching.png" alt="" />
+            <img class="room-highlight room-highlight--teaching-bookshelf" src="highlight-pack/overlay-work.png" alt="" />
+            <img class="room-highlight room-highlight--teaching-whiteboard" src="highlight-pack/overlay-about.png" alt="" />
+            <img class="room-highlight room-highlight--music" src="highlight-pack/overlay-music.png" alt="" />
+            <img class="room-highlight room-highlight--ai" src="highlight-pack/overlay-ai.png" alt="" />
+            <img class="room-highlight room-highlight--video" src="highlight-pack/overlay-video.png" alt="" />
+          </div>
+
+          <button class="hotspot hotspot--art" type="button" data-page="projects" data-category="art" data-highlight="art" aria-label="Explore Art through the art station">
+            <span class="sr-only">Art</span>
+          </button>
+          <button class="hotspot hotspot--teaching-bookshelf" type="button" data-page="projects" data-category="teaching" data-highlight="teaching" aria-label="Explore Teaching through the bookshelf">
+            <span class="sr-only">Teaching</span>
+          </button>
+          <button class="hotspot hotspot--teaching-whiteboard" type="button" data-page="projects" data-category="teaching" data-highlight="teaching" aria-label="Explore Teaching through the whiteboard">
+            <span class="sr-only">Teaching</span>
+          </button>
+          <button class="hotspot hotspot--music" type="button" data-page="projects" data-category="music" data-highlight="music" aria-label="Explore Music projects through the drum kit and keyboard">
+            <span class="sr-only">Music and making</span>
+          </button>
+          <button class="hotspot hotspot--ai" type="button" data-page="projects" data-category="ai" data-highlight="ai" aria-label="Explore AI projects through the production desk">
+            <span class="sr-only">AI and teacher tools</span>
+          </button>
+          <button class="hotspot hotspot--video" type="button" data-page="projects" data-category="video" data-highlight="video" aria-label="Explore Video projects through the camera and tripod">
+            <span class="sr-only">Video</span>
+          </button>
+          <span class="object-label object-label--art" data-object-label="art" aria-hidden="true">Art <b>·</b> Enter the gallery</span>
+          <span class="object-label object-label--music" data-object-label="music" aria-hidden="true">Music <b>·</b> Listen</span>
+          <span class="object-label object-label--teaching" data-object-label="teaching" aria-hidden="true">Teaching <b>·</b> Explore resources</span>
+          <span class="object-label object-label--ai" data-object-label="ai" aria-hidden="true">AI <b>·</b> Explore tools</span>
+          <span class="object-label object-label--video" data-object-label="video" aria-hidden="true">Video <b>·</b> View projects</span>
+        </div>
+      </div>
+
+      <div class="scene-controls" aria-label="Scene controls">
+        <button class="sound-toggle" type="button" aria-pressed="false" title="Toggle subtle interface sound">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 9v6h4l5 4V5L9 9H5Zm12.5 1.1a3 3 0 0 1 0 3.8M19.8 7.8a7 7 0 0 1 0 8.4" /></svg>
+          <span>Sound off</span>
+        </button>
+      </div>
+    </main>
+
+    <dialog class="subpage-shell" id="subpage-shell" aria-labelledby="subpage-title">
+      <header class="space-header">
+        <button class="space-home" type="button" data-home aria-label="Studio homepage"><img src="vince-doud-name-only.png" alt="Vince Doud" /></button>
+        <div class="space-tools">
+          <details class="space-explore">
+            <summary>Explore</summary>
+            <nav aria-label="Explore the studio">
+              <button type="button" data-space="art">Art</button>
+              <button type="button" data-space="music">Music</button>
+              <button type="button" data-space="video">Video</button>
+              <button type="button" data-space="teaching">Teaching</button>
+              <button type="button" data-space="ai">AI</button>
+              <button type="button" data-space="custom">Custom Builds</button>
+              <button type="button" data-space="about">About</button>
+              <button type="button" data-space="contact">Contact</button>
+            </nav>
+          </details>
+          <button type="button" data-close-subpage>← Back to studio</button>
+        </div>
+      </header>
+      <div class="space-context" aria-hidden="true"><span id="space-number"></span><p id="space-caption"></p></div>
+      <section class="subpage-panel" id="subpage-panel"><div id="subpage-content"></div></section>
+      <div class="mini-player" data-mini hidden></div>
+    </dialog>
+    <div class="mini-player" data-mini hidden></div>
+    <audio id="studio-audio" preload="metadata"></audio>
+    <noscript><p class="no-script">Turn on JavaScript to explore the studio. You can also <a href="https://diddypopdiddy.bandcamp.com/">listen on Bandcamp</a> or <a href="mailto:hello@vincedoud.com">contact Vince</a>.</p></noscript>
+
+    <div class="sr-only" aria-live="polite" id="live-region"></div>
+  </body>
+</html>

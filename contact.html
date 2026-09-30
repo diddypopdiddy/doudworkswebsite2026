@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact | Vince Doud</title>
+    <meta name="description" content="Contact Vince Doud to compare notes, share an idea, or make something useful." />
+    <meta name="theme-color" content="#090b0d" />
+    <link rel="icon" href="media/brand/vd-utility-avatar.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="portfolio.css?v=archive-room-4" />
+    <script src="script.js?v=archive-room-4" defer></script>
+  </head>
+  <body data-page="contact">
+    <a class="skip-link" href="#main">Skip to contact</a>
+    <div class="room-app room-app--overlay">
+      <div class="room-background" aria-hidden="true"></div>
+      <header class="room-header">
+        <a class="back-link" href="index.html">←&nbsp;&nbsp; Home</a>
+        <nav class="room-nav" aria-label="Primary"><a href="projects.html">Projects</a><a href="about.html">About</a></nav>
+        <details class="mobile-nav"><summary>Explore</summary><nav aria-label="Mobile navigation"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="about.html">About</a></nav></details>
+      </header>
+
+      <main id="main" class="archive-main">
+        <section class="archive-window archive-window--compact" aria-labelledby="contact-title">
+          <p class="archive-overline">Contact</p>
+          <h1 id="contact-title" class="archive-title">Let’s compare notes.</h1>
+          <p class="archive-subtitle">A sentence or two is plenty.</p>
+          <div class="contact-layout">
+            <div class="contact-direct">
+              <p>Reach out to share a classroom idea, ask about a project, or start a practical collaboration.</p>
+              <a href="mailto:hello@vincedoud.com">hello@vincedoud.com</a>
+              <a href="https://www.youtube.com/@vincedoud1/videos" target="_blank" rel="noopener">YouTube ↗</a>
+            </div>
+            <form class="contact-form" data-contact-form action="mailto:hello@vincedoud.com" method="get">
+              <label>Name<input type="text" name="name" autocomplete="name" required /></label>
+              <label>Your email<input type="email" name="email" autocomplete="email" required /></label>
+              <label>What are you working on?<textarea name="message" required></textarea></label>
+              <label class="visually-hidden">Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+              <button class="contact-submit" type="submit">Open email draft →</button>
+              <p class="form-status" data-contact-status role="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
