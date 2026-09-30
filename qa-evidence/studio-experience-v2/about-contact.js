@@ -1,3 +1,4 @@
+let contactDraft={name:"",email:"",message:""};
 export function renderInfo(page,subpageContent) {
 function renderAbout() {
   subpageContent.innerHTML = `
@@ -39,13 +40,18 @@ function renderContact() {
           <label>Your email<input type="email" name="email" autocomplete="email" maxlength="254" required /></label>
           <label>What are you working on?<textarea name="message" maxlength="6000" required></textarea></label>
           <button type="submit">Open email draft <span aria-hidden="true">→</span></button>
-          <p class="form-status" role="status" aria-live="polite"></p>
+          <p class="form-status" role="status" aria-live="polite">Your email app opens a draft for you to review and send.</p>
         </form>
       </div>
     </div>
   `;
 
   const contactForm = subpageContent.querySelector("#contact-form");
+  for(const [key,value] of Object.entries(contactDraft))contactForm.elements.namedItem(key).value=value;
+  contactForm.addEventListener("input",event=>{
+    const field=event.target;
+    if(field.name in contactDraft){contactDraft[field.name]=field.value;field.setCustomValidity(field.value&&!field.value.trim()?"Please enter a message or name.":"");}
+  });
   contactForm.addEventListener("submit", (event) => {
     event.preventDefault();
     const formData = new FormData(contactForm);
@@ -54,7 +60,7 @@ function renderContact() {
     const message = formData.get("message").toString().trim();
     const subject = encodeURIComponent(`Website note from ${name}`);
     const body = encodeURIComponent(`${message}\n\nFrom: ${name}\nEmail: ${email}`);
-    contactForm.querySelector(".form-status").textContent = "Opening your email app…";
+    contactForm.querySelector(".form-status").textContent = "Your email draft is ready. Review it in your email app before sending.";
     window.location.href = `mailto:hello@vincedoud.com?subject=${subject}&body=${body}`;
   });
 }

@@ -4,13 +4,13 @@ export function nextQueueVideo(videos, id, failed = new Set()) {
  if (start < 0) return null;
  return videos.slice(start + 1).find(video => !failed.has(video.id)) || null;
 }
-export function playbackEvents({isCurrent, onReady, onEnded, onError, onBlocked}) {
+export function playbackEvents({isCurrent, onReady, onEnded, onError, onBlocked, onPlaying}) {
  let played = false, settled = false;
  return {
   onReady(event) { if (isCurrent()) onReady(event); },
   onStateChange(event) {
    if (!isCurrent() || settled) return;
-   if (event.data === 1) played = true;
+   if (event.data === 1) {played = true;onPlaying?.(event);}
    if (event.data === 0 && played) { settled = true; onEnded(); }
   },
   onError(event) {

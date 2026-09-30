@@ -1,3 +1,11 @@
+# Current review — September 30, 2026
+
+See `../../STUDIO_DRAFT_REVIEW.md` for the polished candidate, tested behavior and release route. Source preview: http://127.0.0.1:8000/qa-evidence/studio-experience-v2/ . Root runtime preview: http://127.0.0.1:8001/ . Production remains unchanged.
+
+Current: 13 artwork works across two rooms, 91 songs across 10 albums, 66 video catalog entries with explicit YouTube fallback, shared navigation and accurate WIP/staff-access labels.
+
+The original development notes below are historical; counts, placeholders and local-link descriptions may be superseded.
+
 # Studio experience v2 — local review
 
 Built September 5, 2026; albums and guided gallery added September 6; walkable gallery September 7. Local only; no deployment or root-site replacement.

@@ -10,10 +10,10 @@
     <meta name="theme-color" content="#171b1f" />
     <title>Vince Doud | Interactive Studio</title>
     <link rel="icon" href="vd-utility-avatar.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="styles.css?v=20260927-ai-teaching" />
+    <link rel="stylesheet" href="styles.css?v=20260930-polish-v1" />
     <link rel="stylesheet" href="gallery-walk/gallery.css?v=final-gallery-v6-20260927" />
     <link rel="stylesheet" href="video-library/library.css?v=queue-sync-v1" />
-    <script type="module" src="script.js?v=20260927-ai-teaching-queue-sync-v1"></script>
+    <script type="module" src="script.js?v=20260930-polish-v1"></script>
   </head>
   <body>
     <a class="skip-link" href="#studio-scene">Skip to the studio</a>
@@ -46,17 +46,18 @@
     </header>
 
     <div class="mobile-menu" id="mobile-menu" hidden>
-      <button type="button" data-page="projects" data-category="music">Music</button>
       <button type="button" data-page="projects" data-category="art">Art</button>
+      <button type="button" data-page="projects" data-category="music">Music</button>
+      <button type="button" data-page="projects" data-category="video">Video</button>
       <button type="button" data-page="projects" data-category="teaching">Teaching</button>
       <button type="button" data-page="projects" data-category="ai">AI</button>
-      <button type="button" data-page="projects" data-category="video">Video</button>
       <button type="button" data-page="projects" data-category="custom">Custom Builds</button>
       <button type="button" data-page="about">About</button>
       <button type="button" data-page="contact">Contact</button>
     </div>
 
     <main class="room-app" id="studio-scene" tabindex="-1">
+      <h1 class="sr-only">Vince Doud’s studio</h1>
       <div class="room-viewport" aria-label="Interactive bird's-eye view of Vince Doud's creative studio">
         <div class="room-world" id="room-world">
           <img
@@ -110,8 +111,23 @@
 
     <dialog class="subpage-shell" id="subpage-shell" aria-labelledby="subpage-title">
       <header class="space-header">
-        <img src="vince-doud-name-only.png" alt="Vince Doud" />
-        <button type="button" data-close-subpage>← Back to studio</button>
+        <button class="space-home" type="button" data-home aria-label="Studio homepage"><img src="vince-doud-name-only.png" alt="Vince Doud" /></button>
+        <div class="space-tools">
+          <details class="space-explore">
+            <summary>Explore</summary>
+            <nav aria-label="Explore the studio">
+              <button type="button" data-space="art">Art</button>
+              <button type="button" data-space="music">Music</button>
+              <button type="button" data-space="video">Video</button>
+              <button type="button" data-space="teaching">Teaching</button>
+              <button type="button" data-space="ai">AI</button>
+              <button type="button" data-space="custom">Custom Builds</button>
+              <button type="button" data-space="about">About</button>
+              <button type="button" data-space="contact">Contact</button>
+            </nav>
+          </details>
+          <button type="button" data-close-subpage>← Back to studio</button>
+        </div>
       </header>
       <div class="space-context" aria-hidden="true"><span id="space-number"></span><p id="space-caption"></p></div>
       <section class="subpage-panel" id="subpage-panel"><div id="subpage-content"></div></section>
@@ -119,7 +135,7 @@
     </dialog>
     <div class="mini-player" data-mini hidden></div>
     <audio id="studio-audio" preload="metadata"></audio>
-    <noscript><p class="no-script">Turn on JavaScript to explore the room, or <a href="../../projects.html">browse the project index</a>.</p></noscript>
+    <noscript><p class="no-script">Turn on JavaScript to explore the studio. You can also <a href="https://diddypopdiddy.bandcamp.com/">listen on Bandcamp</a> or <a href="mailto:hello@vincedoud.com">contact Vince</a>.</p></noscript>
 
     <div class="sr-only" aria-live="polite" id="live-region"></div>
   </body>

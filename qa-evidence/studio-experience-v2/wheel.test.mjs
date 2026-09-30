@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {angleDelta,wheelStep,clampIndex,formatTime} from './wheel.mjs';
+const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-9,`${a} ≠ ${b}`);
+test('clockwise crossing the seam stays a small positive movement',()=>near(angleDelta(Math.PI-.05,-Math.PI+.05),.1));
+test('counterclockwise crossing the seam stays negative',()=>near(angleDelta(-Math.PI+.05,Math.PI-.05),-.1));
+test('small pointer moves accumulate into one scroll step',()=>{let r=0,steps=0;for(let i=0;i<4;i++){const next=wheelStep(r,.1);r=next.remainder;steps+=next.steps;}assert.equal(steps,1);near(r,.06);});
+test('direction reversal cancels partial movement',()=>{const first=wheelStep(0,.2);const second=wheelStep(first.remainder,-.2);assert.equal(second.steps,0);near(second.remainder,0);});
+test('quick circular gesture produces multiple steps and preserves remainder',()=>{const next=wheelStep(0,-1.5);assert.equal(next.steps,-4);near(next.remainder,-.14);});
+test('menu selection clamps at both ends',()=>{assert.equal(clampIndex(-2,3),0);assert.equal(clampIndex(12,3),2);assert.equal(clampIndex(1,3),1);});
+test('unloaded or invalid audio times have readable fallbacks',()=>{assert.equal(formatTime(NaN),'0:00');assert.equal(formatTime(Infinity),'0:00');assert.equal(formatTime(-1),'0:00');assert.equal(formatTime(125.8),'2:05');});

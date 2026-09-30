@@ -29,7 +29,8 @@ export const projectCategories = {
         name: "Write with AI",
         summary: "A two-round writing activity for examining how AI changes the work. Write, review the conversation, discuss the choices, then try again and compare how much of the thinking and revision remains your own.",
         highlights: ["Make a first attempt with AI support.", "Review the conversation and discuss authorship.", "Try a second round, revise, and compare your decisions."],
-        status: "Classroom writing activity",
+        status: "Work in progress · Writing activity",
+        accessNote: "Live AI responses are still being prepared.",
         localNote: "The live AI connection needs configuration before classroom use.",
         action: "Open the activity",
         href: "https://write-with-ai-vince-doud.diddypopdiddy.chatgpt.site",
@@ -67,10 +68,10 @@ export const projectCategories = {
         name: "The Moving Image",
         summary: "An interactive video-production textbook that connects reading with practice. Move from computer and file foundations through film history, camera language, editing, lighting, and sound, then bring those decisions into a production project.",
         highlights: ["Read connected chapters and try focused practice tools.", "Explore framing, continuity, editing, lighting, and sound.", "Develop a project with portable plans and evidence of the process."],
-        status: "Interactive digital textbook · In development",
+        status: "Work in progress · Interactive textbook",
         action: "Open the textbook",
         localHref: "http://localhost:4210/",
-        accessNote: "The latest edition is currently available for local review.",
+        accessNote: "A new edition is in development. Public release is being prepared.",
         newTab: true
       },
       {
@@ -91,7 +92,9 @@ export const projectCategories = {
         id: "dry-eye-clinical-support",
         name: "Dry Eye Clinical Decision Support",
         summary: "De-identified clinical decision support built around deterministic rules, doctor review, and staff voice practice.",
-        status: "Hosted clinical platform",
+        status: "Internal clinical platform · Staff access required",
+        action: "Staff sign-in",
+        accessNote: "A project overview of an internal tool. The platform requires authorized staff access.",
         href: "https://premier-eye-clinical-platform.diddypopdiddy.chatgpt.site",
         newTab: true
       },

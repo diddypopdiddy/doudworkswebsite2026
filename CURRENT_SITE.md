@@ -1,6 +1,10 @@
 # Current Website State
 
-Updated: 2026-09-27. Active candidate remains local and unpublished.
+Updated: 2026-09-30. Active candidate is backed up and polished on a GitHub draft branch; production is unchanged.
+
+See `STUDIO_DRAFT_REVIEW.md` for the current verified state, previews, limitations and publication route. September 27 sections below are historical and may describe superseded behavior.
+
+Current public project links are primary on all hosts. Registered local review links appear only with `?local=1` on loopback. The current gallery displays 13 artworks in two rooms; the library has 91 songs in 10 albums. The shared Explore menu reaches every space. The validated root-hosted runtime package is `.release/studio-review/`.
 
 
 ## AI and Teaching refresh — September 27

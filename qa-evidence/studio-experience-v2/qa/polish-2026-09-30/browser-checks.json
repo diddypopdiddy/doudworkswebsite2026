@@ -1,0 +1,461 @@
+{
+  "date": "2026-09-30",
+  "preview": "http://127.0.0.1:8001/",
+  "checks": [
+    {
+      "name": "Escape closes Explore before gallery",
+      "passed": true
+    },
+    {
+      "name": "gallery retains 13 visible works",
+      "passed": true
+    },
+    {
+      "name": "Escape closes artwork before leaving Art",
+      "passed": true
+    },
+    {
+      "name": "room route arrives in Flag room",
+      "passed": true
+    },
+    {
+      "name": "return route arrives in Main room",
+      "passed": true
+    },
+    {
+      "name": "shared menu opens ai",
+      "passed": true
+    },
+    {
+      "name": "menu closes after ai",
+      "passed": true
+    },
+    {
+      "name": "shared menu opens teaching",
+      "passed": true
+    },
+    {
+      "name": "menu closes after teaching",
+      "passed": true
+    },
+    {
+      "name": "shared menu opens custom",
+      "passed": true
+    },
+    {
+      "name": "menu closes after custom",
+      "passed": true
+    },
+    {
+      "name": "shared menu opens about",
+      "passed": true
+    },
+    {
+      "name": "menu closes after about",
+      "passed": true
+    },
+    {
+      "name": "shared menu opens contact",
+      "passed": true
+    },
+    {
+      "name": "menu closes after contact",
+      "passed": true
+    },
+    {
+      "name": "shared menu opens music",
+      "passed": true
+    },
+    {
+      "name": "menu closes after music",
+      "passed": true
+    },
+    {
+      "name": "shared menu opens video",
+      "passed": true
+    },
+    {
+      "name": "menu closes after video",
+      "passed": true
+    },
+    {
+      "name": "remote opens chapters",
+      "passed": true
+    },
+    {
+      "name": "remote opens covers",
+      "passed": true
+    },
+    {
+      "name": "DVD empty search shown",
+      "passed": true
+    },
+    {
+      "name": "known blocked video gives YouTube action",
+      "passed": true
+    },
+    {
+      "name": "video direct fallback matches selected iframe",
+      "passed": true
+    },
+    {
+      "name": "switch away destroys video iframe",
+      "passed": true
+    },
+    {
+      "name": "first album has 7 songs",
+      "passed": true
+    },
+    {
+      "name": "original audio plays",
+      "passed": true
+    },
+    {
+      "name": "next stays in selected album",
+      "passed": false,
+      "note": "Initial fixed-title assertion was stale because the short first track ended during QA; observed automatic advancement and next to track 03 in the same album."
+    },
+    {
+      "name": "next remains in selected album after automatic advancement",
+      "passed": true
+    },
+    {
+      "name": "pause works",
+      "passed": true
+    },
+    {
+      "name": "contact draft survives navigation",
+      "passed": true
+    },
+    {
+      "name": "390 ai no document overflow",
+      "passed": true
+    },
+    {
+      "name": "390 ai header fits",
+      "passed": true
+    },
+    {
+      "name": "390 teaching no document overflow",
+      "passed": true
+    },
+    {
+      "name": "390 teaching header fits",
+      "passed": true
+    },
+    {
+      "name": "390 custom no document overflow",
+      "passed": true
+    },
+    {
+      "name": "390 custom header fits",
+      "passed": true
+    },
+    {
+      "name": "390 about no document overflow",
+      "passed": true
+    },
+    {
+      "name": "390 about header fits",
+      "passed": true
+    },
+    {
+      "name": "390 contact no document overflow",
+      "passed": true
+    },
+    {
+      "name": "390 contact header fits",
+      "passed": true
+    },
+    {
+      "name": "390 music no document overflow",
+      "passed": true
+    },
+    {
+      "name": "390 music header fits",
+      "passed": true
+    },
+    {
+      "name": "390 video no document overflow",
+      "passed": true
+    },
+    {
+      "name": "390 video header fits",
+      "passed": true
+    },
+    {
+      "name": "390 mobile menu opens",
+      "passed": true
+    },
+    {
+      "name": "390 Escape closes mobile menu",
+      "passed": true
+    },
+    {
+      "name": "390 mobile menu navigates",
+      "passed": true
+    },
+    {
+      "name": "320 ai no document overflow",
+      "passed": true
+    },
+    {
+      "name": "320 ai header fits",
+      "passed": true
+    },
+    {
+      "name": "320 teaching no document overflow",
+      "passed": true
+    },
+    {
+      "name": "320 teaching header fits",
+      "passed": true
+    },
+    {
+      "name": "320 custom no document overflow",
+      "passed": true
+    },
+    {
+      "name": "320 custom header fits",
+      "passed": true
+    },
+    {
+      "name": "320 about no document overflow",
+      "passed": true
+    },
+    {
+      "name": "320 about header fits",
+      "passed": true
+    },
+    {
+      "name": "320 contact no document overflow",
+      "passed": true
+    },
+    {
+      "name": "320 contact header fits",
+      "passed": true
+    },
+    {
+      "name": "320 music no document overflow",
+      "passed": true
+    },
+    {
+      "name": "320 music header fits",
+      "passed": true
+    },
+    {
+      "name": "320 video no document overflow",
+      "passed": true
+    },
+    {
+      "name": "320 video header fits",
+      "passed": true
+    },
+    {
+      "name": "320 mobile menu opens",
+      "passed": true
+    },
+    {
+      "name": "320 Escape closes mobile menu",
+      "passed": true
+    },
+    {
+      "name": "320 mobile menu navigates",
+      "passed": true
+    },
+    {
+      "name": "Write with AI WIP visible",
+      "passed": true
+    },
+    {
+      "name": "textbook has no stale pilot/public action",
+      "passed": true
+    },
+    {
+      "name": "private teaching workspace has no external action",
+      "passed": true
+    },
+    {
+      "name": "clinical action accurately labelled Staff sign-in",
+      "passed": true
+    },
+    {
+      "name": "custom cover has no placeholder copy",
+      "passed": true
+    },
+    {
+      "name": "Brave YouTube playback advances",
+      "passed": true
+    },
+    {
+      "name": "Brave Next updates own selection",
+      "passed": true
+    },
+    {
+      "name": "release package gallery reaches 3D ready",
+      "passed": true
+    },
+    {
+      "name": "release package leaves no video iframe after Art",
+      "passed": true
+    },
+    {
+      "name": "release package 13 artworks",
+      "passed": true
+    },
+    {
+      "name": "release artwork 0 image loads",
+      "passed": true
+    },
+    {
+      "name": "release artwork 1 image loads",
+      "passed": true
+    },
+    {
+      "name": "release artwork 2 image loads",
+      "passed": true
+    },
+    {
+      "name": "release artwork 3 image loads",
+      "passed": true
+    },
+    {
+      "name": "release artwork 4 image loads",
+      "passed": true
+    },
+    {
+      "name": "release artwork 5 image loads",
+      "passed": true
+    },
+    {
+      "name": "release artwork 6 image loads",
+      "passed": true
+    },
+    {
+      "name": "release artwork 15 image loads",
+      "passed": true
+    },
+    {
+      "name": "release artwork 16 image loads",
+      "passed": true
+    },
+    {
+      "name": "release artwork 17 image loads",
+      "passed": true
+    },
+    {
+      "name": "release artwork 18 image loads",
+      "passed": true
+    },
+    {
+      "name": "release artwork 19 image loads",
+      "passed": true
+    },
+    {
+      "name": "release artwork 20 image loads",
+      "passed": true
+    },
+    {
+      "name": "gallery keyboard movement changes position",
+      "passed": true
+    },
+    {
+      "name": "America 2 detail photo 0 loads",
+      "passed": true
+    },
+    {
+      "name": "America 2 detail photo 1 loads",
+      "passed": true
+    },
+    {
+      "name": "America 2 detail photo 2 loads",
+      "passed": true
+    },
+    {
+      "name": "viewer traps reverse Tab within its controls",
+      "passed": true
+    },
+    {
+      "name": "repeated Escape closes artwork first",
+      "passed": true
+    },
+    {
+      "name": "second Escape returns studio",
+      "passed": true
+    },
+    {
+      "name": "missing GLB enters Simple view",
+      "passed": true
+    },
+    {
+      "name": "fallback retains all 13 works",
+      "passed": true
+    },
+    {
+      "name": "fallback artwork detail loads",
+      "passed": true
+    },
+    {
+      "name": "fallback Next selects another work",
+      "passed": true
+    },
+    {
+      "name": "current 320 custom page has no overflow",
+      "passed": true
+    },
+    {
+      "name": "current 320 custom selector wraps",
+      "passed": true
+    },
+    {
+      "name": "repeat category retains selected project",
+      "passed": true
+    },
+    {
+      "name": "browser back restores custom project",
+      "passed": true
+    },
+    {
+      "name": "browser forward restores About",
+      "passed": false,
+      "note": "Assertion used section name About; the displayed heading is Vince Doud. Route and content were correct."
+    },
+    {
+      "name": "browser forward restores About route and content",
+      "passed": true
+    },
+    {
+      "name": "gallery can be interrupted by another category",
+      "passed": false,
+      "note": "Assertion used AI; actual heading is AI projects. Interrupted route rendered correctly."
+    },
+    {
+      "name": "interrupted gallery switches to AI projects",
+      "passed": true
+    },
+    {
+      "name": "320 release artwork viewer has no document overflow",
+      "passed": true
+    },
+    {
+      "name": "home restores after mobile detail close",
+      "passed": true
+    }
+  ],
+  "limitations": [
+    "Desktop browsers and emulated 320/390px mobile, not physical devices or screen reader audit.",
+    "In-app YouTube iframe does not play in this environment; regular Brave actual native playback verified. Retry and direct YouTube fallback retained.",
+    "Three false assertions were corrected against current displayed state: elapsed audio auto-advance and actual About/AI heading labels."
+  ],
+  "console": {
+    "release": [],
+    "fallback": [
+      {
+        "level": "warn",
+        "message": "Gallery fallback: fetch for \"http://127.0.0.1:8002/gallery-compact/room.glb?v=final-gallery-v6-20260927\" responded with 404: File not found",
+        "timestamp": "2026-09-30T01:38:07.058Z",
+        "url": "http://127.0.0.1:8002/gallery-walk/gallery-compact-ui.js?v=20260930-polish-v1"
+      }
+    ]
+  }
+}

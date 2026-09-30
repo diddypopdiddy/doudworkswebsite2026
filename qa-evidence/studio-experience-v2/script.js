@@ -1,15 +1,15 @@
-import {mountVideoLibrary} from './video-library/library.js?v=queue-sync-v1';
+import {mountVideoLibrary} from './video-library/library.js?v=20260930-polish-v1';
 import './homepage-art.js?v=20260927';
 import './homepage-whiteboard.js?v=20260927';
 import './homepage-hotspots.js?v=20260926';
-import {projectCategories, previews, artworks, tracks} from './content.js?v=20260927-ai-teaching';
+import {projectCategories, previews, artworks, tracks} from './content.js?v=20260930-polish-v1';
 import {StudioPlayer} from './player.js?v=20260927-minimal-music';
-import {renderInfo} from './about-contact.js';
+import {renderInfo} from './about-contact.js?v=20260930-polish-v1';
 const $=s=>document.querySelector(s);
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const shell=$('#subpage-shell'),content=$('#subpage-content'),panel=$('#subpage-panel'),room=$('#room-world'),viewport=$('.room-viewport');
 const player=new StudioPlayer($('#studio-audio'),tracks);
-const categories={...projectCategories};
+const categories=Object.fromEntries(['art','music','video','teaching','ai','custom'].map(key=>[key,projectCategories[key]]));
 const positions={music:[.31,.7],art:[.35,.26],teaching:[.68,.23],ai:[.82,.51],video:[.69,.77],custom:[.82,.51],about:[.5,.5],contact:[.5,.5]};
 const captions={music:'The music corner',art:'At the art table',teaching:'From the classroom',ai:'At the workbench',video:'Behind the camera',custom:'Useful things, made to fit',about:'A little about me',contact:'Let’s compare notes'};
 let active=null,projectId=null,artIndex=0,lastOpener=null,closeTimer=null,sound=false,audioContext;
@@ -49,19 +49,19 @@ function renderProjects() {
   const category=categories[active]; const project=category.projects.find(p=>p.id===projectId)||category.projects[0];
   projectId=project?.id||null;
   const title=active==='ai'?'AI projects':category.label;
-  const localReview=['localhost','127.0.0.1','[::1]'].includes(location.hostname);
+  const localReview=['localhost','127.0.0.1','[::1]'].includes(location.hostname)&&new URLSearchParams(location.search).get('local')==='1';
   let detail='';
   if(project) {
     const image=previews[project.id];
     const action=project.action||(project.id==='interactive-video-textbook'?'Open textbook':project.id==='ai-road-test'?'Play the game':project.status.includes('PDF')?'Read the guide':'Explore project');
-    const destination=localReview&&project.localHref?project.localHref:project.href;
+    const destination=project.href;
     const localEdition=localReview&&project.localHref;
     const overview=`<div class="workspace-overview"><p class="eyebrow">SK8MAPS</p><h3>A place for the<br>teaching day.</h3><div class="workspace-steps"><span>Plan</span><span>Teach</span><span>Revisit</span></div><p>Calendar · Lessons · Resources</p></div>`;
     detail=`<div class="project-selector" role="group" aria-label="${esc(category.label)} projects">${category.projects.map((p,i)=>`<button type="button" data-project="${p.id}" aria-pressed="${p.id===projectId}"><span>${String(i+1).padStart(2,'0')}</span>${esc(p.name)}</button>`).join('')}</div>
     <article class="project-feature" aria-labelledby="project-heading">
-    <div class="project-preview">${project.overview?overview:image?`<img src="../../media/projects/${image}" alt="${esc(project.name)} preview" />`:`<div class="preview-placeholder"><span>Preview placeholder</span><strong>${esc(project.name)}</strong><p>A closer look will go here.</p></div>`}</div>
-    <div class="project-description"><div><p class="eyebrow">${esc(project.status)}</p><h3 id="project-heading">${esc(project.name)}</h3><p class="lede">${esc(project.summary)}</p>${project.highlights?`<ul class="project-highlights">${project.highlights.map(item=>`<li>${esc(item)}</li>`).join('')}</ul>`:''}</div><div class="project-access">${destination?`<a class="primary-link" href="${esc(destination)}" target="_blank" rel="noopener noreferrer">${esc(action)} <span aria-hidden="true">↗</span></a>`:''}${localEdition?`<p class="project-access-note">Latest local edition${project.localNote?` · ${esc(project.localNote)}`:''}</p>${project.href?`<a class="published-edition" href="${esc(project.href)}" target="_blank" rel="noopener noreferrer">Published edition ↗</a>`:''}`:project.accessNote?`<p class="project-access-note">${esc(project.accessNote)}</p>`:!destination?'<span class="upcoming-note">In progress</span>':''}</div></div></article>`;
-  } else detail='<div class="preview-placeholder empty-space"><span>Preview placeholder</span><strong>Space for the next thing.</strong><p>Video work will live here.</p></div>';
+    <div class="project-preview">${project.overview?overview:image?`<img src="../../media/projects/${image}" alt="${esc(project.name)} preview" />`:`<div class="project-cover"><span>${esc(category.label)}</span><strong>${esc(project.name)}</strong><p>${esc(project.status)}</p></div>`}</div>
+    <div class="project-description"><div><p class="eyebrow">${esc(project.status)}</p><h3 id="project-heading">${esc(project.name)}</h3><p class="lede">${esc(project.summary)}</p>${project.highlights?`<ul class="project-highlights">${project.highlights.map(item=>`<li>${esc(item)}</li>`).join('')}</ul>`:''}</div><div class="project-access">${destination?`<a class="primary-link" href="${esc(destination)}" target="_blank" rel="noopener noreferrer">${esc(action)} <span aria-hidden="true">↗</span></a>`:''}${project.accessNote?`<p class="project-access-note">${esc(project.accessNote)}</p>`:''}${localEdition?`<a class="published-edition" href="${esc(project.localHref)}" target="_blank" rel="noopener noreferrer">Local review ↗</a>${project.localNote?`<p class="project-access-note">${esc(project.localNote)}</p>`:''}`:''}</div></div></article>`;
+  } else detail='<div class="project-cover empty-space"><span>Work in progress</span><strong>More to explore soon.</strong></div>';
   content.innerHTML=`<div class="projects-page"><p class="eyebrow">Vince Doud / ${esc(category.label)}</p><h2 id="subpage-title">${title}</h2>${detail}${spaceNav()}</div>`;
 }
 let videoLibrary=null;
@@ -71,7 +71,7 @@ function destroyGallery(){galleryGeneration++;gallery?.dispose();gallery=null;}
 function renderArt(initial=-1) {
   const generation=++galleryGeneration;
   content.innerHTML='<div class="gallery-loading"><p id="subpage-title">Opening the gallery…</p></div>';
-  import('./gallery-walk/gallery-compact-ui.js?v=final-gallery-v6-20260927').then(({mountGallery})=>{
+  import('./gallery-walk/gallery-compact-ui.js?v=20260930-polish-v1').then(({mountGallery})=>{
     if(active!=='art'||generation!==galleryGeneration)return;
     const restoreFocus=content.contains(document.activeElement);
     gallery=mountGallery(content,artworks,initial,index=>{artIndex=index;writeRoute('art',index<0?null:String(index+1),true);});
@@ -80,7 +80,7 @@ function renderArt(initial=-1) {
 }
 function openSpace(category,{id,historyChange=true,opener}={}) {
   if(!categories[category]&&!['about','contact'].includes(category))return;
-  clearTimeout(closeTimer); shell.classList.remove('is-closing','art-expanded');
+  clearTimeout(closeTimer); closeSpaceMenu(); shell.classList.remove('is-closing','art-expanded');
   const wasOpen=shell.open,changed=active!==category;
   if(!wasOpen)lastOpener=opener?.closest('#projects-menu')?$('[data-projects-toggle]'):opener?.closest('#mobile-menu')?$('.menu-button'):opener||document.activeElement;
   player.unmount(); destroyGallery(); destroyVideo(); active=category;projectId=id||categories[category]?.projects[0]?.id||null;
@@ -88,6 +88,7 @@ function openSpace(category,{id,historyChange=true,opener}={}) {
   if(category==='teaching'&&['agentic-continuity','lesson-planner-app'].includes(id))projectId='sk8maps';
   if(category==='art')artIndex=id?Math.max(0,(parseInt(id,10)||1)-1):-1;
   shell.dataset.space=category;document.body.classList.add('subpage-open');
+  document.querySelectorAll('.space-explore [data-space]').forEach(button=>{if(button.dataset.space===category)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');});
   $('#space-number').textContent=String(Object.keys(positions).indexOf(category)+1).padStart(2,'0');
   $('#space-caption').textContent=captions[category];
   delete room.dataset.highlight;moveRoom(category);
@@ -104,7 +105,8 @@ function openSpace(category,{id,historyChange=true,opener}={}) {
   player.updatePlayback();tone();
 }
 function closeSpace(updateHistory=true) {
-  if(!shell.open)return;
+  if(!shell.open||shell.classList.contains('is-closing'))return;
+  closeSpaceMenu();
   if(updateHistory)history.pushState(null,'',location.pathname+location.search);
   shell.classList.remove('art-expanded');shell.classList.add('is-closing');room.classList.remove('is-exploring');
   player.unmount();destroyGallery();destroyVideo();active=null;
@@ -116,7 +118,8 @@ function closeSpace(updateHistory=true) {
     if(lastOpener?.isConnected)lastOpener.focus({preventScroll:true});else $('[data-home]').focus();
   },reduced()?0:480);
 }
-function closeMenu() {$('#mobile-menu').hidden=true;$('.menu-button').setAttribute('aria-expanded','false');}
+function closeSpaceMenu(restoreFocus=false) {const menu=$('.space-explore');if(!menu.open)return;menu.open=false;if(restoreFocus)menu.querySelector('summary').focus({preventScroll:true});}
+function closeMenu(restoreFocus=false) {$('#mobile-menu').hidden=true;$('.menu-button').setAttribute('aria-expanded','false');if(restoreFocus)$('.menu-button').focus({preventScroll:true});}
 function closeProjectsMenu({restoreFocus=false}={}) {
   const menu=$('#projects-menu'),toggle=$('[data-projects-toggle]');
   if(menu.hidden)return;
@@ -148,8 +151,10 @@ document.addEventListener('click',e=> {
     return;
   }
   if(!e.target.closest('#projects-menu'))closeProjectsMenu();
+  if(!e.target.closest('#mobile-menu,.menu-button'))closeMenu();
+  if(!e.target.closest('.space-explore'))closeSpaceMenu();
   const opener=e.target.closest('[data-page]');if(opener){openSpace(opener.dataset.page==='projects'?opener.dataset.category||'ai':opener.dataset.page,{opener});return;}
-  const space=e.target.closest('button[data-space]');if(space){openSpace(space.dataset.space);return;}
+  const space=e.target.closest('button[data-space]');if(space){if(space.dataset.space===active){closeSpaceMenu();return;}openSpace(space.dataset.space);return;}
   const project=e.target.closest('[data-project]');if(project){projectId=project.dataset.project;renderProjects();writeRoute(active,projectId);content.querySelector(`[data-project="${projectId}"]`).focus({preventScroll:true});return;}
   if(e.target.closest('[data-close-subpage]'))return closeSpace();
   if(e.target.closest('[data-mini-open]'))return openSpace('music',{opener:e.target.closest('button')});
@@ -158,15 +163,17 @@ document.addEventListener('click',e=> {
 // Consume gallery Escape before the native dialog close watcher. Repeated
 // cancel events can become non-cancelable in Chromium and bypass nested panels.
 shell.addEventListener('keydown',e=>{
-  if(e.key!=='Escape'||!['art','video'].includes(active))return;
+  if(e.key!=='Escape')return;
   e.preventDefault();e.stopPropagation();
-  if(!(active==='art'?gallery?.escape():videoLibrary?.escape()))closeSpace();
+  if($('.space-explore').open){closeSpaceMenu(true);return;}
+  if(!(active==='art'?gallery?.escape():active==='video'?videoLibrary?.escape():false))closeSpace();
 });
 shell.addEventListener('cancel',e=>{e.preventDefault();if(active==='art'&&gallery?.escape())return;if(active==='video'&&videoLibrary?.escape())return;closeSpace();});
 $('.menu-button').addEventListener('click',()=>{const open=$('#mobile-menu').hidden;$('#mobile-menu').hidden=!open;$('.menu-button').setAttribute('aria-expanded',String(open));});
-$('[data-home]').addEventListener('click',()=>{closeMenu();closeProjectsMenu();if(shell.open)closeSpace();else $('#studio-scene').focus();});
+document.querySelectorAll('[data-home]').forEach(button=>button.addEventListener('click',()=>{closeMenu();closeProjectsMenu();if(shell.open)closeSpace();else $('#studio-scene').focus();}));
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&!$('#projects-menu').hidden) {e.preventDefault();closeProjectsMenu({restoreFocus:true});}
+  else if(e.key==='Escape'&&!$('#mobile-menu').hidden){e.preventDefault();closeMenu(true);}
 });
 $('.sound-toggle').addEventListener('click',()=>{sound=!sound;$('.sound-toggle').setAttribute('aria-pressed',String(sound));$('.sound-toggle span').textContent=sound?'Sound on':'Sound off';tone();});
 for(const h of document.querySelectorAll('.hotspot[data-highlight]')) {
@@ -177,7 +184,11 @@ function restoreRoute() {
   const route=readRoute();
   // A hash history change can emit both popstate and hashchange. Keep the
   // existing YouTube iframe when the first event already restored this route.
-  if(route?.category==='video'&&active==='video'&&videoLibrary?.getRoute()===(route.id||null))return;
+  if(route?.category===active&&!shell.classList.contains('is-closing')){
+    if(active==='video'&&videoLibrary?.getRoute()===(route.id||null))return;
+    if(active==='art'){artIndex=route.id?Math.max(0,(parseInt(route.id,10)||1)-1):-1;gallery?.select(artIndex);return;}
+    if(active==='music'||['about','contact'].includes(active)||projectId===route.id)return;
+  }
   if(route)openSpace(route.category,{id:route.id,historyChange:false});else closeSpace(false);
 }
 window.addEventListener('popstate',restoreRoute);

@@ -1,5 +1,5 @@
 import {unavailableEmbedIds} from './embed-availability.js?v=queue-sync-v1';
-import {nextQueueVideo,playbackEvents,videoError} from './playback.js?v=queue-sync-v1';
+import {nextQueueVideo,playbackEvents,videoError} from './playback.js?v=20260930-polish-v1';
 import {videos} from './catalog.js?v=20260927-dvd-remote-v2';
 import {paintMenu,menuBackgroundReady} from './menu-painter.js?v=basement-4x3-v2';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -53,10 +53,10 @@ export function mountVideoLibrary(host,initial,onRoute,onWatch){
  function renderWatch(){
   onWatch();const playing=chosen;
   const args=new URLSearchParams({playsinline:'1',rel:'0',autoplay:playbackRequested?'1':'0',controls:'1',enablejsapi:'1',origin:location.origin});
-  screen.innerHTML=`<iframe title="${esc(queue?'Play all — '+chosen.title:chosen.title)}" allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;screen.querySelector('iframe').src=`https://www.youtube.com/embed/${chosen.id}?${args}`;updateCaption();
+  screen.innerHTML=`<iframe title="${esc(queue?'Play all — '+chosen.title:chosen.title)}" allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;screen.querySelector('iframe').src=`https://www.youtube.com/embed/${chosen.id}?${args}`;updateCaption();caption.querySelector('.playback-status').textContent=queueNotice||'Opening video… You can also watch on YouTube.';
   // Keep native playback independent, but observe readiness for every video so
   // an embed that never loads cannot silently leave a black TV screen.
-  const showLoadFailure=()=>{if(disposed||generation!==playbackGeneration)return;caption.querySelector('.playback-status').textContent='Video not starting? Retry, or open this page in your regular browser.';caption.querySelector('.player-retry').hidden=false;};
+  const showLoadFailure=()=>{if(disposed||generation!==playbackGeneration)return;caption.querySelector('.playback-status').textContent='Video not starting? Retry or watch on YouTube.';caption.querySelector('.player-retry').hidden=false;};
   const generation=++playbackGeneration,iframe=screen.querySelector('iframe');
   playerLoadTimer=setTimeout(showLoadFailure,15000);
   const current=()=>!disposed&&generation===playbackGeneration&&iframe.isConnected;
@@ -70,9 +70,10 @@ export function mountVideoLibrary(host,initial,onRoute,onWatch){
    if(!current())return;
    ytPlayer=new YT.Player(iframe,{events:playbackEvents({
     isCurrent:current,
-    onReady:()=>{clearTimeout(playerLoadTimer);status(queueNotice);caption.querySelector('.player-retry').hidden=true;},
+    onReady:()=>{if(!playbackRequested){clearTimeout(playerLoadTimer);status('Play in the TV, or watch on YouTube.');}},
+    onPlaying:()=>{clearTimeout(playerLoadTimer);status(queueNotice);caption.querySelector('.player-retry').hidden=true;},
     onEnded:()=>{if(queue)advance();},
-    onBlocked:()=>status('Press Play inside the TV to start the video.'),
+    onBlocked:()=>{clearTimeout(playerLoadTimer);status('Press Play in the TV, or watch on YouTube.');},
     onError:code=>{
      clearTimeout(playerLoadTimer);const failure=videoError(code);
      caption.querySelector('.player-retry').hidden=false;
