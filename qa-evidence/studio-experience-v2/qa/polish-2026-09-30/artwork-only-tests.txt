@@ -1,0 +1,50 @@
+TAP version 13
+# Subtest: two physical rooms have the intended footprint
+ok 1 - two physical rooms have the intended footprint
+  ---
+  duration_ms: 2.61625
+  ...
+# Subtest: every room route arrives through real openings using collision movement
+ok 2 - every room route arrives through real openings using collision movement
+  ---
+  duration_ms: 14.025917
+  ...
+# Subtest: all twenty-one source records retain stable identities and measured sizes
+ok 3 - all twenty-one source records retain stable identities and measured sizes
+  ---
+  duration_ms: 0.774083
+  ...
+# Subtest: only wall works have supports, opaque mounting, and neighbor clearance
+ok 4 - only wall works have supports, opaque mounting, and neighbor clearance
+  ---
+  duration_ms: 1.474542
+  ...
+# Subtest: each wall work has a usable viewing position inside its room
+ok 5 - each wall work has a usable viewing position inside its room
+  ---
+  duration_ms: 12.462083
+  ...
+# Subtest: only hung works are active and retired sources have no portfolio
+ok 6 - only hung works are active and retired sources have no portfolio
+  ---
+  duration_ms: 0.587417
+  ...
+# Subtest: dimensional works retain owner sizes and only the requested artwork view
+ok 7 - dimensional works retain owner sizes and only the requested artwork view
+  ---
+  duration_ms: 0.898125
+  ...
+# Subtest: Stolen faces the entrance with paired works on opposing side walls
+ok 8 - Stolen faces the entrance with paired works on opposing side walls
+  ---
+  duration_ms: 0.233
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 230.578709

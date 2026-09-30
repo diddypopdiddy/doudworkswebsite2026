@@ -89,14 +89,14 @@ test('only hung works are active and retired sources have no portfolio',()=>{
  assert.deepEqual(world.items.filter(a=>a.display==='wall'&&a.roomId==='right').map(a=>a.index),[3,17,18,19,20]);
 });
 
-test('new dimensional works retain owner sizes, depth bounds and reference views',()=>{
- const expected=[['Strategy',.6096,.508,.03175,3],['America #1',1.016,.762,.0381,2],['America #2',1.2192,.6096,.1016,3]];
+test('dimensional works retain owner sizes and only the requested artwork view',()=>{
+ const expected=[['Strategy',.6096,.508,.03175,1],['America #1',1.016,.762,.0381,1],['America #2',1.2192,.6096,.1016,1]];
  for(const [offset,[title,width,height,depth,views]] of expected.entries()){
   const a=selected[offset+17],w=world.items[offset+17];
   assert.equal(a.title,title);assert.equal(a.year,null);
   assert.deepEqual([w.width,w.height,w.physical.depth],[width,height,depth]);
   assert.ok(w.physical.relief);assert.ok(w.physical.baseDepth<depth);
-  assert.equal(a.views.length,views);
+  assert.equal(a.views.length,views);assert.equal(a.views[0].label,'Artwork');assert.equal(a.views[0].file,a.file);
   for(const v of a.views){assert.ok(fs.existsSync(new URL('selected-art/'+v.file,root)));assert.ok(v.width>0&&v.height>0);}
  }
 });

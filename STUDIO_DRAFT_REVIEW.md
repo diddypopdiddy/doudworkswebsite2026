@@ -25,10 +25,14 @@ Source preview: http://127.0.0.1:8000/qa-evidence/studio-experience-v2/
 
 Root-hosted release preview: http://127.0.0.1:8001/
 
-Build with `node tools/build-studio-release.mjs`, then validate with `node tools/check-studio-release.mjs`. The build produces `.release/studio-review/` (175 runtime files) and a separate hash inventory. It excludes QA, archives, tooling, source artwork originals, retired art, source-path provenance and unrelated projects. It relocates current runtime/media references for root hosting and preserves `CNAME`, `.nojekyll`, a return-home 404 and robots file.
+Build with `node tools/build-studio-release.mjs`, then validate with `node tools/check-studio-release.mjs`. The build produces `.release/studio-review/` (170 runtime files) and a separate hash inventory. It excludes QA, archives, tooling, source artwork originals, retired art, source-path provenance and unrelated projects. It relocates current runtime/media references for root hosting and preserves `CNAME`, `.nojekyll`, a return-home 404 and robots file.
 
 Existing GitHub Pages uses the public repository's `gh-pages` branch at `/`, custom domain `www.vincedoud.com`. Deployment requires a separately authorized review and update of that branch with the validated runtime package. This draft branch does not trigger Pages. Do not copy the entire development checkout to production.
 
 The current textbook has human accessibility/safety/transcript release reviews outstanding; no stale public pilot is substituted. Write with AI's live AI response preparation remains WIP. The clinical platform requires authorized staff. These constraints do not prevent portfolio publication with its accurate labels.
 
 For longer-term separation, develop and back up private project work separately, and publish only the approved website runtime into the current public Pages repository. This would need a specific migration decision. Browser-delivered JavaScript and media remain public. No repository visibility, history, account plan or deployment changes were made.
+
+## Artwork photo selection follow-up
+
+Per owner request, Strategy, America #1 and America #2 show only their main Artwork image. Removed viewer options: Raised objects, Hardware and bands, Rubber-band detail, Right side and Left side. Original detail image files remain recoverable in source and Git history; they are excluded from the current runtime package. Actual preview clicks verified all three main images load with no photo controls, unaffected Stolen loads and the 13-work inventory remains unchanged. Evidence: `qa/polish-2026-09-30/artwork-only-checks.json`.

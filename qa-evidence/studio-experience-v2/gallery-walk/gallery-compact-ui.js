@@ -90,10 +90,10 @@ export function mountGallery(root,baseArt,initial,onSelect){
   function resize(){if(!renderer||disposed)return;const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();requestFrame();}
   function disposeModel(object){const geometries=new Set(),materials=new Set(),textures=new Set();object?.traverse(o=>{if(o.geometry)geometries.add(o.geometry);(Array.isArray(o.material)?o.material:[o.material]).filter(Boolean).forEach(m=>materials.add(m));});materials.forEach(m=>{Object.values(m).forEach(t=>{if(t?.isTexture)textures.add(t);});m.dispose();});textures.forEach(t=>{t.source?.data?.close?.();t.dispose();});geometries.forEach(g=>g.dispose());}
   (async()=>{try{
-    const artResponse=await fetch(selectedAsset('manifest.json?v=final-gallery-v6-20260927'),{signal:abort.signal});if(!artResponse.ok)throw Error('Artwork data unavailable');
+    const artResponse=await fetch(selectedAsset('manifest.json?v=20260930-artwork-only-v1'),{signal:abort.signal});if(!artResponse.ok)throw Error('Artwork data unavailable');
     catalog=(await artResponse.json()).items.map(a=>({...a,src:selectedAsset(a.file)}));if(disposed)return;
     items=catalog.map(a=>({...a}));
-    const response=await fetch(asset('room-manifest.json?v=final-gallery-v6-20260927'),{signal:abort.signal});if(!response.ok)throw Error('Room data unavailable');world=await response.json();if(disposed)return;
+    const response=await fetch(asset('room-manifest.json?v=20260930-artwork-only-v1'),{signal:abort.signal});if(!response.ok)throw Error('Room data unavailable');world=await response.json();if(disposed)return;
     items=world.items.map(a=>({...catalog[a.sourceIndex??a.index],...a,index:a.index,src:selectedAsset(a.file)}));
     // Browsing the artwork does not need to wait for the large 3D model.
     q('[data-artworks]').disabled=false;q('[data-simple]').disabled=false;

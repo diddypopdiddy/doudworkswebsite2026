@@ -1,10 +1,10 @@
-import {mountVideoLibrary} from './video-library/library.js?v=20260930-polish-v1';
+import {mountVideoLibrary} from './video-library/library.js?v=20260930-artwork-only-v1';
 import './homepage-art.js?v=20260927';
 import './homepage-whiteboard.js?v=20260927';
 import './homepage-hotspots.js?v=20260926';
-import {projectCategories, previews, artworks, tracks} from './content.js?v=20260930-polish-v1';
+import {projectCategories, previews, artworks, tracks} from './content.js?v=20260930-artwork-only-v1';
 import {StudioPlayer} from './player.js?v=20260927-minimal-music';
-import {renderInfo} from './about-contact.js?v=20260930-polish-v1';
+import {renderInfo} from './about-contact.js?v=20260930-artwork-only-v1';
 const $=s=>document.querySelector(s);
 const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const shell=$('#subpage-shell'),content=$('#subpage-content'),panel=$('#subpage-panel'),room=$('#room-world'),viewport=$('.room-viewport');
@@ -71,7 +71,7 @@ function destroyGallery(){galleryGeneration++;gallery?.dispose();gallery=null;}
 function renderArt(initial=-1) {
   const generation=++galleryGeneration;
   content.innerHTML='<div class="gallery-loading"><p id="subpage-title">Opening the gallery…</p></div>';
-  import('./gallery-walk/gallery-compact-ui.js?v=20260930-polish-v1').then(({mountGallery})=>{
+  import('./gallery-walk/gallery-compact-ui.js?v=20260930-artwork-only-v1').then(({mountGallery})=>{
     if(active!=='art'||generation!==galleryGeneration)return;
     const restoreFocus=content.contains(document.activeElement);
     gallery=mountGallery(content,artworks,initial,index=>{artIndex=index;writeRoute('art',index<0?null:String(index+1),true);});

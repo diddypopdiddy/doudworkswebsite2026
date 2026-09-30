@@ -535,18 +535,6 @@
           "label": "Artwork",
           "width": 1374,
           "height": 1145
-        },
-        {
-          "file": "strategy-detail-1.jpg",
-          "label": "Raised objects",
-          "width": 4284,
-          "height": 5712
-        },
-        {
-          "file": "strategy-detail-2.jpg",
-          "label": "Hardware and bands",
-          "width": 4284,
-          "height": 5712
         }
       ],
       "sourcePhoto": "strategy.jpg",
@@ -606,12 +594,6 @@
           "label": "Artwork",
           "width": 1448,
           "height": 1086
-        },
-        {
-          "file": "america-1-detail.jpg",
-          "label": "Rubber-band detail",
-          "width": 4284,
-          "height": 5712
         }
       ],
       "sourcePhoto": "america-1.jpg",
@@ -671,18 +653,6 @@
           "label": "Artwork",
           "width": 1774,
           "height": 887
-        },
-        {
-          "file": "america-2-detail-1.jpg",
-          "label": "Right side",
-          "width": 5712,
-          "height": 4284
-        },
-        {
-          "file": "america-2-detail-2.jpg",
-          "label": "Left side",
-          "width": 5712,
-          "height": 4284
         }
       ],
       "sourcePhoto": "america-2.jpg",

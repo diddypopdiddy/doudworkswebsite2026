@@ -1,0 +1,36 @@
+{
+  "preview": "http://127.0.0.1:8001/",
+  "artworks": [
+    {
+      "image": "http://127.0.0.1:8001/selected-art/strategy-gallery-v2.png",
+      "loaded": true,
+      "photoControls": 0,
+      "title": "Strategy"
+    },
+    {
+      "image": "http://127.0.0.1:8001/selected-art/america-1-gallery-v2.png",
+      "loaded": true,
+      "photoControls": 0,
+      "title": "America #1"
+    },
+    {
+      "image": "http://127.0.0.1:8001/selected-art/america-2-gallery-v2.png",
+      "loaded": true,
+      "photoControls": 0,
+      "title": "America #2"
+    }
+  ],
+  "unaffected": {
+    "image": "http://127.0.0.1:8001/selected-art/stolen.jpg",
+    "loaded": true,
+    "title": "Stolen"
+  },
+  "galleryCount": 13,
+  "removedLabels": [
+    "Raised objects",
+    "Hardware and bands",
+    "Rubber-band detail",
+    "Right side",
+    "Left side"
+  ]
+}
