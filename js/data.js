@@ -111,9 +111,6 @@ export const APPS = [
 export const ABOUT = {
   name: "Vince Doud",
   portrait: "assets/media/portrait.jpg",
-  bio: [
-    "I teach, make media, build tools, and follow curiosity wherever it goes.",
-    "This site is an evolving archive of the work: finished pieces, experiments, lessons, systems, and the ideas connecting them. The basement is the index. Everything in it points to a part of the practice.",
-  ],
+  bio: ["I teach video production, make things, and build tools for my classroom."],
   endorsements: ["Music", "Video", "Art", "Teaching", "AI"],
 };

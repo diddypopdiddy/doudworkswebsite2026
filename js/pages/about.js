@@ -82,7 +82,7 @@ export default {
               <div class="id-fields">
                 <p class="id-name"><small>1·2 NAME</small><b>VINCE DOUD</b></p>
                 <p class="id-about"><small>ABOUT</small>${esc(ABOUT.bio[0])}</p>
-                <p class="id-about is-more">${esc(ABOUT.bio[1])}</p>
+                ${ABOUT.bio[1] ? `<p class="id-about is-more">${esc(ABOUT.bio[1])}</p>` : ""}
                 <p class="id-makes"><small>MAKES</small>${ABOUT.endorsements.map((e) => `<a href="/${ROUTES[e]}">${esc(e)}</a>`).join("<i>·</i>")}</p>
               </div>
               <div class="id-class-band"><span>TEACHER</span><i>+</i><span>CREATOR</span></div>
