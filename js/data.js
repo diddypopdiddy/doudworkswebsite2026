@@ -21,7 +21,7 @@ export const SPACES = {
 export const ORDER = ["art", "music", "video", "teaching", "ai", "about", "contact"];
 
 const PLAYBOOK = "https://ai-educator-playbook-vince-doud.diddypopdiddy.chatgpt.site";
-const ROADTEST = "https://ai-road-test-vince-doud.diddypopdiddy.chatgpt.site";
+const ROADTEST = "https://ai-road-test-vince-doud.diddypopdiddy.chatgpt.site/";
 const WRITE = "https://write-with-ai-vince-doud.diddypopdiddy.chatgpt.site";
 
 /** Books on the teaching shelf (left to right). */
