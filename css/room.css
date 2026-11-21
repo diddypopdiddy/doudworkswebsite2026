@@ -88,7 +88,7 @@
 /* click the record: it stops (and starts again) */
 .room-stage.record-stopped .amb-vinyl i { animation-play-state: paused; opacity: .22; }
 /* click the lamp: the basement goes dark, and whatever you hover still lights up */
-.room-stage.lights-off .amb-lamp { opacity: 0; }
+.room-stage.lights-off .amb-lamp { animation: none; opacity: 0; }
 .room-stage.lights-off .room-bg,
 .room-stage.lights-off .room-obj:not(.is-lit) { filter: brightness(.42) saturate(.72); }
 .room-stage.lights-off[data-active]:not([data-active=""]) .room-bg,

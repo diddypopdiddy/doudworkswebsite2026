@@ -30,8 +30,8 @@ const ANCHORS = {
 const GROUP_HOME = { art: "art-table", music: "keyboard", video: "tv-cart", teaching: "bookshelf", ai: "laptop", about: "wallet", contact: "payphone" };
 // Little things on the record console that aren't rooms: click the lamp or the record.
 const TOYS = [
-  { id: "lamp", x: 709, y: 66, w: 56, h: 84, label: "Lamp", verb: (on) => (on ? "lights off" : "lights on"), at: { x: 737, y: 62, above: true } },
-  { id: "record", x: 787, y: 117, w: 101, h: 46, label: "Record", verb: (on) => (on ? "stop it" : "spin it"), at: { x: 838, y: 112, above: true } },
+  { id: "lamp", x: 709, y: 66, w: 56, h: 84 },
+  { id: "record", x: 787, y: 117, w: 101, h: 46 },
 ];
 const TOUR = ["music", "art", "teaching", "ai", "about", "video", "contact"];
 
@@ -211,20 +211,10 @@ export default {
     };
     paintToys();
     const toyAt = (x, y) => TOYS.find((t) => x >= t.x && y >= t.y && x < t.x + t.w && y < t.y + t.h) || null;
-    const showToy = (t) => {
-      stage.style.cursor = "pointer";
-      labelName.textContent = t.label;
-      labelVerb.textContent = t.verb(toyState[t.id]);
-      label.style.left = t.at.x + "px";
-      label.style.top = t.at.y + "px";
-      label.classList.toggle("is-above", !!t.at.above);
-      label.classList.add("is-on");
-    };
     const flipToy = (t) => {
       toyState[t.id] = !toyState[t.id];
       try { sessionStorage.setItem("vd-room-toys", JSON.stringify(toyState)); } catch {}
       paintToys();
-      showToy(t);
     };
 
     let hovered = false;
@@ -237,7 +227,7 @@ export default {
       const o = hitAt(...p);
       if (o) lastObj = o.id;
       setActive(o?.group || null, o?.id);
-      if (!o) { const t = toyAt(...p); if (t) showToy(t); }
+      if (!o && toyAt(...p)) stage.style.cursor = "pointer";
       if (!hovered && o) { hovered = true; hint.classList.add("is-gone"); }
     });
     // Touch has no hover: the first tap lights a thing up, a second tap goes in.
@@ -250,7 +240,11 @@ export default {
       const o = hitAt(...p);
       if (!o) {
         const t = toyAt(...p);
-        if (t) flipToy(t); else if (pointer === "touch") setActive(null);
+        if (t) {
+          stopTour();
+          if (active) setActive(null);
+          flipToy(t);
+        } else if (pointer === "touch") setActive(null);
         return;
       }
       lastObj = o.id;
