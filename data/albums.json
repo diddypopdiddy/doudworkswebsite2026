@@ -1,0 +1,114 @@
+{
+  "albums": [
+    {
+      "slug": "happy-birthday-to-me",
+      "title": "Happy Birthday To Me",
+      "artist": "",
+      "year": null,
+      "cover": "assets/covers/happy-birthday-to-me-512.webp",
+      "color": "#a25235",
+      "bandcampUrl": null,
+      "notes": "",
+      "cover2x": "assets/covers/happy-birthday-to-me-1024.webp"
+    },
+    {
+      "slug": "fully-proper",
+      "title": "Fully Proper",
+      "artist": "",
+      "year": null,
+      "cover": "assets/covers/fully-proper-512.webp",
+      "color": "#3157c8",
+      "bandcampUrl": null,
+      "notes": "",
+      "cover2x": "assets/covers/fully-proper-1024.webp"
+    },
+    {
+      "slug": "right-here-ideas",
+      "title": "Right Here Ideas",
+      "artist": "",
+      "year": null,
+      "cover": "assets/covers/right-here-ideas-512.webp",
+      "color": "#56684a",
+      "bandcampUrl": null,
+      "notes": "",
+      "cover2x": "assets/covers/right-here-ideas-1024.webp"
+    },
+    {
+      "slug": "content",
+      "title": "Content",
+      "artist": "",
+      "year": null,
+      "cover": "assets/covers/content-512.webp",
+      "color": "#3157c8",
+      "bandcampUrl": null,
+      "notes": "",
+      "cover2x": "assets/covers/content-1024.webp"
+    },
+    {
+      "slug": "el-lobo-presents-uber-thurman",
+      "title": "EL LOBO presents: Uber Thurman",
+      "artist": "",
+      "year": null,
+      "cover": "assets/covers/el-lobo-presents-uber-thurman-512.webp",
+      "color": "#3157c8",
+      "bandcampUrl": null,
+      "notes": "",
+      "cover2x": "assets/covers/el-lobo-presents-uber-thurman-1024.webp"
+    },
+    {
+      "slug": "there-it-is",
+      "title": "There It Is!",
+      "artist": "",
+      "year": null,
+      "cover": "assets/covers/there-it-is-512.webp",
+      "color": "#3157c8",
+      "bandcampUrl": null,
+      "notes": "",
+      "cover2x": "assets/covers/there-it-is-1024.webp"
+    },
+    {
+      "slug": "elep",
+      "title": "EL'EP",
+      "artist": "",
+      "year": null,
+      "cover": "assets/covers/elep-512.webp",
+      "color": "#3157c8",
+      "bandcampUrl": null,
+      "notes": "",
+      "cover2x": "assets/covers/elep-1024.webp"
+    },
+    {
+      "slug": "el-lobo-proudly-presents-el-lobo",
+      "title": "EL LOBO proudly presents...'El Lobo'",
+      "artist": "",
+      "year": null,
+      "cover": "assets/covers/el-lobo-proudly-presents-el-lobo-512.webp",
+      "color": "#3157c8",
+      "bandcampUrl": null,
+      "notes": "",
+      "cover2x": "assets/covers/el-lobo-proudly-presents-el-lobo-1024.webp"
+    },
+    {
+      "slug": "gtgc",
+      "title": "GTGC",
+      "artist": "",
+      "year": null,
+      "cover": "assets/covers/gtgc-512.webp",
+      "color": "#3157c8",
+      "bandcampUrl": null,
+      "notes": "",
+      "cover2x": "assets/covers/gtgc-1024.webp"
+    },
+    {
+      "slug": "baby-steps",
+      "title": "Baby Steps",
+      "artist": "",
+      "year": null,
+      "cover": "assets/covers/baby-steps-512.webp",
+      "color": "#3157c8",
+      "bandcampUrl": null,
+      "notes": "",
+      "cover2x": "assets/covers/baby-steps-1024.webp"
+    }
+  ]
+}

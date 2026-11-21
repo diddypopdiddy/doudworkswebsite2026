@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://www.vincedoud.com/</loc>
-    <lastmod>2026-07-29</lastmod>
-  </url>
-  <url>
-    <loc>https://www.vincedoud.com/projects.html</loc>
-    <lastmod>2026-07-29</lastmod>
-  </url>
-  <url>
-    <loc>https://www.vincedoud.com/about.html</loc>
-    <lastmod>2026-07-29</lastmod>
-  </url>
-  <url>
-    <loc>https://www.vincedoud.com/contact.html</loc>
-    <lastmod>2026-07-29</lastmod>
-  </url>
+  <url><loc>https://www.vincedoud.com/</loc></url>
+  <url><loc>https://www.vincedoud.com/art/</loc></url>
+  <url><loc>https://www.vincedoud.com/music/</loc></url>
+  <url><loc>https://www.vincedoud.com/video/</loc></url>
+  <url><loc>https://www.vincedoud.com/teaching/</loc></url>
+  <url><loc>https://www.vincedoud.com/ai/</loc></url>
+  <url><loc>https://www.vincedoud.com/about/</loc></url>
+  <url><loc>https://www.vincedoud.com/contact/</loc></url>
 </urlset>

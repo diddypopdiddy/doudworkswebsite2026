@@ -1,0 +1,164 @@
+/* ---------- the basement ---------- */
+.room { position: absolute; inset: 0; overflow: hidden; background: #000; user-select: none; -webkit-user-select: none; }
+.room-cam {
+  position: absolute; inset: 0;
+  transition: transform .64s var(--ease-in-out), filter .64s var(--ease-in-out);
+  will-change: transform;
+}
+.room-stage { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+/* phones: the room fills the height and swipes sideways */
+.room.is-pan { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.room.is-pan::-webkit-scrollbar { display: none; }
+.room.is-pan .room-cam { right: auto; }
+.room.is-pan .room-hint { position: fixed; white-space: normal; width: max-content; max-width: calc(100vw - 32px); text-align: center; line-height: 1.4; }
+.room-stage > img { position: absolute; pointer-events: none; -webkit-user-drag: none; }
+.room-bg { left: 0; top: 0; width: 100%; height: 100%; transition: filter .45s ease; }
+
+/* soft edges, so any letterboxing melts into the dark */
+.room-stage::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 5;
+  background:
+    linear-gradient(to top, rgba(0,0,0,.42), transparent 8%),
+    linear-gradient(to right, rgba(0,0,0,.3), transparent 5%),
+    linear-gradient(to left, rgba(0,0,0,.3), transparent 5%),
+    radial-gradient(ellipse 80% 75% at 52% 48%, transparent 62%, rgba(0,0,0,.3) 100%);
+}
+
+/* ---------- objects ---------- */
+.room-obj { transition: filter .3s ease, opacity .22s ease; }
+
+/* When a group lights up, everything else steps back into the dark. */
+.room-stage[data-active]:not([data-active=""]) .room-bg,
+.room-stage[data-active]:not([data-active=""]) .room-obj:not(.is-lit) {
+  filter: brightness(.58) saturate(.78);
+}
+
+.room-obj.is-lit {
+  filter:
+    brightness(1.08) saturate(1.06)
+    drop-shadow(0 0 1px #fff6dc)
+    drop-shadow(0 0 1px #fff6dc)
+    drop-shadow(0 0 8px rgba(255, 206, 110, .95))
+    drop-shadow(0 0 20px rgba(255, 190, 80, .5));
+  animation: lift 1.6s ease-in-out infinite;
+}
+/* Everything in a group floats on the same clock, so it all moves together. */
+@keyframes lift { 0%, 100% { translate: 0 0; } 50% { translate: 0 -3px; } }
+@keyframes lift-small { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.5px; } }
+.room-obj[data-id="payphone"].is-lit,
+.room-obj[data-id="whiteboard"].is-lit,
+.room-obj[data-id="ipod"].is-lit,
+.room-obj[data-id="laptop"].is-lit,
+.room-obj[data-group="about"].is-lit { animation-name: lift-small; }
+
+/* The wallet flaps open while it's lit. */
+.room-open { opacity: 0; }
+.room-stage[data-active="about"] .room-obj[data-id="wallet"] { opacity: 0; }
+.room-stage[data-active="about"] .room-open { opacity: 1; }
+
+/* ---------- whiteboard: the live date ---------- */
+.wb-date {
+  position: absolute; left: 0; top: 0; transform-origin: 0 0; pointer-events: none;
+  display: flex; flex-direction: column; justify-content: center; padding: 4px 14px 10px;
+  font-family: var(--hand); color: #1d3f8f; line-height: .98;
+  transition: filter .26s ease;
+}
+.room-stage[data-active]:not([data-active=""]):not([data-active="teaching"]) .wb-date { filter: brightness(.58); }
+.room-stage[data-active="teaching"] .wb-date { animation: lift-small 1.6s ease-in-out infinite; }
+.wb-day { font-size: 30px; letter-spacing: .3px; }
+.wb-md { font-size: 38px; color: #b3261e; margin-top: 2px; }
+.wb-swoosh { width: 116px; height: 13px; margin-top: 2px; }
+.wb-swoosh path { fill: none; stroke: #1d3f8f; stroke-width: 3; stroke-linecap: round; opacity: .8; }
+
+/* ---------- a little life ---------- */
+.amb { position: absolute; pointer-events: none; transition: opacity .3s ease; }
+/* the lamp on the record console glows and flickers now and then */
+.amb-lamp { width: 190px; height: 190px; margin: -95px 0 0 -95px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 214, 140, .5) 0%, rgba(255, 196, 110, .16) 38%, transparent 70%); mix-blend-mode: screen;
+  animation: lamp 6s ease-in-out infinite; }
+@keyframes lamp { 0%, 100% { opacity: .85; } 46% { opacity: 1; } 49% { opacity: .74; } 52% { opacity: .98; } }
+/* the record turns */
+.amb-vinyl { width: 54px; height: 54px; margin: -27px 0 0 -27px; transform: scaleY(.44) rotate(-10deg); }
+.amb-vinyl i { position: absolute; inset: 0; border-radius: 50%; mix-blend-mode: screen; opacity: .45;
+  background: conic-gradient(from 0deg, transparent 0 20deg, rgba(255,255,255,.55) 35deg, transparent 55deg 200deg, rgba(255,255,255,.4) 215deg, transparent 235deg);
+  -webkit-mask: radial-gradient(circle, transparent 17%, #000 19%, #000 68%, transparent 70%); mask: radial-gradient(circle, transparent 17%, #000 19%, #000 68%, transparent 70%);
+  animation: spin 1.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.room-stage[data-active]:not([data-active=""]) :is(.amb-lamp, .amb-vinyl) { opacity: .3; }
+/* click the record: it stops (and starts again) */
+.room-stage.record-stopped .amb-vinyl i { animation-play-state: paused; opacity: .22; }
+/* click the lamp: the basement goes dark, and whatever you hover still lights up */
+.room-stage.lights-off .amb-lamp { opacity: 0; }
+.room-stage.lights-off .room-bg,
+.room-stage.lights-off .room-obj:not(.is-lit) { filter: brightness(.42) saturate(.72); }
+.room-stage.lights-off[data-active]:not([data-active=""]) .room-bg,
+.room-stage.lights-off[data-active]:not([data-active=""]) .room-obj:not(.is-lit) { filter: brightness(.3) saturate(.6); }
+.room-stage.lights-off .wb-date { filter: brightness(.45); }
+.room-stage.lights-off .amb-ipod { opacity: .55; }
+/* the iPod screen wakes up with the rest of the music gear */
+.amb-ipod { width: 46px; height: 34px; margin: -17px 0 0 -23px; border-radius: 50%; opacity: 0;
+  background: radial-gradient(ellipse, rgba(190, 230, 255, .75), rgba(150, 210, 255, .2) 45%, transparent 70%); mix-blend-mode: screen; }
+.room-stage[data-active="music"] .amb-ipod { opacity: 1; }
+/* the softbox throws light across the desk while the video set is lit */
+.amb-softbox { left: 1050px; top: 400px; width: 420px; height: 260px; border-radius: 50%; opacity: 0;
+  background: radial-gradient(ellipse at 52% 55%, rgba(255, 246, 225, .42), rgba(255, 236, 200, .14) 45%, transparent 70%); mix-blend-mode: screen; }
+.room-stage[data-active="video"] .amb-softbox { opacity: 1; }
+
+/* ---------- headline on the open stretch of red carpet ---------- */
+/* Laid flat on the floor with the room's own isometric angles, like it's painted on the rug. */
+.room-hero { position: absolute; left: 864px; top: 450px; pointer-events: none; text-align: center; white-space: nowrap;
+  transform: translate(-50%, -50%) matrix(.89, .455, -.89, .455, 0, 0);
+  text-shadow: 2px 3px 0 rgba(70, 10, 8, .6); transition: opacity .3s ease, filter .45s ease; }
+.room-stage.lights-off .room-hero { filter: brightness(.5); }
+.room-stage[data-active]:not([data-active=""]) .room-hero { opacity: .55; }
+.room-kicker {
+  margin: 0 0 6px; font-size: 17px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: rgba(245,239,230,.6);
+}
+.room-headline {
+  margin: 0; font-size: 64px; line-height: .98; font-weight: 800; letter-spacing: -.02em; color: var(--ink);
+}
+.room-headline span { color: var(--glow); font-weight: 700; padding: 0 .04em; }
+
+/* ---------- paper label ---------- */
+.room-label {
+  position: absolute; z-index: 7; pointer-events: none;
+  display: inline-flex; align-items: baseline; gap: 8px; white-space: nowrap;
+  padding: 7px 14px 6px; border-radius: 3px;
+  background: #fffdf4; color: #241b15;
+  font-family: var(--hand); font-size: 25px; line-height: 1;
+  box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 10px 22px rgba(0,0,0,.45);
+  transform: translate(-50%, 6px) rotate(-2deg) scale(.92);
+  opacity: 0; transition: opacity .18s ease, transform .3s var(--ease-out), left .22s var(--ease-out), top .22s var(--ease-out);
+}
+.room-label::before { /* a strip of tape */
+  content: ""; position: absolute; left: 50%; top: -9px; width: 44px; height: 16px; transform: translateX(-50%) rotate(3deg);
+  background: rgba(255, 236, 170, .78); box-shadow: 0 1px 2px rgba(0,0,0,.15);
+}
+.room-label em { font-style: normal; font-size: 21px; color: #6b5a4c; }
+.room-label em::before { content: "– "; }
+.room-label.is-on { opacity: 1; transform: translate(-50%, 12px) rotate(-2deg) scale(1); }
+.room-label.is-above { transform: translate(-50%, calc(-100% - 6px)) rotate(-2deg) scale(.92); }
+.room-label.is-above.is-on { transform: translate(-50%, calc(-100% - 12px)) rotate(-2deg) scale(1); }
+
+/* ---------- keyboard hotspots ---------- */
+.room-hotspot {
+  position: absolute; z-index: 8; width: 1px; height: 1px; overflow: hidden; opacity: 0;
+  color: transparent; text-decoration: none;
+}
+.room-hotspot:focus-visible { opacity: 1; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; outline: 4px solid var(--focus); outline-offset: 2px; }
+
+.room-hint {
+  position: absolute; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); transform: translateX(-50%);
+  margin: 0; padding: 8px 16px; border-radius: 999px; z-index: 9;
+  background: rgba(10,8,7,.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  font-size: 13px; font-weight: 500; color: rgba(245,239,230,.84); letter-spacing: .01em; white-space: nowrap;
+  transition: opacity .6s ease, transform .6s var(--ease-out); pointer-events: none;
+  animation: hint-in .8s 1.2s var(--ease-out) both;
+}
+.room-hint b { font-weight: 650; color: var(--glow); }
+.room-hint.is-gone { opacity: 0; transform: translate(-50%, 8px); }
+@keyframes hint-in { from { opacity: 0; transform: translate(-50%, 10px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .room-obj.is-lit, .wb-date, .amb-lamp, .amb-vinyl i { animation: none !important; }
+}

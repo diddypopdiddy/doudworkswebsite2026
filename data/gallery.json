@@ -1,0 +1,460 @@
+{
+ "rooms": [
+  {
+   "id": "main",
+   "name": "Main room",
+   "bounds": {
+    "minX": -2.75,
+    "maxX": 2.75,
+    "minZ": -3.05,
+    "maxZ": 3.05
+   },
+   "waypoint": [
+    0,
+    1.65,
+    1.65
+   ]
+  },
+  {
+   "id": "right",
+   "name": "Flag room",
+   "bounds": {
+    "minX": 2.75,
+    "maxX": 6.41,
+    "minZ": -1.83,
+    "maxZ": 2.44
+   },
+   "waypoint": [
+    4.6,
+    1.65,
+    0.3
+   ]
+  }
+ ],
+ "windows": [
+  {
+   "id": "facade-0",
+   "center": [
+    -1.86,
+    1.4,
+    2.955
+   ],
+   "normal": [
+    0,
+    0,
+    -1
+   ],
+   "width": 1.38,
+   "height": 1.92
+  },
+  {
+   "id": "facade-1",
+   "center": [
+    0,
+    1.4,
+    2.955
+   ],
+   "normal": [
+    0,
+    0,
+    -1
+   ],
+   "width": 1.38,
+   "height": 1.92
+  },
+  {
+   "id": "facade-2",
+   "center": [
+    1.86,
+    1.4,
+    2.955
+   ],
+   "normal": [
+    0,
+    0,
+    -1
+   ],
+   "width": 1.38,
+   "height": 1.92
+  }
+ ],
+ "ceiling": 2.8,
+ "start": {
+  "position": [
+   0,
+   1.65,
+   2.2
+  ],
+  "lookAt": [
+   0,
+   1.65,
+   -1.8
+  ]
+ },
+ "art": [
+  {
+   "index": 0,
+   "room": "main",
+   "title": "Color stripe composition",
+   "medium": "Paint on wood",
+   "year": null,
+   "dimensions": "4 \u00d7 1 ft",
+   "category": "Paintings",
+   "position": [
+    -1.55,
+    1.7,
+    -2.916
+   ],
+   "normal": [
+    0,
+    0,
+    1
+   ],
+   "width": 1.2192,
+   "height": 0.3048,
+   "mount": "wood",
+   "depth": 0.019,
+   "cutout": false,
+   "pixels": [
+    1600,
+    379
+   ]
+  },
+  {
+   "index": 1,
+   "room": "main",
+   "title": "Dense colored circles",
+   "medium": "Paint on canvas",
+   "year": null,
+   "dimensions": "24 \u00d7 24 in",
+   "category": "Paintings",
+   "position": [
+    0.0,
+    1.62,
+    -2.903
+   ],
+   "normal": [
+    0,
+    0,
+    1
+   ],
+   "width": 0.6096,
+   "height": 0.6096,
+   "mount": "canvas",
+   "depth": 0.032,
+   "cutout": false,
+   "pixels": [
+    1600,
+    1091
+   ]
+  },
+  {
+   "index": 2,
+   "room": "main",
+   "title": "Figure and sky composition",
+   "medium": "Paint on wood",
+   "year": null,
+   "dimensions": "4 \u00d7 1 ft",
+   "category": "Paintings",
+   "position": [
+    1.55,
+    1.7,
+    -2.916
+   ],
+   "normal": [
+    0,
+    0,
+    1
+   ],
+   "width": 1.2192,
+   "height": 0.3048,
+   "mount": "wood",
+   "depth": 0.019,
+   "cutout": false,
+   "pixels": [
+    1600,
+    964
+   ]
+  },
+  {
+   "index": 3,
+   "room": "right",
+   "title": "Flag composition",
+   "medium": null,
+   "year": null,
+   "dimensions": null,
+   "category": "Paintings",
+   "position": [
+    3.9,
+    1.62,
+    -1.683
+   ],
+   "normal": [
+    0,
+    0,
+    1
+   ],
+   "width": 0.6096,
+   "height": 0.4389,
+   "mount": "canvas",
+   "depth": 0.032,
+   "cutout": false,
+   "pixels": [
+    1600,
+    1152
+   ]
+  },
+  {
+   "index": 4,
+   "room": "main",
+   "title": "Long horizontal composition",
+   "medium": "Paint on wood",
+   "year": null,
+   "dimensions": "4 \u00d7 1 ft",
+   "category": "Paintings",
+   "position": [
+    -2.616,
+    1.64,
+    -1.6
+   ],
+   "normal": [
+    1,
+    0,
+    0
+   ],
+   "width": 1.2192,
+   "height": 0.3048,
+   "mount": "wood",
+   "depth": 0.019,
+   "cutout": false,
+   "pixels": [
+    1600,
+    217
+   ]
+  },
+  {
+   "index": 5,
+   "room": "main",
+   "title": "Self Portrait",
+   "medium": "Acrylic on canvas",
+   "year": "circa 2010",
+   "dimensions": "3 \u00d7 3 ft",
+   "category": "Paintings",
+   "position": [
+    -2.603,
+    1.58,
+    0.05
+   ],
+   "normal": [
+    1,
+    0,
+    0
+   ],
+   "width": 0.9144,
+   "height": 0.9144,
+   "mount": "canvas",
+   "depth": 0.032,
+   "cutout": false,
+   "pixels": [
+    1600,
+    1600
+   ]
+  },
+  {
+   "index": 6,
+   "room": "main",
+   "title": "Self Portrait",
+   "medium": "Acrylic on canvas",
+   "year": "circa 2010",
+   "dimensions": "3 \u00d7 3 ft",
+   "category": "Paintings",
+   "position": [
+    2.603,
+    1.58,
+    -1.68
+   ],
+   "normal": [
+    -1,
+    0,
+    0
+   ],
+   "width": 0.9144,
+   "height": 0.9144,
+   "mount": "canvas",
+   "depth": 0.032,
+   "cutout": false,
+   "pixels": [
+    1600,
+    1572
+   ]
+  },
+  {
+   "index": 15,
+   "room": "main",
+   "title": "Swing and Miss - sequence",
+   "medium": null,
+   "year": null,
+   "dimensions": null,
+   "category": "Photography & Sequences",
+   "position": [
+    2.638,
+    1.58,
+    1.55
+   ],
+   "normal": [
+    -1,
+    0,
+    0
+   ],
+   "width": 0.6096,
+   "height": 0.1969,
+   "mount": "paper",
+   "depth": 0.00035,
+   "cutout": false,
+   "pixels": [
+    1600,
+    517
+   ]
+  },
+  {
+   "index": 16,
+   "room": "main",
+   "title": "Loretta",
+   "medium": "Oil pastel on board",
+   "year": "2018",
+   "dimensions": "32 \u00d7 32 in.",
+   "category": "Drawings",
+   "position": [
+    -2.629,
+    1.6,
+    1.62
+   ],
+   "normal": [
+    1,
+    0,
+    0
+   ],
+   "width": 0.8128,
+   "height": 0.8128,
+   "mount": "board",
+   "depth": 0.006,
+   "cutout": true,
+   "pixels": [
+    1254,
+    1254
+   ]
+  },
+  {
+   "index": 17,
+   "room": "right",
+   "title": "Strategy",
+   "medium": "Objects on board",
+   "year": null,
+   "dimensions": "24 \u00d7 20 in.",
+   "category": "Collage & Mixed Media",
+   "position": [
+    5.27,
+    1.62,
+    -1.683
+   ],
+   "normal": [
+    0,
+    0,
+    1
+   ],
+   "width": 0.6096,
+   "height": 0.508,
+   "mount": "board",
+   "depth": 0.03175,
+   "cutout": true,
+   "pixels": [
+    1374,
+    1145
+   ]
+  },
+  {
+   "index": 18,
+   "room": "right",
+   "title": "America #1",
+   "medium": "Paint, glue, and rubber bands on canvas",
+   "year": null,
+   "dimensions": "40 \u00d7 30 in. \u00b7 1\u00bd in. deep",
+   "category": "Collage & Mixed Media",
+   "position": [
+    3.72,
+    1.62,
+    2.287
+   ],
+   "normal": [
+    0,
+    0,
+    -1
+   ],
+   "width": 1.016,
+   "height": 0.762,
+   "mount": "canvas",
+   "depth": 0.0381,
+   "cutout": true,
+   "pixels": [
+    1448,
+    1086
+   ]
+  },
+  {
+   "index": 19,
+   "room": "right",
+   "title": "America #2",
+   "medium": "Flag and plastic bags on canvas",
+   "year": null,
+   "dimensions": "48 \u00d7 24 in. \u00b7 up to approx. 4 in. deep",
+   "category": "Collage & Mixed Media",
+   "position": [
+    5.3,
+    1.62,
+    2.223
+   ],
+   "normal": [
+    0,
+    0,
+    -1
+   ],
+   "width": 1.2192,
+   "height": 0.6096,
+   "mount": "canvas",
+   "depth": 0.1016,
+   "cutout": true,
+   "pixels": [
+    1600,
+    800
+   ]
+  },
+  {
+   "index": 20,
+   "room": "right",
+   "title": "Stolen",
+   "medium": "Oil on canvas",
+   "year": null,
+   "dimensions": "48 \u00d7 48 in. \u00b7 1\u00bd in. deep",
+   "category": "Painting",
+   "position": [
+    6.257,
+    1.62,
+    0.0
+   ],
+   "normal": [
+    -1,
+    0,
+    0
+   ],
+   "width": 1.2192,
+   "height": 1.2192,
+   "mount": "canvas",
+   "depth": 0.0381,
+   "cutout": false,
+   "pixels": [
+    1600,
+    1571
+   ]
+  }
+ ]
+}
