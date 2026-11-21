@@ -28,6 +28,8 @@ const WRITE = "https://write-with-ai-vince-doud.diddypopdiddy.chatgpt.site";
 export const BOOKS = [
   {
     id: "ai-educator-playbook",
+    emblem: "ai-educator-playbook.svg", plate: "ai-educator-playbook-2026-09-27.png", endpaper: "grid",
+    caption: "Chapter 1, AI Basics: what AI is, and what it isn’t.",
     art: "book-plain-brick", color: "#a3301f",
     spine: "AI Educator Playbook",
     title: "AI Educator Playbook",
@@ -38,6 +40,8 @@ export const BOOKS = [
   },
   {
     id: "moving-image",
+    emblem: "moving-image.svg", plate: "moving-image-2026-09-27.png", endpaper: "film",
+    caption: "Learn by making: chapters from file basics to camera language.",
     art: "book-plain-teal", color: "#176a6d",
     spine: "The Moving Image",
     title: "The Moving Image",
@@ -48,6 +52,8 @@ export const BOOKS = [
   },
   {
     id: "ai-road-test",
+    emblem: "ai-road-test.svg", plate: "ai-road-test-2026-09-27.png", endpaper: "map",
+    caption: "Earn eight permit stamps across three districts.",
     art: "book-plain-ochre", color: "#c98a1e",
     spine: "The AI Road Test",
     title: "The AI Road Test",
@@ -58,6 +64,8 @@ export const BOOKS = [
   },
   {
     id: "write-with-ai",
+    emblem: "write-with-ai.svg", plate: "write-with-ai-2026-09-27.png", endpaper: "ruled",
+    caption: "Round 1: four minutes to write the best introduction.",
     art: "book-plain-forest", color: "#3a5f31",
     spine: "Write with AI",
     title: "Write with AI",

@@ -1,9 +1,13 @@
 import { esc, scope, easternNow, reducedMotion } from "../util.js";
 import { BOOKS } from "../data.js";
 
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+const seen = new Set(); // books already opened this visit skip the beat on the cover
+
 /* Zoomed in on the bookshelf and whiteboard.
    Hover a book: it tips out from the top and slides toward you while its neighbors lean back.
-   Click it: the book comes off the shelf, flies to the middle and opens to a page spread with the link. */
+   Click it: the book lifts out, turns from spine to cover as it flies to the middle, and opens to a spread:
+   a library checkout card in the inside cover (the link) and a title page with a screenshot plate. */
 
 // Plain spine art (trimmed sizes).
 const ART = {
@@ -138,68 +142,181 @@ export default {
     // Plain books just give a little nudge.
     els.filter((e) => !e.dataset.id).forEach((el) => S.on(el, "pointerenter", () => { el.classList.remove("is-nudge"); void el.offsetWidth; el.classList.add("is-nudge"); }));
 
-    /* ---------- open a book ---------- */
-    let opened = null;
-    function openBook(el) {
+    /* ---------- open a book ----------
+       The book is a real 3D box (back board, page block, spine, cover, two loose flyleaves).
+       Lift it out of its slot, turn it spine → cover on the way to the middle, land, then the cover swings open,
+       the flyleaves riffle after it and the pages ink in. Closing runs it back into its slot. */
+    let opened = null, busy = false, flight = null, token = 0;
+    const phone = () => matchMedia("(max-width: 767px)").matches;
+    // Proportions (of the book's height) — keep in step with --t / --m / --bt in pages.css.
+    const DIM = { t: 0.12, m: 0.018, bt: 0.011, gap: 0.004 };
+
+    function cardHTML(b, cls) {
+      const d = easternNow();
+      const due = `${d.monthDay.toUpperCase()} ${d.numeric.slice(-4)}`;
+      const head = `<span class="bo-card-h"><b>Basement Library</b><span>Vince Doud</span></span>
+        <span class="bo-card-row"><em>Title</em><span class="bo-hand">${esc(b.title)}</span></span>`;
+      return b.href
+        ? `<a class="bo-card ${cls}" href="${esc(b.href)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(b.action || "Open it")} (opens in a new tab)">
+             ${head}
+             <span class="bo-card-row is-extra"><em>Borrower</em><span class="bo-hand">you</span></span>
+             <span class="bo-card-row is-extra"><em>Due</em><span class="bo-due">${esc(due)}</span></span>
+             <span class="bo-stamp">Check it out →</span>
+           </a>`
+        : `<div class="bo-card is-onorder ${cls}">
+             ${head}
+             <span class="bo-card-row is-status"><em>Status</em><span class="bo-stamp is-inline">On order</span></span>
+           </div>`;
+    }
+    const slotHTML = (b, cls) => `<div class="bo-slot ${cls}">
+        ${cardHTML(b, "")}
+        <span class="bo-pocket" aria-hidden="true"><b>Book pocket</b><span>${b.href ? "Pull the card to check it out" : esc(b.note || "This one’s on order.")}</span></span>
+      </div>`;
+    const NOTES = {
+      grid: `<span style="left:9%;top:9%;--r:-6deg">where does AI belong?</span><span style="left:46%;top:21%;--r:4deg">verify it!</span><span style="left:12%;top:34%;--r:-2deg">the learner still does this →</span>`,
+      film: "", map: "", ruled: `<span style="left:22%;top:10%;--r:-2deg">Round 1 —</span>`,
+    };
+
+    function spreadHTML(b) {
+      return `
+        <div class="bo-dim" data-dim></div>
+        <div class="bo-stage" data-stage>
+          <div class="bo-fly" data-fly>
+            <div class="bo-book" data-bo>
+              <div class="bo-back"></div>
+              <div class="bo-edge is-fore"></div><div class="bo-edge is-top"></div><div class="bo-edge is-foot"></div>
+              <div class="bo-spine" aria-hidden="true"><img src="assets/objects/${b.art}.webp" alt="" draggable="false"><i class="spine-bands"></i><span>${esc(b.spine)}</span></div>
+              <article class="bo-page bo-right">
+                <header class="bo-head bo-ink" style="--d:0"><span>${esc(b.kind)}</span><i></i></header>
+                <h2 id="bo-title" class="bo-title bo-ink" style="--d:1">${esc(b.title)}</h2>
+                <p class="bo-by bo-ink" style="--d:2">by Vince Doud</p>
+                ${b.plate ? `<figure class="bo-plate bo-ink" style="--d:3"><span class="bo-photo"><img src="assets/media/${esc(b.plate)}" alt="Screenshot of ${esc(b.title)}" draggable="false"></span>${b.caption ? `<figcaption>${esc(b.caption)}</figcaption>` : ""}</figure>` : ""}
+                <p class="bo-summary bo-ink" style="--d:4">${esc(b.summary)}</p>
+                ${slotHTML(b, "is-narrow bo-ink")}
+                <footer class="bo-foot bo-ink" style="--d:5"><span>❦</span><span>1</span></footer>
+              </article>
+              <div class="bo-ribbon"></div>
+              <div class="bo-leaf" style="--n:1"></div><div class="bo-leaf" style="--n:2"></div>
+              <div class="bo-cover">
+                <div class="bo-cover-front" aria-hidden="true">
+                  <i class="bo-bands"></i>
+                  ${b.emblem ? `<img class="bo-emblem" src="assets/media/${esc(b.emblem)}" alt="" draggable="false">` : ""}
+                  <span class="bo-panel"><span>${esc(b.title)}</span></span>
+                  <span class="bo-author">Vince Doud</span>
+                </div>
+                <div class="bo-cover-edge"></div>
+                <div class="bo-cover-inside">
+                  <div class="bo-endpaper" data-ep="${esc(b.endpaper || "grid")}"><span class="bo-notes" aria-hidden="true">${NOTES[b.endpaper] || ""}</span></div>
+                  <span class="bo-exlibris" aria-hidden="true">${b.emblem ? `<img src="assets/media/${esc(b.emblem)}" alt="">` : ""}<b>Ex libris</b></span>
+                  ${slotHTML(b, "is-wide")}
+                </div>
+              </div>
+              <button class="bo-tab" data-close type="button"><span aria-hidden="true">↩</span> Put it back</button>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    // One transform list for every keyframe so the browser interpolates each part on its own.
+    const pose = (x, y, ry, rx, s, kz) => `translate3d(${x}px, ${y}px, 0) rotateY(${ry}deg) rotateX(${rx}deg) scale3d(${s}, ${s}, ${s * kz})`;
+    // Where the flying book has to start so its spine sits exactly on the shelf book.
+    function fromShelf(el, stage) {
+      const r = el.getBoundingClientRect(), st = stage.getBoundingClientRect();
+      const H = st.height, W = st.width, P = 2400;
+      const spineH = H * (1 + 2 * DIM.m), spineW = H * (DIM.t + DIM.gap + 2 * DIM.bt);
+      let s = r.height / spineH;
+      const zFace = (W / 4 + H * DIM.m) * s;           // the spine face comes toward you by half the cover width
+      const f = P / (P - zFace);                       // perspective blows it up by this much
+      s /= f;
+      const kz = Math.min(3, Math.max(0.8, r.width / (spineW * s * f)));
+      return { x: (r.left + r.width / 2 - (st.left + W / 2)) / f, y: (r.top + r.height / 2 - (st.top + H / 2)) / f, s, kz, lift: (r.height * 0.35) / f, H };
+    }
+
+    async function openBook(el) {
+      if (busy || opened) return;
       const b = BOOKS.find((x) => x.id === el.dataset.id); if (!b) return;
-      opened = el;
-      const r = el.getBoundingClientRect();
+      opened = el; busy = true;
+      const my = ++token;
       openEl.hidden = false;
       openEl.style.setProperty("--c", b.color);
-      // Closed first: just the cover. It holds for a beat, then swings open to a title page (left)
-      // and a table of contents (right) that carries the summary and the links.
-      openEl.innerHTML = `
-        <div class="bo-book" data-bo>
-          <div class="bo-page bo-right">
-            <p class="bo-toc-h">Contents</p>
-            <ol class="bo-toc">
-              <li><span class="bo-toc-row"><span class="bo-toc-t">What’s inside</span><i></i><span class="bo-toc-n">1</span></span>
-                <p class="bo-toc-p">${esc(b.summary)}</p></li>
-              ${b.href
-                ? `<li><a class="bo-toc-row is-link" href="${esc(b.href)}" target="_blank" rel="noopener noreferrer"><span class="bo-toc-t">${esc(b.action || "Open it")}</span><i></i><span class="bo-toc-n">2</span></a></li>`
-                : `<li><span class="bo-toc-row"><span class="bo-toc-t">Coming soon</span><i></i><span class="bo-toc-n">2</span></span><p class="bo-toc-p is-note">${esc(b.note)}</p></li>`}
-              ${b.href && b.note ? `<li><p class="bo-toc-p is-note">${esc(b.note)}</p></li>` : ""}
-              <li><button class="bo-toc-row is-close" data-close><span class="bo-toc-t">Put it back on the shelf</span><i></i><span class="bo-toc-n">3</span></button></li>
-            </ol>
-          </div>
-          <div class="bo-cover"><div class="bo-cover-front"><span>${esc(b.title)}</span><i></i></div><div class="bo-cover-inside">
-            <p class="bo-kind">${esc(b.kind)}</p>
-            <h2 id="bo-title">${esc(b.title)}</h2>
-            <p class="bo-by">by Vince Doud</p>
-            <p class="bo-press">Basement Press · New Jersey</p>
-          </div></div>
-        </div>`;
-      const book = openEl.querySelector("[data-bo]");
-      // Start the open book exactly where the spine was on the shelf, then fly it to the middle.
-      const target = book.getBoundingClientRect();
-      const sx = r.width / (target.width / 2), sy = r.height / target.height;
-      book.style.transform = `translate(${r.left + r.width / 2 - (target.left + target.width / 2)}px, ${r.top + r.height / 2 - (target.top + target.height / 2)}px) scale(${sx}, ${sy})`;
-      book.getBoundingClientRect();
-      el.classList.add("is-taken");
-      requestAnimationFrame(() => {
-        openEl.classList.add("is-on");
-        book.style.transform = "";
-        setTimeout(() => book.classList.add("is-open"), reducedMotion() ? 0 : 1250); // land, show the cover, then open
-      });
+      openEl.innerHTML = spreadHTML(b);
+      openEl.className = "book-open";
+      openEl.dataset.book = b.id;
+      const stage = openEl.querySelector("[data-stage]"), fly = openEl.querySelector("[data-fly]"), book = openEl.querySelector("[data-bo]");
       openEl.querySelector("[data-close]").addEventListener("click", closeBook);
-      setTimeout(() => (openEl.querySelector(".bo-toc-row.is-link") || openEl.querySelector("[data-close]")).focus({ preventScroll: true }), reducedMotion() ? 0 : 2100);
+      const focusCard = () => [...openEl.querySelectorAll("a.bo-card, [data-close]")].find((n) => n.offsetParent && getComputedStyle(n).visibility !== "hidden")?.focus({ preventScroll: true });
+
+      if (reducedMotion()) {
+        openEl.classList.add("is-reduced", "is-on", "is-open", "is-inked");
+        el.classList.add("is-taken");
+        busy = false; focusCard();
+        return;
+      }
+      const p = fromShelf(el, stage), k = phone() ? 0.62 : 1;
+      fly.style.transformOrigin = `50% 50% ${(p.H * (DIM.t + DIM.gap)) / 2}px`;
+      el.classList.add("is-taken");
+      requestAnimationFrame(() => openEl.classList.add("is-on"));
+      flight = fly.animate([
+        { transform: pose(p.x, p.y, 90, 0, p.s, p.kz), easing: "cubic-bezier(.3, 0, .4, 1)" },
+        { transform: pose(p.x, p.y - p.lift, 90, 0, p.s, p.kz), offset: 0.21, easing: "cubic-bezier(.45, 0, .9, .6)" },
+        { transform: pose(p.x * 0.45, (p.y - p.lift) * 0.45 - p.H * 0.07, 52, 3, (p.s + 1) / 2, (p.kz + 1) / 2), offset: 0.5, easing: "cubic-bezier(.1, .45, .3, 1)" },
+        { transform: pose(0, -p.H * 0.02, 0, 6, 1.02, 1), offset: 0.81, easing: "cubic-bezier(.4, 0, .3, 1)" },
+        { transform: pose(0, 0, 0, 0, 1, 1) },
+      ], { duration: 1050 * k });
+      try { await flight.finished; } catch { return; } // cancelled by a close mid-flight
+      if (my !== token) return;
+      flight = null;
+      openEl.classList.add("is-landed");
+      await wait(seen.has(b.id) ? 60 : 200);
+      seen.add(b.id);
+      if (my !== token) return;
+      openEl.classList.add("is-open");
+      await wait(450 * k);
+      if (my !== token) return;
+      openEl.classList.add("is-inked");
+      await wait(300 * k);
+      if (my !== token) return;
+      busy = false;
+      focusCard();
     }
-    function closeBook() {
-      if (openEl.hidden) return false;
-      const book = openEl.querySelector("[data-bo]");
-      book.classList.remove("is-open");
+
+    async function closeBook() {
+      if (openEl.hidden || !opened) return false;
+      if (openEl.classList.contains("is-closing")) return true;
+      const el = opened, book = openEl.querySelector("[data-bo]"), fly = openEl.querySelector("[data-fly]"), stage = openEl.querySelector("[data-stage]");
+      busy = true; token++;
+      const done = () => {
+        openEl.hidden = true; openEl.innerHTML = ""; openEl.className = "book-open";
+        el.classList.remove("is-taken");
+        el.focus({ preventScroll: true });
+        opened = null; busy = false;
+      };
+      if (reducedMotion() || !book) { openEl.classList.remove("is-on"); await wait(reducedMotion() ? 200 : 0); return done(), true; }
+      flight?.cancel(); flight = null;
+      const k = phone() ? 0.62 : 1;
+      const wasOpen = openEl.classList.contains("is-open");
+      openEl.classList.add("is-closing");
+      openEl.classList.remove("is-inked", "is-open", "is-landed");
+      if (wasOpen) {
+        await wait(360 * k);
+        book.animate([{ scale: "1" }, { scale: ".98" }, { scale: "1" }], { duration: 140, easing: "ease-out" }); // the thump
+        await wait(90);
+      }
       openEl.classList.remove("is-on");
-      setTimeout(() => {
-        openEl.hidden = true; openEl.innerHTML = "";
-        opened?.classList.remove("is-taken");
-        opened?.focus({ preventScroll: true });
-        opened = null;
-      }, reducedMotion() ? 0 : 450);
+      const p = fromShelf(el, stage);
+      const back = fly.animate([
+        { transform: pose(0, 0, 0, 0, 1, 1), easing: "cubic-bezier(.5, 0, .7, .4)" },
+        { transform: pose(p.x * 0.5, p.y * 0.5 - p.H * 0.05, 50, 0, (p.s + 1) / 2, (p.kz + 1) / 2), offset: 0.45, easing: "cubic-bezier(.2, .5, .4, 1)" },
+        { transform: pose(p.x, p.y - p.lift, 90, 0, p.s, p.kz), offset: 0.78, easing: "cubic-bezier(.5, 0, .6, 1)" },
+        { transform: pose(p.x, p.y, 90, 0, p.s, p.kz) },
+      ], { duration: 520 * k, fill: "forwards" });
+      try { await back.finished; } catch {}
+      done();
       return true;
     }
-    S.on(openEl, "click", (e) => { if (e.target === openEl) closeBook(); });
+    S.on(openEl, "click", (e) => { if (!busy && (e.target === openEl || e.target.matches("[data-dim], [data-stage]"))) closeBook(); });
     S.add(() => clearTimeout(leaveTimer));
 
-    return { onEscape() { return closeBook(); }, unmount() { S.dispose(); } };
+    return { onEscape() { if (openEl.hidden) return false; closeBook(); return true; }, unmount() { token++; flight?.cancel(); S.dispose(); } };
   },
 };
