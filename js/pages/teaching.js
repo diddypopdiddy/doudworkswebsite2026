@@ -215,8 +215,8 @@ export default {
                     <i class="bo-bands"></i>
                     ${b.emblem ? `<img class="bo-emblem" src="assets/media/${esc(b.emblem)}" alt="" draggable="false">` : ""}
                     <span class="bo-panel"><span>${esc(b.title)}</span></span>`}
+                  ${b.coverAddress ? `<span class="bo-cover-address">${esc(b.coverAddress)}</span>` : ""}
                   ${workbookCover ? `
-                    <span class="bo-cover-address">${esc(b.coverAddress)}</span>
                     <img class="bo-workbook-author" src="assets/media/vince-doud-name-only.png" alt="" width="1800" height="440" draggable="false">` : `
                     <span class="bo-author">Vince Doud</span>`}
                 </div>
@@ -314,7 +314,7 @@ export default {
         }, restore ? 0 : FADE_MS);
         return;
       }
-      const coverDelay = book.cover ? 950 : 600;
+      const coverDelay = book.cover || book.coverAddress ? 950 : 600;
       phaseTimer = setTimeout(() => {
         if (run !== token) return;
         cancelCoverWait = afterCover(cover, revealContents);

@@ -1,0 +1,25 @@
+.desktop-sim { border: 1px solid #9aa8c8; border-radius: 14px; background: #eef3ff; padding: 16px; color: #171b1f; }
+.desktop-sim header, .desktop-drives, .desktop-toolbar, .desktop-location, .desktop-name-form {
+  display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+}
+.desktop-sim header { justify-content: space-between; gap: 12px; }
+.desktop-sim h3 { margin: 0; }
+.desktop-drives, .desktop-toolbar, .desktop-location { margin: 10px 0; }
+.desktop-drives button[aria-pressed="true"] { background: #253f98; color: white; border-color: #253f98; }
+.desktop-sim input { padding: 8px; border: 1px solid #75809a; border-radius: 5px; font: inherit; min-width: 0; max-width: 100%; }
+.desktop-address { flex: 1 1 16rem; }
+.desktop-view {
+  display: grid; align-content: start; grid-template-columns: repeat(auto-fill,minmax(125px,1fr));
+  list-style: none; min-height: 140px; margin: 0; padding: 12px; background: #fff; border: 1px solid #aab4cc; gap: 8px;
+}
+.desktop-item { width: 100%; min-height: 80px; padding: 5px; border: 1px solid transparent; border-radius: 5px; background: transparent; color: inherit; cursor: pointer; overflow-wrap: anywhere; }
+.desktop-item:hover, .desktop-item.selected { background: #dce7ff; border-color: #3157c8; }
+.desktop-icon { display: block; font-size: 28px; }
+.desktop-icon.folder { color: #985900; }
+.desktop-icon.file { color: #3157c8; }
+.desktop-menu, .desktop-preview { margin-top: 10px; border: 1px solid #8893a8; border-radius: 6px; background: white; padding: 10px; }
+.desktop-menu button { margin-right: 6px; }
+.desktop-preview video { display: block; width: min(100%, 520px); margin-top: 8px; }
+.desktop-count, .desktop-help { font-size: .9rem; color: #45505c; margin-block: 8px; }
+.desktop-tasks .done { font-weight: 700; color: #17603a; }
+.desktop-tasks:empty { display: none; }

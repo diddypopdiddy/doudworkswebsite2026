@@ -40,7 +40,8 @@ const PLAYBOOK = {
   summary: "A field guide for secondary educators. Start with the learning goal, choose the AI help that fits, and make students’ thinking and checks visible.",
   preview: "ai-educator-playbook-2026-11-21.webp",
   previewAlt: "The Playbook homepage introduces the Understand, Choose and Show routine.",
-  href: "https://ai-educator-playbook-vince-doud.diddypopdiddy.chatgpt.site/",
+  href: "/aiplaybook/",
+  sameTab: true,
   action: "Open the Playbook",
 };
 
@@ -51,7 +52,8 @@ const TEXTBOOK = {
   summary: "126 topics across 12 parts, from organizing files to sharing a finished film. Compare shots, try camera and editing tools, and print guided notes.",
   preview: "video-production-textbook-2026-11-21.webp",
   previewAlt: "The Shot Sizes viewfinder shows a wide shot and the controls for reframing it.",
-  href: "https://video-production-textbook.diddypopdiddy.chatgpt.site/",
+  href: "/textbook/",
+  sameTab: true,
   action: "Open the textbook",
 };
 
@@ -94,6 +96,7 @@ export const BOOKS = [
   },
   {
     ...PLAYBOOK,
+    coverAddress: "vincedoud.com/aiplaybook",
     emblem: "ai-educator-playbook.svg",
     caption: "The Playbook’s classroom routine is Understand, Choose and Show.",
     chapters: [
@@ -108,6 +111,7 @@ export const BOOKS = [
   {
     ...TEXTBOOK,
     id: "moving-image",
+    coverAddress: "vincedoud.com/textbook",
     emblem: "moving-image.svg",
     caption: "Move and zoom the viewfinder in the interactive Shot Sizes lesson.",
     chapters: [

@@ -638,9 +638,10 @@ a.bo-right:not([inert]):is(:hover, :focus) .bo-arrow { transform: translateX(4px
   letter-spacing: -.04em; color: #1a1626; text-shadow: none;
 }
 .bo-cover-address, .bo-imprint.bo-imprint-address {
-  color: #3157c8; text-transform: none; letter-spacing: 0;
+  color: #fff8ec; text-align: center; text-transform: none; letter-spacing: 0;
   font: 650 clamp(11px, 3cqh, 17px)/1.25 var(--sans);
 }
+.bo-workbook-cover .bo-cover-address, .bo-imprint.bo-imprint-address { color: #3157c8; }
 .bo-workbook-author { width: min(27cqh, 54%); height: auto; mix-blend-mode: multiply; }
 .bo-cover-edge {
   position: absolute; top: 0; bottom: 0; left: 100%; width: var(--bt); transform-origin: 0 50%;

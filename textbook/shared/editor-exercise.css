@@ -1,0 +1,50 @@
+.editor-work[hidden], .editor-small[hidden] { display: none; }
+.editor-work { container: editor-work / inline-size; }
+.editor-exercise .nle { container: practice-editor / inline-size; }
+.editor-actions, .editor-form-row { display: flex; flex-wrap: wrap; align-items: end; gap: .55rem; }
+.editor-actions { margin-block: .65rem; align-items: center; }
+.editor-actions .hint-line { margin: 0; }
+.editor-keyboard { border: 1px solid #d3d9de; border-radius: 8px; padding: .8rem 1rem; margin: .65rem 0; }
+.editor-keyboard summary { font-weight: 700; cursor: pointer; }
+.editor-form-row { margin-top: .6rem; }
+.editor-form-row label { display: grid; min-width: 0; max-width: 100%; gap: .2rem; font-size: .9rem; }
+.editor-form-row input, .editor-form-row select { max-width: 100%; min-height: 2rem; font: inherit; }
+.editor-form-row input { width: 8ch; }
+.editor-exercise .nle :is(.nle-ptb, .nle-tltb, .nle-transport) { overflow-x: auto; scrollbar-width: thin; }
+.editor-exercise .nle .nle-tree-r { display: flex; width: 100%; text-align: left; padding: 4px 5px; }
+.editor-exercise .nle .nle-tree-r.ind { padding-inline-start: 19px; }
+.editor-exercise .nle-libitem:focus-visible { outline: 2px solid #92b3ff; outline-offset: -2px; }
+.project-editor { max-width: 1320px; margin: 2rem auto; padding-inline: 1rem; }
+
+/* Let the embedded editor grow with the stacked panels. */
+@container editor-work (max-width: 802px) {
+  .editor-exercise .nle:not(:fullscreen) { height: auto !important; }
+}
+
+@container practice-editor (max-width: 800px) {
+  .nle-body { flex-direction: column; overflow-y: auto; }
+  .nle-left, .nle-right, .nle-upper { flex: none !important; min-width: 0; }
+  .nle-left { flex-direction: row; }
+  .nle-pool, .nle-lib { flex: 1 1 0 !important; height: 164px; }
+  .nle-panel { border-bottom: 1px solid var(--n-line); }
+  .nle-vsplit, .nle-hsplit { display: none; }
+  .nle-viewer { min-height: 234px; }
+  .nle-canvas { min-height: 140px; }
+  .nle-tlp { flex: 0 0 246px; }
+  .nle-viewer .nle-ptb, .nle-tltb, .nle-transport { flex: none; flex-wrap: wrap; padding-block: 3px; }
+  .nle-viewer .nle-ptb { min-height: 30px; }
+  .nle-tltb { min-height: 40px; gap: 2px 8px; }
+  .nle-transport { min-height: 36px; }
+  .nle-viewer .nle-ptb :is(.nle-vsep, .nle-sp), .nle-tltb :is(.nle-tsep, .nle-sp) { display: none; }
+}
+
+@container practice-editor (max-width: 600px) {
+  .nle-left, .nle-upper { flex-direction: column; }
+  .nle-pool, .nle-lib { flex: none !important; }
+  .nle-viewer { flex: none; }
+  .nle-insp { flex: 0 0 170px; border-left: 0; }
+}
+
+@media print {
+  .editor-exercise, .project-editor { display: none; }
+}
