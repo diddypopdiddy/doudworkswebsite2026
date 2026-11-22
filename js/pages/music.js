@@ -278,19 +278,61 @@ export default {
             <p class="np-album">${esc(album?.title || t.collection || "")}</p>
           </div>
           <div class="np-progress">
-            <div class="np-bar"><i data-prog></i></div>
+            <div class="np-bar" data-scrub role="slider" tabindex="0" aria-label="Song position" aria-valuemin="0" aria-valuemax="${Math.round(t.duration || 0)}" aria-valuenow="0"><i data-prog></i><b class="np-knob" aria-hidden="true"></b></div>
             <div class="np-times"><span data-el>0:00</span><span data-rem>-${fmtTime(t.duration)}</span></div>
           </div>
         </div>`;
       updateProgress();
     }
-    function updateProgress() {
+    const trackLength = () => (Number.isFinite(audio.duration) && audio.duration) || nowTrack()?.duration || 0;
+    function updateProgress(at) {
       const p = body.querySelector("[data-prog]"); if (!p) return;
-      const d = audio.duration || nowTrack()?.duration || 0, c = audio.currentTime || 0;
+      if (scrubbing && at === undefined) return; // the finger on the bar wins over the playhead
+      const d = trackLength(), c = at ?? (audio.currentTime || 0);
       p.style.width = d ? (c / d) * 100 + "%" : "0";
+      p.parentElement.style.setProperty("--at", p.style.width);
       body.querySelector("[data-el]").textContent = fmtTime(c);
       body.querySelector("[data-rem]").textContent = "-" + fmtTime(d - c);
+      p.parentElement.setAttribute("aria-valuenow", Math.round(c));
+      p.parentElement.setAttribute("aria-valuetext", `${fmtTime(c)} of ${fmtTime(d)}`);
     }
+
+    /* ---------- scrubbing: click or drag the progress bar to jump around the song ---------- */
+    let scrubbing = false, scrubAt = 0;
+    const seekTo = (sec) => {
+      const d = trackLength(); if (!d) return;
+      sec = Math.max(0, Math.min(d - 0.25, sec));
+      try { audio.currentTime = sec; } catch {}
+      updateProgress(sec);
+    };
+    const barTime = (bar, e) => {
+      const r = bar.getBoundingClientRect();
+      return Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * trackLength();
+    };
+    S.on(body, "pointerdown", (e) => {
+      const bar = e.target.closest("[data-scrub]"); if (!bar || !nowTrack()) return;
+      e.preventDefault(); e.stopPropagation();
+      scrubbing = true; bar.classList.add("is-scrubbing");
+      bar.setPointerCapture(e.pointerId);
+      scrubAt = barTime(bar, e); updateProgress(scrubAt);
+      const move = (ev) => { scrubAt = barTime(bar, ev); updateProgress(scrubAt); };
+      const up = () => {
+        bar.removeEventListener("pointermove", move);
+        bar.removeEventListener("pointerup", up);
+        bar.removeEventListener("pointercancel", up);
+        scrubbing = false; bar.classList.remove("is-scrubbing");
+        seekTo(scrubAt);
+      };
+      bar.addEventListener("pointermove", move);
+      bar.addEventListener("pointerup", up);
+      bar.addEventListener("pointercancel", up);
+    });
+    S.on(body, "keydown", (e) => {
+      if (!e.target.closest("[data-scrub]")) return;
+      const step = { ArrowRight: 5, ArrowLeft: -5, PageUp: 30, PageDown: -30 }[e.key];
+      if (step) { e.preventDefault(); e.stopPropagation(); seekTo((audio.currentTime || 0) + step); }
+      else if (e.key === "Home") { e.preventDefault(); seekTo(0); }
+    });
     function updateState() {
       stateEl.innerHTML = nowTrack() ? (audio.paused ? icons.pause : icons.play) : "";
       root.querySelector(".ipod").classList.toggle("is-playing", !!nowTrack() && !audio.paused);

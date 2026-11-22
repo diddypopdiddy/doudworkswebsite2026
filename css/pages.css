@@ -125,8 +125,18 @@
 .np-title { font-size: 16px; font-weight: 800; line-height: 1.15; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; white-space: normal; }
 .np-album { font-size: 13px; font-weight: 600; color: #444; margin-top: 4px !important; white-space: nowrap; }
 .np-progress { grid-column: 1 / -1; position: relative; z-index: 1; background: #fff; padding-top: 6px; }
-.np-bar { height: 11px; border: 1px solid #555; background: linear-gradient(#fff,#e5e5e5); }
-.np-bar i { display: block; height: 100%; width: 0; background: linear-gradient(#8fc0fa, #3b84ea 55%, #2a6ed6); transition: width .25s linear; }
+.np-bar { position: relative; height: 11px; border: 1px solid #555; background: linear-gradient(#fff,#e5e5e5); cursor: pointer; touch-action: none; }
+/* a taller invisible hit strip, so the thin bar is easy to grab */
+.np-bar::before { content: ""; position: absolute; left: -6px; right: -6px; top: -9px; bottom: -9px; }
+.np-bar i { display: block; height: 100%; width: 0; background: linear-gradient(#8fc0fa, #3b84ea 55%, #2a6ed6); transition: width .25s linear; pointer-events: none; }
+/* the scrub diamond, like the iPod's scrubbing mode */
+.np-knob { position: absolute; top: 50%; left: 0; width: 11px; height: 11px; margin: -6px 0 0 -6px; transform: rotate(45deg) scale(0); pointer-events: none;
+  background: linear-gradient(135deg, #fff, #cfd6df); border: 1px solid #444; box-shadow: 0 1px 2px rgba(0,0,0,.4); transition: transform .15s ease, left .25s linear; }
+.np-bar i + .np-knob { left: var(--at, 0); }
+.np-bar:hover .np-knob, .np-bar:focus-visible .np-knob, .np-bar.is-scrubbing .np-knob { transform: rotate(45deg) scale(1); }
+.np-bar.is-scrubbing i, .np-bar.is-scrubbing .np-knob { transition: transform .15s ease; }
+.np-bar.is-scrubbing i { transition: none; }
+.np-bar:focus-visible { outline: 2px solid #3b84ea; outline-offset: 2px; }
 .np-times { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-top: 3px; }
 .np-empty { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; font-weight: 700; color: #555; }
 .np-empty small { font-weight: 500; }
@@ -929,7 +939,7 @@ button.fw-item:hover { background: rgba(0,0,0,.06); }
 .id-photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; filter: saturate(.78) contrast(1.06) brightness(1.03); }
 .id-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(220, 232, 245, .15), rgba(220, 232, 245, 0) 30%), repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 3px); }
 .id-sig { left: 4.5cqw; top: 78cqh; width: 26cqw; font: 400 9.5cqh/1 var(--hand); color: #1b2c58; transform: rotate(-4deg); transform-origin: 0 50%; white-space: nowrap; }
-.id-fields { left: 33cqw; top: 22.5cqh; right: 19cqw; margin: 0; display: flex; flex-direction: column; gap: 1.6cqh; }
+.id-fields { left: 33cqw; top: 22cqh; right: 19cqw; margin: 0; display: flex; flex-direction: column; gap: 1.3cqh; }
 .id-fields p { margin: 0; position: static; }
 .id-fields small { display: block; margin-bottom: .5cqh; font: 700 2.5cqh/1 var(--sans); letter-spacing: .08em; color: #b3261e; }
 .id-name b { display: block; font: 800 6.4cqh/1 var(--sans); letter-spacing: .03em; color: #111a2e; }
@@ -939,6 +949,16 @@ button.fw-item:hover { background: rgba(0,0,0,.06); }
 .id-makes a { color: #173a7a; text-decoration: none; border-bottom: .3cqh solid rgba(23, 58, 122, .3); }
 .id-makes a:hover { color: #b3261e; border-color: currentColor; }
 .id-makes i { font-style: normal; color: #c99b4a; margin: 0 .9cqw; }
+.id-dl { display: flex; align-items: baseline; gap: 1.2cqw; }
+.id-fields .id-dl small { display: inline; margin: 0; }
+.id-dl b { font: 800 4.3cqh/1 var(--sans); letter-spacing: .05em; color: #b3261e; }
+.id-grid { margin: 0; display: grid; grid-template-columns: repeat(3, max-content); gap: .9cqh 3cqw; }
+.id-grid div { display: flex; flex-direction: column; gap: .35cqh; }
+.id-grid dt { font: 700 2.2cqh/1 var(--sans); letter-spacing: .08em; color: #b3261e; }
+.id-grid dd { margin: 0; font: 800 3.3cqh/1.05 var(--sans); letter-spacing: .03em; color: #111a2e; white-space: nowrap; }
+.id-grid dd.is-red { color: #b3261e; }
+.id-dd { right: 4.5cqw; top: 69cqh; width: 13cqw; text-align: center; font: 700 1.7cqh/1.25 ui-monospace, Menlo, monospace; letter-spacing: .04em; color: rgba(19, 33, 59, .5); }
+.id-fine { left: 4.5cqw; bottom: 1.6cqh; font: 700 1.7cqh/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: rgba(19, 33, 59, .5); }
 .id-class-band { left: 33cqw; right: 20cqw; bottom: 4.5cqh; display: flex; align-items: center; gap: 1.6cqw; font: 800 3.5cqh/1 var(--sans); letter-spacing: .2em; color: #173a7a; }
 .id-class-band i { font-style: normal; color: #c99b4a; }
 .id-ghost { right: 4.5cqw; top: 30cqh; width: 13cqw; height: 32cqh; object-fit: cover; object-position: 50% 20%; opacity: .32; filter: grayscale(1) contrast(1.5) brightness(1.1); mix-blend-mode: multiply; border-radius: .8cqh;
@@ -1002,6 +1022,12 @@ button.fw-item:hover { background: rgba(0,0,0,.06); }
   .id-about.is-more { font-size: 3.35cqw; margin-top: -.4cqh !important; }
   .id-makes { font-size: 3.5cqw; }
   .id-class-band { left: 6cqw; right: 6cqw; bottom: 3cqh; font-size: 3.6cqw; }
+  .id-dl b { font-size: 4.4cqw; }
+  .id-grid { gap: .8cqh 4cqw; }
+  .id-grid dt { font-size: 2.5cqw; }
+  .id-grid dd { font-size: 3.5cqw; }
+  .id-dd { right: 7cqw; top: 40.5cqh; width: 25cqw; font-size: 2cqw; }
+  .id-fine { left: 6cqw; bottom: 1.2cqh; font-size: 1.1cqh; }
   .id-back-code { left: 6cqw; right: 6cqw; top: 5cqh; height: 21cqh; }
   .id-back-codes { left: 6cqw; right: 6cqw; top: 30cqh; gap: 1.5cqh; }
   .id-back-codes dt { width: 21cqw; font-size: 2.8cqw; }
@@ -1042,6 +1068,36 @@ button.fw-item:hover { background: rgba(0,0,0,.06); }
   55% { transform: translate(-50%, -50%) translate(0, -60%) scale(.9) rotateY(80deg); }
   100% { opacity: 1; transform: translate(-50%, -50%) translate(0, 40%) scale(.9) rotateY(90deg); }
 }
+/* coin return: the plate pushes into its recess, the chute flap swings open, change tumbles out */
+.coin-return { position: absolute; padding: 0; border: 0; cursor: pointer; border-radius: 9% / 4%; background: #0c0b0b;
+  box-shadow: inset 0 0 6px rgba(0,0,0,.9); }
+.coin-return-plate { position: absolute; inset: 0; border-radius: inherit; background-image: url("../assets/objects/payphone-front-off-hook.webp"); background-repeat: no-repeat;
+  transition: transform .14s ease, filter .14s ease, box-shadow .2s; }
+.coin-return:hover .coin-return-plate { box-shadow: 0 0 0 2px rgba(255, 215, 130, .6), 0 0 14px rgba(255, 215, 130, .35); }
+.coin-return.is-push .coin-return-plate { animation: plate-push .62s ease; }
+@keyframes plate-push {
+  0% { transform: none; filter: none; }
+  22%, 55% { transform: scale(.93, .965); filter: brightness(.78) contrast(1.05); box-shadow: inset 0 3px 8px rgba(0,0,0,.55); }
+  100% { transform: none; filter: none; }
+}
+.coin-return:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
+.coin-chute { position: absolute; border-radius: 12% / 40%; pointer-events: none; perspective: 200px;
+  background: linear-gradient(#050404, #191615 70%, #2a2522); box-shadow: inset 0 2px 3px rgba(0,0,0,.9), 0 1px 0 rgba(255,255,255,.12), 0 -1px 0 rgba(0,0,0,.6); }
+.coin-chute i { position: absolute; inset: 0; border-radius: inherit; transform-origin: 50% 0; transition: transform .22s cubic-bezier(.3, 1.6, .5, 1);
+  background: linear-gradient(#55504c, #34302d 40%, #26221f); box-shadow: inset 0 1px 0 rgba(255,255,255,.22), inset 0 -1px 0 rgba(0,0,0,.5); }
+.coin-chute.is-open i { transform: rotateX(62deg); transition-duration: .12s; }
+.coin-layer { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; z-index: 3; }
+.rcoin { position: absolute; left: 0; top: 0; border-radius: 50%; opacity: 0; will-change: transform;
+  background: radial-gradient(circle at 34% 30%, #fff 0, #e3e5e8 18%, #aeb3ba 55%, #7d838c 80%, #c4c8ce 100%);
+  box-shadow: inset 0 0 0 1.5px rgba(70, 74, 80, .55), inset 0 0 0 3px rgba(255,255,255,.35), 0 2px 3px rgba(0,0,0,.4); }
+.rcoin::after { content: ""; position: absolute; inset: 22%; border-radius: 50%; border: 1px solid rgba(80, 84, 90, .35); box-shadow: 1px 1px 0 rgba(255,255,255,.4); }
+.rcoin.is-reeded { box-shadow: inset 0 0 0 1.5px rgba(70, 74, 80, .55), 0 2px 3px rgba(0,0,0,.4);
+  background: radial-gradient(circle at 34% 30%, #fff 0, #e3e5e8 18%, #aeb3ba 55%, #7d838c 76%, transparent 77%),
+    repeating-conic-gradient(#8a9098 0 4deg, #d6d9de 4deg 8deg); }
+.rcoin.is-nickel { background: radial-gradient(circle at 34% 30%, #f6f6f4 0, #d4d4d0 20%, #a3a39e 58%, #777771 82%, #b9b9b3 100%); }
+.rcoin.is-copper { background: radial-gradient(circle at 34% 30%, #ffe0c4 0, #e3a173 20%, #b8693d 58%, #8a4724 82%, #c27a4c 100%);
+  box-shadow: inset 0 0 0 1.5px rgba(100, 50, 25, .6), inset 0 0 0 3px rgba(255, 210, 170, .3), 0 2px 3px rgba(0,0,0,.4); }
+.rcoin.is-copper::after { border-color: rgba(110, 55, 25, .4); }
 .phone-key { position: absolute; width: 8.3%; height: 3.3%; transform: translate(-50%, -50%); border: 0; border-radius: 22%; background: transparent; cursor: pointer; transition: background .12s; }
 .phone-key:hover { background: rgba(255, 215, 130, .22); }
 .phone-key.is-press { animation: key-press .18s ease; }

@@ -11,7 +11,7 @@
 .room.is-pan::-webkit-scrollbar { display: none; }
 .room.is-pan .room-cam { right: auto; }
 .room.is-pan .room-hint { position: fixed; white-space: normal; width: max-content; max-width: calc(100vw - 32px); text-align: center; line-height: 1.4; }
-.room-stage > img { position: absolute; pointer-events: none; -webkit-user-drag: none; }
+.room-stage > img, .room-stage > canvas { position: absolute; pointer-events: none; -webkit-user-drag: none; }
 .room-bg { left: 0; top: 0; width: 100%; height: 100%; transition: filter .45s ease; }
 
 /* soft edges, so any letterboxing melts into the dark */
@@ -99,10 +99,31 @@
 .amb-ipod { width: 46px; height: 34px; margin: -17px 0 0 -23px; border-radius: 50%; opacity: 0;
   background: radial-gradient(ellipse, rgba(190, 230, 255, .75), rgba(150, 210, 255, .2) 45%, transparent 70%); mix-blend-mode: screen; }
 .room-stage[data-active="music"] .amb-ipod { opacity: 1; }
-/* the softbox throws light across the desk while the video set is lit */
-.amb-softbox { left: 1050px; top: 400px; width: 420px; height: 260px; border-radius: 50%; opacity: 0;
-  background: radial-gradient(ellipse at 52% 55%, rgba(255, 246, 225, .42), rgba(255, 236, 200, .14) 45%, transparent 70%); mix-blend-mode: screen; }
-.room-stage[data-active="video"] .amb-softbox { opacity: 1; }
+/* ---------- the key light (click the softbox) ----------
+   With the lamp on it adds a soft patch of light on the desk and chair. With the lamp off it's the only light:
+   the rest of the basement stays dark and just the desk area comes up (a clean copy of the room, masked to the
+   light's pool, sits over the darkened one). Light also spills around the softbox's edges. */
+.key-pool { left: 0; top: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .5s ease, filter .45s ease;
+  filter: brightness(1.22) saturate(1.05); }
+.amb-key { left: 0; top: 0; width: 100%; height: 100%; opacity: 0; mix-blend-mode: screen; background: rgb(255, 246, 228); transition: opacity .5s ease; }
+.amb-key-rim { width: 330px; height: 330px; margin: -165px 0 0 -165px; border-radius: 50%; opacity: 0; mix-blend-mode: screen;
+  background: radial-gradient(circle, rgba(255, 252, 242, .95) 0%, rgba(255, 246, 226, .55) 30%, rgba(255, 238, 210, .16) 52%, transparent 70%); }
+.room-stage.key-on .key-pool { opacity: 1; }
+.room-stage.key-on .amb-key { opacity: .2; }
+.room-stage.key-on .amb-key-rim { opacity: .8; }
+.room-stage.key-on.lights-off .key-pool { filter: brightness(1) saturate(.96); }
+.room-stage.key-on.lights-off .amb-key { opacity: .1; }
+.room-stage.key-on.lights-off .amb-key-rim { opacity: 1; }
+/* what sits in the pool comes up with it */
+.room-stage.key-on .room-obj:is([data-id="laptop"], [data-id="wallet"]):not(.is-lit) { filter: brightness(1.1); }
+.room-stage.key-on.lights-off .room-obj:is([data-id="laptop"], [data-id="wallet"]):not(.is-lit) { filter: brightness(.95) saturate(.95); }
+/* hovering a room still steps everything else back, the lit desk included */
+.room-stage.key-on[data-active]:not([data-active=""]) .key-pool { filter: brightness(.68) saturate(.8); }
+.room-stage.key-on.lights-off[data-active]:not([data-active=""]) .key-pool { filter: brightness(.5) saturate(.7); }
+.room-stage.key-on[data-active]:not([data-active=""]) .amb-key-rim { opacity: .45; }
+.room-stage.key-on[data-active]:not([data-active=""]) .room-obj:is([data-id="laptop"], [data-id="wallet"]):not(.is-lit) { filter: brightness(.6) saturate(.8); }
+/* the softbox is a switch: hovering it just perks it up a little */
+.room-obj[data-id="softbox"].is-hover { filter: brightness(1.18); }
 
 /* ---------- headline on the open stretch of red carpet ---------- */
 /* Laid flat on the floor with the room's own isometric angles, like it's painted on the rug. */

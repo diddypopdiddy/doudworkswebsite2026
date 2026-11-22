@@ -6,9 +6,9 @@
    "id": "payphone",
    "group": "contact",
    "x": 210,
-   "y": 132,
+   "y": 126,
    "w": 85,
-   "h": 182
+   "h": 188
   },
   {
    "id": "whiteboard",
@@ -100,9 +100,10 @@
    "id": "laptop",
    "group": "ai",
    "x": 1180,
-   "y": 463,
+   "y": 447,
    "w": 122,
-   "h": 99
+   "h": 115,
+   "frames": 14
   },
   {
    "id": "tv-cart",
@@ -122,7 +123,7 @@
   },
   {
    "id": "softbox",
-   "group": "video",
+   "group": "keylight",
    "x": 1122,
    "y": 581,
    "w": 178,

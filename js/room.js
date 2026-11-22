@@ -28,12 +28,17 @@ const ANCHORS = {
   softbox: { x: 1211, y: 576, above: true },
 };
 const GROUP_HOME = { art: "art-table", music: "keyboard", video: "tv-cart", teaching: "bookshelf", ai: "laptop", about: "wallet", contact: "payphone" };
-// Little things on the record console that aren't rooms: click the lamp or the record.
+// Little things that aren't rooms: click the lamp or the record on the console, or the key light by the desk
+// (the softbox sprite itself; see "keylight" below).
 const TOYS = [
   { id: "lamp", x: 709, y: 66, w: 56, h: 84 },
   { id: "record", x: 787, y: 117, w: 101, h: 46 },
 ];
 const TOUR = ["music", "art", "teaching", "ai", "about", "video", "contact"];
+
+// The key light: where its head is (the glow spills around it) and the patch of desk and chair it lights.
+// The pool is two soft ellipses along the desk's diagonal (a mask can't rotate one ellipse).
+const KEY = { head: [1222, 650], pools: [[1170, 468, 190, 130], [1335, 535, 175, 125]] };
 
 // Whiteboard writing area: top-left, top-right and bottom-left corners (room px), plus its local size.
 const BOARD = { tl: [1094, 116], tr: [1256, 174], bl: [1092, 246], w: 172, h: 130 };
@@ -41,11 +46,12 @@ const BOARD = { tl: [1094, 116], tr: [1256, 174], bl: [1092, 246], w: 172, h: 13
 let layoutCache;
 const maskCache = new Map();
 
-function buildMask(img, w, h) {
+function buildMask(img, w, h, src) {
   const c = document.createElement("canvas");
   c.width = w; c.height = h;
   const g = c.getContext("2d", { willReadFrequently: true });
-  g.drawImage(img, 0, 0, w, h);
+  if (src) g.drawImage(img, src.x, src.y, src.w, src.h, 0, 0, w, h);
+  else g.drawImage(img, 0, 0, w, h);
   const d = g.getImageData(0, 0, w, h).data;
   const a = new Uint8Array(w * h);
   for (let i = 0; i < a.length; i++) a[i] = d[i * 4 + 3];
@@ -61,12 +67,17 @@ export default {
     const S = scope();
     const objs = L.objects;
     const byId = Object.fromEntries(objs.map((o) => [o.id, o]));
+    const keyMask = (() => {
+      const g = KEY.pools.map(([x, y, rx, ry]) => `radial-gradient(ellipse ${rx}px ${ry}px at ${x}px ${y}px, #000 0%, rgba(0,0,0,.8) 40%, transparent 100%)`).join(",");
+      return `-webkit-mask-image:${g};mask-image:${g}`;
+    })();
 
     root.innerHTML = `
       <section class="room" aria-label="Vince Doud’s basement">
         <div class="room-cam" data-cam>
           <div class="room-stage" data-stage style="width:${L.width}px;height:${L.height}px">
             <img class="room-bg" src="${ART}room-bg-2x.webp" alt="" width="${L.width}" height="${L.height}" draggable="false">
+            <img class="key-pool" src="${ART}room-bg-2x.webp" alt="" width="${L.width}" height="${L.height}" draggable="false" style="${keyMask}">
             <div class="room-hero" data-hero> <!-- painted on the carpet, under everything else -->
               <p class="room-kicker">${esc(SITE.name)}</p>
               <h1 class="room-headline">Teacher <span>+</span><br>Creator</h1>
@@ -74,12 +85,15 @@ export default {
             <div class="amb amb-lamp" aria-hidden="true" style="left:736px;top:100px"></div>
             <div class="amb amb-vinyl" aria-hidden="true" style="left:831px;top:131px"><i></i></div>
             ${objs.map((o) => `
-              <img class="room-obj" data-id="${o.id}" data-group="${o.group}" src="${ART}${o.id}-2x.webp" alt="" style="${box(o)}" draggable="false">
+              ${o.id === "softbox" ? `<div class="amb amb-key-rim" aria-hidden="true" style="left:${KEY.head[0]}px;top:${KEY.head[1]}px"></div>` : ""}
+              ${o.frames
+                ? `<canvas class="room-obj" data-id="${o.id}" data-group="${o.group}" width="${o.w * 2}" height="${o.h * 2}" style="${box(o)}"></canvas>`
+                : `<img class="room-obj" data-id="${o.id}" data-group="${o.group}" src="${ART}${o.id}-2x.webp" alt="" style="${box(o)}" draggable="false">`}
               ${o.open ? `<img class="room-obj room-open" data-open-of="${o.id}" data-group="${o.group}" src="${ART}${o.id}-open-2x.webp" alt="" style="${box(o.open)}" draggable="false">` : ""}
               ${o.id === "whiteboard" ? `<div class="wb-date" data-wb aria-hidden="true"></div>` : ""}
               ${o.id === "ipod" ? `<div class="amb amb-ipod" aria-hidden="true" style="left:${o.x + o.w / 2}px;top:${o.y + o.h * 0.42}px"></div>` : ""}
             `).join("")}
-            <div class="amb amb-softbox" aria-hidden="true"></div>
+            <div class="amb amb-key" aria-hidden="true" style="${keyMask}"></div>
             <div class="room-label" data-label aria-hidden="true"><span data-label-name></span><em data-label-verb></em></div>
             <nav class="room-hotspots" aria-label="Rooms in the basement">
               ${ORDER.map((g) => {
@@ -98,7 +112,7 @@ export default {
     const room = $(".room"), cam = $("[data-cam]"), stage = $("[data-stage]"), hint = $("[data-hint]");
     if (from) hint.remove(); // only greet people on the way in, not every time they come back
     const label = $("[data-label]"), labelName = $("[data-label-name]"), labelVerb = $("[data-label-verb]");
-    const imgs = [...root.querySelectorAll(".room-obj")];
+    const imgs = [...root.querySelectorAll(".room-obj")]; // <img> sprites, plus the laptop's <canvas>
     const spriteOf = Object.fromEntries(imgs.filter((im) => im.dataset.id).map((im) => [im.dataset.id, im]));
     const openOf = Object.fromEntries(imgs.filter((im) => im.dataset.openOf).map((im) => [im.dataset.openOf, im]));
     const byGroup = {};
@@ -154,22 +168,35 @@ export default {
     S.interval(paintDate, 15000);
 
     /* ---------- masks for pixel-accurate hover ---------- */
-    await Promise.all(imgs.map((im) => im.decode().catch(() => {})));
-    const maskFor = (key, img, r) => {
+    // The laptop is drawn from a strip of frames (lid shut at the top, open at the bottom).
+    const lap = objs.find((o) => o.frames);
+    const lapStrip = new Image();
+    if (lap) lapStrip.src = `${ART}${lap.id}-frames-2x.webp`;
+    await Promise.all([...imgs.filter((im) => im.tagName === "IMG"), ...(lap ? [lapStrip] : [])].map((im) => im.decode().catch(() => {})));
+    const maskFor = (key, img, r, src) => {
       if (!maskCache.has(key)) {
-        try { maskCache.set(key, buildMask(img, r.w, r.h)); } catch { maskCache.set(key, null); }
+        try { maskCache.set(key, buildMask(img, r.w, r.h, src)); } catch { maskCache.set(key, null); }
       }
       return maskCache.get(key);
     };
-    // Each hit target: an object's own outline, plus the open wallet's (so the wallet stays lit once open).
+    let active = null, lastObj = null;
+    // Each hit target: an object's own outline, plus the open wallet's (so the wallet stays lit once open),
+    // plus the open laptop's (only while it's open, so the lid's empty air doesn't wake it).
     const targets = [];
     objs.forEach((o) => {
+      if (o.frames) {
+        const fw = o.w * 2, fh = o.h * 2;
+        targets.push({ o, r: o, m: maskFor(o.id + "-shut", lapStrip, o, { x: 0, y: 0, w: fw, h: fh }) });
+        targets.push({ o, r: o, m: maskFor(o.id + "-up", lapStrip, o, { x: 0, y: fh * (o.frames - 1), w: fw, h: fh }), when: () => active === o.group });
+        return;
+      }
       targets.push({ o, r: o, m: maskFor(o.id, spriteOf[o.id], o) });
       if (o.open) targets.push({ o, r: o.open, m: maskFor(o.id + "-open", openOf[o.id], o.open) });
     });
     const hitAt = (x, y) => {
       for (let i = targets.length - 1; i >= 0; i--) {
-        const { o, r, m } = targets[i];
+        const { o, r, m, when } = targets[i];
+        if (when && !when()) continue;
         if (x < r.x || y < r.y || x >= r.x + r.w || y >= r.y + r.h) continue;
         if (!m) return o;
         if (m[Math.floor(y - r.y) * r.w + Math.floor(x - r.x)] > 60) return o;
@@ -181,11 +208,41 @@ export default {
       return [((e.clientX - b.left) / b.width) * L.width, ((e.clientY - b.top) / b.height) * L.height];
     };
 
+    /* ---------- the laptop lid: opens while the AI group is lit ---------- */
+    const lapEl = lap && spriteOf[lap.id];
+    const lapCtx = lapEl?.getContext("2d");
+    let lidT = 0, lidGoal = 0, lidRaf = 0, lidLast = 0, lidFrame = -1;
+    const easeLid = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const drawLid = () => {
+      if (!lapCtx) return;
+      const f = Math.round(easeLid(lidT) * (lap.frames - 1));
+      if (f === lidFrame) return;
+      lidFrame = f;
+      const fw = lapEl.width, fh = lapEl.height;
+      lapCtx.clearRect(0, 0, fw, fh);
+      lapCtx.drawImage(lapStrip, 0, f * fh, fw, fh, 0, 0, fw, fh);
+    };
+    const lidStep = (now) => {
+      const dt = Math.min(0.05, (now - (lidLast || now)) / 1000); lidLast = now;
+      const speed = lidGoal > lidT ? 1 / 0.55 : 1 / 0.42; // opens a touch slower than it shuts
+      lidT = lidGoal > lidT ? Math.min(lidGoal, lidT + dt * speed) : Math.max(lidGoal, lidT - dt * speed);
+      drawLid();
+      if (lidT !== lidGoal) lidRaf = requestAnimationFrame(lidStep);
+      else { lidRaf = 0; lidLast = 0; }
+    };
+    const setLid = (open) => {
+      lidGoal = open ? 1 : 0;
+      if (reducedMotion()) { lidT = lidGoal; drawLid(); return; }
+      if (!lidRaf && lidT !== lidGoal) lidRaf = requestAnimationFrame(lidStep);
+    };
+    drawLid();
+    S.add(() => cancelAnimationFrame(lidRaf));
+
     /* ---------- lighting a group ---------- */
-    let active = null, lastObj = null;
     const setActive = (group, objId) => {
       if (group !== active) {
         if (active) byGroup[active]?.forEach((im) => im.classList.remove("is-lit"));
+        if (lap) setLid(group === lap.group);
         active = group;
         stage.dataset.active = group || "";
         if (group) byGroup[group]?.forEach((im) => im.classList.add("is-lit"));
@@ -203,11 +260,12 @@ export default {
 
     /* ---------- the lamp and the record ---------- */
     // Both remember how you left them for the rest of the visit.
-    const toyState = { lamp: true, record: true };
+    const toyState = { lamp: true, record: true, keylight: false };
     try { Object.assign(toyState, JSON.parse(sessionStorage.getItem("vd-room-toys") || "{}")); } catch {}
     const paintToys = () => {
       stage.classList.toggle("lights-off", !toyState.lamp);
       stage.classList.toggle("record-stopped", !toyState.record);
+      stage.classList.toggle("key-on", !!toyState.keylight);
     };
     paintToys();
     const toyAt = (x, y) => TOYS.find((t) => x >= t.x && y >= t.y && x < t.x + t.w && y < t.y + t.h) || null;
@@ -224,20 +282,24 @@ export default {
       if (touring && !e.movementX && !e.movementY) return;
       stopTour();
       const p = toRoom(e);
-      const o = hitAt(...p);
+      let o = hitAt(...p);
+      const key = o?.group === "keylight";
+      spriteOf.softbox?.classList.toggle("is-hover", key);
+      if (key) o = null; // the key light is a switch, not a room: no glow, just a pointer
       if (o) lastObj = o.id;
       setActive(o?.group || null, o?.id);
-      if (!o && toyAt(...p)) stage.style.cursor = "pointer";
+      if (!o && (key || toyAt(...p))) stage.style.cursor = "pointer";
       if (!hovered && o) { hovered = true; hint.classList.add("is-gone"); }
     });
     // Touch has no hover: the first tap lights a thing up, a second tap goes in.
     let pointer = "mouse";
     S.on(stage, "pointerdown", (e) => { pointer = e.pointerType; if (pointer === "touch") stopTour(); });
-    S.on(stage, "pointerleave", (e) => { if (e.pointerType !== "touch") setActive(null); });
+    S.on(stage, "pointerleave", (e) => { if (e.pointerType !== "touch") { setActive(null); spriteOf.softbox?.classList.remove("is-hover"); } });
     S.on(stage, "click", (e) => {
       if (e.target.closest(".room-hotspot")) return;
       const p = toRoom(e);
-      const o = hitAt(...p);
+      let o = hitAt(...p);
+      if (o?.group === "keylight") { stopTour(); if (active) setActive(null); flipToy({ id: "keylight" }); return; }
       if (!o) {
         const t = toyAt(...p);
         if (t) {

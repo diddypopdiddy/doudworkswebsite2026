@@ -5,7 +5,8 @@ import { ABOUT } from "../data.js";
    the about-me lives on the front of the card, where a license prints its fields.
    Flip it and the back looks like the back of a real ID (barcodes, fine print), with the jokes in the codes.
    "Put it back" tucks the card away; hover the wallet to pull it out again.
-   It's clearly a playful card: no state seal, no real number, and it says NOT A GOVERNMENT ID. */
+   It's dressed like a real New Jersey license (fields, codes, microprint), but there's no state seal,
+   no real number and no date of birth, and the bottom edge says it's for creative purposes. */
 
 // Spirograph "guilloche" linework, like the fine security patterns printed on real IDs.
 function guilloche(w, h, layers) {
@@ -54,7 +55,9 @@ export default {
       { R: 150, r: 41, d: 96, cx: 640, cy: 250, color: "#b5462f", op: 0.16, turns: 41 },
       { R: 260, r: 97, d: 60, cx: 120, cy: 520, color: "#2d5fa8", op: 0.14, turns: 97 },
     ]);
-    const micro = "BASEMENT ID · NOT A GOVERNMENT ID · THE GARDEN STATE · ".repeat(14);
+    const micro = "NEW JERSEY · THE GARDEN STATE · ".repeat(22);
+    // Issued today; good for four years, like the real thing.
+    const iss = now.numeric, exp = iss.replace(/\d{4}$/, (y) => String(+y + 4));
 
     root.innerHTML = `
       <div class="desk-surface is-leather"></div>
@@ -68,26 +71,37 @@ export default {
         </div>
 
         <div class="id-wrap" data-wrap>
-          <div class="id-card" data-card style="--guilloche:${esc(bg)};--lighthouse:${esc(LIGHTHOUSE)}" tabindex="0" role="group" aria-roledescription="ID card" aria-label="Vince Doud’s basement ID. Press Enter to flip it over.">
+          <div class="id-card" data-card style="--guilloche:${esc(bg)};--lighthouse:${esc(LIGHTHOUSE)}" tabindex="0" role="group" aria-roledescription="ID card" aria-label="Vince Doud’s ID card. Press Enter to flip it over.">
             <div class="id-face id-front">
               <div class="id-holo" data-holo aria-hidden="true"></div>
               <div class="id-gloss" data-gloss aria-hidden="true"></div>
               <header class="id-head">
                 <p class="id-state">New Jersey</p>
-                <div class="id-type"><b>BASEMENT ID</b><span>NOT A GOVERNMENT ID</span></div>
+                <div class="id-type"><b>DRIVER LICENSE</b><span>USA</span></div>
               </header>
               <div class="id-micro" aria-hidden="true">${micro}</div>
               <div class="id-photo"><img src="${ABOUT.portrait}" alt="Vince Doud"></div>
               <div class="id-sig" aria-hidden="true">Vince Doud</div>
               <div class="id-fields">
+                <p class="id-dl"><small>4d DL</small><b>D2019 47710 28635</b></p>
                 <p class="id-name"><small>1·2 NAME</small><b>VINCE DOUD</b></p>
+                <dl class="id-grid">
+                  <div><dt>4a ISS</dt><dd>${esc(iss)}</dd></div>
+                  <div><dt>4b EXP</dt><dd class="is-red">${esc(exp)}</dd></div>
+                  <div><dt>9 CLASS</dt><dd>D</dd></div>
+                  <div><dt>16 HGT</dt><dd>5'-07"</dd></div>
+                  <div><dt>8 HOME</dt><dd>NEW JERSEY</dd></div>
+                  <div><dt>12 RESTR</dt><dd>NONE</dd></div>
+                </dl>
                 <p class="id-about"><small>ABOUT</small>${esc(ABOUT.bio[0])}</p>
                 ${ABOUT.bio[1] ? `<p class="id-about is-more">${esc(ABOUT.bio[1])}</p>` : ""}
-                <p class="id-makes"><small>MAKES</small>${ABOUT.endorsements.map((e) => `<a href="/${ROUTES[e]}">${esc(e)}</a>`).join("<i>·</i>")}</p>
+                <p class="id-makes"><small>9a END</small>${ABOUT.endorsements.map((e) => `<a href="/${ROUTES[e]}">${esc(e)}</a>`).join("<i>·</i>")}</p>
               </div>
               <div class="id-class-band"><span>TEACHER</span><i>+</i><span>CREATOR</span></div>
               <img class="id-ghost" src="${ABOUT.portrait}" alt="" aria-hidden="true">
               <span class="id-ghost-date" aria-hidden="true">${esc(now.numeric.replace(/\//g, ""))}</span>
+              <span class="id-dd" aria-hidden="true">DD 0712 4419 NJ 2026</span>
+              <span class="id-fine" aria-hidden="true">For creative purposes only</span>
             </div>
             <div class="id-face id-back" aria-hidden="true">
               <div class="id-back-code">${stackedCode()}</div>
@@ -95,10 +109,10 @@ export default {
                 <div><dt>CLASS T+C</dt><dd>Teacher + Creator. Valid in every room of the basement.</dd></div>
                 <div><dt>END</dt><dd>${ABOUT.endorsements.map(esc).join(" · ")}</dd></div>
                 <div><dt>RESTR</dt><dd>Must keep making things.</dd></div>
-                <div><dt>ISS</dt><dd>${esc(now.numeric)} &nbsp; <b>EXP</b> Never</dd></div>
+                <div><dt>ISS</dt><dd>${esc(iss)} &nbsp; <b>EXP</b> ${esc(exp)}</dd></div>
               </dl>
-              <p class="id-back-fine">If found, return to the basement. This card is a keepsake, not a government ID.</p>
-              <div class="id-back-line">${lineCode()}<span>BSMT NJ 0001</span></div>
+              <p class="id-back-fine">If found, return to the basement. For creative purposes only.</p>
+              <div class="id-back-line">${lineCode()}<span>NJ D2019 47710</span></div>
               <img class="id-back-ghost" src="${ABOUT.portrait}" alt="">
               <div class="id-back-micro">${micro}</div>
             </div>
