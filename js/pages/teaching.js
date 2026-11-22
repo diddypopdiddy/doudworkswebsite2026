@@ -1,13 +1,15 @@
-import { esc, scope, easternNow, reducedMotion } from "../util.js";
+import { esc, scope, reducedMotion, isSmallScreen } from "../util.js";
 import { BOOKS } from "../data.js";
 
 const seen = new Set(); // Books opened this visit skip the pause on the cover.
 const ROMAN = ["I", "II", "III", "IV", "V", "VI"];
+const FIRST_COVER_HOLD_MS = 950;
 const COVER_CLOSE_MS = 600;
 const DROP_MS = 250;
 const FADE_MS = 200;
 
-/* The shelf describes a book on hover or focus. Selecting it brings its cover
+/* A close-up of the bookshelf. Each project is a book with its own spine design, big enough to read.
+   Hovering or focusing a book tips it out and tapes a note above it; selecting it brings its cover
    to the center, then opens it to a title page and table of contents. */
 
 // Plain spine art (trimmed sizes).
@@ -17,23 +19,34 @@ const ART = {
 };
 // Shelf geometry (bookshelf.webp, 1385 × 710): lower compartment floor and side posts.
 const SHELF = { w: 1385, h: 710, floorY: 568, x0: 150, x1: 1236 };
-const SCALE = 0.43;
-// The row, left to right. Plain books (no `id`) fill out the shelf and aren't clickable.
+const SCALE = 0.45;
+// The project books are drawn wider than the plain art so each spine has room for a design.
+const WIDE = 1.38, WIDE_PHONE = 1.2;
+// The row, left to right. Plain books (no `book`) fill out the shelf and aren't clickable.
 const ROW = [
   { art: "book-plain-rust" },
-  { art: "book-plain-ink-blue" },
-  { book: 5 },
-  { book: 0, gap: 18 },
-  { book: 1 }, { book: 2 }, { book: 3 }, { book: 4, gap: 22 },
-  { art: "book-plain-ink-blue" },
-  { art: "book-plain-rust", lean: 6, gap: 34 },
+  { book: 5, gap: 4 },
+  { book: 0, gap: 4 },
+  { book: 1, gap: 4 }, { book: 2, gap: 4 }, { book: 3, gap: 4 }, { book: 4, gap: 24 },
+  { art: "book-plain-ink-blue", lean: 7, gap: 42 },
   { stack: ["book-plain-ivory", "book-plain-plum", "book-plain-forest"] },
 ];
+// Spine designs, echoing each cover. `lines` is the title as it's set on the spine (first line on the right,
+// the way a spine reads when the book lies face up).
+const SPINES = {
+  "ai-production-framework": { style: "classic", lines: ["AI Production", "Framework"] },
+  "ai-educator-playbook": { style: "paper", lines: ["AI Educator", "Playbook"] },
+  "moving-image": { style: "film", lines: ["Video Production", "Textbook"] },
+  "ai-road-test": { style: "road", lines: ["AI Road Test", "Permit Drive"] },
+  "write-with-ai": { style: "note", lines: ["Write", "with AI"] },
+  "ai-workbook": { style: "marker", lines: ["AI Framework", "Workbook"] },
+};
 
 export default {
   mount(root) {
     const S = scope();
     const px = (v) => (v / SHELF.w) * 100 + "%";
+    const wide = isSmallScreen() ? WIDE_PHONE : WIDE; // phones: slimmer, so all six fit across the screen
 
     // Lay out the row and center it in the compartment.
     const row = ROW.map((r) => {
@@ -44,7 +57,7 @@ export default {
       const b = r.book !== undefined ? BOOKS[r.book] : null;
       const art = b ? b.art : r.art;
       const [w, h] = ART[art];
-      return { ...r, b, art, w: w * SCALE, h: h * SCALE, gap: r.gap ?? 5 };
+      return { ...r, b, art, w: w * SCALE * (b ? wide : 1), h: h * SCALE, gap: r.gap ?? 5 };
     });
     const total = row.reduce((t, p, i) => t + p.w + (i < row.length - 1 ? p.gap : 0), 0);
     let x = SHELF.x0 + (SHELF.x1 - SHELF.x0 - total) / 2;
@@ -62,71 +75,80 @@ export default {
         }).join("");
       }
       if (!p.b) return `<span class="book is-filler" data-k="${i}" style="${style};--lean:${p.lean || 0}deg" aria-hidden="true"><img src="assets/objects/${p.art}.webp" alt="" draggable="false"><i class="spine-bands"></i></span>`;
-      const len = p.b.spine.length;
-      return `<button class="book" data-k="${i}" data-id="${p.b.id}" style="${style};--fs:${(72 / (len * 0.82)).toFixed(2)}cqh;--c:${p.b.color}" aria-describedby="board-desc">
+      const d = SPINES[p.b.id] || { style: "classic", lines: [p.b.spine] };
+      const longest = Math.max(...d.lines.map((l) => l.length));
+      // Type size: as big as the spine's width allows, without the longest line running past the title area.
+      const fit = `--fs:${(100 / longest).toFixed(2)}cqh;--fw:${d.lines.length > 1 ? 28 : 40}cqw`;
+      return `<button class="book" data-k="${i}" data-id="${p.b.id}" style="${style};${fit};--c:${p.b.color}">
           <span class="book-body" aria-hidden="true"><img src="assets/objects/${p.art}.webp" alt="" draggable="false">
-            <i class="spine-bands"></i>
-            <span class="book-spine">${esc(p.b.spine)}</span>
+            <span class="spine spine-${d.style}">
+              <i class="spine-top"></i>
+              <span class="spine-title">${d.lines.map((l, j) => `<span class="spine-l${j + 1}">${esc(l)}</span>`).join("")}</span>
+              <span class="spine-foot">Doud</span>
+            </span>
           </span>
-          <span class="sr-only">${esc(p.b.title)}${p.b.href ? "" : " (coming soon)"}</span>
+          <span class="sr-only">${esc(p.b.title)}. ${esc(p.b.kind)}. ${esc(p.b.summary)}${p.b.href ? "" : " (coming soon)"}</span>
         </button>`;
     };
 
     root.innerHTML = `
       <section class="teach" aria-label="Teaching bookshelf">
-        <div class="teach-wall"></div>
-        <div class="teach-floor"></div>
-        <div class="board" data-board aria-live="polite">
-          <div class="board-face"><div class="board-ink" data-ink></div></div>
-          <div class="board-tray"><i style="--c:#c62828"></i><i style="--c:#1d3f8f"></i><i style="--c:#2e7d32"></i><b></b></div>
+        <div class="teach-pan" data-pan>
+          <div class="teach-inner">
+            <div class="teach-wall"></div>
+            <div class="teach-floor"></div>
+            <div class="shelf" data-shelf style="aspect-ratio:${SHELF.w}/${SHELF.h}">
+              <img class="shelf-art" src="assets/objects/bookshelf.webp" alt="" draggable="false">
+              <div class="shelf-books">${row.map(bookHTML).join("")}</div>
+              <div class="shelf-tag" data-tag aria-hidden="true"><b data-tag-title></b><em data-tag-kind></em></div>
+            </div>
+          </div>
         </div>
-        <div class="shelf" data-shelf style="aspect-ratio:${SHELF.w}/${SHELF.h}">
-          <img class="shelf-art" src="assets/objects/bookshelf.webp" alt="" draggable="false">
-          <div class="shelf-books">${row.map(bookHTML).join("")}</div>
-        </div>
+        <p class="teach-hint" data-hint>Tools and projects from my classroom. <b>${matchMedia("(pointer: coarse)").matches ? "Tap a book" : "Pick a book"}</b> to open it.</p>
         <div class="book-open" data-open hidden role="dialog" aria-modal="true" aria-labelledby="bo-title"></div>
       </section>`;
 
-    const ink = root.querySelector("[data-ink]");
+    const pan = root.querySelector("[data-pan]");
     const shelf = root.querySelector("[data-shelf]");
+    const tag = root.querySelector("[data-tag]"), tagTitle = root.querySelector("[data-tag-title]"), tagKind = root.querySelector("[data-tag-kind]");
+    const hint = root.querySelector("[data-hint]");
     const openEl = root.querySelector("[data-open]");
     const els = [...root.querySelectorAll(".book")];
-    const plates = new Map();
+    const covers = new Map();
     let opened = null, token = 0, phaseTimer = 0, cancelCoverWait = null;
 
-    function plateFor(book) {
-      if (!plates.has(book.id)) {
-        const image = new Image(1200, 800);
-        image.alt = book.previewAlt;
-        image.draggable = false;
-        image.src = `assets/media/${book.preview}`;
-        // Reuse the preloaded image when the book opens.
-        image.decode().catch(() => {});
-        plates.set(book.id, image);
-      }
-      return plates.get(book.id);
+    // When the shelf is wider than the screen (phones) it scrolls sideways; start with the project books in the middle.
+    {
+      const real = row.filter((p) => p.b), first = real[0], last = real[real.length - 1];
+      const mid = (first.x + last.x + last.w) / 2;
+      const center = () => { pan.scrollLeft = (pan.scrollWidth - pan.clientWidth) / 2 + ((mid - SHELF.w / 2) / SHELF.w) * shelf.offsetWidth; };
+      center();
+      S.on(window, "resize", center);
     }
 
-    /* ---------- whiteboard ---------- */
-    const idle = () => {
-      const d = easternNow();
-      ink.dataset.state = "idle";
-      ink.innerHTML = `
-        <p class="ink-date">${esc(d.weekday)}, ${esc(d.monthDay)}</p>
-        <p class="ink-big">Today’s lesson:</p>
-        <p class="ink-mid">Pull a book off the shelf <span class="ink-arrow">↓</span></p>
-        <p class="ink-small" id="board-desc">Hover a book to see what’s inside. Click it to open.</p>`;
+    function coverFor(book) {
+      if (!covers.has(book.id)) {
+        const image = new Image(1140, 1620);
+        image.alt = "";
+        image.draggable = false;
+        image.src = `assets/covers/${book.id}.webp`;
+        // Reuse the preloaded image when the book opens.
+        image.decode().catch(() => {});
+        covers.set(book.id, image);
+      }
+      return covers.get(book.id);
+    }
+
+    /* ---------- the taped note above a pulled book ---------- */
+    const describe = (el, b) => {
+      const p = row[+el.dataset.k];
+      tagTitle.textContent = b.title;
+      tagKind.textContent = b.href ? b.kind : b.note;
+      tag.style.left = px(p.x + p.w / 2);
+      tag.style.top = ((SHELF.floorY - p.h * 1.12) / SHELF.h) * 100 + "%";
+      tag.classList.add("is-on");
     };
-    const describe = (b) => {
-      ink.dataset.state = "book";
-      ink.innerHTML = `
-        <p class="ink-kind">${esc(b.kind)}</p>
-        <p class="ink-title">${esc(b.title)}</p>
-        <p class="ink-summary" id="board-desc">${esc(b.summary)}</p>
-        <p class="ink-cta">${b.href ? "Click the book to open it →" : esc(b.note)}</p>`;
-    };
-    idle();
-    S.interval(() => ink.dataset.state === "idle" && idle(), 30000);
+    const idle = () => tag.classList.remove("is-on");
 
     /* ---------- pull a book out ---------- */
     let current = null, leaveTimer = 0;
@@ -147,8 +169,9 @@ export default {
       });
       const b = BOOKS.find((x) => x.id === el.dataset.id);
       if (b) {
-        describe(b);
-        plateFor(b);
+        describe(el, b);
+        coverFor(b);
+        hint.classList.add("is-gone");
       }
     }
     els.filter((e) => e.dataset.id).forEach((el) => {
@@ -162,14 +185,11 @@ export default {
     els.filter((e) => !e.dataset.id).forEach((el) => S.on(el, "pointerenter", () => { el.classList.remove("is-nudge"); void el.offsetWidth; el.classList.add("is-nudge"); }));
 
     /* ---------- open a book ---------- */
-    function spreadHTML(b) {
+    function spreadHTML(b, coverSrc) {
       const tag = b.href ? "a" : "div";
       const target = b.sameTab ? 'target="_self"' : 'target="_blank" rel="noopener noreferrer"';
       const actionLabel = b.sameTab ? b.action : `${b.action} (opens in a new tab)`;
       const link = b.href ? ` href="${esc(b.href)}" ${target} aria-label="${esc(actionLabel)}"` : "";
-      const frameworkCover = b.cover === "framework";
-      const workbookCover = b.cover === "workbook";
-      const coverClass = b.cover ? ` bo-${esc(b.cover)}-cover` : "";
       const chapters = b.chapters.map(({ t, n }, i) => `
         <li class="bo-chapter">
           <span class="bo-roman" aria-hidden="true">${ROMAN[i]}.</span>
@@ -191,10 +211,10 @@ export default {
                     <h3 class="bo-head">Contents</h3>
                   </header>
                   <ol class="bo-chapters" role="list">${chapters}</ol>
-                  <figure class="bo-plate">
-                    <div class="bo-photo">${b.href ? "" : '<span class="bo-stamp">Coming soon</span>'}</div>
-                    ${b.caption ? `<figcaption>${esc(b.caption)}</figcaption>` : ""}
-                  </figure>
+                  <div class="bo-book-preview">
+                    <img src="${esc(coverSrc)}" width="1140" height="1620" alt="" draggable="false">
+                    <p>${esc(b.summary)}</p>
+                  </div>
                   <footer class="bo-foot">
                     ${b.href
                       ? `<span class="bo-action"><span>${esc(b.action)}</span><span class="bo-arrow" aria-hidden="true">→</span></span>`
@@ -204,22 +224,7 @@ export default {
                 </${tag}>
               </div>
               <div class="bo-cover">
-                <div class="bo-cover-front${coverClass}" aria-hidden="true">
-                  ${frameworkCover ? `
-                    <span class="bo-framework-audience">Grades 7–12</span>
-                    <span class="bo-framework-title">${esc(b.title)}</span>
-                    <div class="bo-framework-cards">
-                      <img src="/frameworkpathway/assets/permit.webp" alt="" width="856" height="540" draggable="false">
-                      <img src="/frameworkpathway/assets/license.webp" alt="" width="856" height="540" draggable="false">
-                    </div>` : `
-                    <i class="bo-bands"></i>
-                    ${b.emblem ? `<img class="bo-emblem" src="assets/media/${esc(b.emblem)}" alt="" draggable="false">` : ""}
-                    <span class="bo-panel"><span>${esc(b.title)}</span></span>`}
-                  ${b.coverAddress ? `<span class="bo-cover-address">${esc(b.coverAddress)}</span>` : ""}
-                  ${workbookCover ? `
-                    <img class="bo-workbook-author" src="assets/media/vince-doud-name-only.png" alt="" width="1800" height="440" draggable="false">` : `
-                    <span class="bo-author">Vince Doud</span>`}
-                </div>
+                <div class="bo-cover-front" aria-hidden="true"></div>
                 <div class="bo-cover-edge"></div>
                 <div class="bo-cover-inside">
                   <div class="bo-title-page">
@@ -281,14 +286,16 @@ export default {
       // Store the open book on this history entry so Back can reopen it after a reload.
       if (book.sameTab && !restore) history.replaceState({ ...history.state, teachingBook: book.id }, "");
       pull(trigger);
+      idle(); // the note steps aside for the open book
       const run = ++token;
       const motion = !reducedMotion();
       const animateOpen = motion && !restore;
       openEl.style.setProperty("--c", book.color);
       openEl.dataset.book = book.id;
       openEl.classList.toggle("is-reduced", !animateOpen);
-      openEl.innerHTML = spreadHTML(book);
-      openEl.querySelector(".bo-photo").prepend(plateFor(book));
+      const coverImage = coverFor(book);
+      openEl.innerHTML = spreadHTML(book, coverImage.src);
+      openEl.querySelector(".bo-cover-front").append(coverImage);
       const cover = openEl.querySelector(".bo-cover");
       const page = openEl.querySelector(".bo-right");
       const close = openEl.querySelector("[data-close]");
@@ -314,7 +321,6 @@ export default {
         }, restore ? 0 : FADE_MS);
         return;
       }
-      const coverDelay = book.cover || book.coverAddress ? 950 : 600;
       phaseTimer = setTimeout(() => {
         if (run !== token) return;
         cancelCoverWait = afterCover(cover, revealContents);
@@ -324,7 +330,7 @@ export default {
           cancelCoverWait();
           revealContents();
         }
-      }, seen.has(book.id) ? 450 : coverDelay);
+      }, seen.has(book.id) ? 450 : FIRST_COVER_HOLD_MS);
     }
 
     function closeBook() {

@@ -123,7 +123,7 @@
   {
    "index": 1,
    "room": "main",
-   "title": "Dense colored circles",
+   "title": "Self Portrait #1",
    "medium": "Paint on canvas",
    "year": null,
    "dimensions": "24 \u00d7 24 in",
@@ -144,8 +144,8 @@
    "depth": 0.032,
    "cutout": false,
    "pixels": [
-    1600,
-    1091
+    1440,
+    1440
    ]
   },
   {
@@ -179,7 +179,7 @@
   {
    "index": 3,
    "room": "right",
-   "title": "Flag composition",
+   "title": "America #1",
    "medium": null,
    "year": null,
    "dimensions": null,
@@ -235,7 +235,7 @@
   {
    "index": 5,
    "room": "main",
-   "title": "Self Portrait",
+   "title": "Self Portrait #2",
    "medium": "Acrylic on canvas",
    "year": "circa 2010",
    "dimensions": "3 \u00d7 3 ft",
@@ -263,7 +263,7 @@
   {
    "index": 6,
    "room": "main",
-   "title": "Self Portrait",
+   "title": "Self Portrait #3",
    "medium": "Acrylic on canvas",
    "year": "circa 2010",
    "dimensions": "3 \u00d7 3 ft",
@@ -291,7 +291,7 @@
   {
    "index": 15,
    "room": "main",
-   "title": "Swing and Miss - sequence",
+   "title": "Swing and a Miss",
    "medium": null,
    "year": null,
    "dimensions": null,
@@ -375,7 +375,7 @@
   {
    "index": 18,
    "room": "right",
-   "title": "America #1",
+   "title": "America #3",
    "medium": "Paint, glue, and rubber bands on canvas",
    "year": null,
    "dimensions": "40 \u00d7 30 in. \u00b7 1\u00bd in. deep",

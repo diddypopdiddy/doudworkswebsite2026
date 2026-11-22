@@ -5,19 +5,22 @@ import { SITE } from "../data.js";
 
 /* The TV on its cart with a DVD player, plus the remote. A classic DVD menu you click through:
    boot → Main Menu → Scene Selection / Collections / Extras → playback.
-   Works from the remote, the DVD player's buttons, the keyboard (arrows, Enter, Esc, Space) or the mouse. */
+   Works from the remote, the DVD player's buttons, the keyboard (arrows, Enter, Esc, Space) or the mouse.
+   There is one disc and every video is on it. Collections are chapters of that disc, so picking one
+   never loads anything. The tray only moves when you press OPEN/CLOSE. */
 
-const DISCS = [
-  { id: "covers", label: "Covers", sub: "Drum & full-band covers", color: "#e0a526" },
-  { id: "woodbury", label: "School Videos", sub: "Woodbury music videos", color: "#4f8fe0" },
-  { id: "archive", label: "TV Archive", sub: "Archived performances", color: "#9fbf4a" },
-  { id: "memorial", label: "Memorial", color: "#ac90de" },
+const COLLECTIONS = [
+  { id: "covers", label: "Covers" },
+  { id: "woodbury", label: "School Videos" },
+  { id: "archive", label: "TV Archive" },
+  { id: "memorial", label: "Memorial" },
 ];
 // Art coordinates (tv-dvd-cart-front: 832 × 1437).
 const CART = { w: 832, h: 1437, show: 990 };
 const SCREEN = { x: 151, y: 101, w: 536, h: 410 };
 const VFD = { x: 566, y: 822, w: 160, h: 42 };
 const TRAY = { x: 120, y: 824, w: 398, h: 36 };
+const TRAY_MS = 1000; // how long the tray takes to slide (matches the CSS)
 const DVD_BTNS = [
   { act: "power", x: 155, label: "Power" }, { act: "eject", x: 252, label: "Open/close disc tray" }, { act: "play", x: 347, label: "Play" },
   { act: "pause", x: 433, label: "Pause" }, { act: "stop", x: 520, label: "Stop" }, { act: "prev", x: 606, label: "Previous" }, { act: "next", x: 691, label: "Next" },
@@ -44,12 +47,22 @@ const title = (v) => v.menuTitle || v.song || v.title;
 export default {
   mount(root, { route }) {
     const S = scope();
-    let disc = DISCS.find((d) => d.id === route.param)?.id || "covers";
+    // `coll` narrows Scene Selection to one collection; null means the whole disc.
+    let coll = COLLECTIONS.find((c) => c.id === route.param)?.id || null;
     // Scenes that play right on the TV come first; YouTube-only ones follow (stable order otherwise).
     const lists = {};
-    const list = () => (lists[disc] ||= videos.filter((v) => v.collection === disc).map((v, i) => [v, i]).sort((a, b) => (canEmbed(b[0]) - canEmbed(a[0])) || a[1] - b[1]).map(([v]) => v));
-    let power = true, screen = "boot", page = 0, playing = -1, playAll = false, paused = false, sel = null, trayOpen = false;
-    let lastMenu = "main";
+    const listOf = (id) => (lists[id] ||= videos.filter((v) => v.collection === id).map((v, i) => [v, i]).sort((a, b) => (canEmbed(b[0]) - canEmbed(a[0])) || a[1] - b[1]).map(([v]) => v));
+    const everything = COLLECTIONS.flatMap((c) => listOf(c.id));
+    const list = () => (coll ? listOf(coll) : everything);
+    const collLabel = () => COLLECTIONS.find((c) => c.id === coll)?.label || "All videos";
+    const setColl = (id) => {
+      if (id === coll) return;
+      coll = id; page = 0;
+      replaceDetailAddress(id ? `/video/${id}` : "/video");
+    };
+    let power = true, screen = "boot", page = 0, playing = -1, playAll = false, paused = false, sel = null;
+    let tray = "in"; // in → opening → out → closing
+    let lastMenu = coll ? "scenes" : "main";
 
     root.innerHTML = `
       <div class="backdrop is-warm"></div>
@@ -63,9 +76,15 @@ export default {
               <div class="dvd-glass"></div>
             </div>
             <button class="hot tv-power" data-act="power" aria-label="TV power" style="left:${pc(415, CART.w)};top:${pc(578, CART.h)};width:${pc(72, CART.w)};height:${pc(48, CART.h)}"></button>
-            <div class="tray" data-tray style="left:${pc(TRAY.x, CART.w)};top:${pc(TRAY.y, CART.h)};width:${pc(TRAY.w, CART.w)};height:${pc(TRAY.h, CART.h)}"><i></i></div>
             <div class="vfd" data-vfd style="left:${pc(VFD.x, CART.w)};top:${pc(VFD.y, CART.h)};width:${pc(VFD.w, CART.w)};height:${pc(VFD.h, CART.h)}"></div>
             ${DVD_BTNS.map((b) => `<button class="hot dvd-btn" data-act="${b.act}" aria-label="DVD ${b.label}" style="left:${pc(b.x, CART.w)};top:${pc(898, CART.h)};width:${pc(84, CART.w)};height:${pc(40, CART.h)}"></button>`).join("")}
+            <!-- The disc tray: a deck that slides out of the slot toward you, with the disc on it. Click it to push it back in. -->
+            <div class="tray" data-tray aria-hidden="true" style="left:${pc(TRAY.x, CART.w)};top:${pc(TRAY.y, CART.h)};width:${pc(TRAY.w, CART.w)};height:${pc(TRAY.h, CART.h)}">
+              <div class="tray-hole"></div>
+              <div class="tray-shade"></div>
+              <div class="tray-clip"><div class="tray-deck"><div class="tray-well"></div><div class="tray-disc"><b>Vince Doud</b><span>basement videos</span></div></div></div>
+              <div class="tray-face"></div>
+            </div>
           </div>
         </div>
         <div class="remote-wrap">
@@ -78,7 +97,9 @@ export default {
       </section>`;
 
     const $ = (s) => root.querySelector(s);
-    const content = $("[data-content]"), osd = $("[data-osd]"), vfd = $("[data-vfd]"), tray = $("[data-tray]"), cart = $("[data-cart]");
+    const content = $("[data-content]"), osd = $("[data-osd]"), vfd = $("[data-vfd]"), trayEl = $("[data-tray]"), cart = $("[data-cart]"), sceneEl = $(".dvd-scene");
+    // While a video plays the camera leans in, so the TV fills the window.
+    const setScreen = (name) => { screen = name; content.dataset.screen = name; sceneEl.classList.toggle("is-watching", name === "play"); };
 
     /* ---------- little helpers ---------- */
     let osdTimer = 0;
@@ -90,14 +111,13 @@ export default {
 
     /* ---------- screens ---------- */
     function render(name, opts = {}) {
-      screen = name;
-      content.dataset.screen = name;
+      setScreen(name);
       if (name !== "play") stopVideo();
       if (name === "off") { content.innerHTML = ""; setVFD(""); return; }
       if (name === "boot") return boot();
       if (name === "main") { lastMenu = "main"; content.innerHTML = mainHTML(); setVFD("MENU"); }
       if (name === "scenes") { lastMenu = "scenes"; content.innerHTML = scenesHTML(); setVFD(`CH ${String(page * PER_PAGE + 1).padStart(2, "0")}`); }
-      if (name === "discs") { lastMenu = "discs"; content.innerHTML = discsHTML(); setVFD("DISC"); }
+      if (name === "colls") { lastMenu = "colls"; content.innerHTML = collsHTML(); setVFD("MENU"); }
       if (name === "extras") { lastMenu = "extras"; content.innerHTML = extrasHTML(); setVFD("EXTRA"); }
       const items = [...content.querySelectorAll("[data-item]")];
       const want = opts.focus ? content.querySelector(`[data-item="${opts.focus}"]`) : items[0];
@@ -116,7 +136,7 @@ export default {
               <div class="ident-word"><b>VINCE DOUD</b><span>BASEMENT HOME VIDEO</span></div>
             </div>
           </div>`;
-        later(() => screen === "boot" && render("main"), 2300);
+        later(() => screen === "boot" && render(coll ? "scenes" : "main"), 2300);
       }, 2300);
     }
 
@@ -127,9 +147,9 @@ export default {
     const mainHTML = () => `
       ${bgMosaic()}
       <div class="menu-main">
-        <div class="menu-title"><span class="menu-kicker">THE BASEMENT SESSIONS</span><h3>VINCE<br>DOUD</h3><span class="menu-disc">DISC: ${esc(DISCS.find((d) => d.id === disc).label.toUpperCase())}</span></div>
+        <div class="menu-title"><span class="menu-kicker">THE BASEMENT SESSIONS</span><h3>VINCE<br>DOUD</h3><span class="menu-disc">${videos.length} VIDEOS · ${COLLECTIONS.length} COLLECTIONS</span></div>
         <ul class="menu-list">
-          ${[["playall", "Play All"], ["scenes", "Scene Selection"], ["discs", "Collections"], ["extras", "Extras"]].map(([id, label]) => `<li><button data-item="${id}"><i class="menu-pick" aria-hidden="true"></i>${label}</button></li>`).join("")}
+          ${[["playall", "Play All"], ["scenes", "Scene Selection"], ["colls", "Collections"], ["extras", "Extras"]].map(([id, label]) => `<li><button data-item="${id}"><i class="menu-pick" aria-hidden="true"></i>${label}</button></li>`).join("")}
         </ul>
       </div>`;
     const pages = () => Math.max(1, Math.ceil(list().length / PER_PAGE));
@@ -138,7 +158,7 @@ export default {
       const slice = L.slice(page * PER_PAGE, page * PER_PAGE + PER_PAGE);
       return `
         <div class="menu-scenes">
-          <header><h3>Scene Selection</h3><span>${esc(DISCS.find((d) => d.id === disc).label)} · ${page + 1} / ${pages()}</span></header>
+          <header><h3>${coll ? esc(collLabel()) : "Scene Selection"}</h3><span>${coll ? "" : "All videos · "}${page + 1} / ${pages()}</span></header>
           <div class="scene-grid${L.length === 1 ? " is-single" : ""}">
             ${slice.map((v, k) => { const i = page * PER_PAGE + k; return `
               <button class="scene" data-item="scene-${i}" data-i="${i}">
@@ -148,18 +168,21 @@ export default {
           </div>
           <footer>
             <button data-item="prevpage" ${page === 0 ? "data-dim" : ""}>◀ Prev</button>
-            <button data-item="main">Main Menu</button>
+            <button data-item="${coll ? "colls" : "main"}">${coll ? "Collections" : "Main Menu"}</button>
             <button data-item="nextpage" ${page >= pages() - 1 ? "data-dim" : ""}>Next ▶</button>
           </footer>
         </div>`;
     };
-    const discsHTML = () => `
+    // Collections are picture cards (a frame from the first video in each), not discs.
+    const collsHTML = () => `
       <div class="menu-discs">
-        <header><h3>Collections</h3><span>Choose a disc</span></header>
-        <div class="disc-row">
-          ${DISCS.map((d) => {
-            const count = videos.filter((v) => v.collection === d.id).length;
-            return `<button class="disc-pick" data-item="disc-${d.id}" style="--c:${d.color}"><span class="disc-art"><i></i></span><b>${esc(d.label)}</b><small>${count} ${count === 1 ? "video" : "videos"}</small>${d.id === disc ? `<em>LOADED</em>` : ""}</button>`;
+        <header><h3>Collections</h3><span>${videos.length} videos on this disc</span></header>
+        <div class="scene-grid coll-grid">
+          ${COLLECTIONS.map((c) => {
+            const L = listOf(c.id), count = L.length;
+            return `<button class="scene coll" data-item="coll-${c.id}">
+              <span class="scene-img">${L[0] ? `<img src="${thumb(L[0].id)}" alt="">` : ""}<span class="coll-name"><b>${esc(c.label)}</b><small>${count} ${count === 1 ? "video" : "videos"}</small></span></span>
+            </button>`;
           }).join("")}
         </div>
         <footer><button data-item="main">Main Menu</button></footer>
@@ -173,7 +196,7 @@ export default {
           <li><button data-item="x-credits"><i class="menu-pick"></i>Credits</button></li>
           <li><button data-item="main"><i class="menu-pick"></i>Main Menu</button></li>
         </ul>
-        <p class="menu-note">${videos.length} recordings across ${DISCS.length} discs.</p>
+        <p class="menu-note">${videos.length} recordings in ${COLLECTIONS.length} collections, all on this disc.</p>
       </div>`;
 
     /* ---------- focus + spatial navigation ---------- */
@@ -207,38 +230,46 @@ export default {
     function activate(id = sel) {
       if (!id) return;
       tick(0.05);
-      if (id === "playall") { playAll = true; play(0); }
-      else if (id === "scenes") { page = 0; render("scenes"); }
-      else if (id === "discs") render("discs", { focus: `disc-${disc}` });
+      if (id === "playall") { setColl(null); playAll = true; play(0); }
+      else if (id === "scenes") { setColl(null); page = 0; render("scenes"); }
+      else if (id === "colls") { const was = coll; setColl(null); render("colls", { focus: was ? `coll-${was}` : undefined }); }
       else if (id === "extras") render("extras");
-      else if (id === "main") render("main", { focus: lastMenu === "scenes" ? "scenes" : lastMenu === "discs" ? "discs" : lastMenu === "extras" ? "extras" : "playall" });
+      else if (id === "main") { const was = coll ? "colls" : lastMenu; setColl(null); render("main", { focus: ["scenes", "colls", "extras"].includes(was) ? was : "playall" }); }
       else if (id === "prevpage") turnPage(-1);
       else if (id === "nextpage") turnPage(1);
       else if (id.startsWith("scene-")) { playAll = false; play(+id.slice(6)); }
-      else if (id.startsWith("disc-")) loadDisc(id.slice(5));
+      else if (id.startsWith("coll-")) { setColl(id.slice(5)); page = 0; render("scenes"); }
       else if (id === "x-channel") open(SITE.youtube, "_blank", "noopener");
       else if (id === "x-bandcamp") open(SITE.bandcamp, "_blank", "noopener");
       else if (id === "x-credits") credits();
     }
     function credits() {
-      screen = "credits"; content.dataset.screen = "credits";
+      setScreen("credits");
       content.innerHTML = `<div class="menu-credits"><div class="credits-roll"><p>DIRECTED BY</p><h4>Vince Doud</h4><p>DRUMS · GUITAR · KEYS</p><h4>Vince Doud</h4><p>CAMERA (MOSTLY ON A TRIPOD)</p><h4>Vince Doud</h4><p>FILMED IN</p><h4>The Basement</h4><p>SPECIAL THANKS</p><h4>Everyone who watched</h4><p class="credits-end">Press MENU</p></div></div>`;
       setVFD("END");
     }
-    function loadDisc(id) {
-      if (id === disc) return render("main");
-      disc = id; page = 0;
-      replaceDetailAddress(`/video/${id}`);
-      ejectThen(() => render("main"));
+
+    /* ---------- the disc tray (OPEN/CLOSE) ---------- */
+    // Like a real player: the tray slides out with the disc on it and the TV goes to a blue screen.
+    // Press OPEN/CLOSE again (or push the tray, or press PLAY) and it slides back in and the disc starts over.
+    const blue = (word, note = "") => { content.innerHTML = `<div class="dvd-blue"><p class="dvd-blue-osd">${word}</p>${note ? `<p class="dvd-blue-note">${note}</p>` : ""}</div>`; };
+    function openTray() {
+      clearLater(); stopVideo();
+      tray = "opening"; setScreen("tray"); playing = -1; sel = null;
+      trayEl.classList.add("is-open");
+      setVFD("OPEN"); blue("▲ EJECTING"); announce("Disc tray opening");
+      later(() => { tray = "out"; blue("▲ OPEN", "NO DISC<small>Press OPEN/CLOSE to put it back in</small>"); }, TRAY_MS);
     }
-    function ejectThen(fn) {
+    function closeTray() {
       clearLater();
-      stopVideo();
-      trayOpen = true; tray.classList.add("is-open"); setVFD("OPEN");
-      content.dataset.screen = "load"; content.innerHTML = `<div class="dvd-loading">DISC LOADING…</div>`;
-      later(() => { tray.classList.remove("is-open"); trayOpen = false; setVFD("LOAD"); }, 900);
-      later(fn, 1700);
+      tray = "closing";
+      trayEl.classList.remove("is-open");
+      setVFD("CLOSE"); blue("▼ CLOSE"); announce("Disc tray closing");
+      later(() => { setVFD("LOAD"); blue("LOADING", "<small>Reading disc…</small>"); }, TRAY_MS);
+      later(() => { tray = "in"; setColl(null); render("boot"); }, TRAY_MS + 1100);
     }
+    const toggleTray = () => (tray === "in" ? openTray() : tray === "out" ? closeTray() : null);
+    S.on(trayEl, "click", () => power && tray === "out" && closeTray());
 
     /* ---------- playback ---------- */
     let ytReady = false;
@@ -257,7 +288,7 @@ export default {
       const L = list(); if (!L.length) return;
       playing = clamp(i, 0, L.length - 1); paused = false;
       const v = L[playing];
-      screen = "play"; content.dataset.screen = "play";
+      setScreen("play");
       page = Math.floor(playing / PER_PAGE);
       setVFD(`PLAY ${String(playing + 1).padStart(2, "0")}`);
       if (!canEmbed(v)) return showYouTubeFallback(v);
@@ -293,14 +324,15 @@ export default {
     function press(act, n) {
       if (act === "power") return togglePower();
       if (!power) return;
-      if (act === "eject") { if (trayOpen) return; return ejectThen(() => render("boot")); }
-      if (screen === "boot" && (act === "enter" || act === "menu" || act === "play")) { clearLater(); return render("main"); }
+      if (act === "eject") return toggleTray();
+      if (tray !== "in") { if (tray === "out" && (act === "play" || act === "enter")) closeTray(); return; } // nothing to navigate with the disc out
+      if (screen === "boot" && (act === "enter" || act === "menu" || act === "play")) { clearLater(); return render(coll ? "scenes" : "main"); }
       switch (act) {
         case "up": case "down": case "left": case "right":
           if (screen === "play") { if (act === "right") press("next"); else if (act === "left") press("prev"); return; }
           return move(act);
         case "enter": if (screen === "play") return press("pause"); return activate();
-        case "menu": if (screen === "main") return; return render("main", { focus: screen === "play" ? "scenes" : undefined });
+        case "menu": { if (screen === "main") return; const was = screen; setColl(null); return render("main", { focus: was === "play" ? "scenes" : undefined }); }
         case "title": page = playing >= 0 ? Math.floor(playing / PER_PAGE) : 0; return render("scenes", { focus: playing >= 0 ? `scene-${playing}` : undefined });
         case "play":
           if (screen === "play") { if (paused) { paused = false; yt("playVideo"); flash("▶ PLAY"); } return; }
@@ -319,6 +351,7 @@ export default {
       power = !power;
       cart.classList.toggle("is-off", !power);
       clearLater();
+      if (tray !== "in") { tray = "in"; trayEl.classList.remove("is-open"); } // the tray pulls itself in, like the real thing
       if (!power) { render("off"); flash(""); } else render("boot");
     }
 
@@ -330,7 +363,7 @@ export default {
     S.on(content, "click", (e) => { const it = e.target.closest("[data-item]"); if (it) { focusItem(it); activate(it.dataset.item); } });
     S.on(window, "keydown", (e) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
-      const map = { ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right", Enter: "enter", " ": "pause", m: "menu", t: "title" };
+      const map = { ArrowUp: "up", ArrowDown: "down", ArrowLeft: "left", ArrowRight: "right", Enter: "enter", " ": "pause", m: "menu", t: "title", o: "eject" };
       const act = map[e.key]; if (!act) { if (/^[0-9]$/.test(e.key)) press("num", +e.key); return; }
       if (e.target.closest?.("a,button") && (e.key === "Enter" || e.key === " ")) return;
       e.preventDefault(); press(act);
@@ -344,7 +377,9 @@ export default {
       onEscape() {
         if (!power) return false;
         if (screen === "play") { press("stop"); return true; }
-        if (screen !== "main" && screen !== "boot" && screen !== "off") { render("main"); return true; }
+        if (screen === "tray") return false;
+        if (screen === "scenes" && coll) { activate("colls"); return true; }
+        if (screen !== "main" && screen !== "boot" && screen !== "off") { activate("main"); return true; }
         return false;
       },
       unmount() { S.dispose(); },

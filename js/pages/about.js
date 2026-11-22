@@ -4,6 +4,7 @@ import { ABOUT } from "../data.js";
 /* The wallet from the desk. You arrive with it already open and the ID already out:
    the about-me lives on the front of the card, where a license prints its fields.
    Flip it and the back looks like the back of a real ID (barcodes, fine print), with the jokes in the codes.
+   The card stays sideways on every screen (a sideways license; the upright ones are permits). On phones it just gets smaller.
    "Put it back" tucks the card away; hover the wallet to pull it out again.
    It's dressed like a real New Jersey license (fields, codes, microprint), but there's no state seal,
    no real number and no date of birth, and the bottom edge says it's for creative purposes. */
@@ -145,8 +146,10 @@ export default {
     }
     function reset() {
       timers.forEach(clearTimeout); timers = [];
+      clearTimeout(turnTimer); turning = false;
       scene.classList.remove("is-arrived");
-      card.classList.remove("is-flipped");
+      card.classList.remove("is-flipped", "is-turning", "is-landing");
+      card.style.setProperty("--turn", "0deg");
       set("closed");
     }
     S.on(wallet, "pointerenter", openWallet);
@@ -154,7 +157,25 @@ export default {
     S.on(wallet, "focus", openWallet);
     S.on(wallet, "keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openWallet(); } });
 
-    const flip = () => card.classList.toggle("is-flipped");
+    // Flip in two halves: turn until the card is edge-on, swap which face is showing, then finish the turn.
+    let turning = false, turnTimer = 0;
+    const flip = () => {
+      if (turning) return;
+      const toBack = !card.classList.contains("is-flipped"), dir = toBack ? 1 : -1;
+      if (reducedMotion()) { card.classList.toggle("is-flipped", toBack); return; }
+      turning = true;
+      card.classList.add("is-turning");
+      card.style.setProperty("--turn", dir * 90 + "deg");
+      turnTimer = setTimeout(() => {
+        card.classList.toggle("is-flipped", toBack);
+        card.classList.replace("is-turning", "is-landing");
+        card.style.setProperty("--turn", -dir * 90 + "deg"); // now edge-on from the other side
+        void card.offsetWidth;
+        card.classList.remove("is-landing");
+        card.style.setProperty("--turn", "0deg");
+        turnTimer = setTimeout(() => { turning = false; }, 300);
+      }, 230);
+    };
     S.on(card, "click", (e) => { if (!e.target.closest("a")) flip(); });
     S.on(card, "keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); flip(); } });
     S.on(root.querySelector("[data-flip]"), "click", flip);
@@ -174,7 +195,7 @@ export default {
     });
     S.on(wrap, "pointerleave", () => { wrap.style.setProperty("--rx", "0deg"); wrap.style.setProperty("--ry", "0deg"); holo.style.setProperty("--ho", ".18"); });
 
-    S.add(() => timers.forEach(clearTimeout));
+    S.add(() => { timers.forEach(clearTimeout); clearTimeout(turnTimer); });
     return { unmount() { S.dispose(); } };
   },
 };

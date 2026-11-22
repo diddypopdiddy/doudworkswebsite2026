@@ -3,10 +3,11 @@ import { SITE } from "../data.js";
 
 /* The payphone pulled off an old building, now on the basement wall.
    The camera pushes in on the sticker with the email (the only place the address appears; click it to write).
+   The sticker is a postal label somebody wrote on with a fat marker: the letters are drawn stroke by stroke below, not typed.
    The keypad really beeps. Push the coin return door in and change spills out (sometimes more than you put in). */
 
 const ART_W = 764, ART_H = 1643;
-const STICKER = { x: 254, y: 1434, w: 448, h: 138, rot: -4 };
+const STICKER = { x: 240, y: 1268, w: 468, h: 299, rot: -4 };
 // The slit of the coin slot (art px): centre, and the box the coin flies through on its way in.
 const COIN = { x: 253, y: 188, box: 380 };
 // The "PUSH FOR COIN RETURN" door (art px). It hangs from its top edge and swings back into the phone.
@@ -71,6 +72,99 @@ function coinHTML(kind, d) {
   return `<span class="rcoin-spin is-${k.edge}" style="--col:${k.col};--pp:${(d * 5).toFixed(1)}px">${[-0.66, -0.22, 0.22, 0.66].map((z) => `<i class="rcoin-e" style="transform:translateZ(${(z * t).toFixed(2)}px)"></i>`).join("")}<i class="rcoin-f" style="transform:translateZ(${t.toFixed(2)}px)"></i><i class="rcoin-b" style="transform:rotateY(180deg) translateZ(${t.toFixed(2)}px)"></i></span>`;
 }
 
+/* ---------- the marker lettering ---------- */
+// Each letter is the path the marker tip takes: [width, ...strokes], a stroke being "L" (straight pulls) or "S" (one curved pull)
+// through points in a box 1 wide and 1 tall (0 = top of the letter, 1 = the line it sits on).
+const GLYPHS = {
+  A: [1, ["L", 0, 1, 0.48, 0, 1, 1], ["L", 0.2, 0.64, 0.84, 0.6]],
+  C: [0.9, ["S", 1, 0.2, 0.62, 0, 0.1, 0.28, 0.06, 0.7, 0.55, 1, 1, 0.84]],
+  D: [0.95, ["L", 0.04, 0, 0, 1], ["S", -0.06, 0.03, 0.62, 0.08, 1, 0.48, 0.7, 0.9, -0.04, 1]],
+  E: [0.85, ["L", 1, 0, 0, 0.02, 0.02, 1, 1, 0.98], ["L", 0.02, 0.5, 0.8, 0.47]],
+  G: [1, ["S", 0.98, 0.2, 0.6, 0, 0.1, 0.28, 0.06, 0.72, 0.52, 1, 0.98, 0.86], ["L", 0.98, 0.9, 0.98, 0.55, 0.5, 0.57]],
+  I: [0.3, ["L", 0.5, 0, 0.5, 1]],
+  L: [0.8, ["L", 0.04, 0, 0, 1, 1, 0.97]],
+  M: [1.3, ["L", 0, 1, 0.05, 0, 0.5, 0.72, 0.96, 0, 1, 1]],
+  N: [1, ["L", 0, 1, 0.02, 0, 0.98, 1, 1, 0]],
+  O: [0.95, ["S", 0.56, 0.01, 0.1, 0.24, 0.05, 0.72, 0.48, 1, 0.92, 0.74, 0.95, 0.26, 0.5, 0, 0.34, 0.07]],
+  R: [0.95, ["L", 0.02, 1, 0, 0], ["S", -0.05, 0.03, 0.72, 0.04, 0.96, 0.27, 0.66, 0.5, 0.02, 0.54], ["L", 0.3, 0.53, 1, 1]],
+  U: [0.95, ["S", 0, 0, 0.01, 0.62, 0.16, 0.92, 0.5, 1, 0.84, 0.9, 0.98, 0.6, 1, 0]],
+  V: [1, ["L", 0, 0, 0.5, 1, 1, 0]],
+  W: [1.4, ["L", 0, 0, 0.26, 1, 0.5, 0.26, 0.74, 1, 1, 0]],
+  "@": [1.55, ["S", 0.67, 0.36, 0.5, 0.29, 0.33, 0.44, 0.35, 0.66, 0.52, 0.72, 0.66, 0.58, 0.67, 0.34, 0.69, 0.66, 0.82, 0.72, 0.97, 0.48, 0.88, 0.18, 0.6, 0.03, 0.25, 0.1, 0.04, 0.4, 0.06, 0.75, 0.3, 0.97, 0.62, 1, 0.86, 0.9]],
+  ".": [0.3, ["L", 0.45, 0.95, 0.55, 0.97]],
+};
+function rng(seed) { // always the same hand, so the sticker doesn't change between visits
+  return () => { seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+}
+// One line of writing between x0 and x1. Nothing is ever drawn the same way twice: every letter gets its own size, lean and wobble,
+// the line wanders off level, and the letters squeeze up toward the end as the writer runs out of sticker.
+function markerLine(text, { x0, x1, y, rise, cap, pen, squeeze = 0.8, gap = 0.3, loose = 1 }, rnd) {
+  const r = (a) => (rnd() * 2 - 1) * a, f = (n) => n.toFixed(1);
+  const chars = [...text.toUpperCase()].filter((c) => GLYPHS[c]);
+  const widths = chars.map((c, i) => GLYPHS[c][0] * (1.06 - (1.06 - squeeze) * (i / Math.max(1, chars.length - 1))) * (1 + r(0.08)));
+  const unit = (x1 - x0) / (widths.reduce((a, b) => a + b, 0) + gap * (chars.length - 1));
+  let x = x0, out = "";
+  chars.forEach((c, i) => {
+    const w = widths[i] * unit, h = cap * (1 + r(0.07)), t = (x - x0) / (x1 - x0);
+    const base = y + rise * t + r(cap * 0.035), lean = r(0.07 * loose) - 0.03, rot = r(0.045 * loose), cs = Math.cos(rot), sn = Math.sin(rot);
+    const at = (px, py) => {
+      let gx = px * w + (1 - py) * h * lean + r(cap * 0.016), gy = (py - 1) * h + r(cap * 0.016);
+      gx -= w / 2; gy += h / 2;
+      return [x + w / 2 + gx * cs - gy * sn, base - h / 2 + gx * sn + gy * cs];
+    };
+    GLYPHS[c].slice(1).forEach(([kind, ...n]) => {
+      const p = []; for (let k = 0; k < n.length; k += 2) p.push(at(n[k], n[k + 1]));
+      let d = `M${f(p[0][0])} ${f(p[0][1])}`;
+      for (let k = 1; k < p.length; k++) {
+        const a = p[k - 1], b = p[k];
+        if (kind === "L") { // a straight pull is never quite straight
+          const bow = r(0.035);
+          d += `Q${f((a[0] + b[0]) / 2 - (b[1] - a[1]) * bow)} ${f((a[1] + b[1]) / 2 + (b[0] - a[0]) * bow)} ${f(b[0])} ${f(b[1])}`;
+        } else {
+          const z = p[k - 2] || a, e = p[k + 1] || b;
+          d += `C${f(a[0] + (b[0] - z[0]) / 6)} ${f(a[1] + (b[1] - z[1]) / 6)} ${f(b[0] - (e[0] - a[0]) / 6)} ${f(b[1] - (e[1] - a[1]) / 6)} ${f(b[0])} ${f(b[1])}`;
+        }
+      }
+      out += `<path d="${d}" stroke-width="${f(pen * (c === "." ? 1.25 : 1 + r(0.09)))}"/>`;
+    });
+    x += w + gap * unit;
+  });
+  return out;
+}
+function stickerSVG(email) {
+  const rnd = rng(8189793), at = email.indexOf("@");
+  const ink = markerLine(email.slice(0, at), { x0: 40, x1: 908, y: 316, rise: -14, cap: 150, pen: 14.5, squeeze: 0.86, gap: 0.38, loose: 0.6 }, rnd)
+    + markerLine(email.slice(at), { x0: 120, x1: 884, y: 550, rise: 8, cap: 172, pen: 17.5, squeeze: 0.92 }, rnd);
+  const rule = (x, y, w) => `<path d="M${x} ${y}h${w}" stroke="#1c3f94" stroke-width="2" opacity=".45"/>`;
+  return `<svg viewBox="0 0 940 600" aria-hidden="true" focusable="false">
+    <defs>
+      <clipPath id="stk-shape"><path d="M18 0H858L940 72V582a18 18 0 0 1-18 18H18a18 18 0 0 1-18-18V18A18 18 0 0 1 18 0Z"/></clipPath>
+      <linearGradient id="stk-paper" x1="0" y1="0" x2=".25" y2="1"><stop offset="0" stop-color="#fbfaf5"/><stop offset=".8" stop-color="#f1eee4"/><stop offset="1" stop-color="#e6e1d2"/></linearGradient>
+      <radialGradient id="stk-worn" cx=".5" cy=".5" r=".75"><stop offset=".62" stop-color="#5b4a2e" stop-opacity="0"/><stop offset="1" stop-color="#5b4a2e" stop-opacity=".26"/></radialGradient>
+      <linearGradient id="stk-fold" x1=".15" y1=".1" x2=".7" y2=".85"><stop offset="0" stop-color="#f4f1e7"/><stop offset="1" stop-color="#c9c2ae"/></linearGradient>
+      <filter id="stk-grime" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".012 .03" numOctaves="3" seed="4"/><feColorMatrix values="0 0 0 0 .32  0 0 0 0 .26  0 0 0 0 .17  0 0 0 1.5 -.62"/></filter>
+      <filter id="stk-ink" x="-4%" y="-6%" width="108%" height="112%"><feTurbulence type="fractalNoise" baseFrequency=".05" numOctaves="2" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter>
+    </defs>
+    <g clip-path="url(#stk-shape)">
+      <rect width="940" height="600" fill="url(#stk-paper)"/>
+      <rect width="940" height="92" fill="#1c3f94"/>
+      <rect y="92" width="940" height="13" fill="#c9212c"/>
+      <text x="34" y="67" fill="#fff" font-family="Inter, Arial, sans-serif" font-size="60" font-weight="900" font-style="italic" letter-spacing="-1">PRIORITY E-MAIL</text>
+      <g fill="#1c3f94" font-family="Inter, Arial, sans-serif" font-weight="800">
+        <text x="34" y="146" font-size="24">FROM:</text>
+        <text x="34" y="398" font-size="34">TO:</text>
+        <text x="906" y="582" font-size="15" font-weight="600" text-anchor="end" opacity=".7">LABEL 818, BASEMENT ISSUE</text>
+      </g>
+      ${rule(130, 148, 330)}${rule(34, 204, 426)}${rule(34, 260, 426)}${rule(110, 400, 780)}${rule(110, 468, 780)}${rule(110, 536, 780)}
+      <rect width="940" height="600" filter="url(#stk-grime)" opacity=".32" style="mix-blend-mode:multiply"/>
+      <rect width="940" height="600" fill="url(#stk-worn)"/>
+      <g class="sticker-ink" filter="url(#stk-ink)" fill="none" stroke="#14110f" stroke-opacity=".9" stroke-linecap="round" stroke-linejoin="round">${ink}</g>
+    </g>
+    <path d="M858 0 940 72 870 80Z" fill="rgba(0,0,0,.28)" transform="translate(-5 6)"/>
+    <path d="M858 0 940 72 870 80Z" fill="url(#stk-fold)"/>
+  </svg>`;
+}
+
 export default {
   mount(root) {
     const S = scope();
@@ -97,9 +191,7 @@ export default {
             </button>
             ${KEYS.flatMap((row, r) => row.map((k, c) => `<button class="phone-key" data-key="${k}" data-r="${r}" data-c="${c}" aria-label="Key ${k}" style="left:${pct(KEY_X[c], ART_W)};top:${pct(KEY_Y[r], ART_H)}"></button>`)).join("")}
             <a class="sticker" href="${mailto}" data-sticker style="left:${pct(STICKER.x, ART_W)};top:${pct(STICKER.y, ART_H)};width:${pct(STICKER.w, ART_W)};height:${pct(STICKER.h, ART_H)};--rot:${STICKER.rot}deg" aria-label="Email Vince at ${esc(SITE.email)}">
-              <span class="sticker-top">Out of order. Email instead:</span>
-              <span class="sticker-email">${esc(SITE.email)}</span>
-              <span class="sticker-sub">teaching · media · collabs</span>
+              ${stickerSVG(SITE.email)}
             </a>
           </div>
         </div>

@@ -2,7 +2,7 @@ import { esc, loadJSON, scope, easternNow, reducedMotion, wait, navigate, isSmal
 import { SPACES, ORDER, SITE } from "./data.js";
 
 /* The basement homepage.
-   One baked background (empty room, rugs, cords, decks, record console, desk and every shadow),
+   One baked background (empty room, rugs, cords, record console, desk and every shadow),
    then one sprite per clickable object, back to front, from data/room-layout.json
    (built by tools/build_room.py). Hover testing reads each sprite's real alpha, so only the
    object itself lights up and objects in front block the ones behind them. */
@@ -12,7 +12,6 @@ const ART = "assets/room/";
 // Paper label positions (room px). `above` hangs the label over the point instead of under it.
 const ANCHORS = {
   payphone: { x: 252, y: 128, above: true },
-  whiteboard: { x: 1172, y: 336 },
   ipod: { x: 770, y: 128, above: true },
   bookshelf: { x: 982, y: 352 },
   "art-table": { x: 530, y: 426 },
@@ -26,15 +25,18 @@ const ANCHORS = {
   "tv-cart": { x: 853, y: 636, above: true },
   camera: { x: 1060, y: 580, above: true },
   softbox: { x: 1211, y: 576, above: true },
+  "deck-arto": { x: 1372, y: 196, above: true },
+  "deck-wenning": { x: 1372, y: 196, above: true },
+  "deck-jackson": { x: 1372, y: 196, above: true },
 };
-const GROUP_HOME = { art: "art-table", music: "keyboard", video: "tv-cart", teaching: "bookshelf", ai: "laptop", about: "wallet", contact: "payphone" };
+const GROUP_HOME = { art: "art-table", music: "keyboard", video: "tv-cart", teaching: "bookshelf", ai: "laptop", about: "wallet", skateboards: "deck-wenning", contact: "payphone" };
 // Little things that aren't rooms: click the lamp or the record on the console, or the key light by the desk
-// (the softbox sprite itself; see "keylight" below).
+// (the softbox sprite itself; see "keylight" below). The whiteboard is one too: the date wipes off.
 const TOYS = [
   { id: "lamp", x: 709, y: 66, w: 56, h: 84 },
   { id: "record", x: 787, y: 117, w: 101, h: 46 },
 ];
-const TOUR = ["music", "art", "teaching", "ai", "about", "video", "contact"];
+const TOUR = ["music", "art", "teaching", "skateboards", "ai", "about", "video", "contact"];
 
 // The key light: where its head is (the glow spills around it) and the patch of desk and chair it lights.
 // The pool is two soft ellipses along the desk's diagonal (a mask can't rotate one ellipse).
@@ -42,8 +44,13 @@ const KEY = { head: [1222, 650], pools: [[1170, 468, 190, 130], [1335, 535, 175,
 
 // Whiteboard writing area: top-left, top-right and bottom-left corners (room px), plus its local size.
 const BOARD = { tl: [1094, 116], tr: [1256, 174], bl: [1092, 246], w: 172, h: 130 };
+const BOARD_RES = 3; // canvas pixels per room pixel, so the writing stays crisp when the room is scaled up
+const HAND = 'BasementHand, "Kalam", "Comic Sans MS", cursive';
+const cursorOf = (svg, x, y, fallback) => `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'>${svg}</svg>`)}") ${x} ${y}, ${fallback}`;
+const ERASER = cursorOf("<g transform='rotate(-16 16 16)' stroke='#111' stroke-width='1.5'><rect x='4' y='8' width='24' height='15' rx='3' fill='#2c3340'/><rect x='4' y='18' width='24' height='5' rx='2' fill='#ece8df'/></g>", 16, 18, "cell");
 
 let layoutCache;
+let boardMemo = null; // what's left on the whiteboard after you've wiped it, kept for the rest of the visit
 const maskCache = new Map();
 
 function buildMask(img, w, h, src) {
@@ -90,7 +97,7 @@ export default {
                 ? `<canvas class="room-obj" data-id="${o.id}" data-group="${o.group}" width="${o.w * 2}" height="${o.h * 2}" style="${box(o)}"></canvas>`
                 : `<img class="room-obj" data-id="${o.id}" data-group="${o.group}" src="${ART}${o.id}-2x.webp" alt="" style="${box(o)}" draggable="false">`}
               ${o.open ? `<img class="room-obj room-open" data-open-of="${o.id}" data-group="${o.group}" src="${ART}${o.id}-open-2x.webp" alt="" style="${box(o.open)}" draggable="false"><img class="room-obj room-open room-flap" data-flap-of="${o.id}" data-group="${o.group}" src="${ART}${o.id}-open-2x.webp" alt="" style="${box(o.open)}" draggable="false">` : ""}
-              ${o.id === "whiteboard" ? `<div class="wb-date" data-wb aria-hidden="true"></div>` : ""}
+              ${o.id === "whiteboard" ? `<canvas class="wb-date" data-wb aria-hidden="true" width="${BOARD.w * BOARD_RES}" height="${BOARD.h * BOARD_RES}"></canvas>` : ""}
               ${o.id === "ipod" ? `<div class="amb amb-ipod" aria-hidden="true" style="left:${o.x + o.w / 2}px;top:${o.y + o.h * 0.42}px"></div>` : ""}
             `).join("")}
             <div class="amb amb-key" aria-hidden="true" style="${keyMask}"></div>
@@ -149,23 +156,64 @@ export default {
     panTo(from && SPACES[from] ? byId[GROUP_HOME[from]].x + byId[GROUP_HOME[from]].w / 2 : 850);
     S.on(window, "resize", () => { const mid = (room.scrollLeft + room.clientWidth / 2) / fit.s; layoutStage(); panTo(mid); });
 
-    /* ---------- live whiteboard date (always Eastern time) ---------- */
-    const wb = $("[data-wb]");
-    {
-      const [tx, ty] = BOARD.tl, [rx, ry] = BOARD.tr, [bx, by] = BOARD.bl;
-      const m = [(rx - tx) / BOARD.w, (ry - ty) / BOARD.w, (bx - tx) / BOARD.h, (by - ty) / BOARD.h, tx, ty];
-      Object.assign(wb.style, { width: BOARD.w + "px", height: BOARD.h + "px", transform: `matrix(${m.join(",")})` });
-    }
-    let lastKey = "";
-    const paintDate = () => {
+    /* ---------- the whiteboard: today's date (always Eastern time), and it wipes off ---------- */
+    // The date is drawn on a canvas laid over the board's writing area. Move the mouse across it and it erases,
+    // the way a hand would. That's all it does: once it's wiped it stays wiped until the page is loaded again.
+    const wb = $("[data-wb]"), ink = wb.getContext("2d");
+    const [tx, ty] = BOARD.tl, [rx, ry] = BOARD.tr, [bx, by] = BOARD.bl;
+    const bm = [(rx - tx) / BOARD.w, (ry - ty) / BOARD.w, (bx - tx) / BOARD.h, (by - ty) / BOARD.h, tx, ty];
+    Object.assign(wb.style, { width: BOARD.w + "px", height: BOARD.h + "px", transform: `matrix(${bm.join(",")})` });
+    const toBoard = (x, y) => { // room px → the board's own flat coordinates
+      const det = bm[0] * bm[3] - bm[1] * bm[2], dx = x - bm[4], dy = y - bm[5];
+      return [(bm[3] * dx - bm[2] * dy) / det, (bm[0] * dy - bm[1] * dx) / det];
+    };
+    const writeDate = (now) => {
+      const g = ink;
+      g.setTransform(BOARD_RES, 0, 0, BOARD_RES, 0, 0);
+      g.clearRect(0, 0, BOARD.w, BOARD.h);
+      g.globalCompositeOperation = "source-over";
+      g.textBaseline = "middle";
+      g.font = `30px ${HAND}`; g.fillStyle = "#1d3f8f"; g.fillText(now.weekday + ",", 14, 35.5);
+      g.font = `38px ${HAND}`; g.fillStyle = "#b3261e"; g.fillText(now.monthDay, 14, 70.5);
+      g.save();
+      g.translate(14, 91); g.scale(116 / 120, 13 / 14);
+      g.beginPath(); g.moveTo(3, 9); g.bezierCurveTo(30, 3, 70, 2, 117, 7);
+      g.strokeStyle = "rgba(29, 63, 143, .8)"; g.lineWidth = 3; g.lineCap = "round"; g.stroke();
+      g.restore();
+    };
+    let lastKey = "", wiped = false, lastWipe = null;
+    const paintDate = (force) => {
+      if (wiped) return; // a wiped board stays wiped
       const now = easternNow();
-      if (now.key === lastKey) return;
+      if (now.key === lastKey && !force) return;
       lastKey = now.key;
-      wb.innerHTML = `<span class="wb-day">${esc(now.weekday)},</span><span class="wb-md">${esc(now.monthDay)}</span><svg class="wb-swoosh" viewBox="0 0 120 14" aria-hidden="true"><path d="M3 9 C 30 3, 70 2, 117 7" /></svg>`;
+      writeDate(now);
       stage.setAttribute("aria-description", `The whiteboard reads ${now.weekday}, ${now.monthDay}`);
     };
-    paintDate();
-    S.interval(paintDate, 15000);
+    if (boardMemo) { // already wiped earlier in this visit
+      wiped = true;
+      ink.drawImage(boardMemo, 0, 0);
+    } else {
+      paintDate();
+      document.fonts?.load(`30px ${HAND}`).then(() => paintDate(true)).catch(() => {}); // redraw once the handwriting font is in
+    }
+    S.interval(() => paintDate(), 15000);
+    const wipeAt = (x, y) => {
+      const [u, v] = toBoard(x, y);
+      if (u < -14 || v < -14 || u > BOARD.w + 14 || v > BOARD.h + 14) { lastWipe = null; return; }
+      const g = ink, from = lastWipe || [u, v];
+      g.setTransform(BOARD_RES, 0, 0, BOARD_RES, 0, 0);
+      g.globalCompositeOperation = "destination-out"; // a faint ghost of the marker stays until a second pass
+      g.strokeStyle = "rgba(0,0,0,.94)"; g.lineWidth = 25; g.lineCap = "round"; g.lineJoin = "round";
+      g.beginPath(); g.moveTo(from[0], from[1]); g.lineTo(u + 0.01, v + 0.01); g.stroke();
+      g.globalCompositeOperation = "source-over";
+      lastWipe = [u, v]; wiped = true;
+    };
+    S.add(() => {
+      if (!wiped) return;
+      boardMemo = Object.assign(document.createElement("canvas"), { width: wb.width, height: wb.height });
+      boardMemo.getContext("2d").drawImage(wb, 0, 0);
+    });
 
     /* ---------- masks for pixel-accurate hover ---------- */
     // The laptop is drawn from a strip of frames (lid shut at the top, open at the bottom).
@@ -337,11 +385,12 @@ export default {
       stopTour();
       const p = toRoom(e);
       let o = hitAt(...p);
-      const key = o?.group === "keylight";
+      const key = o?.group === "keylight", board = o?.id === "whiteboard";
       spriteOf.softbox?.classList.toggle("is-hover", key);
-      if (key) o = null; // the key light is a switch, not a room: no glow, just a pointer
+      if (key || board) o = null; // the key light and the whiteboard are things to play with, not rooms: no glow, no label
       if (o) lastObj = o.id;
       setActive(o?.group || null, o?.id);
+      if (board) { wipeAt(...p); stage.style.cursor = ERASER; } else lastWipe = null;
       if (!o && (key || toyAt(...p))) stage.style.cursor = "pointer";
       if (!hovered && o) { hovered = true; hint.classList.add("is-gone"); }
     });
@@ -354,6 +403,7 @@ export default {
       const p = toRoom(e);
       let o = hitAt(...p);
       if (o?.group === "keylight") { stopTour(); if (active) setActive(null); flipToy({ id: "keylight" }); return; }
+      if (o?.id === "whiteboard") { stopTour(); if (active) setActive(null); return; } // clicking the board does nothing
       if (!o) {
         const t = toyAt(...p);
         if (t) {

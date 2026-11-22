@@ -2,7 +2,7 @@ import { $, isSmallScreen, wait, reducedMotion, announce, navigate } from "./uti
 import { SPACES } from "./data.js";
 import { startAnalytics } from "./analytics.js";
 
-/* Router with real paths: / (basement), /explore, /art, /music, /video, /teaching, /ai, /about, /contact
+/* Router with real paths: / (basement), /explore, /art, /music, /video, /teaching, /ai, /about, /skateboards, /contact
    (some take a second part, like /ai/sk8maps). Each path also has its own folder with an index.html
    (written by tools/build_pages.py) so links work on any static host and show the right preview. */
 const PAGES = {
@@ -14,6 +14,7 @@ const PAGES = {
   teaching: () => import("./pages/teaching.js"),
   ai: () => import("./pages/laptop.js"),
   about: () => import("./pages/about.js"),
+  skateboards: () => import("./pages/skateboards.js"),
   contact: () => import("./pages/contact.js"),
 };
 

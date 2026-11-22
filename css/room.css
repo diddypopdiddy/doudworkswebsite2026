@@ -46,9 +46,9 @@
 @keyframes lift { 0%, 100% { translate: 0 0; } 50% { translate: 0 -3px; } }
 @keyframes lift-small { 0%, 100% { translate: 0 0; } 50% { translate: 0 -1.5px; } }
 .room-obj[data-id="payphone"].is-lit,
-.room-obj[data-id="whiteboard"].is-lit,
 .room-obj[data-id="ipod"].is-lit,
 .room-obj[data-id="laptop"].is-lit,
+.room-obj[data-group="skateboards"].is-lit,
 .room-obj[data-group="about"].is-lit { animation-name: lift-small; }
 
 /* The wallet's cover flips open while it's lit: room.js sets the opacity, clip and transform of these each frame. */
@@ -56,18 +56,9 @@
 .room-obj[data-id="wallet"], .room-open { transition: filter .3s ease; }
 
 /* ---------- whiteboard: the live date ---------- */
-.wb-date {
-  position: absolute; left: 0; top: 0; transform-origin: 0 0; pointer-events: none;
-  display: flex; flex-direction: column; justify-content: center; padding: 4px 14px 10px;
-  font-family: var(--hand); color: #1d3f8f; line-height: .98;
-  transition: filter .26s ease;
-}
-.room-stage[data-active]:not([data-active=""]):not([data-active="teaching"]) .wb-date { filter: brightness(.58); }
-.room-stage[data-active="teaching"] .wb-date { animation: lift-small 1.6s ease-in-out infinite; }
-.wb-day { font-size: 30px; letter-spacing: .3px; }
-.wb-md { font-size: 38px; color: #b3261e; margin-top: 2px; }
-.wb-swoosh { width: 116px; height: 13px; margin-top: 2px; }
-.wb-swoosh path { fill: none; stroke: #1d3f8f; stroke-width: 3; stroke-linecap: round; opacity: .8; }
+/* room.js draws the date on this canvas (and erases it where the mouse wipes) */
+.wb-date { position: absolute; left: 0; top: 0; transform-origin: 0 0; pointer-events: none; transition: filter .26s ease; }
+.room-stage[data-active]:not([data-active=""]) .wb-date { filter: brightness(.58); }
 
 /* ---------- a little life ---------- */
 .amb { position: absolute; pointer-events: none; transition: opacity .3s ease; }
@@ -180,5 +171,5 @@
 @keyframes hint-in { from { opacity: 0; transform: translate(-50%, 10px); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .room-obj.is-lit, .wb-date, .amb-lamp, .amb-vinyl i { animation: none !important; }
+  .room-obj.is-lit, .amb-lamp, .amb-vinyl i { animation: none !important; }
 }

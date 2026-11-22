@@ -8,6 +8,7 @@ const ART = {
   teaching: "assets/objects/book-plain-brick.webp",
   ai: "assets/objects/macbook-open.webp",
   about: "assets/objects/wallet-closed.webp",
+  skateboards: "assets/explore/skateboards.webp",
   contact: "assets/objects/payphone-front-off-hook.webp",
 };
 

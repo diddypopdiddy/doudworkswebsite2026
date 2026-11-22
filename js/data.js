@@ -16,9 +16,10 @@ export const SPACES = {
   teaching: { label: "Teaching", verb: "pull a book",          blurb: "Pull a book off the shelf: classroom tools and the projects behind them." },
   ai:       { label: "AI",       verb: "open the laptop",      blurb: "AI tools and custom builds, opened like apps on the laptop." },
   about:    { label: "About",    verb: "meet Vince",           blurb: "Check the ID. Who Vince is and what he makes." },
+  skateboards: { label: "Skateboards", verb: "see the decks",     blurb: "The deck collection off the basement wall, one board at a time." },
   contact:  { label: "Contact",  verb: "use the payphone",     blurb: "The basement payphone. The email’s on the sticker." },
 };
-export const ORDER = ["art", "music", "video", "teaching", "ai", "about", "contact"];
+export const ORDER = ["art", "music", "video", "teaching", "ai", "about", "skateboards", "contact"];
 
 // The teaching shelf and laptop use the same public project information.
 const FRAMEWORK = {
@@ -80,13 +81,11 @@ const WRITE = {
   action: "Play Write with AI",
 };
 
-/** Books on the teaching shelf (left to right). */
+/** Teaching shelf books. Each id also names an image in assets/covers/. */
 export const BOOKS = [
   {
     ...FRAMEWORK,
     art: "book-plain-ink-blue", color: "#182751", spine: "AI Production Framework",
-    cover: "framework",
-    caption: "The tour traces the path from guided practice to the AI License.",
     chapters: [
       { t: "AI Literacy and Core Competencies", n: 1 },
       { t: "The five AI Modes", n: 7 },
@@ -98,7 +97,6 @@ export const BOOKS = [
     ...PLAYBOOK,
     coverAddress: "vincedoud.com/aiplaybook",
     emblem: "ai-educator-playbook.svg",
-    caption: "Start with teacher preparation, then use the classroom modules and printable checks.",
     chapters: [
       { t: "Teacher preparation and AI Literacy", n: 1 },
       { t: "The four AI Core Competencies", n: 2 },
@@ -114,7 +112,6 @@ export const BOOKS = [
     id: "moving-image",
     coverAddress: "vincedoud.com/textbook",
     emblem: "moving-image.svg",
-    caption: "Move and zoom the viewfinder in the interactive Shot Sizes lesson.",
     chapters: [
       { t: "Get started and plan a project", n: 1 },
       { t: "Framing, lighting and sound", n: 11 },
@@ -127,7 +124,6 @@ export const BOOKS = [
   {
     ...ROADTEST,
     emblem: "ai-road-test.svg",
-    caption: "Start at the permit office and follow your instructor through town.",
     chapters: [
       { t: "Start at the permit office", n: 1 },
       { t: "AI questions at red lights", n: 7 },
@@ -139,7 +135,6 @@ export const BOOKS = [
   {
     ...WRITE,
     emblem: "write-with-ai.svg",
-    caption: "The first round gives you five minutes to write one paragraph with a chatbot.",
     chapters: [
       { t: "Choose how to play", n: 1 },
       { t: "Round 1 in five minutes", n: 3 },
@@ -154,13 +149,10 @@ export const BOOKS = [
     title: "AI Framework Workbook",
     kind: "Interactive workbook",
     summary: "Play the Quiz Board, practice the four Core Competencies in Stations, and choose the right AI Mode in Final Boss.",
-    preview: "ai-workbook.webp",
-    previewAlt: "The workbook opens with a game board, station tiles and the Final Boss robot.",
     href: "/aiworkbook/",
     sameTab: true,
     action: "Open the Workbook",
     art: "book-plain-plum", color: "#52365e", spine: "AI Framework Workbook",
-    cover: "workbook",
     coverAddress: "vincedoud.com/aiworkbook",
     emblem: "ai-workbook.svg",
     chapters: [
