@@ -20,111 +20,136 @@ export const SPACES = {
 };
 export const ORDER = ["art", "music", "video", "teaching", "ai", "about", "contact"];
 
-const PLAYBOOK = "https://ai-educator-playbook-vince-doud.diddypopdiddy.chatgpt.site";
-const ROADTEST = "https://ai-road-test-vince-doud.diddypopdiddy.chatgpt.site/";
-const WRITE = "https://write-with-ai-vince-doud.diddypopdiddy.chatgpt.site";
+// The teaching shelf and laptop use the same public project information.
+const FRAMEWORK = {
+  id: "ai-production-framework",
+  title: "AI Production Framework and Pathway",
+  kind: "Interactive framework tour",
+  summary: "Explore AI Literacy, the Core Competencies and the five AI Modes, then see how students in grades 7–12 progress from AI Permit to AI License.",
+  preview: "ai-framework-pathway-2026-11-21.webp",
+  previewAlt: "The Framework tour shows the guided practice and assessment stages from AI Permit to AI License.",
+  href: "https://ai-framework-pathway.diddypopdiddy.chatgpt.site/",
+  action: "Explore the Framework",
+};
+
+const PLAYBOOK = {
+  id: "ai-educator-playbook",
+  title: "AI Educator Playbook",
+  kind: "Educator resource",
+  summary: "A field guide for secondary educators. Start with the learning goal, choose the AI help that fits, and make students’ thinking and checks visible.",
+  preview: "ai-educator-playbook-2026-11-21.webp",
+  previewAlt: "The Playbook homepage introduces the Understand, Choose and Show routine.",
+  href: "https://ai-educator-playbook-vince-doud.diddypopdiddy.chatgpt.site/",
+  action: "Open the Playbook",
+};
+
+const TEXTBOOK = {
+  id: "video-production-textbook",
+  title: "Video Production Textbook",
+  kind: "Interactive textbook",
+  summary: "126 topics across 12 parts, from organizing files to sharing a finished film. Compare shots, try camera and editing tools, and print guided notes.",
+  preview: "video-production-textbook-2026-11-21.webp",
+  previewAlt: "The Shot Sizes viewfinder shows a wide shot and the controls for reframing it.",
+  href: "https://video-production-textbook.diddypopdiddy.chatgpt.site/",
+  action: "Open the textbook",
+};
+
+const ROADTEST = {
+  id: "ai-road-test",
+  title: "AI Road Test: Permit Drive",
+  kind: "Interactive driving game",
+  summary: "Drive through town, answer AI questions at red lights, and read Road Notes at stop signs. Earn 12 permit credits and log six in-game practice hours.",
+  preview: "ai-road-test-2026-11-21.webp",
+  previewAlt: "A car at the permit office with a town map, a speedometer and a panel tracking AI questions, hours and credits.",
+  href: "https://ai-road-test-vince-doud.diddypopdiddy.chatgpt.site/",
+  action: "Start Permit Drive",
+};
+
+const WRITE = {
+  id: "write-with-ai",
+  title: "Write with AI",
+  kind: "Classroom writing game",
+  summary: "Write a paragraph with a chatbot in two rounds, then review the conversation and compare what you contributed. Play solo, with a partner or in a teacher-paced class.",
+  preview: "write-with-ai-2026-11-21.webp",
+  previewAlt: "Round 1 challenges the player to write one paragraph in five minutes using a chatbot.",
+  href: "https://write-with-ai-classroom-game.diddypopdiddy.chatgpt.site/",
+  action: "Play Write with AI",
+};
 
 /** Books on the teaching shelf (left to right). */
 export const BOOKS = [
   {
-    id: "ai-educator-playbook",
-    emblem: "ai-educator-playbook.svg", plate: "ai-educator-playbook-2026-09-27.png",
-    caption: "Chapter 1, AI Basics: what AI is, and what it isn’t.",
+    ...FRAMEWORK,
+    art: "book-plain-plum", color: "#684d78", spine: "AI Production Framework",
+    caption: "The tour traces the path from guided practice to the AI License.",
     chapters: [
-      { t: "AI basics", n: 1 },
-      { t: "The AI Production Framework", n: 9 },
-      { t: "The Field Guide", n: 17 },
-      { t: "Classroom examples", n: 25 },
-      { t: "What the learner still needs to do", n: 33 },
+      { t: "AI Literacy and Core Competencies", n: 1 },
+      { t: "The five AI Modes", n: 7 },
+      { t: "From AI Permit to AI License", n: 15 },
+      { t: "Classroom planning and safeguards", n: 23 },
     ],
-    art: "book-plain-brick", color: "#a3301f",
-    spine: "AI Educator Playbook",
-    title: "AI Educator Playbook",
-    kind: "Educator resource",
-    summary: "A practical guide to teaching and learning with AI: the AI Production Framework, the Field Guide and classroom examples for deciding where AI belongs and what the learner still needs to do.",
-    href: PLAYBOOK,
-    action: "Open the Playbook",
   },
   {
+    ...PLAYBOOK,
+    emblem: "ai-educator-playbook.svg",
+    caption: "The Playbook’s classroom routine is Understand, Choose and Show.",
+    chapters: [
+      { t: "AI literacy and limits", n: 1 },
+      { t: "Integrity and privacy", n: 9 },
+      { t: "Teacher and student routines", n: 17 },
+      { t: "Ideas by subject", n: 25 },
+      { t: "Prompting and classroom resources", n: 33 },
+    ],
+    art: "book-plain-brick", color: "#a3301f", spine: "AI Educator Playbook",
+  },
+  {
+    ...TEXTBOOK,
     id: "moving-image",
-    emblem: "moving-image.svg", plate: "moving-image-2026-09-27.png",
-    caption: "Learn by making: chapters from file basics to camera language.",
+    emblem: "moving-image.svg",
+    caption: "Move and zoom the viewfinder in the interactive Shot Sizes lesson.",
     chapters: [
-      { t: "Computer and file foundations", n: 1 },
-      { t: "A short history of film", n: 11 },
-      { t: "Camera language", n: 21 },
-      { t: "Editing", n: 31 },
-      { t: "Lighting and sound", n: 41 },
-      { t: "Your production project", n: 51 },
+      { t: "Get started and plan a project", n: 1 },
+      { t: "Framing, lighting and sound", n: 11 },
+      { t: "Continuity, coverage and shooting", n: 21 },
+      { t: "Editing, graphics and captions", n: 31 },
+      { t: "Finish and share", n: 41 },
     ],
-    art: "book-plain-teal", color: "#176a6d",
-    spine: "The Moving Image",
-    title: "The Moving Image",
-    kind: "Interactive textbook · In development",
-    summary: "An interactive video-production textbook: computer and file foundations, film history, camera language, editing, lighting and sound, all carried into a real production project.",
-    href: null,
-    note: "A new edition is in development. The public release is coming soon.",
+    art: "book-plain-teal", color: "#176a6d", spine: "Video Production Textbook",
   },
   {
-    id: "ai-road-test",
-    emblem: "ai-road-test.svg", plate: "ai-road-test-2026-09-27.png",
-    caption: "Earn eight permit stamps across three districts.",
+    ...ROADTEST,
+    emblem: "ai-road-test.svg",
+    caption: "Start at the permit office and follow your instructor through town.",
     chapters: [
-      { t: "Drive the neighborhood", n: 1 },
-      { t: "Question stops: prompting, privacy, ethics and verification", n: 7 },
-      { t: "Fuel and eight permit stamps", n: 15 },
-      { t: "Three districts", n: 21 },
-      { t: "Back to the testing center", n: 29 },
+      { t: "Start at the permit office", n: 1 },
+      { t: "AI questions at red lights", n: 7 },
+      { t: "Road Notes at stop signs", n: 15 },
+      { t: "Six practice hours and 12 credits", n: 21 },
     ],
-    art: "book-plain-ochre", color: "#c98a1e",
-    spine: "The AI Road Test",
-    title: "The AI Road Test",
-    kind: "Interactive driving game",
-    summary: "Drive the neighborhood, pull into question stops and work through choices about prompting, privacy, ethics and verification before heading back to the testing center.",
-    href: ROADTEST,
-    action: "Play the game",
+    art: "book-plain-ochre", color: "#c98a1e", spine: "The AI Road Test",
   },
   {
-    id: "write-with-ai",
-    emblem: "write-with-ai.svg", plate: "write-with-ai-2026-09-27.png",
-    caption: "Round 1: four minutes to write the best introduction.",
+    ...WRITE,
+    emblem: "write-with-ai.svg",
+    caption: "The first round gives you five minutes to write one paragraph with a chatbot.",
     chapters: [
-      { t: "Round 1: write an introduction in four minutes", n: 1 },
+      { t: "Choose how to play", n: 1 },
+      { t: "Round 1 in five minutes", n: 3 },
       { t: "Review the conversation", n: 5 },
-      { t: "Who’s the author?", n: 9 },
-      { t: "Round 2: try again", n: 13 },
-      { t: "Compare your two drafts", n: 17 },
+      { t: "Try again in Round 2", n: 13 },
+      { t: "Compare what you contributed", n: 17 },
     ],
-    art: "book-plain-forest", color: "#3a5f31",
-    spine: "Write with AI",
-    title: "Write with AI",
-    kind: "Writing activity · Work in progress",
-    summary: "A two-round writing activity for examining how AI changes your work. Write, review the conversation, discuss authorship, then try again and compare.",
-    href: WRITE,
-    action: "Open the activity",
+    art: "book-plain-forest", color: "#3a5f31", spine: "Write with AI",
   },
 ];
 
 /** Apps on the laptop. */
 export const APPS = [
-  {
-    id: "ai-educator-playbook", name: "Playbook", title: "AI Educator Playbook", icon: "ai-educator-playbook.svg",
-    preview: "ai-educator-playbook-2026-09-27.png", kind: "Educator resource", color: "#647d69",
-    summary: "A practical guide to teaching and learning with AI. The Framework, the Field Guide and classroom examples in one place.",
-    href: PLAYBOOK, action: "Open the Playbook",
-  },
-  {
-    id: "ai-road-test", name: "Road Test", title: "The AI Road Test", icon: "ai-road-test.svg",
-    preview: "ai-road-test-2026-09-27.png", kind: "Interactive driving game", color: "#b86e4b",
-    summary: "A driving game about AI decisions: question stops, fuel, permit stamps and a run back to the testing center.",
-    href: ROADTEST, action: "Play the game",
-  },
-  {
-    id: "write-with-ai", name: "Write with AI", title: "Write with AI", icon: "write-with-ai.svg",
-    preview: "write-with-ai-2026-09-27.png", kind: "Writing activity · Work in progress", color: "#7c758e",
-    summary: "Two rounds of writing with AI, then compare the thinking and revision you did yourself in each.",
-    href: WRITE, action: "Open the activity", note: "Live AI responses are still being prepared.",
-  },
+  { ...FRAMEWORK, name: "AI Framework" },
+  { ...PLAYBOOK, name: "Playbook" },
+  { ...TEXTBOOK, name: "Video Textbook" },
+  { ...ROADTEST, name: "Road Test" },
+  { ...WRITE, name: "Write with AI" },
   {
     id: "sk8maps", name: "SK8MAPS", title: "SK8MAPS", icon: "sk8maps.svg",
     video: { src: "sk8maps-interface.mp4", poster: "sk8maps-interface-poster.png" }, kind: "Private teaching workspace", color: "#698071",

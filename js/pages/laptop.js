@@ -114,7 +114,7 @@ export default {
       const media = a.video
         ? `<video src="assets/media/${a.video.src}" poster="assets/media/${a.video.poster}" autoplay muted loop playsinline></video>`
         : a.preview
-          ? `<img src="assets/media/${a.preview}" alt="${esc(a.title)} preview">`
+          ? `<img src="assets/media/${a.preview}" alt="${esc(a.previewAlt || `${a.title} preview`)}">`
           : `<div class="fw-icon" style="--c:${a.color}"><img src="assets/media/${a.icon}" alt=""></div>`;
       showWindow(`
         <aside class="fw-side">

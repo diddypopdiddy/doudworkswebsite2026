@@ -23,8 +23,8 @@ const ROW = [
   { art: "book-plain-rust" },
   { art: "book-plain-ink-blue" },
   { art: "book-plain-ivory" },
-  { art: "book-plain-plum", lean: -7, gap: 28 },
-  { book: 0 }, { book: 1 }, { book: 2 }, { book: 3, gap: 22 },
+  { book: 0, gap: 18 },
+  { book: 1 }, { book: 2 }, { book: 3 }, { book: 4, gap: 22 },
   { art: "book-plain-ink-blue" },
   { art: "book-plain-rust", lean: 6, gap: 34 },
   { stack: ["book-plain-ivory", "book-plain-plum", "book-plain-forest"] },
@@ -64,7 +64,7 @@ export default {
       if (!p.b) return `<span class="book is-filler" data-k="${i}" style="${style};--lean:${p.lean || 0}deg" aria-hidden="true"><img src="assets/objects/${p.art}.webp" alt="" draggable="false"><i class="spine-bands"></i></span>`;
       const len = p.b.spine.length;
       return `<button class="book" data-k="${i}" data-id="${p.b.id}" style="${style};--fs:${(72 / (len * 0.82)).toFixed(2)}cqh;--c:${p.b.color}" aria-describedby="board-desc">
-          <span class="book-body"><img src="assets/objects/${p.art}.webp" alt="" draggable="false">
+          <span class="book-body" aria-hidden="true"><img src="assets/objects/${p.art}.webp" alt="" draggable="false">
             <i class="spine-bands"></i>
             <span class="book-spine">${esc(p.b.spine)}</span>
           </span>
@@ -96,18 +96,13 @@ export default {
 
     function plateFor(book) {
       if (!plates.has(book.id)) {
-        const picture = document.createElement("picture");
-        const source = document.createElement("source");
-        source.type = "image/webp";
-        source.srcset = `assets/media/${book.plate.replace(/\.png$/, ".webp")}`;
         const image = new Image(1200, 800);
-        image.alt = `Screenshot of ${book.title}`;
+        image.alt = book.previewAlt;
         image.draggable = false;
-        picture.append(source, image);
-        image.src = `assets/media/${book.plate}`;
-        // Reuse this picture in the spread so a hover and an open share the download.
+        image.src = `assets/media/${book.preview}`;
+        // Reuse the preloaded image when the book opens.
         image.decode().catch(() => {});
-        plates.set(book.id, picture);
+        plates.set(book.id, image);
       }
       return plates.get(book.id);
     }
