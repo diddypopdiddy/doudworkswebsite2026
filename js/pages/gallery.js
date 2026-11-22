@@ -1,5 +1,5 @@
 import * as THREE from "../../vendor/three.module.js";
-import { esc, scope, loadJSON, isSmallScreen, reducedMotion, clamp, announce } from "../util.js";
+import { esc, scope, loadJSON, isSmallScreen, reducedMotion, clamp, announce, replaceDetailAddress } from "../util.js";
 
 /* The gallery: two simple white-brick rooms with storefront windows onto the street.
    Thirteen pieces hang where they hang in the real layout, at their real sizes.
@@ -474,12 +474,12 @@ export default {
       detail.querySelector("[data-close]").onclick = closeDetail;
       detail.querySelectorAll("[data-d]").forEach((b) => (b.onclick = () => openDetail(works[(open + +b.dataset.d + works.length) % works.length].index)));
       detail.querySelector("[data-close]").focus({ preventScroll: true });
-      history.replaceState(null, "", `/art/${a.index}`);
+      replaceDetailAddress(`/art/${a.index}`);
     }
     function closeDetail() {
       if (detail.hidden) return false;
       detail.hidden = true; detail.innerHTML = ""; open = -1;
-      history.replaceState(null, "", "/art");
+      replaceDetailAddress("/art");
       return true;
     }
     S.on(detail, "click", (e) => { if (e.target === detail) closeDetail(); });

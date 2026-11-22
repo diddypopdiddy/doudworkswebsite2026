@@ -39,6 +39,7 @@ export default {
           <a href="${SITE.youtube}" target="_blank" rel="noopener noreferrer">YouTube ↗</a>
           <a href="${SITE.bandcamp}" target="_blank" rel="noopener noreferrer">Bandcamp ↗</a>
           <a href="mailto:${SITE.email}">${esc(SITE.email)}</a>
+          <a href="privacy.html">Privacy</a>
         </footer>
       </section>`;
     return { unmount() {} };

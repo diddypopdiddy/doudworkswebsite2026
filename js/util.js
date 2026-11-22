@@ -25,6 +25,12 @@ export function navigate(path, { replace = false } = {}) {
   dispatchEvent(new Event("routechange"));
 }
 
+/** Give an open detail view a shareable address without remounting the page. */
+export function replaceDetailAddress(path) {
+  history.replaceState(null, "", path);
+  dispatchEvent(new Event("detailaddresschange"));
+}
+
 const etDay = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", weekday: "long" });
 const etMonthDay = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", month: "short", day: "numeric" });
 const etTime = new Intl.DateTimeFormat("en-US", { timeZone: "America/New_York", hour: "numeric", minute: "2-digit" });

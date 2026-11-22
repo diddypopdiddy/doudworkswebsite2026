@@ -1,4 +1,4 @@
-import { esc, scope, fmtTime, tick, clamp, announce, reducedMotion } from "../util.js";
+import { esc, scope, fmtTime, tick, clamp, announce, reducedMotion, replaceDetailAddress } from "../util.js";
 import { videos } from "../../data/videos.js";
 import { unavailableEmbedIds } from "../../data/embed-availability.js";
 import { SITE } from "../data.js";
@@ -223,7 +223,7 @@ export default {
     function loadDisc(id) {
       if (id === disc) return render("main");
       disc = id; page = 0;
-      history.replaceState(null, "", `/video/${id}`);
+      replaceDetailAddress(`/video/${id}`);
       ejectThen(() => render("main"));
     }
     function ejectThen(fn) {

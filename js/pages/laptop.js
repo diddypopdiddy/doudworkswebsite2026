@@ -1,4 +1,4 @@
-import { esc, scope, easternNow, audioCtx, navigate } from "../util.js";
+import { esc, scope, easternNow, audioCtx, navigate, replaceDetailAddress } from "../util.js";
 import { APPS, SITE } from "../data.js";
 
 /* The laptop, opened: a Mac desktop. Each project is a folder on the desktop; open one and a Finder
@@ -139,7 +139,7 @@ export default {
         </div>`, "is-finder");
       win.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => openApp(b.dataset.go)));
       (win.querySelector(".fw-open") || win.querySelector("[data-close]")).focus({ preventScroll: true });
-      history.replaceState(null, "", `/ai/${id}`);
+      replaceDetailAddress(`/ai/${id}`);
     }
 
     /* Finder from the dock: the Projects folder, all of them at once. */
@@ -160,7 +160,7 @@ export default {
           <div class="fw-grid">${APPS.map((x) => `<button class="fw-tile" data-go="${x.id}">${FOLDER}<span>${esc(x.name)}</span></button>`).join("")}</div>
         </div>`, "is-finder");
       win.querySelectorAll("[data-go]").forEach((b) => b.addEventListener("click", () => openApp(b.dataset.go)));
-      history.replaceState(null, "", `/ai`);
+      replaceDetailAddress("/ai");
     }
 
     /* Codex from the dock: a terminal listing the projects. */
@@ -188,7 +188,7 @@ export default {
       markOpen(null);
       root.querySelectorAll(".mac-folder").forEach((b) => b.classList.remove("is-sel"));
       root.querySelector(`.mac-folder[data-app="${id}"]`)?.focus({ preventScroll: true });
-      history.replaceState(null, "", `/ai`);
+      replaceDetailAddress("/ai");
       return true;
     }
     root.querySelectorAll(".mac-folder").forEach((b) => S.on(b, "click", () => openApp(b.dataset.app)));

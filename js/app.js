@@ -1,5 +1,6 @@
 import { $, isSmallScreen, wait, reducedMotion, announce, navigate } from "./util.js";
 import { SPACES } from "./data.js";
+import { startAnalytics } from "./analytics.js";
 
 /* Router with real paths: / (basement), /explore, /art, /music, /video, /teaching, /ai, /about, /contact
    (some take a second part, like /ai/sk8maps). Each path also has its own folder with an index.html
@@ -115,4 +116,5 @@ addEventListener("resize", () => {
   if (small !== wasSmall) { wasSmall = small; exploreLink.textContent = small ? "List" : "Explore"; }
 });
 
+startAnalytics();
 render();
