@@ -1,114 +1,91 @@
-/* Steering follows the screen's sideways tilt relative to the driver's grip. */
-RT.createTiltSteering = function (onChange) {
-  const touchButton = document.getElementById('touchSteerBtn');
-  const tiltButton = document.getElementById('tiltSteerBtn');
-  const centerButton = document.getElementById('centerTiltBtn');
-  const status = document.getElementById('steeringStatus');
-  const initialPose = 'Hold the phone comfortably when you first touch the road to set straight ahead.';
-  const motionWaitMs = 3500;
+/* Motion access starts on a button tap. Only a real sample makes Tilt ready. */
+RT.createTiltSteering = function (getScreenAngle, onChange) {
   const radians = Math.PI / 180;
-  let enabled = false;
-  let attempt = 0;
-  let timeout = null;
-  let orientation;
-  let latest = null;
-  let center = null;
+  let state = 'touch', message = '';
+  let attempt = 0, timer = null;
+  let pose = null, center = null, centerAngle = null;
 
-  function showMode(useTilt, message) {
-    const changed = enabled !== useTilt;
-    enabled = useTilt;
-    tiltButton.disabled = false;
-    tiltButton.setAttribute('aria-pressed', String(useTilt));
-    touchButton.setAttribute('aria-pressed', String(!useTilt));
-    centerButton.hidden = !useTilt;
-    status.textContent = message;
-    if (changed) onChange(useTilt);
+  function setState(value, text) {
+    state = value;
+    message = text;
+    onChange();
   }
-
-  function useTouch(message = 'Hold and slide left or right to steer.') {
+  function clearTimer() { clearTimeout(timer); timer = null; }
+  function resetSensor() {
     attempt++;
-    clearTimeout(timeout);
-    timeout = null;
-    window.removeEventListener('deviceorientation', onOrientation);
-    latest = null;
+    clearTimer();
+    window.removeEventListener('deviceorientation', sample);
+    pose = null;
     center = null;
-    showMode(false, message);
+  }
+  function useTouch() {
+    resetSensor();
+    setState('touch', 'Slide left or right to steer.');
   }
 
-  const screenAngle = () => screen.orientation?.angle ?? window.orientation ?? 0;
-
-  function onOrientation({ beta, gamma }) {
+  function sample({ beta, gamma }) {
     if (!Number.isFinite(beta) || !Number.isFinite(gamma)) {
-      if (enabled && timeout === null) {
-        latest = null;
-        timeout = setTimeout(() => useTouch('Motion data stopped. Touch steering is active.'), motionWaitMs);
+      if (state === 'ready' && timer === null) {
+        pose = null;
+        timer = setTimeout(() => {
+          timer = null;
+          center = null;
+          setState('missing', 'Motion stopped. Tip your phone to reconnect.');
+        }, 1200);
       }
       return;
     }
-    if (timeout !== null) {
-      clearTimeout(timeout);
-      timeout = null;
-    }
-    const angle = screenAngle();
-    if (angle !== orientation) {
-      orientation = angle;
-      center = null;
-    }
-    const pitch = beta * radians;
-    const acrossDevice = Math.cos(pitch) * Math.sin(gamma * radians);
-    const towardBottom = Math.sin(pitch);
-    // Project gravity onto the display's rightward axis in portrait or landscape.
-    const acrossScreen = acrossDevice * Math.cos(angle * radians) + towardBottom * Math.sin(angle * radians);
-    latest = Math.asin(RT.U.clamp(acrossScreen, -1, 1)) / radians;
-    if (!enabled) showMode(true, initialPose);
+    clearTimer();
+    pose = { beta: beta * radians, gamma: gamma * radians };
+    if (state !== 'ready') setState('ready', 'Tilt to steer. Hold the road for gas and lift to brake.');
   }
 
-  async function requestTilt() {
-    if (enabled || tiltButton.disabled) return;
+  async function request() {
+    resetSensor();
+    const ticket = attempt;
     const sensor = window.DeviceOrientationEvent;
     if (!window.isSecureContext || !sensor) {
-      useTouch('Tilt is unavailable here. Touch steering is active.');
+      setState('unavailable', 'This browser has no motion sensor access. Open the game in your phone browser or choose Touch.');
       return;
     }
-    const request = ++attempt;
-    tiltButton.disabled = true;
-    status.textContent = 'Checking motion access…';
+    setState('checking', 'Allow motion access if your browser asks.');
     try {
       if (typeof sensor.requestPermission === 'function') {
-        // Request inside the Tilt button click so browsers can show their permission prompt.
-        const permission = await sensor.requestPermission();
-        if (request !== attempt) return;
-        if (permission !== 'granted') {
-          useTouch('Motion access is off. Touch steering is active.');
+        const result = await sensor.requestPermission();
+        if (ticket !== attempt) return;
+        if (result !== 'granted') {
+          setState('denied', 'Allow motion for this site in your browser settings, then try again.');
           return;
         }
       }
     } catch {
-      if (request === attempt) useTouch('Motion access is off. Touch steering is active.');
+      if (ticket === attempt) setState('denied', 'Motion access is blocked. Open the game in your phone browser or try again.');
       return;
     }
-    status.textContent = 'Tip your phone slightly to check motion.';
-    timeout = setTimeout(() => useTouch('The browser sent no motion data. Touch steering is active.'), motionWaitMs);
-    window.addEventListener('deviceorientation', onOrientation);
+    window.addEventListener('deviceorientation', sample);
+    setState('checking', 'Hold your phone sideways and tip it slightly.');
+    // A stationary phone may wait to send its first sample. Keep listening after the prompt.
+    timer = setTimeout(() => {
+      timer = null;
+      setState('missing', 'No motion yet. Tip the phone from side to side, or open the game in your phone browser.');
+    }, 4000);
   }
 
-  touchButton.addEventListener('click', () => useTouch());
-  tiltButton.addEventListener('click', requestTilt);
-  centerButton.addEventListener('click', () => {
-    center = null;
-    status.textContent = 'Your next hold will set a new center.';
-  });
-
-  function read() {
-    if (latest === null || orientation !== screenAngle()) return 0;
-    if (center === null) {
-      center = latest;
-      status.textContent = 'Tilt left or right while holding the screen.';
+  function recenter(useCurrentGrip = false) { center = null; read(useCurrentGrip); }
+  function read(useCurrentGrip = false) {
+    if (state !== 'ready' || !pose) return 0;
+    const angle = getScreenAngle();
+    const a = angle * radians;
+    const side = Math.cos(pose.beta) * Math.sin(pose.gamma) * Math.cos(a) + Math.sin(pose.beta) * Math.sin(a);
+    const roll = Math.asin(RT.U.clamp(side, -1, 1)) / radians;
+    if (center === null || centerAngle !== angle) {
+      // The rotation event can arrive halfway through turning the phone sideways.
+      center = useCurrentGrip || Math.abs(roll) <= 8 ? roll : 0;
+      centerAngle = angle;
     }
-    const offset = latest - center;
-    const strength = RT.U.clamp((Math.abs(offset) - 3) / 22, 0, 1);
-    return Math.sign(offset) * strength ** 1.25;
+    const offset = roll - center;
+    const strength = RT.U.clamp((Math.abs(offset) - 2.5) / 23, 0, 1);
+    return Math.sign(offset) * strength ** 1.18;
   }
-
-  return { read, get enabled() { return enabled; } };
+  return { request, useTouch, recenter, read, get state() { return state; }, get message() { return message; } };
 };

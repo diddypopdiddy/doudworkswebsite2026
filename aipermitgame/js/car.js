@@ -73,7 +73,8 @@ RT.createPlayerCar = function (scene, map) {
     }
     if (input.brake > 0) {
       s.braking = true;
-      const b = 11 * input.brake;
+      // A phone lift brakes firmly enough to stop a 25 mph car in about three metres.
+      const b = (input.firmBrake ? 19 : 11) * input.brake;
       if (s.v > 0) s.v = Math.max(0, s.v - b * dt); else if (s.v < 0) s.v = Math.min(0, s.v + b * dt);
     }
     s.v += accel * dt;

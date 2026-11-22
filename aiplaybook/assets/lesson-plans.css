@@ -1,0 +1,26 @@
+/* Printable teaching plans. */
+.lesson-plan h2 { margin: .75rem 0 .25rem; color: var(--pine); font: 700 .9rem/1.25 var(--sans); }
+.lesson-plan .plan-line { margin-block: .55rem; }
+.lesson-plan .plan-top { display: grid; grid-template-columns: 1.35fr 1fr; gap: 0 1.3rem; }
+.lesson-plan :is(.objectives, .plan-reteach) { padding-inline-start: 1.3em; }
+.lesson-plan .objectives { list-style: decimal; }
+.lesson-plan .plan-reteach { list-style: disc; }
+.lesson-plan .plan-table { width: 100%; border-collapse: collapse; table-layout: fixed; overflow-wrap: anywhere; font-size: .88rem; }
+.lesson-plan .plan-table :is(th, td) { border: 1px solid var(--line); padding: .38rem; vertical-align: top; text-align: left; line-height: 1.28; }
+.lesson-plan .plan-table th { background: var(--wash); }
+.lesson-plan .plan-table :is(th, td):first-child { width: 12%; }
+.lesson-plan .plan-table :is(th, td):nth-child(2) { width: 21%; }
+.lesson-plan .plan-table :is(th, td):last-child { width: 22%; }
+@media (max-width: 620px) {
+  .lesson-plan .plan-top { grid-template-columns: 1fr; }
+  .lesson-plan .plan-table { font-size: .75rem; }
+  .lesson-plan .plan-table :is(th, td) { padding: .24rem; }
+}
+@media print {
+  .lesson-plan { font-size: 9pt; line-height: 1.23; }
+  .lesson-plan h2 { font-size: 8pt; margin: .35rem 0 .12rem; break-after: avoid; }
+  .lesson-plan .plan-line { margin-block: .22rem; }
+  .lesson-plan .plan-table { font-size: 8pt; }
+  .lesson-plan .plan-table :is(th, td) { padding: .15rem .21rem; line-height: 1.15; }
+  .lesson-plan .plan-table tr, .lesson-plan li { break-inside: avoid; }
+}

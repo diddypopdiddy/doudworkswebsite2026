@@ -1,5 +1,5 @@
 /* Everything on screen that is not the 3D world. */
-RT.createUI = function (map, cats, noteKinds) {
+RT.createUI = function (map, cats, noteKinds, mobile) {
   const U = RT.U, esc = U.escapeHtml;
   const $ = (id) => document.getElementById(id);
   const catById = Object.fromEntries(cats.map((c) => [c.id, c]));
@@ -36,6 +36,7 @@ RT.createUI = function (map, cats, noteKinds) {
   let lastBadge = '';
   const setCreditsBadge = (t, total) => { const v = t + '/' + total; if (v !== lastBadge) { $('creditBadge').textContent = v; lastBadge = v; } };
   function confetti() {
+    if (mobile) return;
     const box = $('confetti');
     const colors = ['#ffc233', '#2f6fa3', '#1fae64', '#d7263d', '#6b4e9a', '#31c3c3'];
     for (let k = 0; k < 90; k++) {
@@ -90,6 +91,7 @@ RT.createUI = function (map, cats, noteKinds) {
   // ---------- instructor ----------
   let sayTimer = null, sayPriority = 0, sayUntil = 0;
   function say(text, tone = 'info', secs = 4.5) {
+    if (mobile) return;
     const pri = tone === 'warn' ? 3 : tone === 'good' ? 2 : 1;
     const now = performance.now();
     if (now < sayUntil && pri < sayPriority) return;
@@ -101,6 +103,7 @@ RT.createUI = function (map, cats, noteKinds) {
     sayTimer = setTimeout(() => { el.classList.remove('show'); sayPriority = 0; }, secs * 1000);
   }
   function toast(text, color, bad) {
+    if (mobile) return;
     const t = document.createElement('div');
     t.className = 'toast' + (bad ? ' bad' : '');
     if (color) t.style.setProperty('--c', color);
@@ -119,6 +122,7 @@ RT.createUI = function (map, cats, noteKinds) {
   let cardOpenedAt = 0;
   function openCard(html, color, light) {
     const card = $('card');
+    card.classList.remove('answered');
     card.style.setProperty('--c', color);
     card.style.setProperty('--cl', light || '#f5f7fb');
     card.innerHTML = html;
@@ -161,16 +165,21 @@ RT.createUI = function (map, cats, noteKinds) {
     const { q } = opts;
     const cat = catById[q.category];
     const ex = q.exhibit ? `<div class="exhibit ${esc(q.exhibit.kind || '')}"><div class="ex-label">${esc(q.exhibit.label || 'Example')}</div><div class="ex-content">${esc(q.exhibit.content)}</div></div>` : '';
-    const html = band('light', 'Red light · AI question', cat.label, [q.type, opts.chipCredit]) + `
+    const heading = mobile ? band('light', 'Red light', 'AI question', []) : band('light', 'Red light · AI question', cat.label, [q.type, opts.chipCredit]);
+    const html = heading + `
       <div class="card-body">
+        <div class="question-context">
         ${opts.secondLook ? '<div class="second-look">🔁 Second look: you missed this one earlier</div>' : ''}
         ${ex}
         <p class="question">${esc(q.question)}</p>
+        </div>
+        <div class="answer-panel">
         <div class="opts" role="group" aria-label="Answer choices">
           ${opts.order.map((oi, k) => `<button class="opt" data-k="${k}" data-oi="${oi}"><span class="key">${k + 1}</span><span>${esc(q.options[oi])}</span></button>`).join('')}
         </div>
         <div id="verdictSlot"></div>
         <div class="card-foot"><span class="hint">Choose with a click or keys 1–4</span><span></span></div>
+        </div>
       </div>`;
     openCard(html, cat.color, cat.light);
     let answered = false;
@@ -189,10 +198,12 @@ RT.createUI = function (map, cats, noteKinds) {
       });
       const res = opts.onAnswer(correct);
       const best = esc(q.options[q.answer]);
+      const title = mobile ? (correct ? (opts.credited ? 'Correct · +1 credit' : 'Correct') : 'Best answer') : res.title;
       $('verdictSlot').innerHTML = correct
-        ? `<div class="verdict good"><div class="stamp">${res.stamp}</div><div><b>${esc(res.title)}</b><p>${esc(q.reason)}</p></div></div>`
-        : `<div class="verdict bad"><div class="stamp">🔁</div><div><b>${esc(res.title)}</b><p><span style="color:var(--muted)">Best answer:</span> ${best}<br>${esc(q.reason)}</p></div></div>`;
-      document.querySelector('#card .card-foot').innerHTML = `<span class="hint">Press Enter to continue</span><button class="btn primary" id="cardContinue">Continue</button>`;
+        ? `<div class="verdict good"><div class="stamp">${res.stamp}</div><div><b>${esc(title)}</b><p>${esc(q.reason)}</p></div></div>`
+        : `<div class="verdict bad"><div class="stamp">🔁</div><div><b>${esc(title)}</b><p>${mobile ? '' : 'Best answer: '}${best}<br>${esc(q.reason)}</p></div></div>`;
+      $('card').classList.add('answered');
+      document.querySelector('#card .card-foot').innerHTML = `<span class="hint">Press Enter to continue</span><button class="btn primary" id="cardContinue">${mobile ? 'Drive on' : 'Continue'}</button>`;
       const cont = $('cardContinue');
       cont.focus({ preventScroll: true });
       cont.onclick = () => { closeCard(); opts.onClose(correct); };
@@ -201,7 +212,8 @@ RT.createUI = function (map, cats, noteKinds) {
     addReadAloud(() => {
       const v = document.querySelector('#card .verdict');
       if (v) return v.innerText.replace(/\s+/g, ' ');
-      return q.question + ' ' + opts.order.map((oi, k) => 'Option ' + (k + 1) + ': ' + q.options[oi] + '.').join(' ');
+      const example = q.exhibit ? (q.exhibit.label || 'Example') + '. ' + q.exhibit.content + '. ' : '';
+      return example + q.question + ' ' + opts.order.map((oi, k) => 'Option ' + (k + 1) + ': ' + q.options[oi] + '.').join(' ');
     });
     buttons[0].focus({ preventScroll: true });
     cardKeyHandler = (e) => {

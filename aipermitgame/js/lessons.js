@@ -85,6 +85,8 @@ RT.createLessons = function (scene, map, world) {
   chevG.scale(1.35, 1, 1.5);
   const chevMat = new T.MeshBasicMaterial({ color: 0x3ee8ff, transparent: true, opacity: 0.92, depthWrite: false, fog: false });
   const chev = new T.InstancedMesh(chevG, chevMat, MAXC);
+  // These instances follow the car. The empty title-screen bounds never describe the route.
+  chev.frustumCulled = false;
   chev.renderOrder = 2;
   chev.count = 0;
   scene.add(chev);
@@ -223,7 +225,10 @@ RT.createLessons = function (scene, map, world) {
     pts.push({ x: dest.x, z: dest.z });
     polyline = smoothTurns(pts);
     polyLen = [0];
-    for (let k = 1; k < pts.length; k++) polyLen.push(polyLen[k - 1] + Math.hypot(pts[k].x - pts[k - 1].x, pts[k].z - pts[k - 1].z));
+    for (let k = 1; k < polyline.length; k++) {
+      const a = polyline[k - 1], b = polyline[k];
+      polyLen.push(polyLen[k - 1] + Math.hypot(b.x - a.x, b.z - a.z));
+    }
     route = nodes;
   }
 

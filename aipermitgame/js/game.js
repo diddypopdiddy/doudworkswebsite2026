@@ -23,6 +23,7 @@ RT.startGame = function (savedPrefs = {}) {
   const quality = PRESETS[prefs.quality] || PRESETS.normal;
 
   // ---------- setup ----------
+  const app = document.getElementById('app');
   const canvas = document.getElementById('scene');
   let renderer;
   try {
@@ -71,14 +72,14 @@ RT.startGame = function (savedPrefs = {}) {
   const car = RT.createPlayerCar(scene, map);
   const signals = RT.createSignals(map);
   const traffic = RT.createTraffic(scene, map, signals, quality.traffic);
-  const ui = RT.createUI(map, cats, kinds);
+  const ui = RT.createUI(map, cats, kinds, isTouch);
   const audio = RT.createAudio();
   audio.setEnabled(prefs.sound);
   audio.setEngineOn(prefs.engine);
   traffic.reset(car.state);
 
   function resize() {
-    const w = window.innerWidth, h = window.innerHeight;
+    const w = app.clientWidth, h = app.clientHeight;
     renderer.setSize(w, h, false);
     if (composer) { composer.setPixelRatio(renderer.getPixelRatio()); composer.setSize(w, h); }
     camera.aspect = w / h;
@@ -132,7 +133,7 @@ RT.startGame = function (savedPrefs = {}) {
   function startLesson(announce) {
     lessons.setDestination(currentDest());
     world.finishBeacon.visible = isReturning();
-    if (!announce) return;
+    if (!announce || isTouch) return;
     if (isReturning()) ui.say('Hour 6: every credit is earned and your hours are in. Follow the blue arrows back to the Permit Office and park in the gold circle to sign your log.', 'good', 8);
     else if (P.hours < HOURS - 1 && !P.freeDrive) ui.say(lessons.LESSONS[P.hours].intro + ' Follow the blue arrows on the road.', 'info', 7);
     else ui.say('Next stop: ' + lessons.DESTS[currentDest()].name + '. Red lights still bring questions.', 'info', 5);
@@ -226,7 +227,7 @@ RT.startGame = function (savedPrefs = {}) {
     const order = U.shuffle([0, 1, 2, 3].slice(0, q.options.length));
     const credited = practice ? false : P.credits[cat.id] < GOAL;
     ui.showQuestion({
-      q, order, secondLook,
+      q, order, secondLook, credited,
       chipCredit: credited ? 'Credit ' + (P.credits[cat.id] + 1) + ' of ' + GOAL : 'Practice',
       onAnswer(correct) {
         P.answered++; P.stats.questions++;
@@ -258,6 +259,7 @@ RT.startGame = function (savedPrefs = {}) {
         release();
         pendingGreen = { node: ap.node.id, axis: ap.axis, since: 0 };
         mode = 'drive';
+        syncSteering();
         if (justCompleted) celebrateComplete();
         else ui.say('Wait for the green light...', 'tip', 3);
       }
@@ -275,8 +277,6 @@ RT.startGame = function (savedPrefs = {}) {
   function onStopSign(ap) {
     P.stats.fullStops++;
     praiseStop(ap);
-    openCardMode();
-    audio.sfx.note();
     const unseen = NOTES.filter((n) => !P.seenNotes.includes(n.id));
     let note, review = false;
     if (unseen.length) {
@@ -290,6 +290,9 @@ RT.startGame = function (savedPrefs = {}) {
       note = NOTES[P.noteCursor % NOTES.length]; P.noteCursor++; review = true;
     }
     ui.setNotes(P.seenNotes.length);
+    if (isTouch) { save(); return; }
+    openCardMode();
+    audio.sfx.note();
     ui.showNote({
       note, review, index: P.seenNotes.length, total: NOTES.length,
       onClose() {
@@ -300,6 +303,7 @@ RT.startGame = function (savedPrefs = {}) {
   }
 
   function onOverlook() {
+    if (isTouch) return;
     openCardMode();
     audio.sfx.note();
     const unseen = REFLECTIONS.filter((r) => !P.seenRefl.includes(r.id));
@@ -363,7 +367,7 @@ RT.startGame = function (savedPrefs = {}) {
     const $ = ui.$;
     $('logPrint').onclick = () => window.print();
     if (final) {
-      $('logFree').onclick = () => { ui.show('finishScreen', false); P.freeDrive = true; save(); mode = 'drive'; startLesson(false); ui.say('Free drive! Keep practicing. Your signed log will not change.', 'good', 5); };
+      $('logFree').onclick = () => { ui.show('finishScreen', false); P.freeDrive = true; save(); mode = 'drive'; syncSteering(); startLesson(false); ui.say('Free drive! Keep practicing. Your signed log will not change.', 'good', 5); };
       $('logNew').onclick = () => newDrive(P.name);
     } else {
       $('logBack').onclick = () => { ui.show('finishScreen', false); mode = 'pause'; ui.show('pauseScreen', true); };
@@ -373,7 +377,12 @@ RT.startGame = function (savedPrefs = {}) {
   // ---------- input ----------
   const keys = new Set();
   const KEYMAP = { KeyW: 'gas', ArrowUp: 'gas', KeyS: 'reverse', ArrowDown: 'reverse', KeyA: 'left', ArrowLeft: 'left', KeyD: 'right', ArrowRight: 'right', Space: 'brake' };
-  const touchDrive = RT.createTouchDrive(canvas, car, () => mode === 'drive' && !document.hidden, () => {
+  const $ = ui.$;
+  let sideways = false, steeringBlocked = false;
+  const landscape = window.matchMedia('(orientation: landscape)');
+  const screenAngle = () => (Number(screen.orientation?.angle ?? window.orientation ?? (landscape.matches ? 90 : 0)) + (sideways ? 90 : 0) + 360) % 360;
+  const tilt = RT.createTiltSteering(screenAngle, syncSteering);
+  const touchDrive = RT.createTouchDrive(canvas, car, tilt, () => mode === 'drive' && !steeringBlocked && !document.hidden, () => {
     keys.clear();
     audio.start();
   });
@@ -382,8 +391,70 @@ RT.startGame = function (savedPrefs = {}) {
     keys.clear();
     touchDrive.cancel();
   }
+  function syncSteering() {
+    if (!isTouch) return;
+    const touch = tilt.state === 'touch', ready = tilt.state === 'ready';
+    if (touch || landscape.matches) sideways = false;
+    if (app.classList.contains('sideways') !== sideways) {
+      app.classList.toggle('sideways', sideways);
+      resize();
+    }
+    const rotate = ready && !landscape.matches && !sideways;
+    const blocked = !touch && (!ready || rotate);
+    if (blocked !== steeringBlocked) {
+      clearDriveInput();
+      if (blocked) { car.state.v = 0; audio.setEngine(0, 0, false); }
+      else tilt.recenter();
+    }
+    steeringBlocked = blocked;
+    const gate = mode === 'drive' && blocked;
+    const opening = gate && $('mobileSetup').hidden;
+    $('mobileSetup').hidden = !gate;
+    $('hud').inert = gate;
+    $('steerHint').textContent = touch ? 'Touch' : 'Tilt';
+    $('tiltSteerBtn').setAttribute('aria-pressed', String(ready));
+    $('touchSteerBtn').setAttribute('aria-pressed', String(touch));
+    $('centerTiltBtn').hidden = !ready;
+    $('steeringStatus').textContent = tilt.message;
+    if (!gate) return;
+    const checking = tilt.state === 'checking';
+    $('setupTitle').textContent = rotate ? 'Turn your phone sideways' : checking ? 'Connecting tilt' : 'Tilt needs motion access';
+    $('setupMessage').textContent = rotate ? 'If rotation is locked, hold the phone with its top on your left and tap Play sideways.' : tilt.message;
+    $('sidewaysBtn').hidden = !rotate;
+    $('retryTiltBtn').hidden = rotate || checking || tilt.state === 'unavailable';
+    if (opening) $('setupTitle').focus({ preventScroll: true });
+  }
+  async function beginTilt() {
+    // Ask for motion on the original tap, before fullscreen can consume user activation.
+    tilt.request();
+    if (!screen.orientation?.lock || tilt.state === 'unavailable') return;
+    try {
+      if (!document.fullscreenElement && document.fullscreenEnabled) await document.documentElement.requestFullscreen();
+      if (tilt.state !== 'touch') await screen.orientation.lock('landscape');
+    } catch { /* Manual rotation and the sideways layout also work in a regular browser tab. */ }
+  }
+  function useTouchSteering() {
+    clearDriveInput();
+    tilt.useTouch();
+    try { screen.orientation?.unlock?.(); } catch { /* No native lock. */ }
+  }
+  $('fallbackTouchBtn').onclick = $('touchSteerBtn').onclick = useTouchSteering;
+  $('retryTiltBtn').onclick = beginTilt;
+  $('tiltSteerBtn').onclick = () => { if (tilt.state !== 'ready') { closePause(); beginTilt(); } };
+  $('sidewaysBtn').onclick = () => { sideways = true; syncSteering(); };
+  $('centerTiltBtn').onclick = () => { tilt.recenter(true); closePause(); };
+  function onRotation() {
+    if (!isTouch) return;
+    clearDriveInput();
+    tilt.recenter();
+    syncSteering();
+  }
+  landscape.addEventListener('change', onRotation);
+  window.addEventListener('orientationchange', onRotation);
+  screen.orientation?.addEventListener?.('change', onRotation);
   window.addEventListener('keydown', (e) => {
-    if (e.target && e.target.tagName === 'INPUT') { if (e.code === 'Enter') startDrive(false); return; }
+    if (e.target && e.target.tagName === 'INPUT') { if (mode === 'title' && e.code === 'Enter') startDrive(false); return; }
+    if (steeringBlocked && mode === 'drive') return;
     audio.start();
     if (mode === 'card') { ui.handleCardKey(e); return; }
     if (mode === 'drive') {
@@ -410,12 +481,13 @@ RT.startGame = function (savedPrefs = {}) {
     if (document.hidden) {
       clearDriveInput();
       audio.suspend();
-      if (mode === 'drive' && !window.__rtTest) openPause();
+      if (mode === 'drive' && !steeringBlocked && !window.__rtTest) openPause();
     } else audio.resume();
   });
 
   function readInput() {
-    return touchDrive.read() ?? {
+    const touch = keys.size === 0 ? touchDrive.read() : null;
+    return touch ?? {
       throttle: keys.has('gas') ? 1 : 0,
       reverse: keys.has('reverse') ? 1 : 0,
       brake: keys.has('brake') ? 1 : 0,
@@ -424,14 +496,19 @@ RT.startGame = function (savedPrefs = {}) {
   }
 
   // ---------- screens ----------
-  function openPause() { if (mode !== 'drive') return; mode = 'pause'; clearDriveInput(); ui.show('pauseScreen', true); audio.setEngine(0, 0, false); }
-  function closePause() { ui.show('pauseScreen', false); mode = 'drive'; }
-  function openMap() { if (mode !== 'drive') return; mode = 'map'; clearDriveInput(); ui.drawBigMap(car.state, car.state.heading, route); ui.show('mapScreen', true); }
-  function closeMap() { ui.show('mapScreen', false); mode = 'drive'; }
-  const $ = ui.$;
+  function openPause() { if (mode !== 'drive' || steeringBlocked) return; mode = 'pause'; clearDriveInput(); ui.show('pauseScreen', true); audio.setEngine(0, 0, false); }
+  function closePause() { ui.show('pauseScreen', false); mode = 'drive'; syncSteering(); }
+  let mapFromPause = false;
+  function openMap() {
+    if (mode !== 'drive' && mode !== 'pause') return;
+    mapFromPause = mode === 'pause';
+    ui.show('pauseScreen', false); mode = 'map'; clearDriveInput();
+    ui.drawBigMap(car.state, car.state.heading, route); ui.show('mapScreen', true);
+  }
+  function closeMap() { ui.show('mapScreen', false); mode = mapFromPause ? 'pause' : 'drive'; ui.show('pauseScreen', mapFromPause); syncSteering(); }
   $('pauseBtn').onclick = openPause;
   $('mapBtn').onclick = openMap;
-  $('resetBtn').onclick = resetCar;
+  $('resetBtn').onclick = () => { if (mode === 'pause') closePause(); resetCar(); };
   $('closeMapBtn').onclick = closeMap;
   $('resumeDriveBtn').onclick = closePause;
   $('notesBtn').onclick = () => { ui.renderNotes(NOTES, P.seenNotes); ui.show('pauseScreen', false); ui.show('notesScreen', true); mode = 'notes'; };
@@ -456,11 +533,21 @@ RT.startGame = function (savedPrefs = {}) {
   const saved = loadSave();
   if (saved && !saved.finished) {
     $('resumeBtn').hidden = false;
-    $('resumeBtn').textContent = 'Resume saved drive (' + cats.reduce((n, c) => n + Math.min(GOAL, saved.credits[c.id]), 0) + '/' + GOAL * cats.length + ' credits)';
+    $('resumeBtn').textContent = isTouch ? 'Resume with tilt' : 'Resume saved drive (' + cats.reduce((n, c) => n + Math.min(GOAL, saved.credits[c.id]), 0) + '/' + GOAL * cats.length + ' credits)';
     $('nameInput').value = saved.name || '';
   }
   $('startBtn').onclick = () => startDrive(false);
   $('resumeBtn').onclick = () => startDrive(true);
+  $('startBtn').textContent = isTouch ? (saved && !saved.finished ? 'Start a new drive' : 'Drive with tilt') : 'Start the drive';
+  $('startBtn').disabled = false;
+  if (isTouch) {
+    $('closeMapBtn').textContent = 'Back';
+    for (const [id, label] of [['mapBtn', 'Town map'], ['resetBtn', 'Reset car']]) {
+      const btn = $(id);
+      btn.textContent = label; btn.className = 'btn';
+      $('mobileTools').append(btn);
+    }
+  }
 
   function applyProgressToHud() {
     ui.setName(P.name);
@@ -492,13 +579,14 @@ RT.startGame = function (savedPrefs = {}) {
     placeAtStart();
     mode = 'drive';
     ui.setStreet('Permit Office lot');
+    startLesson(false);
+    if (isTouch) { beginTilt(); return; }
     setTimeout(() => {
       if (resume) { startLesson(true); return; }
       const pullOut = usesTouch() ? 'Hold the middle of the screen to pull out of the lot.' : 'Pull out of the lot (W to go).';
       ui.say('Hi' + (P.name ? ' ' + P.name : '') + ', I am your driving instructor. ' + pullOut + ' Follow the blue arrows and keep to the right side of the road.', 'info', 8);
       setTimeout(() => startLesson(true), 8500);
     }, 600);
-    startLesson(false);
   }
 
   function newDrive(name) {
@@ -510,6 +598,7 @@ RT.startGame = function (savedPrefs = {}) {
     placeAtStart();
     mode = 'drive';
     startLesson(false);
+    syncSteering();
     ui.say('Fresh logbook! Follow the blue arrows to your first stop.', 'info', 5);
   }
 
@@ -528,7 +617,7 @@ RT.startGame = function (savedPrefs = {}) {
       return;
     }
     const speed = Math.abs(s.v);
-    const wantFov = (window.innerWidth < window.innerHeight ? 72 : 60) + Math.min(9, speed * 0.4);
+    const wantFov = (camera.aspect < 1 ? 72 : 60) + Math.min(9, speed * 0.4);
     if (Math.abs(camera.fov - wantFov) > 0.05) { camera.fov = U.damp(camera.fov, wantFov, 2, dt); camera.updateProjectionMatrix(); }
     let dist = 8.6 + speed * 0.06, height = 3.6 + speed * 0.02, ahead = 5, lookH = 1.3;
     if (camMode === 'far') { dist = 15; height = 7.5; ahead = 8; lookH = 0.8; }
@@ -562,6 +651,7 @@ RT.startGame = function (savedPrefs = {}) {
     yellow: 'Yellow light: stop if you safely can. If you are too close to stop, keep going carefully.'
   };
   function coach(kind) {
+    if (isTouch) return;
     if (!P.tips) P.tips = {};
     if (P.tips[kind]) return;
     P.tips[kind] = true;
@@ -595,7 +685,12 @@ RT.startGame = function (savedPrefs = {}) {
           glowMat.opacity = 0.45 + Math.sin(performance.now() / 180) * 0.25;
           glow.visible = true;
         }
-        if (kind && !(kind === 'red' && ap.answered)) coach(kind);
+        if (isTouch && kind) {
+          if (kind === 'green') text = 'Go';
+          else if (kind === 'red' && ap.answered) text = 'Wait';
+          else if (Math.abs(s.v) < 0.5 && dl < 9) text = 'Stopped';
+          else text = dist;
+        } else if (kind && !(kind === 'red' && ap.answered)) coach(kind);
       }
     }
     ui.setAlert(mode === 'drive' ? kind : null, text);
@@ -641,17 +736,17 @@ RT.startGame = function (savedPrefs = {}) {
     if (on !== blinkPrev) { if (on) audio.sfx.tick(); blinkPrev = on; }
 
     updateAlert(dt);
-    const guide = mode === 'drive' ? lessons.update(dt, car, rules.approach) : null;
+    const guide = mode === 'drive' && !steeringBlocked ? lessons.update(dt, car, rules.approach) : null;
     if (guide) {
       const d = Math.round(guide.dist / 10) * 10;
-      ui.setObjective(`<span class="obj-title">${U.escapeHtml(lessonTitle())}</span><span class="obj-step"><span class="turn">${guide.icon}</span>${U.escapeHtml(guide.text)}<em>${d} m</em></span>`, isReturning());
+      if (!isTouch) ui.setObjective(`<span class="obj-title">${U.escapeHtml(lessonTitle())}</span><span class="obj-step"><span class="turn">${guide.icon}</span>${U.escapeHtml(guide.text)}<em>${d} m</em></span>`, isReturning());
       if (guide.arrived) onArrive();
     }
     if (isReturning()) world.finishBeacon.userData.ring.rotation.z += dt;
     route = lessons.polyline;
     const t = totalCredits();
     ui.setCreditsBadge(t, GOAL * cats.length);
-    ui.drawMinimap(s, s.heading, route);
+    if (!isTouch) ui.drawMinimap(s, s.heading, route);
 
     if (pendingGreen) {
       pendingGreen.since += dt;
@@ -696,7 +791,7 @@ RT.startGame = function (savedPrefs = {}) {
     const elapsed = (now - last) / 1000;
     const dt = Math.min(0.1, elapsed);
     last = now;
-    if (mode === 'drive' || mode === 'title') {
+    if ((mode === 'drive' && !steeringBlocked) || mode === 'title') {
       acc += dt;
       let steps = 0;
       while (acc >= STEP && steps < 6) {
@@ -748,7 +843,10 @@ RT.startGame = function (savedPrefs = {}) {
   requestAnimationFrame(frame);
 
   // a quality change reloads the page; jump straight back in
-  if (location.hash === '#resume' && saved && !saved.finished) { history.replaceState(null, '', location.pathname); startDrive(true); }
+  if (location.hash === '#resume' && saved && !saved.finished) {
+    history.replaceState(null, '', location.pathname);
+    if (isTouch) $('resumeBtn').focus(); else startDrive(true);
+  }
 
   // expose for debugging / testing in the browser console
   window.__rt = {

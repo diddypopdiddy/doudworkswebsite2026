@@ -291,166 +291,145 @@ h1 span { display: block; color: var(--road); font-size: .6em; letter-spacing: -
   #dash .speed span { font-size: 34px; }
 }
 
-/* Keep the roadway clear and let touches through the read-only HUD. */
-@media (any-pointer: coarse) {
-  #scene {
-    touch-action: none;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
+/* Phone play leaves the windshield clear. The road itself is the accelerator. */
+.mobile-only, .mobile-intro { display: none; }
+@media (pointer: coarse) {
+  #app {
+    container: game / size;
+    --top: max(10px, env(safe-area-inset-top));
+    --right: max(12px, env(safe-area-inset-right));
+    --bottom: max(10px, env(safe-area-inset-bottom));
+    --left: max(12px, env(safe-area-inset-left));
+    -webkit-text-size-adjust: 100%;
   }
+  #app.sideways {
+    inset: 0 auto auto 100%;
+    width: 100vh; height: 100vw;
+    width: 100dvh; height: 100dvw;
+    transform: rotate(90deg); transform-origin: top left;
+    --top: max(10px, env(safe-area-inset-right));
+    --right: max(12px, env(safe-area-inset-bottom));
+    --bottom: max(10px, env(safe-area-inset-left));
+    --left: max(12px, env(safe-area-inset-top));
+  }
+  #scene { touch-action: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+  .layer, #hud { padding: var(--top) var(--right) var(--bottom) var(--left); }
+  #app .keyboard-help, #app .how, #app .lede, #app .controls, .help-grid { display: none; }
+  .mobile-only, .touch-help, .mobile-intro { display: block; }
+  #titleScreen { background: linear-gradient(115deg, rgba(10,26,45,.93), rgba(13,36,63,.70)); }
+  .title-wrap { width: min(92%, 760px); margin: auto; grid-template-columns: 1fr; gap: 22px; }
+  .title-wrap .brand { display: none; }
+  .title-wrap h1 { font-size: 18px; letter-spacing: .02em; }
+  .title-wrap h1 span { color: var(--road); font-size: clamp(40px, 7cqw, 62px); letter-spacing: -.04em; }
+  .mobile-intro { font-weight: 600; font-size: 17px; line-height: 1.42; max-width: 32ch; margin: 0; }
+  .id-card { background: transparent; transform: none; box-shadow: none; color: white; overflow: visible; border-radius: 0; }
+  .id-row, .id-goal, .id-photo, .id-top { display: none; }
+  .id-body { display: block; padding: 0; }
+  .id-fields label { display: block; color: white; font-size: 14px; text-transform: none; letter-spacing: 0; }
+  .id-fields label span { display: inline; font-weight: 500; opacity: .85; }
+  .id-fields input {
+    color: white; border: 1px solid rgba(255,255,255,.45); border-radius: 10px;
+    font-size: 16px; min-height: 44px; padding: 8px 12px; margin: 5px 0 0; background: rgba(6,20,34,.42);
+  }
+  .id-fields input::placeholder { color: #c2cfd8; font-weight: 500; }
+  .id-fields input:focus-visible { outline: 2px solid white; outline-offset: -3px; }
+  .title-actions { margin-top: 12px; }
+  .title-actions .primary, .title-actions:has(#resumeBtn:not([hidden])) #resumeBtn {
+    background: var(--road); color: #162b43; box-shadow: none; min-height: 48px; font-size: 17px;
+  }
+  .title-actions:has(#resumeBtn:not([hidden])) #resumeBtn { order: -1; }
+  .title-actions:has(#resumeBtn:not([hidden])) #startBtn { background: transparent; color: white; box-shadow: inset 0 0 0 1px rgba(255,255,255,.5); min-height: 44px; padding: 8px; }
+  #startBtn:disabled { opacity: .65; }
   #hud {
-    display: grid;
-    grid-template-columns: repeat(12, minmax(0, 1fr));
-    grid-template-rows: auto auto auto minmax(0, 1fr) auto auto auto;
-    align-items: start;
-    row-gap: 6px;
-    padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right))
-      max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
+    display: grid; grid-template: auto 1fr auto / auto auto 1fr auto;
+    align-items: center; gap: 5px; pointer-events: none;
   }
   #hud > * { pointer-events: none; }
-  #hudButtons > button, #touchTools > button { pointer-events: auto; touch-action: manipulation; }
-  #mapbox, #hudButtons, #objective, #alert, #instructor, #dash, #toasts { position: static; transform: none; }
-
-  #permit {
-    grid-area: 1 / 1 / 2 / 7;
-    position: relative;
-    inset: auto;
-    width: min(100%, 188px);
-    padding: 7px 8px;
-    border-radius: 12px;
-  }
-  #permit header { margin-bottom: 4px; }
-  #permit header > div { width: 100%; padding-right: 0; }
-  #permit .permit-badge, #creditRows { display: none; }
-  #permit .permit-kicker { padding-right: 31px; font-size: 10px; letter-spacing: 0; text-transform: none; }
-  #permit .permit-name { max-width: 100%; font-size: 14px; }
-  #permit footer { flex-wrap: wrap; font-size: 10px; margin-top: 4px; padding-top: 4px; gap: 2px 4px; }
-  #creditBadge { top: 7px; right: 7px; padding: 1px 4px; font-size: 11px; }
-
-  #hudButtons { grid-area: 1 / 7 / 2 / -1; justify-self: end; flex-direction: row; gap: 4px; }
-  #mapbox { grid-area: 2 / 9 / 3 / -1; justify-self: end; width: min(100%, 94px); padding: 0; }
-  #minimap { width: 100%; height: auto; }
-  #street { font-size: 11px; line-height: 1.15; margin-top: 3px; padding: 3px 4px; }
-
-  #objective {
-    grid-area: 2 / 1 / 3 / 9;
-    align-items: flex-start;
-    max-width: none;
-    margin-right: 8px;
-    padding: 7px 9px;
-    border-radius: 12px;
-    white-space: normal;
-  }
-  #objective:empty { display: none; }
-  #objective .obj-title { font-size: 10px; letter-spacing: .4px; }
-  #objective .obj-step { gap: 5px; font-size: 13px; line-height: 1.2; }
-  #objective .obj-step .turn { width: 23px; height: 23px; flex: none; font-size: 16px; border-radius: 6px; }
-  #objective .obj-step em { flex: none; }
-
+  #hud #permit, #hud #mapbox, #hud #objective, #hud #instructor, #hud #toasts, #hud #confetti { display: none; }
+  #hudButtons, #alert, #dash, #touchGuide { position: static; transform: none; }
+  #hudButtons { grid-area: 1 / 4; }
+  #pauseBtn { width: 46px; height: 46px; font-size: 23px; background: rgba(15,33,52,.88); color: white; pointer-events: auto; touch-action: manipulation; }
   #alert {
-    grid-area: 3 / 1 / 4 / -1;
-    display: none;
-    justify-self: center;
-    gap: 7px;
-    padding: 6px 10px;
-    border-radius: 12px;
-    font-size: 13px;
-    line-height: 1.2;
-    white-space: normal;
+    display: none; grid-area: 1 / 1 / 2 / 4; justify-self: start; gap: 8px;
+    color: white; background: rgba(15,33,52,.88); border-radius: 12px; padding: 5px 10px 5px 6px;
+    font-size: 15px; box-shadow: none; animation: none; transition: none;
   }
   #alert.show { display: flex; transform: none; }
-  #alert .oct, #alert .lamp { flex: none; }
-  #toasts { grid-area: 4 / 1 / 5 / -1; justify-self: center; max-width: min(100%, 330px); }
-  #toasts .toast { padding: 6px 10px; font-size: 13px; }
-
-  #instructor { grid-area: 5 / 1 / 6 / -1; width: min(100%, 340px); max-width: none; display: none; }
-  #instructor.show { display: flex; }
-  #instructor .avatar { display: none; }
-  #instructor .bubble { padding: 7px 10px; font-size: 13px; line-height: 1.25; }
-  #instructor .bubble b { font-size: 10px; }
-
-  #dash, #touchTools { grid-area: 6 / 1 / 7 / -1; align-self: center; }
-  #dash { justify-self: start; gap: 5px; padding: 4px 6px; border-radius: 12px; min-height: 44px; }
+  #alert .oct { width: 31px; height: 31px; }
+  #alert .lamp { transform: scale(.7); margin: -7px -2px; }
+  #dash, #touchGuide { align-self: end; background: rgba(15,33,52,.88); color: white; border-radius: 12px; box-shadow: none; }
+  #dash { grid-area: 3 / 1; padding: 5px 9px; gap: 8px; }
+  #dash .speed { min-width: 0; gap: 3px; }
+  #dash .speed span { font-size: 26px; }
+  #dash .speed small { font-size: 12px; }
+  #dash .speed em { position: static; align-self: center; font-size: 11px; padding: 2px 4px; }
   #dash .blink { display: none; }
-  #dash .speed { display: grid; grid-template-columns: auto auto; align-items: center; min-width: 0; gap: 0 3px; }
-  #dash .speed span { grid-row: span 2; font-size: 26px; }
-  #dash .speed small { grid-column: 2; grid-row: 2; font-size: 10px; }
-  #dash .speed em { position: static; grid-column: 2; grid-row: 1; justify-self: start; padding: 0 4px; font-size: 10px; }
-  #dash .limit { flex: none; width: 34px; padding: 2px 0; border-width: 2px; }
-  #dash .limit small { font-size: 6px; }
+  #dash .limit { width: 32px; border-width: 1px; border-radius: 5px; padding: 2px; }
+  #dash .limit small { display: block; font-size: 0; line-height: 0; }
+  #dash .limit small::after { content: 'LIMIT'; font-size: 9px; line-height: 1; }
   #dash .limit b { font-size: 17px; }
-
-  #touchTools { display: flex; justify-self: end; gap: 4px; }
-  .touch-btn {
-    min-width: 44px;
-    min-height: 44px;
-    padding: 0 8px;
-    border: 0;
-    border-radius: 12px;
-    background: var(--paper-2);
-    color: var(--navy);
-    box-shadow: 0 4px 12px rgba(10,25,50,.25);
-    font-size: 11px;
-    font-weight: 900;
-  }
-  .touch-btn[aria-pressed="true"] { background: #d8f5e4; color: #0d6b3a; }
-  #reverseBtn[aria-pressed="true"] { background: #fff1c7; color: var(--navy); }
-  .touch-btn:disabled { opacity: .58; }
-  .touch-btn:focus-visible { outline: 3px solid #4c8fe8; outline-offset: 2px; }
-
-  #touchGuide {
-    grid-area: 7 / 1 / 8 / -1;
-    display: grid;
-    justify-self: center;
-    width: min(100%, 324px);
-    gap: 6px;
-    padding: 6px 10px 8px;
-    border-radius: 12px;
-    background: rgba(19,41,75,.94);
-    color: #fff;
-    font-size: 12px;
-    font-weight: 800;
-    text-align: center;
-  }
-  .touch-track { position: relative; height: 3px; border-radius: 999px; background: rgba(255,255,255,.25); }
+  #touchGuide { grid-area: 3 / 2; width: 58px; display: grid; gap: 4px; padding: 6px 8px 8px; font-size: 13px; text-align: center; font-weight: 800; }
+  .touch-track { position: relative; height: 3px; background: rgba(255,255,255,.48); border-radius: 3px; }
   .touch-track::after {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: var(--steer-position, 50%);
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #fff;
-    transform: translate(-50%, -50%);
+    content: ""; position: absolute; left: var(--steer-position, 50%); top: 50%; width: 7px; height: 7px;
+    transform: translate(-50%,-50%); background: white; border-radius: 50%;
   }
-  #touchGuide.driving .touch-track::after { background: #34e2ff; box-shadow: 0 0 8px #34e2ff; }
-  .touch-help { display: block; font-size: 14px; line-height: 1.4; }
-  .steering-settings { display: grid; gap: 6px; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid var(--line); }
-  .steering-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .steering-options { display: flex; gap: 6px; }
-  .steering-settings .btn { min-height: 44px; padding: 8px 14px; }
-  .steering-options .btn { min-width: 70px; transition: transform .08s ease; -webkit-tap-highlight-color: transparent; }
-  .steering-options .btn[aria-pressed="true"] { background: var(--navy); color: #fff; box-shadow: none; }
-  #steeringStatus { margin: 0; }
+  #touchGuide.driving .touch-track::after { background: #34e2ff; }
+  .sheet, .card { max-height: 100%; overscroll-behavior: contain; }
+  #mobileSetup .sheet { width: min(100%, 420px); padding: 22px; }
+  #setupTitle:focus { outline: none; }
+  #setupMessage { font-size: 16px; line-height: 1.4; margin: 4px 0 16px; }
+  .setup-actions, .steering-options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sheet button, .read-btn { min-height: 44px; touch-action: manipulation; }
+  #pauseScreen .sheet { width: min(100%, 550px); padding: 18px; }
+  #pauseScreen .sheet-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .steering-settings { display: grid; gap: 8px; margin-bottom: 12px; }
+  .steering-row { display: flex; align-items: center; justify-content: space-between; }
+  .steering-options .btn { min-width: 70px; transition: none; }
+  #pauseScreen button[aria-pressed="true"] { background: var(--navy); color: white; }
+  #steeringStatus { margin: 0; font-size: 15px; }
   #centerTiltBtn { justify-self: start; }
+  #mobileTools, #touchTools { display: flex; flex-wrap: wrap; gap: 6px; }
+  #mobileTools { margin-top: 6px; }
+  #touchTools .btn:disabled { opacity: .55; }
+  #app:has(#cardLayer:not([hidden])) #hud { visibility: hidden; }
+  #cardLayer, .verdict { animation: none; }
+  #card { width: min(100%, 820px); animation: none; }
+  .card-band { padding: 6px 14px; gap: 8px; }
+  .card-band .trigger, .card-band .trigger svg { width: 31px; height: 31px; }
+  .card-band .kicker { font-size: 11px; }
+  .card-band h2 { font-size: 18px; }
+  .card-band .chips { display: flex; }
+  .read-btn { padding: 5px 10px; font-size: 13px; }
+  .card-body { padding: 12px 15px; }
+  .question { font-size: 17px; line-height: 1.33; margin-bottom: 10px; }
+  .exhibit { padding: 7px 9px; margin-bottom: 8px; }
+  .opts { gap: 5px; }
+  .opt { grid-template-columns: 1fr; padding: 7px 12px; min-height: 44px; font-size: 16px; line-height: 1.25; touch-action: manipulation; }
+  .opt .key, .card-foot .hint, .card:not(.answered) .card-foot, .card.answered .opts, .verdict .stamp { display: none; }
+  .verdict { display: block; margin: 0; padding: 11px; }
+  .card-foot { justify-content: flex-end; margin-top: 9px; }
+  #cardContinue { min-height: 44px; }
+  @container game (min-aspect-ratio: 1/1) {
+    .title-wrap { grid-template-columns: 1.1fr 1fr; align-items: center; gap: 28px; }
+    .card-body { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.12fr); align-items: start; gap: 16px; }
+    .question { margin-bottom: 0; }
+  }
+  @container game (min-aspect-ratio: 1/1) and (max-height: 350px) {
+    .card-band { padding-block: 2px; }
+    .card:not(.answered) .card-body { display: block; padding: 8px 12px 10px; }
+    .card:not(.answered) .question { margin-bottom: 8px; }
+    .card:not(.answered) .question-context:has(.exhibit) {
+      display: grid; grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr);
+      gap: 4px 12px; align-items: start; margin-bottom: 8px;
+    }
+    .card:not(.answered) .question-context:has(.exhibit) :is(.exhibit, .question) { margin: 0; }
+    .question-context .second-look { grid-column: 1 / -1; }
+    .opts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .opt { padding: 5px 9px; }
+  }
 }
-@media (pointer: coarse) {
-  .keyboard-help { display: none; }
-}
-@media (any-pointer: coarse) and (orientation: landscape) {
-  #hud { grid-template-rows: auto auto minmax(0, 1fr) auto auto auto; }
-  #permit { grid-column: 1 / 5; }
-  #hudButtons { grid-column: 10 / -1; }
-  #mapbox { grid-area: 2 / 10 / 4 / -1; }
-  #objective { grid-area: 1 / 5 / 2 / 10; justify-self: center; align-items: center; margin-inline: 5px; }
-  #alert { grid-area: 2 / 4 / 3 / 10; }
-  #toasts { grid-area: 3 / 4 / 4 / 10; }
-  #instructor { grid-area: 4 / 1 / 5 / 7; }
-  #dash, #touchTools { grid-row: 5 / 6; }
-  #touchGuide { grid-row: 6 / 7; }
-}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }

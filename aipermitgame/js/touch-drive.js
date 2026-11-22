@@ -1,8 +1,6 @@
-/* One contact drives and steers. Lifting it applies the car's regular brake. */
-RT.createTouchDrive = function (surface, car, canDrive, onStart) {
+/* One contact controls the pedals. Steering comes from the selected input. */
+RT.createTouchDrive = function (surface, car, tilt, canDrive, onStart) {
   const guide = document.getElementById('touchGuide');
-  const verb = document.getElementById('touchVerb');
-  const steerHint = document.getElementById('steerHint');
   const left = document.getElementById('signalLeftBtn');
   const right = document.getElementById('signalRightBtn');
   const reverse = document.getElementById('reverseBtn');
@@ -13,10 +11,6 @@ RT.createTouchDrive = function (surface, car, canDrive, onStart) {
   let active = false;
   let reversing = false;
   let shownSignal = 0;
-  const tilt = RT.createTiltSteering((enabled) => {
-    cancel();
-    steerHint.textContent = enabled ? 'Tilt to steer' : 'Slide to steer';
-  });
 
   function showSteer(value) {
     if (value === displayedSteer) return;
@@ -33,7 +27,6 @@ RT.createTouchDrive = function (surface, car, canDrive, onStart) {
   }
 
   function cancel() {
-    if (pointerId === null) return;
     // Let the browser release capture on lift so the gesture stays on the road if a menu opens.
     pointerId = null;
     steer = 0;
@@ -52,7 +45,7 @@ RT.createTouchDrive = function (surface, car, canDrive, onStart) {
     surface.setPointerCapture(e.pointerId);
     pointerId = e.pointerId;
     active = true;
-    if (!tilt.enabled) {
+    if (tilt.state === 'touch') {
       bounds = surface.getBoundingClientRect();
       updateSteer(e.clientX);
     }
@@ -60,7 +53,7 @@ RT.createTouchDrive = function (surface, car, canDrive, onStart) {
     onStart();
   });
   surface.addEventListener('pointermove', (e) => {
-    if (e.pointerId === pointerId && !tilt.enabled) updateSteer(e.clientX);
+    if (e.pointerId === pointerId && tilt.state === 'touch') updateSteer(e.clientX);
   });
   function endGesture(e) {
     if (e.pointerId === pointerId) cancel();
@@ -68,23 +61,22 @@ RT.createTouchDrive = function (surface, car, canDrive, onStart) {
   surface.addEventListener('pointerup', endGesture);
   surface.addEventListener('pointercancel', endGesture);
   surface.addEventListener('lostpointercapture', endGesture);
-  window.addEventListener('resize', cancel);
 
   function setReverse(value) {
     if (reversing === value) return;
     reversing = value;
     reverse.setAttribute('aria-pressed', String(value));
-    verb.textContent = value ? 'reverse' : 'drive';
+    reverse.textContent = value ? 'Shift to drive' : 'Shift to reverse';
   }
 
   const canShift = () => pointerId === null && Math.abs(car.state.v) < 0.05;
   reverse.addEventListener('click', () => {
-    if (!canDrive() || !canShift()) return;
+    if (!canShift()) return;
     active = true;
     setReverse(!reversing);
   });
   function bindSignal(button, direction) {
-    const toggle = () => { if (canDrive()) car.setBlinker(direction); };
+    const toggle = () => car.setBlinker(direction);
     // A second contact can send pointer events without generating a click.
     button.addEventListener('pointerdown', (e) => { if (e.button === 0) toggle(); });
     button.addEventListener('click', (e) => { if (e.detail === 0) toggle(); });
@@ -109,12 +101,11 @@ RT.createTouchDrive = function (surface, car, canDrive, onStart) {
   }
 
   function read() {
-    if (!active) return null;
-    if (pointerId === null) return { throttle: 0, reverse: 0, brake: 1, steer: 0 };
-    if (tilt.enabled) {
+    if (tilt.state === 'ready') {
       steer = tilt.read();
       showSteer(steer);
-    }
+    } else if (!active) return null;
+    if (pointerId === null) return { throttle: 0, reverse: 0, brake: 1, firmBrake: true, steer: tilt.state === 'ready' ? steer : 0 };
     return { throttle: reversing ? 0 : 1, reverse: reversing ? 1 : 0, brake: 0, steer };
   }
 
