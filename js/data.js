@@ -62,7 +62,8 @@ const ROADTEST = {
   summary: "Drive through town, answer AI questions at red lights, and read Road Notes at stop signs. Earn 12 permit credits and log six in-game practice hours.",
   preview: "ai-road-test-2026-11-21.webp",
   previewAlt: "A car at the permit office with a town map, a speedometer and a panel tracking AI questions, hours and credits.",
-  href: "https://ai-road-test-vince-doud.diddypopdiddy.chatgpt.site/",
+  href: "/aipermitgame/",
+  sameTab: true,
   action: "Start Permit Drive",
 };
 
