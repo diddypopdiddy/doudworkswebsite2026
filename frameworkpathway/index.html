@@ -456,6 +456,25 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
   .turn { max-width: 96%; } .convo.two { columns: 1; }
 }
 @media print { html.js body { height: auto; overflow: visible; display: block; } html.js .slide { display: grid !important; break-after: page; } .fit { zoom: 1 !important; } .nav, .top, dialog { display: none !important; } }
+/* Entry points for the three audiences */
+.audience-start { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; }
+.audience-start a { display: grid; align-content: center; gap: .12rem; min-height: 3.7rem; padding: .6rem .85rem;
+  border: 1px solid var(--line); border-radius: .9rem; color: var(--ink); background: var(--card);
+  text-decoration: none; line-height: 1.22; }
+.audience-start a:hover { border-color: var(--blue); }
+.audience-start a span { color: var(--muted); font-size: .875rem; font-weight: 600; }
+.audience-start a strong { font-size: .98rem; }
+.resource-links { display: flex; flex-wrap: wrap; gap: .55rem 1.25rem; margin-top: .65rem; }
+.resource-links a { display: inline-flex; align-items: center; min-height: 2rem; color: var(--blue); font-weight: 650;
+  text-underline-offset: .2em; }
+@media (max-width: 600px) {
+  .audience-start { grid-template-columns: 1fr; width: 100%; gap: .45rem; }
+  .audience-start a { grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr); align-items: center; min-height: 2.85rem; text-align: left; }
+}
+#welcome .audience-start { width: min(100%, 42rem); margin-inline: auto; margin-top: .45rem; }
+#welcome .audience-start a { text-align: left; }
+#welcome .audience-start a:hover { border-color: var(--amber); background: var(--wash); }
+#welcome .audience-start a:first-child { border-color: color-mix(in srgb, var(--amber) 68%, transparent); }
 </style>
 </head>
 <body class="cover">
@@ -472,9 +491,14 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <section class="slide cover inv" id="welcome" data-ch="start" data-title="Welcome">
 <div class="in center">
 <div class="pair float" aria-hidden="true"><img src="assets/permit.webp" alt="" width="856" height="540"><span>→</span><img src="assets/license.webp" alt="" width="856" height="540"></div>
-<p class="kicker">For teachers and school leaders · Grades 7–12</p>
+<p class="kicker">Classroom guide</p>
 <h1 class="xl" tabindex="-1">AI Production Framework and Pathway</h1>
 <p class="lede">A shared way for grades 7–12 classrooms to teach students to use AI while keeping the learning at the center.</p>
+<nav class="audience-start" aria-label="Start by audience">
+  <a href="#school-run"><span>School leaders</span><strong>Plan a pilot</strong></a>
+  <a href="/aiplaybook/"><span>Teachers</span><strong>Open the Playbook</strong></a>
+  <a href="/aiworkbook/"><span>Students</span><strong>Open the Workbook</strong></a>
+</nav>
 <a class="go" href="#big-two">Start the tour</a>
 <p class="fine">One idea per screen. Use Next, or the arrow keys.</p></div>
 </section>
@@ -486,8 +510,8 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
   <div class="card half c-blue"><span class="part">Part 1</span><h3>The Framework</h3>
     <p>What students need to understand and how they should judge. Three connected components that apply every time AI is used in learning.</p>
     <ol class="mini3"><li><svg class="ic" aria-hidden="true"><use href="#i-cpu"/></svg>AI Literacy</li><li><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg>Core Competencies</li><li><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg>AI Modes</li></ol></div>
-  <div class="card half c-amber"><span class="part">Part 2</span><h3>The Pathway</h3>
-    <p>The route they take to show they can do it on their own. Modeled on learning to drive: practice under supervision, then earn the right to use AI independently.</p>
+  <div class="card half c-amber"><span class="part">Part 2</span><h3>AI Production License Pathway</h3>
+    <p>Students begin with the AI Permit and guided practice. The AI Production License records readiness for independent use in the scope assessed. Each teacher-approved assignment specifies what help is allowed.</p>
     <div class="pair" aria-hidden="true"><img src="assets/permit.webp" alt="" width="856" height="540"><span>→</span><img src="assets/license.webp" alt="" width="856" height="540"></div></div>
 </div></div>
 </section>
@@ -859,7 +883,7 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <section class="slide " id="path-decision" data-ch="path" data-title="The teacher's decision" data-way="route|4" style="--acc:var(--blue)">
 <div class="in">
 <p class="kicker">For teachers</p><h1 tabindex="-1">The teacher's decision</h1>
-<p class="rule">Judge subject learning and responsible AI use separately. Never award a License for a polished product alone.</p>
+<p class="rule">Judge learning from the student’s work and responsible AI use from the full task conversation. Before deciding, check independent judgment on a fresh task.</p>
 <div class="cols below">
 <div class="card dec c-ok"><span class="dot"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><h3>Ready</h3><p>Shows the learning target, explains their own choices, documents all five Modes, follows permission and privacy rules, and verifies results.</p></div>
 <div class="card dec c-warn"><span class="dot"><svg class="ic" aria-hidden="true"><use href="#i-repeat"/></svg></span><h3>Needs another attempt</h3><p>Return the specific gap for practice, then check fresh evidence. Missing Modes, unsupported claims or unclear ownership are not a pass.</p></div>
@@ -885,9 +909,10 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 </div></div>
 </section>
 
-<section class="slide " id="school-run" data-ch="school" data-title="How a school runs it">
+<section class="slide " id="school-run" data-ch="school" data-title="AI Production for School Leaders">
 <div class="in">
-<p class="kicker">In your school</p><h1 tabindex="-1">How a school runs it</h1><p class="lede">Four connected steps. Work flexibly inside each one. If time allows only foundations and practice, complete those honestly and leave the License pending.</p>
+<p class="kicker">Plan a pilot</p><h1 tabindex="-1">AI Production for School Leaders</h1><p class="lede">Choose one class and a learning goal. Confirm approved tools, student access and a private evidence route before deciding which steps your pilot can cover.</p>
+<nav class="resource-links" aria-label="Pilot planning"><a href="#school-before">Check readiness before live use</a><a href="#school-access">Plan your pilot and review</a></nav>
 <ol class="cols c4 below flow">
 <li class="card"><span class="n">1</span><h3>Literacy and competencies</h3><p>Teach what AI is and the four judgments. Paper examples and discussion work before any live tool.</p></li>
 <li class="card c-amber"><span class="n">2</span><h3>Permit and supervised practice</h3><p>Teacher-guided practice in all five Modes. Keep the full conversation for every task.</p></li>
@@ -897,7 +922,7 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 
 <section class="slide " id="school-before" data-ch="school" data-title="Before live use">
 <div class="in spread">
-<div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-school"/></svg></span><p class="kicker">Planning · Mostly for administrators</p><h1 tabindex="-1">Before live use</h1><p class="lede">Settle these before any student opens a live tool.</p></div>
+<div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-school"/></svg></span><p class="kicker">Planning · School leaders</p><h1 tabindex="-1">Before live use</h1><p class="lede">Settle these before any student opens a live tool.</p></div>
 <ul class="ilist tight checks"><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div>Confirm the approved service, account eligibility, features, notice or consent, and local technology and privacy review.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div>Teacher access does not authorize student access. Verify current terms and settings with the responsible school owners.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div>Set up private evidence access, storage, retention and an incident procedure before collecting task records.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div>Prepare an accessible, mediated or non-AI route.</div></li></ul>
 </div>
 </section>
@@ -924,7 +949,7 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <section class="slide " id="wrap-you" data-ch="wrap" data-title="What it asks of you">
 <div class="in">
 <p class="kicker">Where to start</p><h1 tabindex="-1">What it asks of you</h1>
-<div class="cols below"><div class="card c-blue"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><h3>For teachers</h3><p>Start with the foundations, run guided practice in each Mode, and use the License decision guide when students are ready.</p></div><div class="card c-amber"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-school"/></svg></span><h3>For administrators</h3><p>Confirm approved tools, eligibility, privacy review and evidence storage before live use, and begin with a bounded pilot.</p></div><div class="card "><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg></span><h3>For everyone</h3><p>AI can help students learn when it supports the work and the student keeps the thinking.</p></div></div></div>
+<div class="cols below"><div class="card c-blue"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><h3>For teachers</h3><p>Start with the foundations, run guided practice in each Mode, and use the License decision guide when students are ready.</p></div><div class="card c-amber"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-school"/></svg></span><h3>For school leaders</h3><p>Confirm approved tools, eligibility, privacy review and evidence storage before live use, and begin with a bounded pilot.</p></div><div class="card "><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg></span><h3>For everyone</h3><p>AI can help students learn when it supports the work and the student keeps the thinking.</p></div></div></div>
 </section>
 
 <section class="slide " id="wrap-nine" data-ch="wrap" data-title="Nine principles">
@@ -935,10 +960,14 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 
 <section class="slide " id="kit" data-ch="wrap" data-title="The classroom kit">
 <div class="in">
-<p class="kicker">In schools · Materials</p><h1 tabindex="-1">The classroom kit</h1><p class="lede">Thirteen printable and editable documents support everything in this tour. Select only the pages needed for the current lesson.</p>
+<p class="kicker">In schools · Materials</p><h1 tabindex="-1">The classroom kit</h1><p class="lede">Teachers choose the print pages for each lesson and release assessment pages when students are ready.</p>
+<nav class="resource-links" aria-label="Classroom resources">
+  <a href="/aiplaybook/grab.html">Open teacher lesson resources</a>
+  <a href="/aiworkbook/">Open the interactive workbook</a>
+</nav>
 <div class="cols kit below">
 <div class="card kitc c-blue"><h3><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span>Teachers and shared use<span class="count">3</span></h3><ul><li><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div>Start here: Playbook and Pathway<span>The consolidated overview for planning.</span></div></li><li><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div>Pathway quick reference<span>For students and teachers.</span></div></li><li><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div>Reusable forms and communications<span>Permission briefs, evidence logs, decision records, family and staff drafts.</span></div></li></ul></div>
-<div class="card kitc c-amber"><h3><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg></span>For students<span class="count">4</span></h3><ul><li><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div>Foundations student workbook<span>Sorting, scenarios and exit checks for each competency.</span></div></li><li><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div>Five-mode studio student workbook<span>Sample conversations and practice for each Mode.</span></div></li><li><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div>Steps for using each AI mode<span>One-page reference table.</span></div></li><li><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div>Independent AI User License student packet<span>The license task, plus a full fictional example.</span></div></li></ul></div>
+<div class="card kitc c-amber"><h3><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg></span>For students<span class="count">4</span></h3><ul><li><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div>Student Workbook · Foundations<span>Sorting, scenarios and exit checks for each competency.</span></div></li><li><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div>Student Workbook · Mode Practice<span>Sample conversations and practice for each Mode.</span></div></li><li><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div>Steps for using each AI mode<span>One-page reference table.</span></div></li><li><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div>Teacher-assigned License brief<span>Your teacher releases the current assessment pages.</span></div></li></ul></div>
 <div class="card kitc c-stop"><h3><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg></span>Teacher only: keep private<span class="count">6</span></h3><ul><li><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg><div>Kit index and print plan</div></li><li><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg><div>Teaching and implementation guide</div></li><li><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg><div>Foundations teacher guide and keys<span>Answer keys.</span></div></li><li><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg><div>Five-mode studio teacher guide<span>Answer keys.</span></div></li><li><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg><div>License assessment guide<span>Rubrics and keys.</span></div></li><li><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg><div>Controlled-release assessment cards<span>Release selectively.</span></div></li></ul></div>
 </div>
 <p class="fine">Teacher-only files hold keys and future assessment material. Classroom files: Revision 2, 11 October 2026. Where an older file differs, follow the current License decision guide.</p></div>

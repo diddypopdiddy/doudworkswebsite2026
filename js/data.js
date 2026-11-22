@@ -26,7 +26,7 @@ const FRAMEWORK = {
   id: "ai-production-framework",
   title: "AI Production Framework and Pathway",
   kind: "Interactive framework tour",
-  summary: "Explore AI Literacy, the Core Competencies and the five AI Modes, then see how students in grades 7–12 progress from AI Permit to AI License.",
+  summary: "Explore AI Literacy, the Core Competencies and the five AI Modes, then see how students in grades 7–12 progress from the AI Permit to the AI Production License.",
   preview: "ai-framework-pathway-tour.webp",
   previewAlt: "The guided tour opens with the Framework and Pathway title and the AI Permit and AI License cards.",
   href: "/frameworkpathway/",
@@ -36,8 +36,8 @@ const FRAMEWORK = {
 
 const PLAYBOOK = {
   id: "ai-educator-playbook",
-  title: "AI Educator Playbook",
-  kind: "Educator resource",
+  title: "AI Production Teacher Playbook",
+  kind: "Online teaching modules",
   summary: "Seven teaching modules for grades 7–12, with formative quizzes, Mode rubrics, private hand-in steps and worked License examples by subject.",
   preview: "ai-educator-playbook-modules.webp",
   previewAlt: "The Playbook homepage lists the teaching modules below the AI Permit and AI License cards.",
@@ -105,7 +105,7 @@ export const BOOKS = [
       { t: "Assignment permissions and concerns", n: 5 },
       { t: "Printable quizzes and classroom resources", n: 6 },
     ],
-    art: "book-plain-brick", color: "#a3301f", spine: "AI Educator Playbook",
+    art: "book-plain-brick", color: "#a3301f", spine: "AI Production Teacher Playbook",
   },
   {
     ...TEXTBOOK,
@@ -146,13 +146,13 @@ export const BOOKS = [
   },
   {
     id: "ai-workbook",
-    title: "AI Framework Workbook",
-    kind: "Interactive workbook",
+    title: "AI Production Student Workbook",
+    kind: "Interactive practice",
     summary: "Play the Quiz Board, practice the four Core Competencies in Stations, and choose the right AI Mode in Final Boss.",
     href: "/aiworkbook/",
     sameTab: true,
     action: "Open the Workbook",
-    art: "book-plain-plum", color: "#52365e", spine: "AI Framework Workbook",
+    art: "book-plain-plum", color: "#52365e", spine: "AI Production Student Workbook",
     coverAddress: "vincedoud.com/aiworkbook",
     emblem: "ai-workbook.svg",
     chapters: [

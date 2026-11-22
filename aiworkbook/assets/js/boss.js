@@ -240,6 +240,7 @@
         <h1>The human finished the work.</h1>
         <p class="taunt">“${esc(M().taunts.win)}”</p>
         <p class="lede">${B.score.toLocaleString()} points${newBest ? " · new best" : ""}. You matched every need to a Mode, steered every conversation, and finished every round yourself.</p>
+        <p class="muted">Stars and points show interactive practice progress, not Permit or License readiness. This exit ticket stays on this device and is shared only when your teacher assigns it. Your teacher directs the next Permit or License check.</p>
         <h2 class="h2">Your Mode field guide</h2>
         <p class="muted">Keep this. Every Mode has four steps, and the last one is always yours.</p>
         <div class="table-wrap"><table class="matrix">
