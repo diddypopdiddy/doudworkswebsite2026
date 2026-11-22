@@ -71,39 +71,14 @@
       "blocks": [
         {
           "type": "text",
-          "html": "<p>Drag a USB file onto This PC. Check each drive. Then drag the computer copy into Source and check both locations again.</p>"
+          "html": "<p>Drag a USB file into the Documents window. Check both windows. Then drag the Documents copy into Source and check both locations again.</p>"
         },
         {
-          "type": "desktop-sim",
-          "fs": {
-            "drives": [
-              {
-                "id": "usb",
-                "label": "USB Drive",
-                "children": [
-                  {
-                    "name": "S04_master.mp4"
-                  },
-                  {
-                    "name": "S06_book.mp4"
-                  }
-                ]
-              },
-              {
-                "id": "pc",
-                "label": "This PC",
-                "children": [
-                  {
-                    "name": "Source",
-                    "folder": true,
-                    "children": []
-                  }
-                ]
-              }
-            ]
-          },
-          "start": "usb",
-          "tasks": []
+          type: "desktop-sim",
+          documents: [{ name: "Source", children: [] }],
+          drives: [{ name: "USB Drive", letter: "E", children: [{ name: "S04_master.mp4", media: "p8-note-wide" }, { name: "S06_book.mp4", media: "p8-note-detail" }] }],
+          open: ["Documents", "USB Drive"],
+          tasks: []
         }
       ]
     },
@@ -158,51 +133,14 @@
           ]
         },
         {
-          "type": "desktop-sim",
-          "fs": {
-            "drives": [
-              {
-                "id": "usb",
-                "label": "USB Drive",
-                "children": [
-                  {
-                    "name": "S04_master.mp4"
-                  },
-                  {
-                    "name": "S06_book.mp4"
-                  }
-                ]
-              },
-              {
-                "id": "pc",
-                "label": "This PC",
-                "children": [
-                  {
-                    "name": "Source",
-                    "folder": true,
-                    "children": []
-                  }
-                ]
-              }
-            ]
-          },
-          "start": "usb",
-          "tasks": [
-            {
-              "text": "Copy S04_master.mp4 into This PC > Source.",
-              "check": s => s.copiedTo.includes("This PC > Source > S04_master.mp4"),
-              "sticky": true
-            },
-            {
-              "text": "Copy S06_book.mp4 to the same folder. Leave both originals on USB.",
-              "check": s => s.copiedTo.includes("This PC > Source > S06_book.mp4") && !!s.locate("USB Drive > S04_master.mp4") && !!s.locate("USB Drive > S06_book.mp4"),
-              "sticky": true
-            },
-            {
-              "text": "Open both copies from Source to check the destination.",
-              "check": s => ["S04_master.mp4","S06_book.mp4"].every(n=>s.previewed.includes("This PC > Source > "+n)),
-              "sticky": true
-            }
+          type: "desktop-sim",
+          documents: [{ name: "Source", children: [] }],
+          drives: [{ name: "USB Drive", letter: "E", children: [{ name: "S04_master.mp4", media: "p8-note-wide" }, { name: "S06_book.mp4", media: "p8-note-detail" }] }],
+          open: ["Documents", "USB Drive"],
+          tasks: [
+            { text: "Drag S04_master.mp4 from the USB Drive window onto **Source** in the Documents window. The tip says **Copy to Source**.", check: s => s.copiedTo("Documents > Source > S04_master.mp4"), hint: "Drag the title bar of a window to move it if one covers the other." },
+            { text: "Copy S06_book.mp4 into Source with **Ctrl+C**, then open Source and press **Ctrl+V**. Leave both originals on the USB drive.", check: s => s.copiedTo("Documents > Source > S06_book.mp4") && s.exists("USB Drive > S04_master.mp4") && s.exists("USB Drive > S06_book.mp4") },
+            { text: "Open both copies from Source to check the destination.", check: s => ["S04_master.mp4", "S06_book.mp4"].every(n => s.previewed("Documents > Source > " + n)) }
           ]
         },
         {

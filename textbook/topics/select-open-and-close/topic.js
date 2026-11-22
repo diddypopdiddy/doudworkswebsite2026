@@ -69,88 +69,39 @@
       "blocks": [
         {
           "type": "text",
-          "html": "<p>Click Project once. Double-click it and compare the address. Choose Close window to return.</p>"
+          "html": "<p>Click Project once and notice the highlight. Double-click it and a File Explorer window opens. Close it with the X in the top-right corner. The folder is still on the desktop.</p>"
         },
         {
-          "type": "desktop-sim",
-          "fs": {
-            "drives": [
-              {
-                "id": "pc",
-                "label": "This PC",
-                "children": [
-                  {
-                    "name": "Project",
-                    "folder": true,
-                    "children": [
-                      {
-                        "name": "TheNote_edit.prproj"
-                      }
-                    ]
-                  },
-                  {
-                    "name": "S04_master.mp4"
-                  },
-                  {
-                    "name": "S06_book.mp4"
-                  }
-                ]
-              }
-            ]
-          },
-          "start": "pc",
-          "tasks": []
+          type: "desktop-sim",
+          title: "Try it: the practice desktop",
+          desktop: [
+            { name: "Project", children: ["TheNote_edit.prproj", { name: "Shot list.txt", text: "S04 wide: enter, sit\nS06 close: open the book" }] },
+            { name: "S04_master.mp4", media: "p8-note-wide" },
+            { name: "S06_book.mp4", media: "p8-note-detail" },
+            { name: "Notes.txt", text: "Bring the blue notebook." }
+          ],
+          tasks: []
         }
       ]
     },
     {
       "title": "Try it yourself",
-      "intro": "Open Project.",
+      "intro": "Open, close and select on a Windows 11 desktop.",
       "blocks": [
         {
-          "type": "desktop-sim",
-          "fs": {
-            "drives": [
-              {
-                "id": "pc",
-                "label": "This PC",
-                "children": [
-                  {
-                    "name": "Project",
-                    "folder": true,
-                    "children": [
-                      {
-                        "name": "TheNote_edit.prproj"
-                      }
-                    ]
-                  },
-                  {
-                    "name": "S04_master.mp4"
-                  },
-                  {
-                    "name": "S06_book.mp4"
-                  }
-                ]
-              }
-            ]
-          },
-          "start": "pc",
-          "tasks": [
-            {
-              "text": "Open Project.",
-              "check": s => s.opened.includes("This PC > Project"),
-              "sticky": true
-            },
-            {
-              "text": "Close its window and return to This PC.",
-              "check": s => s.closed.includes("This PC > Project"),
-              "sticky": true
-            },
-            {
-              "text": "Select both MP4 files together. Hold Ctrl or Command while clicking the second.",
-              "check": s => s.selection.length === 2 && s.selection.every(n => n.name.endsWith('.mp4')),
-              "sticky": true
-            }
+          type: "desktop-sim",
+          desktop: [
+            { name: "Project", children: ["TheNote_edit.prproj", { name: "Shot list.txt", text: "S04 wide: enter, sit\nS06 close: open the book" }] },
+            { name: "S04_master.mp4", media: "p8-note-wide" },
+            { name: "S06_book.mp4", media: "p8-note-detail" },
+            { name: "Notes.txt", text: "Bring the blue notebook." }
+          ],
+          tasks: [
+            { text: "Double-click **Project** on the desktop to open it.", check: s => s.opened("Desktop > Project"), hint: "Point at the yellow Project folder and click twice quickly." },
+            { text: "Close the Project window with the **X** in its top-right corner.", check: s => s.closed("Desktop > Project") },
+            { text: "Select both MP4 files together. Click one, then hold **Ctrl** and click the other.", check: s => s.did("select-toggle") && s.selection.length === 2 && s.selection.every(x => /\.mp4$/i.test(x.name)), hint: "On a Mac, hold Command instead of Ctrl." },
+            { text: "Double-click S04_master.mp4 to play it, then close Media Player.", check: s => s.previewed("Desktop > S04_master.mp4") && s.did("close-app", e => e.app === "player") },
+            { text: "Click an empty part of the desktop, then press **Ctrl+A** to select everything.", check: s => s.did("select-all") }
           ]
         }
       ]

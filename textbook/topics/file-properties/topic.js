@@ -29,7 +29,17 @@
           { x: 73, y: 57, label: 'Resolution and rate', text: 'The 3840 × 2160 frame has more pixels. The 30 fps number is the [[frame rate]].' },
           { x: 73, y: 67, label: 'Duration and space', text: 'Eight seconds is the running time. The 24 MB number is storage space.' },
           { x: 70, y: 75, label: 'Codec', text: 'H.265 is the encoding format. An editor must be able to decode it.' }
-        ] }),
+        ] },
+        { type: 'desktop-sim', open: 'Videos', view: 'details',
+          videos: [
+            { name: 'A', children: [{ name: 'Note.mp4', media: 'p8-note-medium', size: 16.4e6, meta: { width: 1920, height: 1080, fps: 24, duration: 12, codec: 'H.264' } }] },
+            { name: 'B', children: [{ name: 'Note.mp4', media: 'p8-note-medium', size: 24.6e6, meta: { width: 3840, height: 2160, fps: 30, duration: 8, codec: 'H.265' } }] }
+          ],
+          tasks: [
+            { text: 'Open folder A. Right-click Note.mp4, choose **Properties**, then click the **Details** tab.', check: s => s.did('properties-tab', e => e.detail === 'Details' && /> A > Note\.mp4$/.test(e.path)) },
+            { text: 'Do the same for Note.mp4 in folder B. Compare Frame width, Frame height and Frame rate.', check: s => s.did('properties-tab', e => e.detail === 'Details' && /> B > Note\.mp4$/.test(e.path)) },
+            { text: 'Close Properties. Turn on the **Details pane** (the Details button at the right of the command bar) and select a clip to see the same numbers.', check: s => s.did('pane', e => e.detail === 'details' && e.on) }
+          ] }),
       practice('Practice: read the details', 'Use the labels and units to identify the clips.', quiz(compare,
         q('Which clip takes more drive space?', 'B', [['A', 'Compare megabytes rather than seconds.'], ['They match', 'The equal name does not mean equal space.']], '24 MB takes more space than 16 MB.', props),
         q('An editor reads H.264 but not H.265. Which is likely to open here?', 'A', [['B', 'Check the codec on the bottom line.'], ['Both', 'The extension is shared. Check what each video uses inside.']], 'A uses H.264, which this editor can decode.', props)))

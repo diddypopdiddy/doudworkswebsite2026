@@ -87,7 +87,8 @@ window.TEXTBOOK_TOC = {
      "title": "Storage locations",
      "slug": "storage-locations",
      "modes": [
-      "read"
+      "read",
+      "explore"
      ],
      "priority": false,
      "history": false,
@@ -102,6 +103,7 @@ window.TEXTBOOK_TOC = {
      "slug": "organize-source-project-and-export-files",
      "modes": [
       "read",
+      "explore",
       "practice"
      ],
      "priority": false,
@@ -1107,7 +1109,8 @@ window.TEXTBOOK_TOC = {
      "slug": "file-properties",
      "modes": [
       "read",
-      "explore"
+      "explore",
+      "practice"
      ],
      "priority": false,
      "history": false,

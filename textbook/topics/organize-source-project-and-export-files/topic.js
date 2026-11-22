@@ -76,6 +76,33 @@
       ]
     },
     {
+      title: "Clean up a real download",
+      intro: "Move each file into the folder for its job, then rename a clip.",
+      blocks: [
+        {
+          type: "text",
+          html: "<p>Downloads holds a mix of [[source media]], a [[project file]] and an [[export]]. Move each into The Note. Open a second window with Ctrl+N, or drag onto folders in the left pane.</p>"
+        },
+        {
+          type: "desktop-sim",
+          downloads: [
+            { name: "VID_004.mp4", media: "p8-note-wide" }, { name: "VID_005.mp4", media: "p8-note-reaction" }, { name: "clock_detail.mov", media: "p8-note-detail" },
+            "TheNote.prproj", "TheNote_final.mp4", "Room tone.wav"
+          ],
+          documents: [{ name: "The Note", children: [{ name: "Source", children: [] }, { name: "Project", children: [] }, { name: "Exports", children: [] }] }],
+          view: "details",
+          open: "Downloads",
+          tasks: [
+            { text: "Select the three camera clips and Room tone.wav with **Ctrl+click**, then move them into The Note > Source.", check: s => ["VID_004.mp4", "VID_005.mp4", "clock_detail.mov", "Room tone.wav"].every(n => s.movedTo("Documents > The Note > Source > " + n)), hint: "Drag the selection onto Documents in the left pane, open it, then keep dragging onto The Note and Source. Or use Cut and Paste." },
+            { text: "Move TheNote.prproj into Project.", check: s => s.exists("Documents > The Note > Project > TheNote.prproj") },
+            { text: "Move TheNote_final.mp4 into Exports.", check: s => s.exists("Documents > The Note > Exports > TheNote_final.mp4") },
+            { text: "In Source, rename VID_004.mp4 to TheNote_S04_T01_2026-11-21.mp4.", check: s => s.exists("Documents > The Note > Source > TheNote_S04_T01_2026-11-21.mp4") },
+            { text: "Check Downloads. It should now be empty.", check: s => s.at("Downloads") && s.count === 0 }
+          ]
+        }
+      ]
+    },
+    {
       "title": "Sort the download and label the next take",
       "intro": "File ten items, then choose consistent take names.",
       "blocks": [

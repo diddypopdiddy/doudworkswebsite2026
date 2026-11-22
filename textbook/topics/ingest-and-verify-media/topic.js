@@ -9,16 +9,15 @@
 
   const bird = card('Ingest check', 'Camera card shows 18 clips. The copy in Source shows 17 clips.', [['Memory card', '18 clips'], ['Source folder', '17 clips']]);
   const names = ['01_Hall.mp4', '02_Table.mp4', '03_Note.mp4'];
-  const source = 'This PC > The Note > Source';
+  const source = 'Documents > The Note > Source';
   const cardPath = 'Camera Card > Clips';
   const allCopied = s => names.every(name => s.locate(source + ' > Clips > ' + name) || s.locate(source + ' > ' + name));
   const fs = {
-    drives: [
-      { id: 'pc', label: 'This PC', children: [{ name: 'The Note', folder: true, children: [{ name: 'Source', folder: true, children: [] }] }] },
-      { id: 'card', label: 'Camera Card', children: [{ name: 'Clips', folder: true, children:
-        ['p8-note-hall', 'p8-note-wide', 'p8-note-detail'].map((media, i) => ({ name: names[i], media }))
-      }] }
-    ]
+    documents: [{ name: 'The Note', children: [{ name: 'Source', children: [] }, { name: 'Project', children: [] }] }],
+    drives: [{ name: 'Camera Card', kind: 'sd', letter: 'F', children: [{ name: 'Clips', children:
+      ['p8-note-hall', 'p8-note-wide', 'p8-note-detail'].map((media, i) => ({ name: names[i], media }))
+    }, { name: 'MISC', children: [] }] }],
+    open: ['Camera Card', 'Documents > The Note']
   };
   T.topic({
     slug: 'ingest-and-verify-media', minutes: 12, bigIdea: 'Copy the card to your project folder and check every clip before you erase anything.',
@@ -31,11 +30,12 @@
         { type: 'steps', items: ['Find the camera card and the project’s Source folder.', 'Copy the card folder into Source.', 'Compare the counts and play every copied clip.', 'Make a backup before using the card again.'] },
         { type: 'callout', kind: 'mistake', html: 'Formatting clears the card. Ask the teacher before formatting a shared card.' }),
       practice('Practice: ingest The Note', 'Use the Camera Card and This PC drives. Copy the Clips folder, open it in Source, then preview each copy.',
-        { type: 'desktop-sim', fs, tasks: [
-          { text: 'Open Clips on the Camera Card and count three files.', check: s => s.path.join(' > ') === cardPath && s.count === 3, sticky: true },
-          { text: 'Copy all three clips into Source.', check: allCopied },
-          { text: 'Open and preview each copy in Source.', check: s => names.every(name => s.previewed.some(path => path === source + ' > Clips > ' + name || path === source + ' > ' + name)) }
-        ] })
+        Object.assign({ type: 'desktop-sim', tasks: [
+          { text: 'Open Clips on the Camera Card. The status bar at the bottom of the window should say 3 items.', check: s => s.at(cardPath) && s.count === 3 },
+          { text: 'Select all three clips (Ctrl+A) and copy them into The Note > Source. Drag them, or use Ctrl+C and Ctrl+V.', check: allCopied, hint: 'Dragging from the camera card to the computer copies, because they are different drives.' },
+          { text: 'Open Source and play each copy to check it.', check: s => names.every(name => s.previewed(source + ' > Clips > ' + name) || s.previewed(source + ' > ' + name)) },
+          { text: 'Compare the counts: Source should also show 3 items.', check: s => (s.at(source) && s.count === 3) || (s.at(source + ' > Clips') && s.count === 3) }
+        ] }, fs))
     ],
     check: [
       q('What would you do next?', 'Find the missing clip, copy it and test playback.', [['Clear the card', 'The folders have different counts.'], ['Trust the longer list', 'The short copy is the problem to fix.']], 'The count difference tells you the ingest is incomplete.', bird),

@@ -20,6 +20,21 @@
         '<p>A [[backup]] is a separate recoverable copy. The [[3-2-1 rule|three-two-one-rule]] calls for three copies, on two kinds of storage, with one off-site.</p><p>For a [[handoff]], include the original media, latest project version, export and a short note about what to open. Test a copy on a second computer or account.</p>',
         figure(plan, 'An approved school storage service can hold the off-site copy.'),
         { type: 'callout', kind: 'mistake', html: '[[File sync]] can mirror a deletion. Check whether you can actually restore a previous version.' }),
+      practice('Practice: make the copies', 'Back up the whole project folder to two other places, then check one.',
+        { type: 'desktop-sim', open: 'Documents',
+          documents: [{ name: 'The Note', children: [
+            { name: 'Source', children: [{ name: 'S04_master.mp4', media: 'p8-note-wide' }, { name: 'S06_book.mp4', media: 'p8-note-detail' }] },
+            { name: 'Project', children: ['TheNote_edit.prproj'] },
+            { name: 'Exports', children: ['TheNote_final.mp4'] },
+            { name: 'READ ME first.txt', text: 'Open Project > TheNote_edit.prproj. Media is in Source.' }
+          ] }],
+          drives: [{ name: 'USB Drive', letter: 'E', children: [] }, { name: 'School Cloud', letter: 'S', kind: 'cloud', children: [] }],
+          tasks: [
+            { text: 'Copy the whole **The Note** folder to the USB Drive.', check: s => s.isFolder('USB Drive > The Note') && s.exists('USB Drive > The Note > Source > S04_master.mp4') },
+            { text: 'Copy The Note to School Cloud too. That is your off-site copy.', check: s => s.exists('S: > The Note > Project > TheNote_edit.prproj') },
+            { text: 'Check the USB copy: open READ ME first.txt and play S04_master.mp4 from the USB Drive.', check: s => s.previewed('USB Drive > The Note > READ ME first.txt') && s.previewed('USB Drive > The Note > Source > S04_master.mp4') },
+            { text: 'Right-click the USB Drive in the left pane and choose **Eject** before you unplug it.', check: s => s.did('eject') }
+          ] }),
       practice('Practice: check the backup plan', 'Sort each plan by what survives a lost device or a lost room.', { type: 'sorter', groups: ['Fits 3-2-1', 'Needs another copy or location'], items: [
         { text: 'Laptop plus copied USB drive plus separately recoverable school cloud copy.', group: 0, why: 'It has three copies, different places to store them, and one off-site.', clue: 'Count complete copies and find the off-site one.' },
         { text: 'Three folders on one laptop drive.', group: 1, why: 'One failed laptop can remove all three folders.', clue: 'Look at the device that holds every folder.' },

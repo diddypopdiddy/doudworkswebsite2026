@@ -11,11 +11,14 @@
   const offline = card('Media offline', 'An offline clip named Note.mov. The project expects it in The Note / Source; a drive now shows it in Moved clips.', [
     ['Project expects', 'Source / Note.mov'], ['File now in', 'Moved clips', 'Note.mov']
   ]);
-  const fs = { drives: [{ id: 'pc', label: 'This PC', children: [
-    { name: 'The Note', folder: true, children: [{ name: 'Source', folder: true, children: [] }] },
-    { name: 'Moved clips', folder: true, children: [{ name: 'Note.mov' }, { name: 'Note_backup.mov' }] }
-  ] }] };
-  const target = 'This PC > Moved clips > Note.mov';
+  const fs = {
+    documents: [
+      { name: 'The Note', children: [{ name: 'Source', children: [] }, { name: 'Project', children: ['TheNote_edit.prproj'] }] },
+      { name: 'Moved clips', children: [{ name: 'Note.mov', media: 'p8-note-medium' }, { name: 'Note_backup.mov', media: 'p8-note-medium', meta: { duration: 4 } }] }
+    ],
+    open: 'Documents > The Note > Source'
+  };
+  const target = 'Documents > Moved clips > Note.mov';
   T.topic({
     slug: 'restore-and-relink-media', minutes: 12, bigIdea: 'Moved files break the project; relink to fix them.',
     hook: hook(offline, 'Which file should you point the project to first?', ['Note.mov in Moved clips', 'The empty Source folder', 'Any file with .mov'], 0, 'The same Note.mov exists at a new address. [[Relink]] tells the project where to find that [[missing file]].'),
@@ -27,9 +30,12 @@
         figure(offline, 'The file contents can be intact at a different address.'),
         { type: 'callout', kind: 'try', html: 'Keep the project and its sources together so a folder move is easier to fix.', link: { href: '../../topics/organize-source-project-and-export-files/index.html', label: 'Review how to organize project files' } }),
       practice('Practice: locate a missing source', 'Find and preview Note.mov. Then choose the relink steps you would take in the editor.',
-        { type: 'desktop-sim', fs, tasks: [
-          { text: 'Open the original Note.mov in Moved clips to check it.', check: s => s.previewed.includes(target) }
-        ] },
+        Object.assign({ type: 'desktop-sim', tasks: [
+          { text: 'Source is empty. Search Documents for Note.mov to find where it went.', check: s => s.searched(target) },
+          { text: 'Open the folder that holds it: right-click Note.mov in the results and choose **Open file location**.', check: s => s.opened('Documents > Moved clips') },
+          { text: 'Compare the two files. Turn on the **Details pane** and check each Length, then play Note.mov.', check: s => s.did('pane', e => e.detail === 'details' && e.on) && s.previewed(target) },
+          { text: 'Move Note.mov back into The Note > Source, where the project expects it.', check: s => s.movedTo('Documents > The Note > Source > Note.mov') }
+        ] }, fs),
         { type: 'quiz', items: [
           q('The project asks for Note.mov. Two files look similar. What do you check?', 'The filename, duration and first frames against the original.', [['Only the extension.', 'Both names may have the same ending.'], ['Only which one is newest.', 'A duplicate may have a newer date.']], 'Confirm that it is the source your cuts were made from.'),
           q('After locating the source, which command points the project to it?', 'Relink or locate media', [['Delete clip', 'That would remove an edit.'], ['Export project', 'Export does not update the clip’s path.']], 'Relink changes the saved source location.'),

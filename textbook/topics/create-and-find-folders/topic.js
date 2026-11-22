@@ -59,42 +59,16 @@
       "blocks": [
         {
           "type": "text",
-          "html": "<p>Open The Note, make a folder named Trial, then rename it. Try searching from The Note and then from This PC.</p>"
+          "html": "<p>Open The Note, make a folder named Trial, then rename it. Try searching for S04 from The Note, then from Documents.</p>"
         },
         {
-          "type": "desktop-sim",
-          "fs": {
-            "drives": [
-              {
-                "id": "pc",
-                "label": "This PC",
-                "children": [
-                  {
-                    "name": "The Note",
-                    "folder": true,
-                    "children": [
-                      {
-                        "name": "New folder",
-                        "folder": true,
-                        "children": []
-                      }
-                    ]
-                  },
-                  {
-                    "name": "Camera intake",
-                    "folder": true,
-                    "children": [
-                      {
-                        "name": "S04_master.mp4"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          "start": "pc",
-          "tasks": []
+          type: "desktop-sim",
+          documents: [
+            { name: "The Note", children: [{ name: "New folder", children: [] }] },
+            { name: "Camera intake", children: [{ name: "S04_master.mp4", media: "p8-note-wide" }] }
+          ],
+          open: "Documents",
+          tasks: []
         }
       ]
     },
@@ -103,59 +77,17 @@
       "intro": "Open The Note. Rename New folder to Source.",
       "blocks": [
         {
-          "type": "desktop-sim",
-          "fs": {
-            "drives": [
-              {
-                "id": "pc",
-                "label": "This PC",
-                "children": [
-                  {
-                    "name": "The Note",
-                    "folder": true,
-                    "children": [
-                      {
-                        "name": "New folder",
-                        "folder": true,
-                        "children": []
-                      }
-                    ]
-                  },
-                  {
-                    "name": "Camera intake",
-                    "folder": true,
-                    "children": [
-                      {
-                        "name": "S04_master.mp4"
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          },
-          "start": "pc",
-          "tasks": [
-            {
-              "text": "Open The Note. Rename New folder to Source.",
-              "check": s => !!s.locate("This PC > The Note > Source") && !s.locate("This PC > The Note > New folder"),
-              "sticky": true
-            },
-            {
-              "text": "Create Project directly inside The Note.",
-              "check": s => !!s.locate("This PC > The Note > Project")?.folder,
-              "sticky": true
-            },
-            {
-              "text": "Create Exports beside Project.",
-              "check": s => !!s.locate("This PC > The Note > Exports")?.folder,
-              "sticky": true
-            },
-            {
-              "text": "Return to This PC. Search for S04_master.mp4 and open it in Camera intake.",
-              "check": s => s.searched.includes("This PC > Camera intake > S04_master.mp4") && s.previewed.includes("This PC > Camera intake > S04_master.mp4"),
-              "sticky": true
-            }
+          type: "desktop-sim",
+          documents: [
+            { name: "The Note", children: [{ name: "New folder", children: [] }] },
+            { name: "Camera intake", children: [{ name: "S04_master.mp4", media: "p8-note-wide" }] }
+          ],
+          open: "Documents",
+          tasks: [
+            { text: "Open The Note. Rename **New folder** to Source. Select it and press **F2**, or right-click and choose Rename.", check: s => s.exists("Documents > The Note > Source") && !s.exists("Documents > The Note > New folder") },
+            { text: "Make a folder named **Project** inside The Note. Use **New > Folder** in the command bar, or press Ctrl+Shift+N.", check: s => s.isFolder("Documents > The Note > Project") },
+            { text: "Make **Exports** beside Project, also inside The Note.", check: s => s.isFolder("Documents > The Note > Exports") },
+            { text: "Go back to Documents. Type S04 in the search box, then double-click S04_master.mp4 in the results.", check: s => s.searched("Documents > Camera intake > S04_master.mp4") && s.previewed("Documents > Camera intake > S04_master.mp4"), hint: "The search box is at the top right of the window. It searches the folder you are in and every folder inside it." }
           ]
         }
       ]

@@ -66,79 +66,23 @@
       "blocks": [
         {
           "type": "text",
-          "html": "<p>Follow the folders to Source. Use Back once. Type This PC > Documents > Video > The Note > Source and choose Go.</p>"
+          "html": "<p>Click Documents in the left pane and follow the folders to Source. Use Back once. Then click an empty part of the address bar, type C:\\Users\\Student\\Documents\\Video\\The Note\\Source and press Enter.</p>"
         },
         {
-          "type": "desktop-sim",
-          "fs": {
-            "drives": [
-              {
-                "id": "pc",
-                "label": "This PC",
-                "children": [
-                  {
-                    "name": "Documents",
-                    "folder": true,
-                    "children": [
-                      {
-                        "name": "Video",
-                        "folder": true,
-                        "children": [
-                          {
-                            "name": "The Note",
-                            "folder": true,
-                            "children": [
-                              {
-                                "name": "Source",
-                                "folder": true,
-                                "children": [
-                                  {
-                                    "name": "S04_master.mp4"
-                                  }
-                                ]
-                              },
-                              {
-                                "name": "Project",
-                                "folder": true,
-                                "children": [
-                                  {
-                                    "name": "TheNote_edit.prproj"
-                                  }
-                                ]
-                              },
-                              {
-                                "name": "Exports",
-                                "folder": true,
-                                "children": [
-                                  {
-                                    "name": "TheNote_final.mp4"
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "usb",
-                "label": "USB Drive",
-                "children": [
-                  {
-                    "name": "S04_master.mp4"
-                  },
-                  {
-                    "name": "S06_book.mp4"
-                  }
-                ]
-              }
-            ]
-          },
-          "start": "pc",
-          "tasks": []
+          type: "desktop-sim",
+          documents: [
+            { name: "Video", children: [
+              { name: "The Note", children: [
+                { name: "Source", children: [{ name: "S04_master.mp4", media: "p8-note-wide" }, { name: "S06_book.mp4", media: "p8-note-detail" }] },
+                { name: "Project", children: ["TheNote_edit.prproj"] },
+                { name: "Exports", children: ["TheNote_final.mp4"] }
+              ] }
+            ] },
+            "Permission form.pdf"
+          ],
+          drives: [{ name: "USB Drive", letter: "E", children: [{ name: "S04_master.mp4", media: "p8-note-wide" }, { name: "S05_reaction.mp4", media: "p8-note-reaction" }, { name: "S06_book.mp4", media: "p8-note-detail" }] }],
+          open: "Home",
+          tasks: []
         }
       ]
     },
@@ -147,91 +91,25 @@
       "intro": "Follow Documents, Video, The Note, then Source. Open S04_master.mp4.",
       "blocks": [
         {
-          "type": "desktop-sim",
-          "fs": {
-            "drives": [
-              {
-                "id": "pc",
-                "label": "This PC",
-                "children": [
-                  {
-                    "name": "Documents",
-                    "folder": true,
-                    "children": [
-                      {
-                        "name": "Video",
-                        "folder": true,
-                        "children": [
-                          {
-                            "name": "The Note",
-                            "folder": true,
-                            "children": [
-                              {
-                                "name": "Source",
-                                "folder": true,
-                                "children": [
-                                  {
-                                    "name": "S04_master.mp4"
-                                  }
-                                ]
-                              },
-                              {
-                                "name": "Project",
-                                "folder": true,
-                                "children": [
-                                  {
-                                    "name": "TheNote_edit.prproj"
-                                  }
-                                ]
-                              },
-                              {
-                                "name": "Exports",
-                                "folder": true,
-                                "children": [
-                                  {
-                                    "name": "TheNote_final.mp4"
-                                  }
-                                ]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "id": "usb",
-                "label": "USB Drive",
-                "children": [
-                  {
-                    "name": "S04_master.mp4"
-                  },
-                  {
-                    "name": "S06_book.mp4"
-                  }
-                ]
-              }
-            ]
-          },
-          "start": "pc",
-          "tasks": [
-            {
-              "text": "Follow Documents, Video, The Note, then Source. Open S04_master.mp4.",
-              "check": s => s.previewed.includes("This PC > Documents > Video > The Note > Source > S04_master.mp4"),
-              "sticky": true
-            },
-            {
-              "text": "Use Back to reach the other branches. Open TheNote_edit.prproj in Project.",
-              "check": s => s.previewed.includes("This PC > Documents > Video > The Note > Project > TheNote_edit.prproj"),
-              "sticky": true
-            },
-            {
-              "text": "Type the path to Exports in the address bar, press Go, then open TheNote_final.mp4.",
-              "check": s => s.previewed.includes("This PC > Documents > Video > The Note > Exports > TheNote_final.mp4"),
-              "sticky": true
-            }
+          type: "desktop-sim",
+          documents: [
+            { name: "Video", children: [
+              { name: "The Note", children: [
+                { name: "Source", children: [{ name: "S04_master.mp4", media: "p8-note-wide" }, { name: "S06_book.mp4", media: "p8-note-detail" }] },
+                { name: "Project", children: ["TheNote_edit.prproj"] },
+                { name: "Exports", children: ["TheNote_final.mp4"] }
+              ] }
+            ] },
+            "Permission form.pdf"
+          ],
+          drives: [{ name: "USB Drive", letter: "E", children: [{ name: "S04_master.mp4", media: "p8-note-wide" }, { name: "S05_reaction.mp4", media: "p8-note-reaction" }, { name: "S06_book.mp4", media: "p8-note-detail" }] }],
+          open: "Home",
+          tasks: [
+            { text: "In the left pane, click **Documents**. Open Video, The Note, then Source. Double-click S04_master.mp4.", check: s => s.previewed("Documents > Video > The Note > Source > S04_master.mp4") },
+            { text: "Click **The Note** in the address bar (or press Back). Open Project and double-click TheNote_edit.prproj.", check: s => s.previewed("Documents > Video > The Note > Project > TheNote_edit.prproj") && (s.did("crumb") || s.did("back")) },
+            { text: "Click an empty part of the address bar. Type `C:\\Users\\Student\\Documents\\Video\\The Note\\Exports` and press Enter. Open TheNote_final.mp4.", check: s => s.did("address") && s.previewed("Documents > Video > The Note > Exports > TheNote_final.mp4"), hint: "Each backslash \\ separates one folder from the next." },
+            { text: "Open **View** in the command bar and choose **List**. Then switch to **Large icons**.", check: s => s.did("view", "list") && s.did("view", "large") },
+            { text: "Click the USB Drive in the left pane. Click S04_master.mp4, hold **Shift** and click S06_book.mp4 to select all three clips.", check: s => s.did("select-range") && s.selection.length === 3 && s.at("USB Drive") }
           ]
         }
       ]

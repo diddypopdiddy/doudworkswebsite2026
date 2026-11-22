@@ -57,30 +57,16 @@
       "blocks": [
         {
           "type": "text",
-          "html": "<p>Try Shift+F10 on draft.txt, then Escape. Move the file into Project. Use Cut and Paste to return it.</p>"
+          "html": "<p>Right-click draft.txt, or select it and press Shift+F10, to see its menu. Press Escape to close it. Drag the file into Project, then use Cut and Paste to bring it back.</p>"
         },
         {
-          "type": "desktop-sim",
-          "fs": {
-            "drives": [
-              {
-                "id": "pc",
-                "label": "This PC",
-                "children": [
-                  {
-                    "name": "draft.txt"
-                  },
-                  {
-                    "name": "Project",
-                    "folder": true,
-                    "children": []
-                  }
-                ]
-              }
-            ]
-          },
-          "start": "pc",
-          "tasks": []
+          type: "desktop-sim",
+          desktop: [
+            { name: "draft.txt", text: "Shot list draft\n1. Wide of the hall\n2. Close-up of the note" },
+            { name: "Project", children: ["TheNote_edit.prproj"] },
+            { name: "Poster.jpg", media: "p4-hard-edge" }
+          ],
+          tasks: []
         }
       ]
     },
@@ -89,42 +75,17 @@
       "intro": "Open the menu on draft.txt and rename it plan.txt.",
       "blocks": [
         {
-          "type": "desktop-sim",
-          "fs": {
-            "drives": [
-              {
-                "id": "pc",
-                "label": "This PC",
-                "children": [
-                  {
-                    "name": "draft.txt"
-                  },
-                  {
-                    "name": "Project",
-                    "folder": true,
-                    "children": []
-                  }
-                ]
-              }
-            ]
-          },
-          "start": "pc",
-          "tasks": [
-            {
-              "text": "Open the menu on draft.txt and rename it plan.txt.",
-              "check": s => !!s.locate("This PC > plan.txt"),
-              "sticky": true
-            },
-            {
-              "text": "Put plan.txt in Project. Open the file there before returning it.",
-              "check": s => s.previewed.includes("This PC > Project > plan.txt"),
-              "sticky": true
-            },
-            {
-              "text": "Return plan.txt to This PC.",
-              "check": s => s.opened.includes("This PC > Project > plan.txt") && !!s.locate("This PC > plan.txt"),
-              "sticky": true
-            }
+          type: "desktop-sim",
+          desktop: [
+            { name: "draft.txt", text: "Shot list draft\n1. Wide of the hall\n2. Close-up of the note" },
+            { name: "Project", children: ["TheNote_edit.prproj"] },
+            { name: "Poster.jpg", media: "p4-hard-edge" }
+          ],
+          tasks: [
+            { text: "Right-click draft.txt and choose **Rename** (the pencil icon). Name it plan.txt.", check: s => s.exists("Desktop > plan.txt") && s.did("context-menu"), hint: "On a trackpad, click with two fingers. Type plan and press Enter; the .txt stays." },
+            { text: "Drag plan.txt onto the Project folder and let go. Open Project and double-click plan.txt.", check: s => s.previewed("Desktop > Project > plan.txt") },
+            { text: "In Project, right-click plan.txt and choose **Cut**. Right-click an empty spot on the desktop and choose **Paste**.", check: s => s.movedTo("Desktop > plan.txt") && s.did("paste") },
+            { text: "Hold the **right** mouse button, drag Poster.jpg onto Project, let go and choose **Copy here**.", check: s => s.did("right-drag") && s.copiedTo("Desktop > Project > Poster.jpg"), hint: "A menu appears when you let go of the right button." }
           ]
         }
       ]

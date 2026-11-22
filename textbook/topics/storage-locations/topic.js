@@ -55,6 +55,31 @@
       ]
     },
     {
+      title: "Explore the drives",
+      intro: "Every storage location shows up in This PC with its own drive letter.",
+      blocks: [
+        {
+          type: "text",
+          html: "<p>Open This PC to see each place the computer can store files. C: is [[local storage]]. The USB drive is an [[external drive]]. H: is a school network drive, and School Cloud is [[cloud storage]].</p>"
+        },
+        {
+          type: "desktop-sim",
+          desktop: [{ name: "Interview_rough.mp4", media: "p8-note-medium" }],
+          drives: [
+            { name: "USB Drive", letter: "E", kind: "usb", children: [] },
+            { name: "Student (school-server)", letter: "H", kind: "network", children: [{ name: "Shared media", children: [] }] },
+            { name: "School Cloud", letter: "S", kind: "cloud", children: [] }
+          ],
+          tasks: [
+            { text: "Double-click **This PC** on the desktop. Find the storage locations under Devices and drives.", check: s => s.opened("This PC") },
+            { text: "Right-click the USB Drive and choose **Properties** to see how much space is free.", check: s => s.did("properties", "USB Drive (E:)") },
+            { text: "Copy Interview_rough.mp4 from the desktop to the school network drive (H:).", check: s => s.copiedTo("H: > Interview_rough.mp4"), hint: "Drag it from the desktop onto the H: drive in File Explorer. A different drive means Windows copies it." },
+            { text: "Copy it to School Cloud too. Now a copy survives if the laptop goes missing.", check: s => s.copiedTo("S: > Interview_rough.mp4") }
+          ]
+        }
+      ]
+    },
+    {
       "title": "Follow a change",
       "intro": "A synchronized folder can send edits and deletions to other devices.",
       "blocks": [

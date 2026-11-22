@@ -31,7 +31,16 @@
       teach('Read the ending', 'The part after the dot is a clue to what a file contains.',
         '<p>A [[file extension]] follows the last dot in the name. Here, .mp4 is a [[video file]], .wav is an [[audio file]], and .jpg is an [[image file]].</p><p>A [[project file]] keeps the editor’s decisions and links to the source clips. A final export plays on its own.</p>',
         figure(icons, 'The extension, rather than the icon color, tells these files apart.')),
-      practice('Practice: sort the project folder', 'Find the file type before you choose where it belongs.', sorter)
+      practice('Practice: sort the project folder', 'Find the file type before you choose where it belongs.', sorter),
+      practice('Practice: show the extensions', 'New Windows computers hide the part after the dot. Turn it on, then sort a real folder.',
+        { type: 'desktop-sim', extensions: false, open: 'Downloads', view: 'large',
+          downloads: [{ name: 'Note.mp4', media: 'p8-note-wide' }, 'Room.wav', { name: 'Poster.jpg', media: 'p4-hard-edge' }, { name: 'Hall.mov', media: 'p8-note-hall' }, 'Title.png', 'Note.drp', 'Final.mp4'],
+          tasks: [
+            { text: 'Two files look like they are both called Note. Turn on extensions: **View > Show > File name extensions**.', check: s => s.extensions },
+            { text: 'Switch to **Details** view, then click the **Type** column heading to sort by type.', check: s => s.did('view', 'details') && s.did('sort', 'type') },
+            { text: 'Make a folder named Audio and move Room.wav into it.', check: s => s.exists('Downloads > Audio > Room.wav') },
+            { text: 'Try renaming Poster.jpg to Poster.mp4. Read the warning, then choose **No**.', check: s => s.did('extension-warning') && s.exists('Downloads > Poster.jpg'), hint: 'Select Poster.jpg, press F2, change jpg to mp4 and press Enter.' }
+          ] })
     ],
     check: [
       q('Which file would you import to play the room sound?', 'Room.wav', [['Note.mp4', 'The MP4 includes a moving picture.'], ['Poster.jpg', 'A JPG is a still picture.']], 'The WAV extension points to audio.', icons),
