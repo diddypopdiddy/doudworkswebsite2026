@@ -26,9 +26,9 @@ const FRAMEWORK = {
   title: "AI Production Framework and Pathway",
   kind: "Interactive framework tour",
   summary: "Explore AI Literacy, the Core Competencies and the five AI Modes, then see how students in grades 7–12 progress from AI Permit to AI License.",
-  preview: "ai-framework-pathway-2026-11-21.webp",
-  previewAlt: "The Framework tour shows the guided practice and assessment stages from AI Permit to AI License.",
-  href: "https://ai-framework-pathway.diddypopdiddy.chatgpt.site/",
+  preview: "ai-framework-pathway-tour.webp",
+  previewAlt: "The guided tour opens with the Framework and Pathway title and the AI Permit and AI License cards.",
+  href: "/frameworkpathway/",
   action: "Explore the Framework",
 };
 
