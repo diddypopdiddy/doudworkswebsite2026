@@ -618,6 +618,30 @@ a.bo-right:not([inert]):is(:hover, :focus) .bo-arrow { transform: translateX(4px
   box-shadow: 0 .75cqh 1.7cqh rgba(0, 0, 0, .45); transform: rotate(-6deg);
 }
 .bo-framework-cards img + img { transform: rotate(6deg); }
+.bo-workbook-cover {
+  gap: 3.4cqh; padding: 6cqh 4.5cqh 6cqh 6cqh;
+  background:
+    linear-gradient(90deg, var(--c) 0 4.5%, transparent 4.5%),
+    radial-gradient(#bfb5cc .7px, transparent .8px) 0 0 / 1.7cqh 1.7cqh,
+    #fff8ec;
+}
+.bo-workbook-cover .bo-bands { display: none; }
+.bo-workbook-cover .bo-emblem {
+  width: 16cqh; height: 16cqh; border-radius: 0; box-shadow: none;
+}
+.bo-workbook-cover .bo-panel {
+  width: min(100%, 53cqh); min-height: 0; padding: 4.2cqh 2.8cqh;
+  background: #ffd43b; border: max(2px, .55cqh) solid #1a1626; box-shadow: .85cqh 1cqh 0 #1a1626;
+}
+.bo-workbook-cover .bo-panel span {
+  font: 800 clamp(17px, min(6.2cqh, 9vw), 42px)/1.04 var(--sans);
+  letter-spacing: -.04em; color: #1a1626; text-shadow: none;
+}
+.bo-cover-address, .bo-imprint.bo-imprint-address {
+  color: #3157c8; text-transform: none; letter-spacing: 0;
+  font: 650 clamp(11px, 3cqh, 17px)/1.25 var(--sans);
+}
+.bo-workbook-author { width: min(27cqh, 54%); height: auto; mix-blend-mode: multiply; }
 .bo-cover-edge {
   position: absolute; top: 0; bottom: 0; left: 100%; width: var(--bt); transform-origin: 0 50%;
   transform: rotateY(-90deg); background: var(--board); box-shadow: 0 0 0 calc(var(--line) * .7) var(--bo-ink);
@@ -1090,45 +1114,72 @@ button.fw-item:hover { background: rgba(0,0,0,.06); }
 .handset:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; border-radius: 30px; }
 .coin-slot { position: absolute; width: 9%; height: 7%; transform: translate(-50%, -50%); border: 0; border-radius: 10px; background: transparent; cursor: pointer; }
 .coin-slot:hover { background: rgba(255, 215, 130, .2); box-shadow: 0 0 0 2px rgba(255, 215, 130, .6); }
-.coin { position: absolute; width: 6.5%; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -50%) translateX(-260%) scale(.9); opacity: 0; pointer-events: none;
-  background: radial-gradient(circle at 35% 30%, #fff, #d7d9dd 40%, #9aa0a8 75%, #c9ccd2); box-shadow: inset 0 0 0 2px rgba(0,0,0,.25), 0 3px 6px rgba(0,0,0,.35); }
-.coin.is-drop { animation: coin-drop .6s cubic-bezier(.5, 0, .7, .4) forwards; }
-@keyframes coin-drop {
-  0% { opacity: 0; transform: translate(-50%, -50%) translate(-260%, -60%) scale(.9) rotateY(0); }
-  20% { opacity: 1; }
-  55% { transform: translate(-50%, -50%) translate(0, -60%) scale(.9) rotateY(80deg); }
-  100% { opacity: 1; transform: translate(-50%, -50%) translate(0, 40%) scale(.9) rotateY(90deg); }
+/* dropping a quarter in: it flies up from the lower left, turns edge-on at the slit and is pushed in.
+   The box ends exactly at the slit and clips, so the coin disappears into it. */
+.coin-in { position: absolute; overflow: hidden; pointer-events: none; z-index: 3; }
+.incoin { position: absolute; right: 0; top: 50%; opacity: 0; animation: coin-in .95s both; }
+.incoin .rcoin-spin { --s: .1; animation: coin-in-turn .95s both; }
+@keyframes coin-in {
+  0% { opacity: 0; transform: translate(50%, -50%) translate(-250%, 150%) scale(1.75); animation-timing-function: cubic-bezier(.2, .7, .3, 1); }
+  10% { opacity: 1; }
+  54% { opacity: 1; transform: translate(50%, -50%) translate(-24%, 0) scale(1); animation-timing-function: ease-in-out; }
+  68% { opacity: 1; transform: translate(50%, -50%) translate(-19%, 0) scale(1); animation-timing-function: cubic-bezier(.5, 0, .9, .6); }
+  100% { opacity: 1; transform: translate(50%, -50%) translate(24%, 0) scale(1); }
 }
-/* coin return: the plate pushes into its recess, the chute flap swings open, change tumbles out */
-.coin-return { position: absolute; padding: 0; border: 0; cursor: pointer; border-radius: 9% / 4%; background: #0c0b0b;
-  box-shadow: inset 0 0 6px rgba(0,0,0,.9); }
+@keyframes coin-in-turn {
+  0% { transform: perspective(var(--pp)) rotateY(12deg) rotateZ(-50deg); animation-timing-function: cubic-bezier(.3, .5, .3, 1); }
+  54%, 100% { transform: perspective(var(--pp)) rotateY(73deg) rotateZ(0deg); }
+}
+/* coin return: the door hangs from its top edge; push it and the bottom swings back into the phone, change spills out */
+.coin-return { position: absolute; padding: 0; border: 0; cursor: pointer; border-radius: 9% / 4%; background: none; container-type: size;
+  touch-action: manipulation; -webkit-tap-highlight-color: transparent; transition: box-shadow .2s; }
+.coin-return-box { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; perspective: 210cqh; perspective-origin: 50% 30%; }
+/* the cup behind the door: black at the back, side walls, a little light on its floor */
+.coin-return-well { position: absolute; inset: 0; border-radius: inherit;
+  background:
+    linear-gradient(to top, rgba(150, 140, 124, .5) 0, rgba(74, 68, 60, .45) 6%, transparent 22%),
+    linear-gradient(90deg, #000 0, transparent 18%, transparent 82%, #000 100%),
+    linear-gradient(#000 0, #080707 55%, #1c1815 100%);
+  box-shadow: inset 0 0 3cqh #000, inset 0 7cqh 7cqh -3cqh #000; }
 .coin-return-plate { position: absolute; inset: 0; border-radius: inherit; background-image: url("../assets/objects/payphone-front-off-hook.webp"); background-repeat: no-repeat;
-  transition: transform .14s ease, filter .14s ease, box-shadow .2s; }
-.coin-return:hover .coin-return-plate { box-shadow: 0 0 0 2px rgba(255, 215, 130, .6), 0 0 14px rgba(255, 215, 130, .35); }
-.coin-return.is-push .coin-return-plate { animation: plate-push .62s ease; }
-@keyframes plate-push {
-  0% { transform: none; filter: none; }
-  22%, 55% { transform: scale(.93, .965); filter: brightness(.78) contrast(1.05); box-shadow: inset 0 3px 8px rgba(0,0,0,.55); }
-  100% { transform: none; filter: none; }
+  transform-origin: 50% 0; backface-visibility: hidden; transition: transform .34s cubic-bezier(.3, 1.5, .5, 1); }
+/* the door falls into shadow as it goes in */
+.coin-return-plate i { position: absolute; inset: 0; border-radius: inherit; opacity: 0; transition: opacity .25s;
+  background: linear-gradient(rgba(0,0,0,.06), rgba(0,0,0,.3) 40%, rgba(0,0,0,.6)); }
+@media (hover: hover) {
+  .coin-return:hover { box-shadow: 0 0 0 2px rgba(255, 215, 130, .6), 0 0 14px rgba(255, 215, 130, .35); }
+  .coin-return:hover .coin-return-plate { transform: rotateX(-6deg); }
+  .coin-return:hover .coin-return-plate i { opacity: .16; }
 }
+.coin-return.is-in .coin-return-plate { transform: rotateX(-48deg); transition: transform .11s cubic-bezier(.2, .7, .3, 1); }
+.coin-return.is-in .coin-return-plate i { opacity: 1; transition-duration: .11s; }
+.coin-return.is-back .coin-return-plate { animation: flap-back .52s both; }
+.coin-return.is-back .coin-return-plate i { animation: flap-shade .52s both; }
+/* springs shut and rattles against its stop (it can only ever swing inward) */
+@keyframes flap-back {
+  0% { transform: rotateX(-48deg); animation-timing-function: cubic-bezier(.5, 0, .9, .5); }
+  30% { transform: rotateX(0); animation-timing-function: cubic-bezier(.1, .6, .4, 1); }
+  46% { transform: rotateX(-10deg); animation-timing-function: cubic-bezier(.6, 0, .9, .5); }
+  62% { transform: rotateX(0); animation-timing-function: cubic-bezier(.1, .6, .4, 1); }
+  74% { transform: rotateX(-3.5deg); animation-timing-function: cubic-bezier(.6, 0, .9, .5); }
+  86%, 100% { transform: rotateX(0); }
+}
+@keyframes flap-shade { 0% { opacity: 1; } 30% { opacity: 0; } 46% { opacity: .25; } 62% { opacity: 0; } 74% { opacity: .1; } 86%, 100% { opacity: 0; } }
 .coin-return:focus-visible { outline: 3px solid var(--focus); outline-offset: 4px; }
-.coin-chute { position: absolute; border-radius: 12% / 40%; pointer-events: none; perspective: 200px;
-  background: linear-gradient(#050404, #191615 70%, #2a2522); box-shadow: inset 0 2px 3px rgba(0,0,0,.9), 0 1px 0 rgba(255,255,255,.12), 0 -1px 0 rgba(0,0,0,.6); }
-.coin-chute i { position: absolute; inset: 0; border-radius: inherit; transform-origin: 50% 0; transition: transform .22s cubic-bezier(.3, 1.6, .5, 1);
-  background: linear-gradient(#55504c, #34302d 40%, #26221f); box-shadow: inset 0 1px 0 rgba(255,255,255,.22), inset 0 -1px 0 rgba(0,0,0,.5); }
-.coin-chute.is-open i { transform: rotateX(62deg); transition-duration: .12s; }
 .coin-layer { position: absolute; left: 0; top: 0; width: 0; height: 0; pointer-events: none; z-index: 3; }
-.rcoin { position: absolute; left: 0; top: 0; border-radius: 50%; opacity: 0; will-change: transform;
-  background: radial-gradient(circle at 34% 30%, #fff 0, #e3e5e8 18%, #aeb3ba 55%, #7d838c 80%, #c4c8ce 100%);
-  box-shadow: inset 0 0 0 1.5px rgba(70, 74, 80, .55), inset 0 0 0 3px rgba(255,255,255,.35), 0 2px 3px rgba(0,0,0,.4); }
-.rcoin::after { content: ""; position: absolute; inset: 22%; border-radius: 50%; border: 1px solid rgba(80, 84, 90, .35); box-shadow: 1px 1px 0 rgba(255,255,255,.4); }
-.rcoin.is-reeded { box-shadow: inset 0 0 0 1.5px rgba(70, 74, 80, .55), 0 2px 3px rgba(0,0,0,.4);
-  background: radial-gradient(circle at 34% 30%, #fff 0, #e3e5e8 18%, #aeb3ba 55%, #7d838c 76%, transparent 77%),
-    repeating-conic-gradient(#8a9098 0 4deg, #d6d9de 4deg 8deg); }
-.rcoin.is-nickel { background: radial-gradient(circle at 34% 30%, #f6f6f4 0, #d4d4d0 20%, #a3a39e 58%, #777771 82%, #b9b9b3 100%); }
-.rcoin.is-copper { background: radial-gradient(circle at 34% 30%, #ffe0c4 0, #e3a173 20%, #b8693d 58%, #8a4724 82%, #c27a4c 100%);
-  box-shadow: inset 0 0 0 1.5px rgba(100, 50, 25, .6), inset 0 0 0 3px rgba(255, 210, 170, .3), 0 2px 3px rgba(0,0,0,.4); }
-.rcoin.is-copper::after { border-color: rgba(110, 55, 25, .4); }
+/* real coin faces (US Mint photos) on a 3D disc with edge thickness; contact.js tumbles them and sets the light */
+.rcoin { position: absolute; left: 0; top: 0; opacity: 0; will-change: transform; }
+.rcoin-spin { position: absolute; inset: 0; transform-style: preserve-3d; --s: 0; --g: 0; }
+.rcoin-spin i { position: absolute; inset: 0; border-radius: 50%; }
+.rcoin-e { background: repeating-conic-gradient(#767c85 0 3deg, #d3d6db 3deg 6deg); }
+.is-nickel .rcoin-e { background: #94948e; }
+.is-copper .rcoin-e { background: #9c5a33; }
+.rcoin-f, .rcoin-b { backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  background: url("../assets/objects/coins.webp") calc(var(--col) / 3 * 100%) 0 / 400% 200% no-repeat; }
+.rcoin-b { background-position-y: 100%; }
+.rcoin-f::before, .rcoin-b::before, .rcoin-f::after, .rcoin-b::after { content: ""; position: absolute; inset: 0; border-radius: 50%; }
+.rcoin-f::before, .rcoin-b::before { background: #050404; opacity: var(--s); }
+.rcoin-f::after, .rcoin-b::after { background: linear-gradient(120deg, transparent 22%, rgba(255,255,255,.95) 50%, transparent 78%); opacity: var(--g); }
 .phone-key { position: absolute; width: 8.3%; height: 3.3%; transform: translate(-50%, -50%); border: 0; border-radius: 22%; background: transparent; cursor: pointer; transition: background .12s; }
 .phone-key:hover { background: rgba(255, 215, 130, .22); }
 .phone-key.is-press { animation: key-press .18s ease; }

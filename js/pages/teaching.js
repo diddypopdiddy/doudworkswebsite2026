@@ -22,7 +22,7 @@ const SCALE = 0.43;
 const ROW = [
   { art: "book-plain-rust" },
   { art: "book-plain-ink-blue" },
-  { art: "book-plain-ivory" },
+  { book: 5 },
   { book: 0, gap: 18 },
   { book: 1 }, { book: 2 }, { book: 3 }, { book: 4, gap: 22 },
   { art: "book-plain-ink-blue" },
@@ -168,6 +168,8 @@ export default {
       const actionLabel = b.sameTab ? b.action : `${b.action} (opens in a new tab)`;
       const link = b.href ? ` href="${esc(b.href)}" ${target} aria-label="${esc(actionLabel)}"` : "";
       const frameworkCover = b.cover === "framework";
+      const workbookCover = b.cover === "workbook";
+      const coverClass = b.cover ? ` bo-${esc(b.cover)}-cover` : "";
       const chapters = b.chapters.map(({ t, n }, i) => `
         <li class="bo-chapter">
           <span class="bo-roman" aria-hidden="true">${ROMAN[i]}.</span>
@@ -202,7 +204,7 @@ export default {
                 </${tag}>
               </div>
               <div class="bo-cover">
-                <div class="bo-cover-front${frameworkCover ? " bo-framework-cover" : ""}" aria-hidden="true">
+                <div class="bo-cover-front${coverClass}" aria-hidden="true">
                   ${frameworkCover ? `
                     <span class="bo-framework-audience">Grades 7–12</span>
                     <span class="bo-framework-title">${esc(b.title)}</span>
@@ -213,7 +215,10 @@ export default {
                     <i class="bo-bands"></i>
                     ${b.emblem ? `<img class="bo-emblem" src="assets/media/${esc(b.emblem)}" alt="" draggable="false">` : ""}
                     <span class="bo-panel"><span>${esc(b.title)}</span></span>`}
-                  <span class="bo-author">Vince Doud</span>
+                  ${workbookCover ? `
+                    <span class="bo-cover-address">${esc(b.coverAddress)}</span>
+                    <img class="bo-workbook-author" src="assets/media/vince-doud-name-only.png" alt="" width="1800" height="440" draggable="false">` : `
+                    <span class="bo-author">Vince Doud</span>`}
                 </div>
                 <div class="bo-cover-edge"></div>
                 <div class="bo-cover-inside">
@@ -225,7 +230,9 @@ export default {
                       <p class="bo-by">by Vince Doud</p>
                       <p class="bo-ornament" aria-hidden="true">❦</p>
                     </div>
-                    <p class="bo-imprint">Basement Press · New Jersey</p>
+                    ${b.coverAddress
+                      ? `<p class="bo-imprint bo-imprint-address">${esc(b.coverAddress)}</p>`
+                      : `<p class="bo-imprint">Basement Press · New Jersey</p>`}
                   </div>
                 </div>
               </div>
@@ -307,7 +314,7 @@ export default {
         }, restore ? 0 : FADE_MS);
         return;
       }
-      const coverDelay = book.cover === "framework" ? 950 : 600;
+      const coverDelay = book.cover ? 950 : 600;
       phaseTimer = setTimeout(() => {
         if (run !== token) return;
         cancelCoverWait = afterCover(cover, revealContents);

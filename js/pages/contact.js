@@ -1,23 +1,25 @@
-import { esc, scope, audioCtx, reducedMotion } from "../util.js";
+import { esc, scope, audioCtx, reducedMotion, tick } from "../util.js";
 import { SITE } from "../data.js";
 
 /* The payphone pulled off an old building, now on the basement wall.
    The camera pushes in on the sticker with the email (the only place the address appears; click it to write).
-   The keypad really beeps. Push the coin return and change tumbles out (sometimes more than you put in). */
+   The keypad really beeps. Push the coin return door in and change spills out (sometimes more than you put in). */
 
 const ART_W = 764, ART_H = 1643;
 const STICKER = { x: 254, y: 1434, w: 448, h: 138, rot: -4 };
-const COIN = { x: 252, y: 186 };
-// The "PUSH FOR COIN RETURN" plate (art px) and the little return chute under it, where the change comes out.
+// The slit of the coin slot (art px): centre, and the box the coin flies through on its way in.
+const COIN = { x: 253, y: 188, box: 380 };
+// The "PUSH FOR COIN RETURN" door (art px). It hangs from its top edge and swings back into the phone.
 const PLATE = { x: 81, y: 1303, w: 103, h: 234 };
-const CHUTE = { x: 84, y: 1567, w: 97, h: 24 };
-// Real US coin sizes (mm), drawn relative to a quarter.
+// Real US coin sizes (mm), drawn relative to a quarter. col = column in assets/objects/coins.webp.
 const COINS = {
-  q: { cents: 25, mm: 24.26, metal: "silver", reeded: true },
-  d: { cents: 10, mm: 17.91, metal: "silver", reeded: true },
-  n: { cents: 5, mm: 21.21, metal: "nickel" },
-  p: { cents: 1, mm: 19.05, metal: "copper" },
+  q: { cents: 25, mm: 24.26, col: 0, edge: "silver", rate: 0.92 },
+  d: { cents: 10, mm: 17.91, col: 1, edge: "silver", rate: 1.26 },
+  n: { cents: 5, mm: 21.21, col: 2, edge: "nickel", rate: 1.0 },
+  p: { cents: 1, mm: 19.05, col: 3, edge: "copper", rate: 1.12 },
 };
+// Real recordings (public domain, see source-art/coin-return/SOURCES.md): coins in a metal cup, coins on a floor.
+const SFX_NAMES = ["coin-floor", "coins-floor", "coin-cup-1", "coin-cup-2", "coin-cup-3", "coin-cup-4", "coins-rattle"];
 // The cord stays anchored at its connector while the handset lifts.
 const HS = { w: 427, h: 1454, scale: 0.57, left: 74, top: 458, plugX: 55, plugY: 735 };
 const KEYS = [
@@ -39,6 +41,36 @@ function tone(freqs, ms, vol = 0.07) {
   freqs.forEach((f) => { const o = a.createOscillator(); o.frequency.value = f; o.connect(g); o.start(t); o.stop(t + ms / 1000 + 0.02); });
 }
 
+const sfx = {};
+let sfxLoad;
+function loadSfx() {
+  const OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+  if (sfxLoad || !OAC) return;
+  const dec = new OAC(1, 1, 44100); // decoding here needs no click first, unlike a live audio context
+  sfxLoad = Promise.all(SFX_NAMES.map(async (n) => {
+    try {
+      const buf = await (await fetch(`assets/sfx/${n}.m4a`)).arrayBuffer();
+      sfx[n] = await new Promise((ok, no) => { const pr = dec.decodeAudioData(buf, ok, no); if (pr && pr.catch) pr.catch(no); });
+    } catch { /* no sample: the synth clink below covers it */ }
+  }));
+}
+function play(name, { rate = 1, vol = 1, pan = 0, delay = 0 } = {}) {
+  const a = audioCtx(), b = sfx[name]; if (!a || !b) return false;
+  const src = a.createBufferSource(), g = a.createGain();
+  src.buffer = b; src.playbackRate.value = rate; g.gain.value = vol;
+  let out = src.connect(g);
+  if (a.createStereoPanner) { const pn = a.createStereoPanner(); pn.pan.value = pan; out = out.connect(pn); }
+  out.connect(a.destination);
+  src.start(a.currentTime + delay);
+  return true;
+}
+
+// A coin with two real faces and a stack of edge discs between them, so it has thickness when it turns edge-on.
+function coinHTML(kind, d) {
+  const k = COINS[kind], t = d * 0.036;
+  return `<span class="rcoin-spin is-${k.edge}" style="--col:${k.col};--pp:${(d * 5).toFixed(1)}px">${[-0.66, -0.22, 0.22, 0.66].map((z) => `<i class="rcoin-e" style="transform:translateZ(${(z * t).toFixed(2)}px)"></i>`).join("")}<i class="rcoin-f" style="transform:translateZ(${t.toFixed(2)}px)"></i><i class="rcoin-b" style="transform:rotateY(180deg) translateZ(${t.toFixed(2)}px)"></i></span>`;
+}
+
 export default {
   mount(root) {
     const S = scope();
@@ -52,11 +84,13 @@ export default {
           <div class="phone" data-phone style="aspect-ratio:${ART_W} / ${ART_H}">
             <img class="phone-art" src="assets/objects/payphone-front-off-hook.webp" alt="A Bell Atlantic payphone mounted on the brick wall" width="${ART_W}" height="${ART_H}" draggable="false">
             <button class="coin-slot" data-coin aria-label="Drop a coin in the slot" style="${coinPosition}"></button>
-            <span class="coin" data-coin-anim aria-hidden="true" style="${coinPosition}"></span>
+            <span class="coin-in" data-coin-in aria-hidden="true" style="left:${pct(COIN.x - COIN.box, ART_W)};top:${pct(COIN.y - COIN.box / 2, ART_H)};width:${pct(COIN.box, ART_W)};height:${pct(COIN.box, ART_H)}"></span>
             <button class="coin-return" data-return aria-label="Push for coin return" style="left:${pct(PLATE.x, ART_W)};top:${pct(PLATE.y, ART_H)};width:${pct(PLATE.w, ART_W)};height:${pct(PLATE.h, ART_H)}">
-              <span class="coin-return-plate" style="background-size:${(ART_W / PLATE.w) * 100}% auto;background-position:${(PLATE.x / (ART_W - PLATE.w)) * 100}% ${(PLATE.y / (ART_H - PLATE.h)) * 100}%"></span>
+              <span class="coin-return-box">
+                <span class="coin-return-well"></span>
+                <span class="coin-return-plate" style="background-size:${(ART_W / PLATE.w) * 100}% auto;background-position:${(PLATE.x / (ART_W - PLATE.w)) * 100}% ${(PLATE.y / (ART_H - PLATE.h)) * 100}%"><i></i></span>
+              </span>
             </button>
-            <span class="coin-chute" data-chute aria-hidden="true" style="left:${pct(CHUTE.x, ART_W)};top:${pct(CHUTE.y, ART_H)};width:${pct(CHUTE.w, ART_W)};height:${pct(CHUTE.h, ART_H)}"><i></i></span>
             <div class="coin-layer" data-coins aria-hidden="true"></div>
             <button class="handset" data-handset aria-label="Pick up the handset to write an email" style="left:${pct(HS.left, ART_W)};top:${pct(HS.top, ART_H)};width:${pct(HS.w * HS.scale, ART_W)};height:${pct(HS.h * HS.scale, ART_H)};transform-origin:${pct(HS.plugX, HS.w)} ${pct(HS.plugY, HS.h)}">
               <img src="assets/objects/payphone-handset.webp" alt="" draggable="false">
@@ -118,22 +152,43 @@ export default {
       S.timeout(() => { phone.classList.remove("is-lifted"); dial.classList.remove("is-on"); }, 3200);
     });
 
+    let credit = 0; // what's been dropped in the slot; the coin return gives it back
+
     /* ---------- a coin, for old times' sake ---------- */
-    const coin = $("[data-coin-anim]");
+    // A quarter comes up to the slot, turns edge-on, gets pushed in, then you hear it drop through the phone.
+    const coinIn = $("[data-coin-in]");
     S.on($("[data-coin]"), "click", () => {
-      coin.classList.remove("is-drop"); void coin.offsetWidth; coin.classList.add("is-drop");
-      S.timeout(() => { tone([2093], 70, 0.05); S.timeout(() => tone([2637], 110, 0.04), 90); }, 420);
-      S.timeout(() => { dial.textContent = "25¢ · THANKS! EMAIL’S ON THE STICKER"; dial.classList.add("is-on"); }, 520);
-      clearTimeout(dialTimer); dialTimer = setTimeout(() => dial.classList.remove("is-on"), 2600);
       credit += 25;
+      const d = phone.offsetWidth * 0.088;
+      const el = document.createElement("span");
+      el.className = "incoin";
+      el.style.width = el.style.height = d + "px";
+      el.innerHTML = coinHTML("q", d);
+      coinIn.appendChild(el);
+      S.timeout(() => el.remove(), 1100);
+      S.timeout(() => tick(0.03), 640); // metal on metal as it meets the slot
+      S.timeout(() => {
+        // down the chute and into the box
+        if (play("coin-cup-2", { rate: 0.9, vol: 0.2, pan: -0.2 })) {
+          play(`coin-cup-${Math.random() < 0.5 ? 1 : 3}`, { rate: 0.74, vol: 0.14, pan: -0.2, delay: 0.2 });
+          play("coin-cup-4", { rate: 0.6, vol: 0.17, pan: -0.2, delay: 0.42 });
+        } else { tone([2093], 70, 0.05); S.timeout(() => tone([2637], 110, 0.04), 90); }
+        S.timeout(() => tone([105], 80, 0.06), 470);
+      }, 930);
+      S.timeout(() => {
+        dial.textContent = "25¢ · THANKS! EMAIL’S ON THE STICKER"; dial.classList.add("is-on");
+        clearTimeout(dialTimer); dialTimer = setTimeout(() => dial.classList.remove("is-on"), 2600);
+      }, 1250);
     });
 
-    /* ---------- coin return: push the plate in and the change falls out ---------- */
+    /* ---------- coin return: push the door in and the change spills out ---------- */
     // Anything you dropped in the slot comes back, and like a real payphone, sometimes somebody left theirs.
-    let credit = 0, pushes = 0, raf = 0;
-    const plate = $("[data-return]"), chute = $("[data-chute]"), layer = $("[data-coins]");
+    // The door hangs from its top edge: hold it in and it stays in, let go and it slaps shut.
+    let pushes = 0, raf = 0, held = false, isIn = false, inAt = 0, minHold = 0, backTimer = 0;
+    const plate = $("[data-return]"), layer = $("[data-coins]");
     const live = [];
     const clink = (f, vol = 0.045) => { tone([f, f * 1.51], 55, vol); };
+    loadSfx();
 
     function haul() {
       const out = [];
@@ -149,80 +204,104 @@ export default {
       return out.slice(0, 12);
     }
 
-    function spawn(kind, delay) {
+    function spawn(kind, delay, i, batch) {
       const H = phone.offsetHeight, W = phone.offsetWidth;
-      const k = COINS[kind], d = (k.mm / 24.26) * W * 0.084;
+      const k = COINS[kind], d = (k.mm / 24.26) * W * 0.088;
       const el = document.createElement("span");
-      el.className = `rcoin is-${k.metal}${k.reeded ? " is-reeded" : ""}`;
+      el.className = "rcoin";
       el.style.width = el.style.height = d + "px";
+      el.innerHTML = coinHTML(kind, d);
       layer.appendChild(el);
-      const cx = ((CHUTE.x + CHUTE.w * (0.3 + Math.random() * 0.4)) / ART_W) * W;
-      const cy = ((CHUTE.y + CHUTE.h * 0.6) / ART_H) * H;
-      live.push({ el, d, x: cx, y: cy, vx: (Math.random() * 1.3 - 0.35) * H * 0.22, vy: H * (0.05 + Math.random() * 0.12),
-        spin: 14 + Math.random() * 16, ph: Math.random() * 6, rot: Math.random() * 360, vr: (Math.random() - 0.5) * 500,
-        t: -delay, bounces: 0, state: "fall", age: 0, pitch: 2200 + (24.26 - k.mm) * 120, scale: 0.7 });
+      // they come out of the dark gap under the swung-in door
+      live.push({ el, spin: el.firstChild, d, kind,
+        x: ((PLATE.x + PLATE.w * (0.3 + Math.random() * 0.4)) / ART_W) * W,
+        y: ((PLATE.y + PLATE.h * (0.84 + Math.random() * 0.06)) / ART_H) * H,
+        vx: (Math.random() - 0.5) * H * 0.2, vy: -H * (0.03 + Math.random() * 0.1),
+        az: Math.random() * 360, th: Math.random() * 6.28, w: (7 + Math.random() * 10) * (Math.random() < 0.5 ? -1 : 1),
+        bz: Math.random() * 360, vb: (Math.random() - 0.5) * 300,
+        t: -delay, age: 0, started: false, rate: k.rate * (0.95 + Math.random() * 0.1),
+        cup: batch < 6 || i % 2 === 0, solo: batch < 5 || i % 3 === 0, lead: batch >= 5 && i === 0 });
+    }
+
+    // A coin that has dropped out of frame still has to hit the basement floor: that's the sound you hear.
+    function land(c, pan) {
+      if (c.lead) play("coins-floor", { vol: 0.6, pan: pan * 0.5, delay: 0.2 });
+      if (!c.solo) return;
+      const d = 0.16 + Math.random() * 0.22;
+      if (!play("coin-floor", { rate: c.rate, vol: c.lead ? 0.3 : 0.32 + Math.random() * 0.3, pan, delay: d }))
+        S.timeout(() => clink(2200 * c.rate, 0.04), d * 1000);
     }
 
     let last = 0;
     function step(now) {
       const dt = Math.min(0.033, (now - (last || now)) / 1000); last = now;
-      const H = phone.offsetHeight, r = phone.getBoundingClientRect();
-      const floor = (innerHeight - 8 - r.top) * (H / r.height);
-      const g = H * 2.6;
+      const H = phone.offsetHeight, W = phone.offsetWidth, r = phone.getBoundingClientRect();
+      const k = H / r.height, bottom = (innerHeight - r.top) * k; // the bottom of the screen, in the phone's own px
+      const g = H * 2.7;
       for (let i = live.length - 1; i >= 0; i--) {
         const c = live[i];
         c.t += dt;
-        if (c.t < 0) { c.el.style.opacity = 0; continue; }
-        c.age += dt;
-        if (c.state === "fall") {
-          c.vy += g * dt; c.x += c.vx * dt; c.y += c.vy * dt; c.rot += c.vr * dt; c.ph += c.spin * dt;
-          c.scale = Math.min(1, c.scale + dt * 1.6); // it tips out of the chute toward you
-          if (c.y + c.d / 2 >= floor) {
-            c.y = floor - c.d / 2;
-            if (c.vy > H * 0.35 && c.bounces < 3) {
-              c.vy = -c.vy * 0.36; c.vx *= 0.6; c.bounces++;
-              clink(c.pitch * (1 - c.bounces * 0.04), 0.04 / c.bounces);
-            } else { c.state = "settle"; c.wob = 0; c.vy = 0; c.amp = 1; }
-          }
-          c.el.style.opacity = 1;
-          c.el.style.transform = `translate(${c.x - c.d / 2}px, ${c.y - c.d / 2}px) rotate(${c.rot}deg) scaleX(${Math.max(0.08, Math.abs(Math.cos(c.ph)))}) scale(${c.scale})`;
-        } else if (c.state === "settle") {
-          // spinning down on the floor, faster and flatter, like a coin on a table
-          c.wob += dt; c.amp *= Math.pow(0.18, dt); c.vx *= Math.pow(0.05, dt); c.x += c.vx * dt;
-          c.ph += dt * (10 + 40 * (1 - c.amp));
-          const flat = 1 - c.amp;
-          if (Math.random() < dt * (6 + 30 * flat) && c.amp > 0.06) clink(c.pitch * 0.8, 0.012 * c.amp + 0.004);
-          c.el.style.transform = `translate(${c.x - c.d / 2}px, ${c.y - c.d / 2 + c.d * 0.32 * flat}px) scaleY(${1 - 0.68 * flat}) scaleX(${0.75 + 0.25 * Math.abs(Math.cos(c.ph)) * c.amp + 0.25 * flat})`;
-          if (c.amp < 0.02) { c.state = "rest"; c.age = 0; }
-        } else {
-          c.el.style.opacity = Math.max(0, 1 - (c.age - 2.2) / 0.8);
-          if (c.age > 3) { c.el.remove(); live.splice(i, 1); }
+        if (c.t < 0) continue;
+        const pan = Math.max(-1, Math.min(1, ((r.left + c.x / k) / innerWidth) * 2 - 1)) * 0.6;
+        if (!c.started) {
+          c.started = true;
+          if (c.cup) play(`coin-cup-${1 + Math.floor(Math.random() * 4)}`, { rate: c.rate * 1.1, vol: 0.16 + Math.random() * 0.14, pan });
         }
+        c.age += dt;
+        c.vy += g * dt; c.x += c.vx * dt; c.y += c.vy * dt; c.th += c.w * dt; c.bz += c.vb * dt;
+        if (c.y - c.d > bottom || c.x < -W * 3 || c.x > W * 4) { c.el.remove(); live.splice(i, 1); land(c, pan); continue; }
+        // small and in shadow inside the cup, then out toward you
+        const scale = 0.5 + 0.5 * Math.min(1, c.age / 0.2) + Math.min(0.3, c.age * 0.2);
+        c.el.style.opacity = Math.min(1, c.age / 0.05);
+        c.el.style.transform = `translate(${c.x - c.d / 2}px, ${c.y - c.d / 2}px) scale(${scale})`;
+        c.spin.style.transform = `perspective(${c.d * 5}px) rotateZ(${c.az}deg) rotateX(${c.th}rad) rotateZ(${c.bz}deg)`;
+        // light from the upper left: the face dims as it turns away and flashes when it catches the lamp
+        const a = (c.az * Math.PI) / 180, sn = Math.sin(c.th);
+        let nx = Math.sin(a) * sn, ny = -Math.cos(a) * sn, nz = Math.cos(c.th);
+        if (nz < 0) { nx = -nx; ny = -ny; nz = -nz; }
+        const lit = Math.max(0, nx * -0.37 + ny * -0.56 + nz * 0.74);
+        c.spin.style.setProperty("--s", Math.min(0.88, (1 - lit) * 0.6 + Math.max(0, 0.75 * (1 - c.age / 0.22))).toFixed(3));
+        c.spin.style.setProperty("--g", (Math.pow(lit, 16) * 0.85).toFixed(3));
       }
       raf = live.length ? requestAnimationFrame(step) : 0;
       if (!raf) last = 0;
     }
 
-    S.on(plate, "click", () => {
-      pushes++;
-      plate.classList.remove("is-push"); void plate.offsetWidth; plate.classList.add("is-push");
-      tone([180], 60, 0.05); // the clunk of the lever
+    function pushIn() {
+      if (isIn) return;
+      isIn = true; inAt = performance.now(); pushes++;
+      clearTimeout(backTimer);
+      plate.classList.remove("is-back"); plate.classList.add("is-in");
+      tone([150], 70, 0.06); // the clunk of the door
       const coins = haul();
       const cents = coins.reduce((n, k) => n + COINS[k].cents, 0);
+      minHold = 360 + coins.length * 95; // stays open until the last coin is out
       S.timeout(() => {
-        chute.classList.add("is-open");
-        coins.forEach((k, i) => spawn(k, i * (0.09 + Math.random() * 0.08)));
-        S.timeout(() => tone([1760, 2640], 60, 0.03), 40);
-        if (!raf) raf = requestAnimationFrame(step);
-        S.timeout(() => chute.classList.remove("is-open"), 400 + coins.length * 140);
-      }, 260);
+        if (coins.length >= 6) play("coins-rattle", { vol: 0.4, rate: 1.05 });
+        coins.forEach((k, i) => spawn(k, i * (0.07 + Math.random() * 0.07), i, coins.length));
+        if (!raf && live.length) raf = requestAnimationFrame(step);
+      }, 110);
       S.timeout(() => {
-        dial.textContent = cents >= 100 ? `JACKPOT! $${(cents / 100).toFixed(2)}` : `COIN RETURN · ${cents}¢`;
+        dial.textContent = cents >= 100 ? `JACKPOT! $${(cents / 100).toFixed(2)}` : cents ? `COIN RETURN · ${cents}¢` : "COIN RETURN · EMPTY";
         dial.classList.add("is-on");
         clearTimeout(dialTimer); dialTimer = setTimeout(() => dial.classList.remove("is-on"), 2400);
       }, 420);
-    });
-    S.add(() => cancelAnimationFrame(raf));
+    }
+    function letGo() {
+      if (!isIn) return;
+      clearTimeout(backTimer);
+      backTimer = setTimeout(() => {
+        if (held) return;
+        isIn = false;
+        plate.classList.remove("is-in"); plate.classList.add("is-back");
+        S.timeout(() => tone([230, 610], 35, 0.035), 150); // slaps shut against the frame
+      }, Math.max(0, minHold - (performance.now() - inAt)));
+    }
+    S.on(plate, "pointerdown", (e) => { if (e.button) return; held = true; pushIn(); });
+    ["pointerup", "pointerleave", "pointercancel"].forEach((t) => S.on(plate, t, () => { if (!held) return; held = false; letGo(); }));
+    S.on(plate, "click", (e) => { if (e.detail === 0) { pushIn(); letGo(); } }); // keyboard
+    S.on(plate, "animationend", () => plate.classList.remove("is-back"));
+    S.add(() => { cancelAnimationFrame(raf); clearTimeout(backTimer); });
 
     return { unmount() { S.dispose(); } };
   },

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Framework Workbook</title>
+  <meta name="description" content="A game-based workbook for the AI Production Framework: AI Literacy, the four Core Competencies and the five AI Modes.">
+  <link rel="canonical" href="https://www.vincedoud.com/aiworkbook/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Vince Doud">
+  <meta property="og:title" content="AI Framework Workbook">
+  <meta property="og:description" content="Practice AI Literacy, the four Core Competencies and the five AI Modes in three game-based chapters.">
+  <meta property="og:url" content="https://www.vincedoud.com/aiworkbook/">
+  <meta property="og:image" content="https://www.vincedoud.com/assets/media/ai-workbook.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='7' y='4' width='27' height='32' rx='5' fill='%23FFD43B' stroke='%231A1626' stroke-width='2.5'/%3E%3Crect x='31' y='9' width='6' height='7' rx='2' fill='%235B74FF' stroke='%231A1626' stroke-width='2'/%3E%3Crect x='31' y='17' width='6' height='7' rx='2' fill='%233FD9A3' stroke='%231A1626' stroke-width='2'/%3E%3Crect x='31' y='25' width='6' height='7' rx='2' fill='%23FF6B7E' stroke='%231A1626' stroke-width='2'/%3E%3Cpath d='M14.5 21.5l3.5 3.5 7-8' fill='none' stroke='%231A1626' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <link rel="preload" href="assets/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/workbook.css?v=16">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="top">
+    <div class="wrap bar">
+      <a class="brand" href="#/">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true">
+          <rect x="7" y="4" width="27" height="32" rx="5" fill="#FFD43B" stroke="#1A1626" stroke-width="2.5"/>
+          <rect x="31" y="9" width="6" height="7" rx="2" fill="#5B74FF" stroke="#1A1626" stroke-width="2"/>
+          <rect x="31" y="17" width="6" height="7" rx="2" fill="#3FD9A3" stroke="#1A1626" stroke-width="2"/>
+          <rect x="31" y="25" width="6" height="7" rx="2" fill="#FF6B7E" stroke="#1A1626" stroke-width="2"/>
+          <path d="M7 10h-3M7 16h-3M7 22h-3M7 28h-3" stroke="#1A1626" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M14.5 21.5l3.5 3.5 7-8" fill="none" stroke="#1A1626" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="brand-text"><small>AI Framework</small><b>Workbook</b></span>
+      </a>
+      <nav class="chapters" aria-label="Chapters">
+        <a href="#/literacy" data-ch="literacy"><span class="n"><span>1</span></span><span class="t">Quiz Board</span></a>
+        <a href="#/stations" data-ch="stations"><span class="n"><span>2</span></span><span class="t">Stations</span></a>
+        <a href="#/boss" data-ch="boss"><span class="n"><span>3</span></span><span class="t">Final Boss</span></a>
+      </nav>
+      <div class="hud">
+        <a class="xp" href="#/workbook" title="My workbook: points and stars"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#FFF8EC" stroke="#1A1626" stroke-width="2"/><path d="M12 6.8l1.6 3.3 3.6.5-2.6 2.5.6 3.6-3.2-1.7-3.2 1.7.6-3.6-2.6-2.5 3.6-.5z" fill="#FFD43B" stroke="#1A1626" stroke-width="1.6" stroke-linejoin="round"/></svg><span class="xp-n" id="xp">0</span><span class="xp-l">pts</span></a>
+        <button class="sound" id="sound" type="button" aria-pressed="true"><span class="sr">Sound on</span><svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main"></main>
+  <div id="live" class="sr" aria-live="polite"></div>
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <div>
+        <p><strong>Understand the system. Direct the help. Own the thinking.</strong></p>
+        <p class="small muted">A companion workbook to the AI Production Framework and Pathway by Vince Doud. Every name, number and document in these games is made up. Progress is saved only in this browser.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/core.js?v=16"></script>
+  <script src="assets/js/icons.js?v=16"></script>
+  <script src="assets/js/data-literacy.js?v=16"></script>
+  <script src="assets/js/data-stations.js?v=16"></script>
+  <script src="assets/js/data-modes.js?v=16"></script>
+  <script src="assets/js/home.js?v=16"></script>
+  <script src="assets/js/quizboard.js?v=16"></script>
+  <script src="assets/js/stations.js?v=16"></script>
+  <script src="assets/js/boss.js?v=16"></script>
+  <script>
+    document.getElementById("sound").addEventListener("click", function () {
+      WB.state.sound = !WB.state.sound; WB.save(); WB.sfx("tap");
+    });
+    WB.start();
+  </script>
+</body>
+</html>

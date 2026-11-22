@@ -89,7 +89,7 @@ export default {
               ${o.frames
                 ? `<canvas class="room-obj" data-id="${o.id}" data-group="${o.group}" width="${o.w * 2}" height="${o.h * 2}" style="${box(o)}"></canvas>`
                 : `<img class="room-obj" data-id="${o.id}" data-group="${o.group}" src="${ART}${o.id}-2x.webp" alt="" style="${box(o)}" draggable="false">`}
-              ${o.open ? `<img class="room-obj room-open" data-open-of="${o.id}" data-group="${o.group}" src="${ART}${o.id}-open-2x.webp" alt="" style="${box(o.open)}" draggable="false">` : ""}
+              ${o.open ? `<img class="room-obj room-open" data-open-of="${o.id}" data-group="${o.group}" src="${ART}${o.id}-open-2x.webp" alt="" style="${box(o.open)}" draggable="false"><img class="room-obj room-open room-flap" data-flap-of="${o.id}" data-group="${o.group}" src="${ART}${o.id}-open-2x.webp" alt="" style="${box(o.open)}" draggable="false">` : ""}
               ${o.id === "whiteboard" ? `<div class="wb-date" data-wb aria-hidden="true"></div>` : ""}
               ${o.id === "ipod" ? `<div class="amb amb-ipod" aria-hidden="true" style="left:${o.x + o.w / 2}px;top:${o.y + o.h * 0.42}px"></div>` : ""}
             `).join("")}
@@ -238,11 +238,65 @@ export default {
     drawLid();
     S.add(() => cancelAnimationFrame(lidRaf));
 
+    /* ---------- the wallet: its cover flips open over the fold while the About group is lit ---------- */
+    // Two pictures (shut, open) and no frames, so the flip is done with geometry: the shut wallet folds up
+    // toward the fold line and the open wallet's left half unfolds out of it, over the right half lying on the desk.
+    const wal = objs.find((o) => o.open && o.id === "wallet");
+    const walShut = wal && spriteOf.wallet, walBase = wal && openOf.wallet, walFlap = wal && root.querySelector('[data-flap-of="wallet"]');
+    const FOLD = { x: 57.5, y: 34, d: [-0.61, 0.79], w: [0.9, 0.43], lift: 0.62 }; // fold line in the open sprite (room px), and the wallet's long direction
+    let walT = 0, walGoal = 0, walRaf = 0, walLast = 0;
+    const side = (sign, nudge) => {
+      const { x, y, d, w } = FOLD, a = [x + d[0] * 300 + w[0] * nudge, y + d[1] * 300 + w[1] * nudge], b = [x - d[0] * 300 + w[0] * nudge, y - d[1] * 300 + w[1] * nudge];
+      return `polygon(${[a, b, [b[0] + w[0] * 300 * sign, b[1] + w[1] * 300 * sign], [a[0] + w[0] * 300 * sign, a[1] + w[1] * 300 * sign]].map((p) => `${p[0].toFixed(1)}px ${p[1].toFixed(1)}px`).join(",")})`;
+    };
+    // Keeps the fold line still and swings everything else around it: `along` squeezes toward the fold, `up` stands it up.
+    const foldMatrix = (along, up) => {
+      const { d, w } = FOLD, det = d[0] * w[1] - w[0] * d[1];
+      const tx = along * w[0], ty = along * w[1] - up; // where the long direction ends up
+      const m = [(d[0] * w[1] - tx * d[1]) / det, (d[1] * w[1] - ty * d[1]) / det, (tx * d[0] - d[0] * w[0]) / det, (ty * d[0] - d[1] * w[0]) / det];
+      return `matrix(${m.map((v) => v.toFixed(4)).join(",")},0,0)`;
+    };
+    const drawWallet = () => {
+      if (!wal) return;
+      const t = easeLid(walT), phi = t * Math.PI, c = Math.cos(phi), sn = Math.sin(phi) * FOLD.lift;
+      const flipping = t > 0 && t < 1, first = t < 0.5;
+      walShut.style.opacity = t === 0 || (flipping && first) ? 1 : 0;
+      walShut.style.zIndex = flipping ? 1 : "";
+      walShut.style.transform = flipping && first ? foldMatrix(c, sn) : "";
+      walBase.style.opacity = Math.min(1, t / 0.3); // the inside shows as the cover lifts clear of it
+      walBase.style.clipPath = flipping ? side(1, -0.6) : "";
+      walFlap.style.opacity = flipping && !first ? 1 : 0;
+      walFlap.style.transform = flipping && !first ? foldMatrix(-c, -sn) : "";
+    };
+    const walletStep = (now) => {
+      const dt = Math.min(0.05, (now - (walLast || now)) / 1000); walLast = now;
+      const speed = walGoal > walT ? 1 / 0.85 : 1 / 0.55;
+      walT = walGoal > walT ? Math.min(walGoal, walT + dt * speed) : Math.max(walGoal, walT - dt * speed);
+      drawWallet();
+      if (walT !== walGoal) walRaf = requestAnimationFrame(walletStep);
+      else { walRaf = 0; walLast = 0; }
+    };
+    const setWallet = (open) => {
+      if (!wal) return;
+      walGoal = open ? 1 : 0;
+      if (reducedMotion()) { walT = walGoal; drawWallet(); return; }
+      if (!walRaf && walT !== walGoal) walRaf = requestAnimationFrame(walletStep);
+    };
+    if (wal) {
+      const o = wal.open, ox = wal.x - o.x, oy = wal.y - o.y; // the shut sprite sits inside the open one
+      walShut.style.transformOrigin = `${FOLD.x - ox}px ${FOLD.y - oy}px`;
+      walFlap.style.transformOrigin = `${FOLD.x}px ${FOLD.y}px`;
+      walFlap.style.clipPath = side(-1, 0);
+      drawWallet();
+    }
+    S.add(() => cancelAnimationFrame(walRaf));
+
     /* ---------- lighting a group ---------- */
     const setActive = (group, objId) => {
       if (group !== active) {
         if (active) byGroup[active]?.forEach((im) => im.classList.remove("is-lit"));
         if (lap) setLid(group === lap.group);
+        if (wal) setWallet(group === wal.group);
         active = group;
         stage.dataset.active = group || "";
         if (group) byGroup[group]?.forEach((im) => im.classList.add("is-lit"));

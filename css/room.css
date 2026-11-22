@@ -51,10 +51,9 @@
 .room-obj[data-id="laptop"].is-lit,
 .room-obj[data-group="about"].is-lit { animation-name: lift-small; }
 
-/* The wallet flaps open while it's lit. */
+/* The wallet's cover flips open while it's lit: room.js sets the opacity, clip and transform of these each frame. */
 .room-open { opacity: 0; }
-.room-stage[data-active="about"] .room-obj[data-id="wallet"] { opacity: 0; }
-.room-stage[data-active="about"] .room-open { opacity: 1; }
+.room-obj[data-id="wallet"], .room-open { transition: filter .3s ease; }
 
 /* ---------- whiteboard: the live date ---------- */
 .wb-date {

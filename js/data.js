@@ -144,6 +144,26 @@ export const BOOKS = [
     ],
     art: "book-plain-forest", color: "#3a5f31", spine: "Write with AI",
   },
+  {
+    id: "ai-workbook",
+    title: "AI Framework Workbook",
+    kind: "Interactive workbook",
+    summary: "Play the Quiz Board, practice the four Core Competencies in Stations, and choose the right AI Mode in Final Boss.",
+    preview: "ai-workbook.webp",
+    previewAlt: "The workbook opens with a game board, station tiles and the Final Boss robot.",
+    href: "/aiworkbook/",
+    sameTab: true,
+    action: "Open the Workbook",
+    art: "book-plain-plum", color: "#52365e", spine: "AI Framework Workbook",
+    cover: "workbook",
+    coverAddress: "vincedoud.com/aiworkbook",
+    emblem: "ai-workbook.svg",
+    chapters: [
+      { t: "AI Literacy: The Quiz Board", n: 1 },
+      { t: "Core Competencies: Station Rotation", n: 2 },
+      { t: "AI Modes: Final Boss", n: 3 },
+    ],
+  },
 ];
 
 /** Apps on the laptop. */
