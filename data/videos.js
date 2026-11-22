@@ -1195,4 +1195,15 @@ export const videos = [
     embeddable: true,
     sourceUrl: "https://www.youtube.com/watch?v=BWTXYswihYU",
   },
+  {
+    id: "PJQ1hkjKs8g",
+    title: "In Loving Memory Of Joanne McDermott",
+    collection: "memorial",
+    performance: "Memorial video",
+    duration: 1549,
+    channel: "EL LOBO",
+    channelUrl: "https://www.youtube.com/@diddypopdiddy",
+    embeddable: true,
+    sourceUrl: "https://www.youtube.com/watch?v=PJQ1hkjKs8g",
+  },
 ];

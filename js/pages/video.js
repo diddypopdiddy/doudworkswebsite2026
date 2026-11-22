@@ -11,6 +11,7 @@ const DISCS = [
   { id: "covers", label: "Covers", sub: "Drum & full-band covers", color: "#e0a526" },
   { id: "woodbury", label: "School Videos", sub: "Woodbury music videos", color: "#4f8fe0" },
   { id: "archive", label: "TV Archive", sub: "Archived performances", color: "#9fbf4a" },
+  { id: "memorial", label: "Memorial", color: "#ac90de" },
 ];
 // Art coordinates (tv-dvd-cart-front: 832 × 1437).
 const CART = { w: 832, h: 1437, show: 990 };
@@ -34,6 +35,7 @@ const REMOTE = [
   ...[[1, 142, 1128], [2, 275, 1128], [3, 407, 1128], [4, 142, 1242], [5, 275, 1242], [6, 407, 1242], [7, 142, 1358], [8, 275, 1358], [9, 407, 1358], [0, 275, 1478]].map(([n, x, y]) => ({ act: "num", n, x, y, w: 110, h: 94, label: `Number ${n}` })),
 ];
 const PER_PAGE = 4;
+const YOUTUBE_EMBED_ORIGIN = "https://www.youtube-nocookie.com";
 const pc = (v, of) => (v / of) * 100 + "%";
 const thumb = (id, q = "mqdefault") => `https://i.ytimg.com/vi/${id}/${q}.jpg`;
 const canEmbed = (v) => !unavailableEmbedIds.has(v.id);
@@ -137,7 +139,7 @@ export default {
       return `
         <div class="menu-scenes">
           <header><h3>Scene Selection</h3><span>${esc(DISCS.find((d) => d.id === disc).label)} · ${page + 1} / ${pages()}</span></header>
-          <div class="scene-grid">
+          <div class="scene-grid${L.length === 1 ? " is-single" : ""}">
             ${slice.map((v, k) => { const i = page * PER_PAGE + k; return `
               <button class="scene" data-item="scene-${i}" data-i="${i}">
                 <span class="scene-img"><img src="${thumb(v.id)}" alt=""><b>${k + 1}</b>${canEmbed(v) ? "" : `<em>YouTube ↗</em>`}</span>
@@ -155,7 +157,10 @@ export default {
       <div class="menu-discs">
         <header><h3>Collections</h3><span>Choose a disc</span></header>
         <div class="disc-row">
-          ${DISCS.map((d) => `<button class="disc-pick" data-item="disc-${d.id}" style="--c:${d.color}"><span class="disc-art"><i></i></span><b>${esc(d.label)}</b><small>${videos.filter((v) => v.collection === d.id).length} videos</small>${d.id === disc ? `<em>LOADED</em>` : ""}</button>`).join("")}
+          ${DISCS.map((d) => {
+            const count = videos.filter((v) => v.collection === d.id).length;
+            return `<button class="disc-pick" data-item="disc-${d.id}" style="--c:${d.color}"><span class="disc-art"><i></i></span><b>${esc(d.label)}</b><small>${count} ${count === 1 ? "video" : "videos"}</small>${d.id === disc ? `<em>LOADED</em>` : ""}</button>`;
+          }).join("")}
         </div>
         <footer><button data-item="main">Main Menu</button></footer>
       </div>`;
@@ -168,7 +173,7 @@ export default {
           <li><button data-item="x-credits"><i class="menu-pick"></i>Credits</button></li>
           <li><button data-item="main"><i class="menu-pick"></i>Main Menu</button></li>
         </ul>
-        <p class="menu-note">${videos.length} recordings: ${DISCS.map((d) => `${videos.filter((v) => v.collection === d.id).length} ${d.label.toLowerCase()}`).join(", ")}.</p>
+        <p class="menu-note">${videos.length} recordings across ${DISCS.length} discs.</p>
       </div>`;
 
     /* ---------- focus + spatial navigation ---------- */
@@ -237,6 +242,17 @@ export default {
 
     /* ---------- playback ---------- */
     let ytReady = false;
+    function showYouTubeFallback(v) {
+      ytReady = false;
+      content.innerHTML = `
+        <div class="dvd-blocked" style="background-image:url('${thumb(v.id, "hqdefault")}')">
+          <div><p class="dvd-blocked-k">This scene only plays on YouTube</p><p class="dvd-blocked-t">${esc(title(v))}</p>
+          <a class="btn" href="${esc(v.sourceUrl)}" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
+          <p class="dvd-blocked-h">◀◀ / ▶▶ for the previous or next scene · MENU to go back</p></div>
+        </div>`;
+      setVFD("LINK");
+      announce(`Watch ${title(v)} on YouTube`);
+    }
     function play(i) {
       const L = list(); if (!L.length) return;
       playing = clamp(i, 0, L.length - 1); paused = false;
@@ -244,33 +260,31 @@ export default {
       screen = "play"; content.dataset.screen = "play";
       page = Math.floor(playing / PER_PAGE);
       setVFD(`PLAY ${String(playing + 1).padStart(2, "0")}`);
-      if (!canEmbed(v)) {
-        content.innerHTML = `
-          <div class="dvd-blocked" style="background-image:url('${thumb(v.id, "hqdefault")}')">
-            <div><p class="dvd-blocked-k">This scene only plays on YouTube</p><p class="dvd-blocked-t">${esc(title(v))}</p>
-            <a class="btn" href="${esc(v.sourceUrl)}" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>
-            <p class="dvd-blocked-h">◀◀ / ▶▶ for the previous or next scene · MENU to go back</p></div>
-          </div>`;
-        flash("▶ PLAY");
-        return;
-      }
-      const src = `https://www.youtube-nocookie.com/embed/${v.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`;
+      if (!canEmbed(v)) return showYouTubeFallback(v);
+      const src = `${YOUTUBE_EMBED_ORIGIN}/embed/${v.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${encodeURIComponent(location.origin)}`;
       // The CRT layer sits over the video (and lets clicks through) so it reads like it's on that old TV.
       content.innerHTML = `<div class="crt" aria-hidden="true"><i class="crt-mask"></i><i class="crt-lines"></i><i class="crt-roll"></i></div><iframe data-yt src="${src}" title="${esc(v.title)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
       const f = content.querySelector("[data-yt]");
       ytReady = false;
-      f.addEventListener("load", () => { f.contentWindow?.postMessage(JSON.stringify({ event: "listening", id: 1, channel: "widget" }), "*"); ytReady = true; });
+      f.addEventListener("load", () => {
+        if (content.querySelector("[data-yt]") !== f) return;
+        f.contentWindow?.postMessage(JSON.stringify({ event: "listening", id: 1, channel: "widget" }), YOUTUBE_EMBED_ORIGIN);
+        yt("addEventListener", ["onError"]);
+        ytReady = true;
+      });
       flash("▶ PLAY");
       announce(`Playing ${title(v)}`);
     }
     function stopVideo() { const f = content.querySelector("[data-yt]"); if (f) f.src = "about:blank"; playing = screen === "play" ? playing : -1; }
-    const yt = (func) => content.querySelector("[data-yt]")?.contentWindow?.postMessage(JSON.stringify({ event: "command", func, args: [] }), "*");
+    const yt = (func, args = []) => content.querySelector("[data-yt]")?.contentWindow?.postMessage(JSON.stringify({ event: "command", func, args }), YOUTUBE_EMBED_ORIGIN);
     S.on(window, "message", (e) => {
-      if (!/^https:\/\/(www\.)?youtube(-nocookie)?\.com$/.test(e.origin)) return;
+      const f = content.querySelector("[data-yt]");
+      if (screen !== "play" || !f || e.origin !== YOUTUBE_EMBED_ORIGIN || e.source !== f.contentWindow) return;
       let d; try { d = JSON.parse(e.data); } catch { return; }
-      const info = d.info || {};
-      if (typeof info.currentTime === "number" && screen === "play") setVFD(`${String(playing + 1).padStart(2, "0")} ${fmtTime(info.currentTime)}`);
-      if (info.playerState === 0 && screen === "play") { // ended
+      if (d?.event === "onError") return showYouTubeFallback(list()[playing]);
+      const info = d?.info || {};
+      if (typeof info.currentTime === "number") setVFD(`${String(playing + 1).padStart(2, "0")} ${fmtTime(info.currentTime)}`);
+      if (info.playerState === 0) { // ended
         if (playAll && playing < list().length - 1) play(playing + 1); else render(lastMenu === "scenes" ? "scenes" : "main", { focus: `scene-${playing}` });
       }
     });

@@ -71,7 +71,7 @@ function pageDetails() {
   // Use the public studio routes, omitting query strings and fragments.
   const project = section === "ai" && !extra && APPS.find((item) => item.id === detail);
   const artwork = section === "art" && !extra && /^\d{1,3}$/.test(detail);
-  const collection = section === "video" && !extra && ["covers", "woodbury", "archive"].includes(detail);
+  const collection = section === "video" && !extra && ["covers", "woodbury", "archive", "memorial"].includes(detail);
   return {
     path: project || artwork || collection ? `/${section}/${detail}/` : `/${section}/`,
     title: `${project?.title || label} – Vince Doud`,

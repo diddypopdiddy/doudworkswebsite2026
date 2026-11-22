@@ -12,7 +12,7 @@ export const SITE = {
 export const SPACES = {
   art:      { label: "Art",      verb: "walk the gallery",     blurb: "A two-room gallery of thirteen pieces. Walk it, or browse the walls." },
   music:    { label: "Music",    verb: "listen",               blurb: "Ten albums, ninety-one tracks, one click wheel." },
-  video:    { label: "Video",    verb: "watch",                blurb: "Sixty-six recordings on the TV/VCR. Pick a tape and press play." },
+  video:    { label: "Video",    verb: "watch",                blurb: "Pick a scene and press play on the basement TV and DVD player." },
   teaching: { label: "Teaching", verb: "pull a book",          blurb: "Pull a book off the shelf: classroom tools and the projects behind them." },
   ai:       { label: "AI",       verb: "open the laptop",      blurb: "AI tools and custom builds, opened like apps on the laptop." },
   about:    { label: "About",    verb: "meet Vince",           blurb: "Check the ID. Who Vince is and what he makes." },
