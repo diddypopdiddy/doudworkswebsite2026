@@ -164,9 +164,10 @@ export default {
     /* ---------- open a book ---------- */
     function spreadHTML(b) {
       const tag = b.href ? "a" : "div";
-      const link = b.href
-        ? ` href="${esc(b.href)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(b.action)} (opens in a new tab)"`
-        : "";
+      const target = b.sameTab ? 'target="_self"' : 'target="_blank" rel="noopener noreferrer"';
+      const actionLabel = b.sameTab ? b.action : `${b.action} (opens in a new tab)`;
+      const link = b.href ? ` href="${esc(b.href)}" ${target} aria-label="${esc(actionLabel)}"` : "";
+      const frameworkCover = b.cover === "framework";
       const chapters = b.chapters.map(({ t, n }, i) => `
         <li class="bo-chapter">
           <span class="bo-roman" aria-hidden="true">${ROMAN[i]}.</span>
@@ -201,10 +202,17 @@ export default {
                 </${tag}>
               </div>
               <div class="bo-cover">
-                <div class="bo-cover-front" aria-hidden="true">
-                  <i class="bo-bands"></i>
-                  ${b.emblem ? `<img class="bo-emblem" src="assets/media/${esc(b.emblem)}" alt="" draggable="false">` : ""}
-                  <span class="bo-panel"><span>${esc(b.title)}</span></span>
+                <div class="bo-cover-front${frameworkCover ? " bo-framework-cover" : ""}" aria-hidden="true">
+                  ${frameworkCover ? `
+                    <span class="bo-framework-audience">Grades 7–12</span>
+                    <span class="bo-framework-title">${esc(b.title)}</span>
+                    <div class="bo-framework-cards">
+                      <img src="/frameworkpathway/assets/permit.webp" alt="" width="856" height="540" draggable="false">
+                      <img src="/frameworkpathway/assets/license.webp" alt="" width="856" height="540" draggable="false">
+                    </div>` : `
+                    <i class="bo-bands"></i>
+                    ${b.emblem ? `<img class="bo-emblem" src="assets/media/${esc(b.emblem)}" alt="" draggable="false">` : ""}
+                    <span class="bo-panel"><span>${esc(b.title)}</span></span>`}
                   <span class="bo-author">Vince Doud</span>
                 </div>
                 <div class="bo-cover-edge"></div>
@@ -258,17 +266,20 @@ export default {
       cancelCoverWait = null;
     }
 
-    function openBook(trigger) {
+    function openBook(trigger, { restore = false } = {}) {
       if (opened) return;
       const book = BOOKS.find((b) => b.id === trigger.dataset.id);
       if (!book) return;
 
+      // Store the open book on this history entry so Back can reopen it after a reload.
+      if (book.sameTab && !restore) history.replaceState({ ...history.state, teachingBook: book.id }, "");
       pull(trigger);
       const run = ++token;
       const motion = !reducedMotion();
+      const animateOpen = motion && !restore;
       openEl.style.setProperty("--c", book.color);
       openEl.dataset.book = book.id;
-      openEl.classList.toggle("is-reduced", !motion);
+      openEl.classList.toggle("is-reduced", !animateOpen);
       openEl.innerHTML = spreadHTML(book);
       openEl.querySelector(".bo-photo").prepend(plateFor(book));
       const cover = openEl.querySelector(".bo-cover");
@@ -277,7 +288,7 @@ export default {
       opened = { trigger, cover, page, close, motion, closing: false };
 
       openEl.hidden = false;
-      if (!motion) openEl.classList.add("is-open");
+      if (!animateOpen) openEl.classList.add("is-open");
       void openEl.offsetWidth; // Establish the starting styles for the rise or fade.
       trigger.classList.add("is-taken");
       openEl.classList.add("is-on");
@@ -289,10 +300,14 @@ export default {
         page.inert = false;
         (book.href ? page : close).focus({ preventScroll: true });
       }
-      if (!motion) {
-        phaseTimer = setTimeout(revealContents, FADE_MS);
+      if (!animateOpen) {
+        phaseTimer = setTimeout(() => {
+          openEl.classList.toggle("is-reduced", !motion);
+          revealContents();
+        }, restore ? 0 : FADE_MS);
         return;
       }
+      const coverDelay = book.cover === "framework" ? 950 : 600;
       phaseTimer = setTimeout(() => {
         if (run !== token) return;
         cancelCoverWait = afterCover(cover, revealContents);
@@ -302,13 +317,16 @@ export default {
           cancelCoverWait();
           revealContents();
         }
-      }, seen.has(book.id) ? 450 : 600);
+      }, seen.has(book.id) ? 450 : coverDelay);
     }
 
     function closeBook() {
       if (!opened || opened.closing) return;
       opened.closing = true;
       const { trigger, cover, page, close, motion } = opened;
+      if (history.state?.teachingBook === trigger.dataset.id) {
+        history.replaceState({ ...history.state, teachingBook: null }, "");
+      }
       const run = ++token;
       clearPhase();
       if (page.contains(document.activeElement)) close.focus({ preventScroll: true });
@@ -347,6 +365,10 @@ export default {
       (linkReady && document.activeElement === close ? page : close).focus({ preventScroll: true });
     });
     S.add(() => clearTimeout(leaveTimer));
+
+    const savedBook = history.state?.teachingBook;
+    const savedTrigger = savedBook && els.find((el) => el.dataset.id === savedBook);
+    if (savedTrigger) openBook(savedTrigger, { restore: true });
 
     return {
       onEscape() {

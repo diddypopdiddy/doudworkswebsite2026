@@ -111,6 +111,7 @@ export default {
       appName.textContent = "Finder";
       markOpen("finder");
       root.querySelectorAll(".mac-folder").forEach((b) => b.classList.toggle("is-sel", b.dataset.app === id));
+      const linkTarget = a.sameTab ? 'target="_self"' : 'target="_blank" rel="noopener noreferrer"';
       const media = a.video
         ? `<video src="assets/media/${a.video.src}" poster="assets/media/${a.video.poster}" autoplay muted loop playsinline></video>`
         : a.preview
@@ -133,7 +134,7 @@ export default {
               <h2>${esc(a.title)}</h2>
               <p>${esc(a.summary)}</p>
               ${a.note ? `<p class="fw-note">${esc(a.note)}</p>` : ""}
-              ${a.href ? `<a class="fw-open" href="${esc(a.href)}" target="_blank" rel="noopener noreferrer">${esc(a.action || "Open")}</a>` : ""}
+              ${a.href ? `<a class="fw-open" href="${esc(a.href)}" ${linkTarget}>${esc(a.action || "Open")}</a>` : ""}
             </div>
           </div>
         </div>`, "is-finder");

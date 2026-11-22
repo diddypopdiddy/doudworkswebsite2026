@@ -429,6 +429,7 @@
 /* The open book. See specs/book-open-revision-spec.md. */
 @font-face { font-family: "Newsreader"; src: url("../assets/fonts/newsreader-latin.woff2") format("woff2"); font-weight: 200 800; font-display: swap; }
 @font-face { font-family: "Newsreader"; src: url("../assets/fonts/newsreader-latin-italic.woff2") format("woff2"); font-weight: 200 800; font-style: italic; font-display: swap; }
+@font-face { font-family: "Fraunces"; src: url("../frameworkpathway/assets/fonts/fraunces-latin.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
 .book-open {
   --bo-ink: #1d1712; --paper: #f7f0de; --paper-2: #efe5cc; --paper-line: #d3c5a4;
   --c-dark: color-mix(in srgb, var(--c) 62%, #1d1712);
@@ -588,6 +589,35 @@ a.bo-right:not([inert]):is(:hover, :focus) .bo-arrow { transform: translateX(4px
 .bo-panel span { font: 700 clamp(22px, 6.2cqh, 46px)/1.06 var(--serif); color: #f3d68e; text-wrap: balance;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, .55), 0 1px 0 rgba(255, 240, 200, .2); }
 .bo-author { position: absolute; bottom: 10.5%; font: 700 clamp(9px, 1.8cqh, 12px)/1 var(--sans); letter-spacing: .28em; text-transform: uppercase; color: rgba(243, 214, 142, .85); }
+.bo-framework-cover {
+  gap: 4.2cqh; padding: 8cqh 6cqh 16cqh 7.5cqh; text-align: center; color: #fffaf0;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, .34) 0 1%, rgba(255, 255, 255, .08) 1% 4%, rgba(0, 0, 0, .23) 4% 5%, transparent 5.5%),
+    radial-gradient(ellipse at 94% 3%, rgba(59, 100, 242, .58), transparent 59%),
+    radial-gradient(ellipse at 10% 102%, rgba(240, 164, 26, .23), transparent 47%),
+    var(--grain), linear-gradient(156deg, #0a1233 12%, #14236a);
+}
+.bo-framework-cover::before {
+  content: ""; position: absolute; inset: 5.2% 6% 5.2% 9%; pointer-events: none;
+  border: 1px solid rgba(255, 198, 74, .55); border-radius: 0 .65cqh .65cqh 0;
+}
+.bo-framework-audience {
+  display: flex; align-items: center; gap: 1.6cqh; color: #ffc64a;
+  font: 700 clamp(10px, 2.15cqh, 14px)/1.2 var(--sans); letter-spacing: .16em; text-transform: uppercase;
+}
+.bo-framework-audience::before, .bo-framework-audience::after { content: ""; width: 3.4cqh; border-top: 1px solid currentColor; }
+.bo-framework-title {
+  font: 650 clamp(27px, 8cqh, 52px)/1 "Fraunces", Georgia, serif; text-wrap: balance;
+}
+.bo-framework-cards {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 3cqh;
+  width: min(100%, 59cqh); margin-top: 1.2cqh;
+}
+.bo-framework-cards img {
+  display: block; width: 100%; height: auto; border-radius: 4%;
+  box-shadow: 0 .75cqh 1.7cqh rgba(0, 0, 0, .45); transform: rotate(-6deg);
+}
+.bo-framework-cards img + img { transform: rotate(6deg); }
 .bo-cover-edge {
   position: absolute; top: 0; bottom: 0; left: 100%; width: var(--bt); transform-origin: 0 50%;
   transform: rotateY(-90deg); background: var(--board); box-shadow: 0 0 0 calc(var(--line) * .7) var(--bo-ink);
@@ -673,6 +703,7 @@ a.bo-right:not([inert]):is(:hover, :focus) .bo-arrow { transform: translateX(4px
     height: min(calc(100dvh - 170px - var(--bo-safe-top) - var(--bo-safe-bottom)), 143vw, 650px);
   }
   .is-open .bo-book { transform: translateX(-25%); }
+  .bo-framework-title { font-size: clamp(22px, min(8cqh, 9.6vw), 48px); }
   .bo-right { gap: clamp(8px, 2cqh, 12px); padding: 3.4cqh 4cqh 3cqh 4.8cqh; }
   .bo-running-head {
     display: block; margin: 0 0 .32em; color: #1f1813;

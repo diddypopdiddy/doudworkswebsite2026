@@ -29,6 +29,7 @@ const FRAMEWORK = {
   preview: "ai-framework-pathway-tour.webp",
   previewAlt: "The guided tour opens with the Framework and Pathway title and the AI Permit and AI License cards.",
   href: "/frameworkpathway/",
+  sameTab: true,
   action: "Explore the Framework",
 };
 
@@ -80,7 +81,8 @@ const WRITE = {
 export const BOOKS = [
   {
     ...FRAMEWORK,
-    art: "book-plain-plum", color: "#684d78", spine: "AI Production Framework",
+    art: "book-plain-ink-blue", color: "#182751", spine: "AI Production Framework",
+    cover: "framework",
     caption: "The tour traces the path from guided practice to the AI License.",
     chapters: [
       { t: "AI Literacy and Core Competencies", n: 1 },
