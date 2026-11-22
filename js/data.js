@@ -28,8 +28,15 @@ const WRITE = "https://write-with-ai-vince-doud.diddypopdiddy.chatgpt.site";
 export const BOOKS = [
   {
     id: "ai-educator-playbook",
-    emblem: "ai-educator-playbook.svg", plate: "ai-educator-playbook-2026-09-27.png", endpaper: "grid",
+    emblem: "ai-educator-playbook.svg", plate: "ai-educator-playbook-2026-09-27.png",
     caption: "Chapter 1, AI Basics: what AI is, and what it isn’t.",
+    chapters: [
+      { t: "AI basics", n: 1 },
+      { t: "The AI Production Framework", n: 9 },
+      { t: "The Field Guide", n: 17 },
+      { t: "Classroom examples", n: 25 },
+      { t: "What the learner still needs to do", n: 33 },
+    ],
     art: "book-plain-brick", color: "#a3301f",
     spine: "AI Educator Playbook",
     title: "AI Educator Playbook",
@@ -40,8 +47,16 @@ export const BOOKS = [
   },
   {
     id: "moving-image",
-    emblem: "moving-image.svg", plate: "moving-image-2026-09-27.png", endpaper: "film",
+    emblem: "moving-image.svg", plate: "moving-image-2026-09-27.png",
     caption: "Learn by making: chapters from file basics to camera language.",
+    chapters: [
+      { t: "Computer and file foundations", n: 1 },
+      { t: "A short history of film", n: 11 },
+      { t: "Camera language", n: 21 },
+      { t: "Editing", n: 31 },
+      { t: "Lighting and sound", n: 41 },
+      { t: "Your production project", n: 51 },
+    ],
     art: "book-plain-teal", color: "#176a6d",
     spine: "The Moving Image",
     title: "The Moving Image",
@@ -52,8 +67,15 @@ export const BOOKS = [
   },
   {
     id: "ai-road-test",
-    emblem: "ai-road-test.svg", plate: "ai-road-test-2026-09-27.png", endpaper: "map",
+    emblem: "ai-road-test.svg", plate: "ai-road-test-2026-09-27.png",
     caption: "Earn eight permit stamps across three districts.",
+    chapters: [
+      { t: "Drive the neighborhood", n: 1 },
+      { t: "Question stops: prompting, privacy, ethics and verification", n: 7 },
+      { t: "Fuel and eight permit stamps", n: 15 },
+      { t: "Three districts", n: 21 },
+      { t: "Back to the testing center", n: 29 },
+    ],
     art: "book-plain-ochre", color: "#c98a1e",
     spine: "The AI Road Test",
     title: "The AI Road Test",
@@ -64,8 +86,15 @@ export const BOOKS = [
   },
   {
     id: "write-with-ai",
-    emblem: "write-with-ai.svg", plate: "write-with-ai-2026-09-27.png", endpaper: "ruled",
+    emblem: "write-with-ai.svg", plate: "write-with-ai-2026-09-27.png",
     caption: "Round 1: four minutes to write the best introduction.",
+    chapters: [
+      { t: "Round 1: write an introduction in four minutes", n: 1 },
+      { t: "Review the conversation", n: 5 },
+      { t: "Who’s the author?", n: 9 },
+      { t: "Round 2: try again", n: 13 },
+      { t: "Compare your two drafts", n: 17 },
+    ],
     art: "book-plain-forest", color: "#3a5f31",
     spine: "Write with AI",
     title: "Write with AI",
