@@ -39,7 +39,7 @@ const YOUTUBE_EMBED_ORIGIN = "https://www.youtube-nocookie.com";
 const pc = (v, of) => (v / of) * 100 + "%";
 const thumb = (id, q = "mqdefault") => `https://i.ytimg.com/vi/${id}/${q}.jpg`;
 const canEmbed = (v) => !unavailableEmbedIds.has(v.id);
-const title = (v) => v.song || v.title;
+const title = (v) => v.menuTitle || v.song || v.title;
 
 export default {
   mount(root, { route }) {
