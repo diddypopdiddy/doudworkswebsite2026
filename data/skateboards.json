@@ -1,22 +1,20 @@
 {
- "note": "One entry per deck, in the order the page shows them. img = the number in the photo's file name (assets/skateboards/<img>.webp). title is the big line on the label; brand and detail make the small line (leave either empty to hide it).",
+ "note": "One entry per deck, in display order. route is the number in the deck's public link. Use a new route number for each added deck. img is the number in the photo's file name (assets/skateboards/<img>.webp). title is the main label. brand and detail are optional.",
  "decks": [
-  { "img": "1769", "title": "Arto Saari", "brand": "Flip", "detail": "" },
-  { "img": "1775", "title": "Brian Wenning", "brand": "Habitat", "detail": "" },
-  { "img": "1767", "title": "Cyril Jackson", "brand": "Baker", "detail": "" },
-  { "img": "1770", "title": "Arto Saari", "brand": "Flip", "detail": "" },
-  { "img": "1768", "title": "Mark Appleyard", "brand": "Flip", "detail": "" },
-  { "img": "1772", "title": "Forrest Edwards", "brand": "Zero", "detail": "" },
-  { "img": "1771", "title": "Dan Murphy", "brand": "Mystery", "detail": "" },
-  { "img": "1765", "title": "Quasi", "brand": "", "detail": "" },
-  { "img": "1777", "title": "Jake Johnson", "brand": "Mother", "detail": "" },
-  { "img": "1778", "title": "Globe", "brand": "", "detail": "" },
-  { "img": "1766", "title": "David Bowie", "brand": "Hammers", "detail": "" },
-  { "img": "1779", "title": "DeShawn Jordan", "brand": "Business & Company", "detail": "" },
-  { "img": "1781", "title": "Iggy Pop", "brand": "Hammers", "detail": "" },
-  { "img": "1776", "title": "Jason Dill", "brand": "FA", "detail": "" },
-  { "img": "1774", "title": "Jason Dill", "brand": "FA", "detail": "" },
-  { "img": "1773", "title": "Rihanna", "brand": "Quartersnacks", "detail": "" },
-  { "img": "1782", "title": "Magnolia and Dylan", "brand": "CCS", "detail": "Custom deck, Dylan’s first day home" }
+  { "route": 1, "img": "1769", "title": "Arto Saari", "brand": "Flip", "detail": "" },
+  { "route": 2, "img": "1775", "title": "Brian Wenning", "brand": "Habitat", "detail": "" },
+  { "route": 3, "img": "1767", "title": "Cyril Jackson", "brand": "Baker", "detail": "" },
+  { "route": 4, "img": "1770", "title": "Arto Saari", "brand": "Flip", "detail": "" },
+  { "route": 5, "img": "1768", "title": "Mark Appleyard", "brand": "Flip", "detail": "" },
+  { "route": 7, "img": "1771", "title": "Dan Murphy", "brand": "Mystery", "detail": "" },
+  { "route": 8, "img": "1765", "title": "Quasi", "brand": "", "detail": "" },
+  { "route": 9, "img": "1777", "title": "Jake Johnson", "brand": "Mother", "detail": "" },
+  { "route": 10, "img": "1778", "title": "Globe", "brand": "", "detail": "" },
+  { "route": 11, "img": "1766", "title": "David Bowie", "brand": "Hammers", "detail": "" },
+  { "route": 12, "img": "1779", "title": "DeShawn Jordan", "brand": "Business & Company", "detail": "" },
+  { "route": 13, "img": "1781", "title": "Iggy Pop", "brand": "Hammers", "detail": "" },
+  { "route": 14, "img": "1776", "title": "Jason Dill", "brand": "FA", "detail": "" },
+  { "route": 15, "img": "1774", "title": "Jason Dill", "brand": "FA", "detail": "" },
+  { "route": 17, "img": "1782", "title": "Magnolia and Dylan", "brand": "CCS", "detail": "Custom deck, Dylan’s first day home" }
  ]
 }

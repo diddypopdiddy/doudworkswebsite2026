@@ -14,7 +14,8 @@ export default {
     const S = scope();
     const decks = (await loadJSON("data/skateboards.json")).decks;
     const N = decks.length;
-    const startAt = (param) => clamp((parseInt(param, 10) || 1) - 1, 0, N - 1);
+    const routeNumber = (i) => decks[i].route ?? i + 1;
+    const startAt = (param) => Math.max(0, decks.findIndex((_, i) => String(routeNumber(i)) === param));
     const sub = (d) => [d.brand, d.detail].filter(Boolean).join(" · ");
 
     root.innerHTML = `
@@ -105,7 +106,7 @@ export default {
       settle();
       glide(pos, index, clamp(Math.abs(index - pos), 0.35, 1.6) * SLIDE_MS);
       if (!changed) return;
-      if (address) replaceDetailAddress(index === 0 ? "/skateboards" : `/skateboards/${index + 1}`);
+      if (address) replaceDetailAddress(index === 0 ? "/skateboards" : `/skateboards/${routeNumber(index)}`);
       const d = decks[index];
       if (say) announce(`${[d.brand, d.title].filter(Boolean).join(" ")}, ${index + 1} of ${N}`);
     };
