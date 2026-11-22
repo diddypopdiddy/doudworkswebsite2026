@@ -124,7 +124,7 @@ RT.buildWorld = function (map, quality) {
 
   // ---------- helpers for blocks ----------
   const trees = [];
-  const addTree = (x, z, s = 1, kind = 0) => trees.push({ x, z, s, kind });
+  const addTree = (x, z, s = 1, kind = 0, y) => trees.push({ x, z, s, kind, y });
   const SW = 3.5;
   const CUT = map.CORNER;
   const pick = (arr) => arr[Math.floor(rnd() * arr.length)];
@@ -483,7 +483,7 @@ RT.buildWorld = function (map, quality) {
     const x = Math.cos(a) * r, z = Math.sin(a) * r;
     if (x > ext.x1 + 20 && x < ext.x1 + 500 && Math.abs(z - 20) < 290) continue; // keep the lake view open
     if (Math.abs(x) < ext.x1 + 8 && Math.abs(z) < ext.z1 + 8) continue;
-    addTree(x, z, 1.2 + rnd() * 1.2, rnd() < 0.45 ? 1 : 0);
+    addTree(x, z, 1.2 + rnd() * 1.2, rnd() < 0.45 ? 1 : 0, 0);
   }
   // rolling hills and far mountains
   const hillMat = B.M({ color: 0x7aa95e, flatShading: true });
@@ -500,90 +500,38 @@ RT.buildWorld = function (map, quality) {
     m.position.set(Math.cos(a) * r, 60, Math.sin(a) * r); scene.add(m);
   }
 
-  // ---------- trees (instanced) ----------
-  if (upgradedBlock) {
-    const b = upgradedBlock.block;
-    const nearby = trees.filter((t) => t.kind === 0 && t.x > b.x0 - 14 && t.x < b.x1 + 14 && t.z > b.z0 - 14 && t.z < b.z1 + 14);
-    if (upgradedBlock.plantOaks(nearby)) {
-      const replaced = new Set(nearby);
-      for (let i = trees.length - 1; i >= 0; i--) if (replaced.has(trees[i])) trees.splice(i, 1);
-    }
-  }
-  if (RT.useModels) {
-    // Blender oak / pine / bush, leaves tinted per tree
-    const kinds = [['tree_oak', 0, 0.9, 0.2], ['tree_pine', 1, 1.05, 0.2], ['bush', 2, 1.5, 0.16]];
-    const greens = [0x5e9e47, 0x6aac4f, 0x4f8f3e, 0x7bb85a, 0x8bbf55, 0x5a9a3c];
-    const m4 = new T.Matrix4(), q4 = new T.Quaternion(), up4 = new T.Vector3(0, 1, 0), p4 = new T.Vector3(), s4 = new T.Vector3();
-    for (const [name, kind, scl, y] of kinds) {
-      const list = trees.filter((t) => t.kind === kind);
-      if (!list.length) continue;
-      const kit = RT.Kit.instanced(scene, RT.Kit.mergeAtOrigin(RT.Kit.find(RT.ASSETS.town, name)), list.length, {
-        tint: { Leaves: true }, shadows: quality.traffic >= 16, looks: { Leaves: { roughness: 0.95 }, Bark: { roughness: 1 } }
-      });
-      list.forEach((t, k) => {
-        const s = t.s * scl * (0.9 + rnd() * 0.25);
-        q4.setFromAxisAngle(up4, rnd() * Math.PI * 2);
-        m4.compose(p4.set(t.x, y, t.z), q4, s4.set(s, s * (0.9 + rnd() * 0.2), s));
-        kit.setMatrix(k, m4);
-        kit.setColor(k, 'Leaves', kind === 1 ? new T.Color(0x3f7a3a).offsetHSL(0, 0, (rnd() - 0.5) * 0.08) : new T.Color(pick(greens)).offsetHSL(0, 0, (rnd() - 0.5) * 0.06));
-      });
-      kit.commit();
-    }
-  } else {
-
-    const canopyG = new T.IcosahedronGeometry(1, 0);
-    const pineG = new T.ConeGeometry(1, 2.4, 7);
-    const trunkG = new T.CylinderGeometry(0.18, 0.26, 1, 6);
-    const leafMat = B.M({ flatShading: true });
-    const trunkMat = B.M({ color: 0x7a5534 });
-    const round = trees.filter((t) => t.kind === 0), pine = trees.filter((t) => t.kind === 1), bush = trees.filter((t) => t.kind === 2);
-    const withTrunk = trees.filter((t) => t.kind !== 2);
-    const can = new T.InstancedMesh(canopyG, leafMat, round.length * 3 + bush.length);
-    const pin = new T.InstancedMesh(pineG, leafMat, Math.max(1, pine.length * 2));
-    const trk = new T.InstancedMesh(trunkG, trunkMat, withTrunk.length);
-    const m = new T.Matrix4(), q = new T.Quaternion(), sc = new T.Vector3(), ps = new T.Vector3(), up = new T.Vector3(0, 1, 0);
-    const greens = [0x5e9e47, 0x6aac4f, 0x4f8f3e, 0x7bb85a, 0x8bbf55, 0x5a9a3c];
-    const col = new T.Color();
-    withTrunk.forEach((t, k) => {
-      const s = t.s * 2.2;
-      ps.set(t.x, 0.2 + s * 0.6, t.z); sc.set(0.9 * t.s * 2, s * 1.2, 0.9 * t.s * 2); q.identity();
-      m.compose(ps, q, sc); trk.setMatrixAt(k, m);
-    });
-    let n = 0;
-    round.forEach((t) => {
-      const s = t.s * 2.2, base = pick(greens);
-      const lumps = [[0, 1.55, 0, 1], [0.55, 1.25, 0.25, 0.68], [-0.45, 1.3, -0.35, 0.72]];
-      for (const [ox, oy, oz, f] of lumps) {
-        q.setFromAxisAngle(up, rnd() * 6);
-        ps.set(t.x + ox * s, 0.2 + s * oy, t.z + oz * s); sc.set(s * f, s * 0.92 * f, s * f);
-        m.compose(ps, q, sc); can.setMatrixAt(n, m);
-        can.setColorAt(n, col.set(base).offsetHSL(0, 0, (rnd() - 0.5) * 0.06)); n++;
-      }
-    });
-    bush.forEach((t) => {
-      const s = t.s * 1.6;
-      q.setFromAxisAngle(up, rnd() * 6);
-      ps.set(t.x, 0.16 + s * 0.55, t.z); sc.set(s * 1.25, s * 0.8, s * 1.25);
-      m.compose(ps, q, sc); can.setMatrixAt(n, m);
-      can.setColorAt(n, col.set(0x4c8b3a).offsetHSL(0, 0, (rnd() - 0.5) * 0.08)); n++;
-    });
-    let pn = 0;
-    pine.forEach((t) => {
-      const s = t.s * 2;
-      for (const [oy, f] of [[1.6, 1], [2.6, 0.72]]) {
-        q.setFromAxisAngle(up, rnd() * 6);
-        ps.set(t.x, 0.2 + s * oy, t.z); sc.set(s * f, s * 1.1 * f, s * f);
-        m.compose(ps, q, sc); pin.setMatrixAt(pn, m);
-        pin.setColorAt(pn, col.set(0x3f7a3a).offsetHSL(0, 0, (rnd() - 0.5) * 0.08)); pn++;
-      }
-    });
-    pin.count = pn;
-    for (const im of [can, pin, trk]) { im.castShadow = quality.shadows; im.receiveShadow = false; scene.add(im); }
-  }
+  const foliage = RT.Foliage.mount(RT.ASSETS?.foliage, scene, trees, quality);
 
   // ---------- traffic signals ----------
-  const lampHeads = []; // {node, axis, idx}
-  const signalPoleBatch = solid;
+  const lampHeads = [];
+  const levelColors = ['red', 'yellow', 'green'];
+  const rim = new T.RingGeometry(0.94, 1.16, 24);
+  const lampMatrix = new T.Matrix4();
+  const lampPosition = new T.Vector3(), lampScale = new T.Vector3(), up = new T.Vector3(0, 1, 0);
+
+  function addSignalHead(node, travel, x, y, z, scale) {
+    const { x: dx, z: dz } = U.DIRS[travel];
+    const yaw = Math.atan2(-dx, -dz);
+    const rotation = new T.Quaternion().setFromAxisAngle(up, yaw);
+    const height = 1.72 * scale, radius = 0.254 * scale, step = 0.55 * scale;
+    // The matte face and yellow surround make the head readable against sky and trees.
+    solid.rbox(x + dx * 0.18, y, z + dz * 0.18, 1.02 * scale, height + 0.22 * scale, 0.05, yaw, 0xdcae50);
+    solid.rbox(x + dx * 0.14, y, z + dz * 0.14, 0.91 * scale, height + 0.11 * scale, 0.07, yaw, 0x222831);
+    solid.rbox(x, y, z, 0.67 * scale, height, 0.43, yaw, 0x262c32);
+    const head = { node: node.id, axis: U.axisOf(travel), x, y, z, dx, dz, radius, step, rotation, state: null };
+    for (let k = 0; k < levelColors.length; k++) {
+      setLampMatrix(head, k, radius, 0.232);
+      solid.addGeometry(rim, lampMatrix, 0x0e1319);
+    }
+    lampHeads.push(head);
+  }
+
+  function setLampMatrix(head, level, radius, depth) {
+    lampPosition.set(head.x - head.dx * depth, head.y + (1 - level) * head.step, head.z - head.dz * depth);
+    lampScale.set(radius, radius, 1);
+    lampMatrix.compose(lampPosition, head.rotation, lampScale);
+  }
+
   for (const n of map.nodes) {
     if (n.kind !== 'signal') continue;
     for (const from of ['N', 'E', 'S', 'W']) {
@@ -594,54 +542,72 @@ RT.buildWorld = function (map, quality) {
       const approachW = map.segments[n.exits[from]].width;
       const px = n.x + d.x * (ha + 1.2) + r.x * (hs + map.CORNER + 0.9), pz = n.z + d.z * (ha + 1.2) + r.z * (hs + map.CORNER + 0.9);
       const hx = n.x + d.x * (ha + 1.2) + r.x * (approachW / 4), hz = n.z + d.z * (ha + 1.2) + r.z * (approachW / 4);
-      signalPoleBatch.cyl(px, 0.2, pz, 0.16, 6.2, 0x3a3f46, 8);
+      solid.cyl(px, 0.2, pz, 0.16, 6.2, 0x3a3f46, 8);
       const armLen = Math.hypot(px - hx, pz - hz);
-      signalPoleBatch.box((px + hx) / 2, 5.9, (pz + hz) / 2, Math.abs(r.x) * armLen + 0.16, 0.16, Math.abs(r.z) * armLen + 0.16, 0x3a3f46);
-      signalPoleBatch.box(hx, 4.7, hz, Math.abs(d.x) * 0.45 + Math.abs(d.z) * 0.55, 1.5, Math.abs(d.z) * 0.45 + Math.abs(d.x) * 0.55, 0x1f2328);
-      // back plate
-      signalPoleBatch.box(hx + d.x * 0.1, 4.6, hz + d.z * 0.1, Math.abs(d.x) * 0.06 + Math.abs(d.z) * 0.95, 1.9, Math.abs(d.z) * 0.06 + Math.abs(d.x) * 0.95, 0x111418);
-      lampHeads.push({ node: n.id, axis: U.axisOf(travel), x: hx - d.x * 0.24, z: hz - d.z * 0.24 });
+      solid.box((px + hx) / 2, 5.9, (pz + hz) / 2, Math.abs(r.x) * armLen + 0.16, 0.16, Math.abs(r.z) * armLen + 0.16, 0x3a3f46);
+      addSignalHead(n, travel, hx, 5.45, hz, 1);
       // a second, lower head on the near-right pole helps drivers see the light when stopped close
       const nx = n.x - d.x * (ha + map.CROSSWALK + 1.2) + r.x * (approachW / 2 + 1.4), nz = n.z - d.z * (ha + map.CROSSWALK + 1.2) + r.z * (approachW / 2 + 1.4);
-      signalPoleBatch.cyl(nx, 0.2, nz, 0.12, 3.2, 0x3a3f46, 8);
-      signalPoleBatch.box(nx, 2.5, nz, Math.abs(d.x) * 0.4 + Math.abs(d.z) * 0.5, 1.3, Math.abs(d.z) * 0.4 + Math.abs(d.x) * 0.5, 0x1f2328);
-      lampHeads.push({ node: n.id, axis: U.axisOf(travel), x: nx - d.x * 0.22, z: nz - d.z * 0.22, low: true });
+      solid.cyl(nx, 0.2, nz, 0.12, 3.2, 0x3a3f46, 8);
+      addSignalHead(n, travel, nx, 3.15, nz, 0.86);
     }
   }
-  const lampGeom = new T.SphereGeometry(0.17, 10, 8);
-  const lampMat = new T.MeshBasicMaterial();
-  const lamps = new T.InstancedMesh(lampGeom, lampMat, lampHeads.length * 3);
-  {
-    const m = new T.Matrix4();
-    lampHeads.forEach((h, k) => {
-      const base = h.low ? 3.15 : 5.45, step = h.low ? 0.4 : 0.44;
-      for (let L = 0; L < 3; L++) {
-        m.makeTranslation(h.x, base + step - L * step, h.z);
-        lamps.setMatrixAt(k * 3 + L, m);
-        lamps.setColorAt(k * 3 + L, new T.Color(0x222222));
-      }
-      h.idx = k * 3;
+  rim.dispose();
+  function signalTexture(stops) {
+    const [canvas, ctx] = B.canvas(64, 64);
+    const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+    for (const [at, color] of stops) gradient.addColorStop(at, color);
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, 64, 64);
+    return B.toTexture(canvas);
+  }
+  const lensMap = signalTexture([[0, '#ffffff'], [0.76, '#fcfcfc'], [1, '#b9b9b9']]);
+  const haloMap = signalTexture([
+    [0, 'rgba(255,255,255,0.42)'], [0.35, 'rgba(255,255,255,0.19)'],
+    [0.63, 'rgba(255,255,255,0.056)'], [1, 'rgba(255,255,255,0)']
+  ]);
+  const lenses = new T.InstancedMesh(new T.CircleGeometry(1, 24),
+    new T.MeshBasicMaterial({ map: lensMap, toneMapped: false }), lampHeads.length * 3);
+  const halos = new T.InstancedMesh(new T.PlaneGeometry(2, 2), new T.MeshBasicMaterial({
+    map: haloMap, transparent: true, blending: T.AdditiveBlending, depthWrite: false, toneMapped: false
+  }), lampHeads.length);
+  lenses.name = 'traffic_signal_lenses';
+  halos.name = 'traffic_signal_halos';
+  halos.frustumCulled = false;
+  halos.instanceMatrix.setUsage(T.DynamicDrawUsage);
+  const signalColors = [0xff311c, 0xffcd28, 0x20ff61].map(c => new T.Color(c));
+  const litColors = signalColors.map(c => c.clone().multiplyScalar(quality.bloom ? 2.6 : 1));
+  const darkColors = [0x2a1614, 0x2b2414, 0x142717].map(c => new T.Color(c));
+  lampHeads.forEach((head, i) => {
+    levelColors.forEach((_, k) => {
+      setLampMatrix(head, k, head.radius, 0.246);
+      lenses.setMatrixAt(i * 3 + k, lampMatrix);
+      lenses.setColorAt(i * 3 + k, darkColors[k]);
     });
-    scene.add(lamps);
-  }
-  const lampColors = {
-    redOn: new T.Color().setRGB(4.5, 0.25, 0.15), yellowOn: new T.Color().setRGB(4, 2.2, 0.2), greenOn: new T.Color().setRGB(0.3, 3.8, 1.2),
-    redOff: new T.Color(0x3a1512), yellowOff: new T.Color(0x3a2e10), greenOff: new T.Color(0x0f2a1a)
-  };
-  const lastState = new Map();
-  function setLamp(head, state) {
-    const key = head.idx;
-    if (lastState.get(key) === state) return false;
-    lastState.set(key, state);
-    lamps.setColorAt(head.idx, state === 'red' ? lampColors.redOn : lampColors.redOff);
-    lamps.setColorAt(head.idx + 1, state === 'yellow' ? lampColors.yellowOn : lampColors.yellowOff);
-    lamps.setColorAt(head.idx + 2, state === 'green' ? lampColors.greenOn : lampColors.greenOff);
-    return true;
-  }
+    halos.setColorAt(i, signalColors[0]);
+  });
+  lenses.instanceColor.setUsage(T.DynamicDrawUsage);
+  halos.instanceColor.setUsage(T.DynamicDrawUsage);
+  scene.add(lenses, halos);
+
   function updateLamps(lightFor) {
     let dirty = false;
-    for (const h of lampHeads) dirty = setLamp(h, lightFor(h.node, h.axis)) || dirty;
-    if (dirty) lamps.instanceColor.needsUpdate = true;
+    lampHeads.forEach((head, i) => {
+      const level = levelColors.indexOf(lightFor(head.node, head.axis));
+      if (head.state === level) return;
+      head.state = level;
+      for (let k = 0; k < levelColors.length; k++) {
+        lenses.setColorAt(i * 3 + k, k === level ? litColors[k] : darkColors[k]);
+      }
+      setLampMatrix(head, level, head.radius * 2.9, 0.264);
+      halos.setMatrixAt(i, lampMatrix);
+      halos.setColorAt(i, signalColors[level]);
+      dirty = true;
+    });
+    if (dirty) {
+      lenses.instanceColor.needsUpdate = true;
+      halos.instanceMatrix.needsUpdate = halos.instanceColor.needsUpdate = true;
+    }
   }
 
   // ---------- stop signs + speed limit signs (instanced faces) ----------
@@ -748,10 +714,12 @@ RT.buildWorld = function (map, quality) {
     for (const m of duskMats) m.emissiveIntensity = f * 0.75;
     bulbMat.emissiveIntensity = f * 3.5;
     upgradedBlock?.setDusk(f);
+    foliage.setDusk(f);
   }
   const lastArt = new T.Vector3(Infinity, Infinity, Infinity);
   function updateArt(pos) {
     upgradedBlock?.update(pos);
+    foliage.update(pos);
     if (lastArt.distanceToSquared(pos) < 36) return;
     lastArt.copy(pos);
     const nearLimit = quality.traffic >= 16 ? 88 : 58;
@@ -794,5 +762,5 @@ RT.buildWorld = function (map, quality) {
   overlookBeacon.position.set(map.overlookSpot.x, 0, map.overlookSpot.z);
   overlookBeacon.userData.col.material.opacity = 0.1;
 
-  return { scene, sun, hemi, updateLamps, finishBeacon, overlookBeacon, beacon, setDusk, updateArt, upgradedBlock };
+  return { scene, sun, hemi, updateLamps, finishBeacon, overlookBeacon, beacon, setDusk, updateArt, upgradedBlock, foliage };
 };

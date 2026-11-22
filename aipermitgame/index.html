@@ -6,7 +6,7 @@
   <title>AI Road Test: Permit Drive</title>
   <meta name="description" content="Drive a student-driver car around town, stop at red lights to answer AI literacy questions, and make full stops at stop signs to collect Road Notes about AI.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='20' y='4' width='24' height='56' rx='8' fill='%2313294b'/%3E%3Ccircle cx='32' cy='17' r='7' fill='%23ff3b30'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23ffc233'/%3E%3Ccircle cx='32' cy='47' r='7' fill='%2322e07a'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/style.css?v=20">
+  <link rel="stylesheet" href="css/style.css?v=22">
 </head>
 <body>
 <div id="app">
@@ -61,17 +61,15 @@
       <button class="icon-btn" id="pauseBtn" title="Pause (Esc)" aria-label="Pause">⏸</button>
     </div>
 
-    <div id="touch" aria-hidden="true">
-      <div class="steer">
-        <button data-k="left">◀</button><button data-k="right">▶</button>
-      </div>
-      <div class="pedals">
-        <button data-k="sigL" class="small">⇦</button>
-        <button data-k="brake" class="brake">BRAKE</button>
-        <button data-k="gas" class="gas">GAS</button>
-        <button data-k="sigR" class="small">⇨</button>
-        <button data-k="reverse" class="small">R</button>
-      </div>
+    <div id="touchTools" role="group" aria-label="Turn signals and reverse">
+      <button type="button" class="touch-btn" id="signalLeftBtn" aria-label="Left turn signal" aria-pressed="false">← Signal</button>
+      <button type="button" class="touch-btn" id="signalRightBtn" aria-label="Right turn signal" aria-pressed="false">Signal →</button>
+      <button type="button" class="touch-btn" id="reverseBtn" aria-pressed="false">Reverse</button>
+    </div>
+
+    <div id="touchGuide" aria-hidden="true">
+      <span>Hold to <span id="touchVerb">drive</span> · <span id="steerHint">Slide to steer</span> · Lift to brake</span>
+      <span class="touch-track"></span>
     </div>
   </div>
 
@@ -130,7 +128,8 @@
         </div>
         <details class="controls">
           <summary>Controls</summary>
-          <table>
+          <p class="touch-help">Hold the middle of the screen to drive straight. Hold or slide toward either side to steer. Lift your thumb to brake. Tap Reverse when stopped. You can switch to Tilt steering in Pause.</p>
+          <table class="keyboard-help">
             <tr><td><kbd>W</kbd>/<kbd>↑</kbd></td><td>Gas</td></tr>
             <tr><td><kbd>S</kbd>/<kbd>↓</kbd></td><td>Brake, then reverse</td></tr>
             <tr><td><kbd>A</kbd><kbd>D</kbd>/<kbd>←</kbd><kbd>→</kbd></td><td>Steer</td></tr>
@@ -151,6 +150,17 @@
   <div id="pauseScreen" class="layer screen dim" hidden>
     <div class="sheet">
       <h2>Paused</h2>
+      <div class="steering-settings touch-help" role="group" aria-labelledby="steeringLabel">
+        <div class="steering-row">
+          <b id="steeringLabel">Steering</b>
+          <div class="steering-options">
+            <button type="button" class="btn" id="touchSteerBtn" aria-pressed="true">Touch</button>
+            <button type="button" class="btn" id="tiltSteerBtn" aria-pressed="false">Tilt</button>
+          </div>
+        </div>
+        <p id="steeringStatus" class="muted" role="status">Hold and slide left or right to steer.</p>
+        <button type="button" class="btn" id="centerTiltBtn" hidden>Recenter tilt</button>
+      </div>
       <div class="sheet-grid">
         <button class="btn primary" id="resumeDriveBtn">Keep driving</button>
         <button class="btn" id="notesBtn">Road Notes logbook</button>
@@ -191,7 +201,9 @@
         <div><b>↺ Stuck?</b><span>Press R (or the ↺ button) to put the car back on the road. No points lost.</span></div>
         <div><b>🔊 Read aloud</b><span>Every card has a Read aloud button that reads the question or note to you.</span></div>
       </div>
-      <p class="muted" style="font-weight:700">Keys: W/↑ gas · S/↓ brake then reverse · A D/← → steer · Space brake · Q/E turn signals · C camera · M map · R reset car · Esc pause</p>
+      <p class="muted touch-help"><b>Touch controls.</b> Hold the middle of the screen to drive straight. Hold or slide toward either side to steer. Lift your thumb to brake. Tap Reverse when stopped to change direction. Use the Signal buttons before turning.</p>
+      <p class="muted touch-help"><b>Tilt steering.</b> In Pause, choose Tilt under Steering and allow motion access if asked. Hold the phone at a comfortable angle when you first touch the road. Tilt left or right while holding, and lift to brake.</p>
+      <p class="muted keyboard-help" style="font-weight:700">Keys: W/↑ gas · S/↓ brake then reverse · A D/← → steer · Space brake · Q/E turn signals · C camera · M map · R reset car · Esc pause</p>
     </div>
   </div>
 
@@ -235,19 +247,23 @@
 <script src="js/util.js?v=20"></script>
 <script src="js/map.js?v=20"></script>
 <script src="js/builder.js?v=20"></script>
-<script src="js/world.js?v=21"></script>
+<script src="js/foliage.js?v=23"></script>
+<script src="js/world.js?v=24"></script>
 <script src="js/sky.js?v=21"></script>
-<script src="js/props.js?v=21"></script>
+<script src="js/pedestrians.js?v=24"></script>
+<script src="js/props.js?v=22"></script>
 <script src="js/lessons.js?v=20"></script>
-<script src="js/assets-data.js?v=21"></script>
-<script src="js/maple.js?v=21"></script>
-<script src="js/assets.js?v=21"></script>
+<script src="js/assets-data.js?v=24"></script>
+<script src="js/maple.js?v=23"></script>
+<script src="js/assets.js?v=23"></script>
 <script src="js/vehicles.js?v=21"></script>
 <script src="js/car.js?v=21"></script>
 <script src="js/traffic.js?v=21"></script>
 <script src="js/rules.js?v=20"></script>
 <script src="js/audio.js?v=20"></script>
 <script src="js/ui.js?v=20"></script>
-<script src="js/game.js?v=21"></script>
+<script src="js/tilt-steering.js?v=1"></script>
+<script src="js/touch-drive.js?v=2"></script>
+<script src="js/game.js?v=24"></script>
 </body>
 </html>

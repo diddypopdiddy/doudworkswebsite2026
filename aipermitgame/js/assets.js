@@ -21,10 +21,16 @@ RT.loadAssets = function (tier) {
       console.warn('Maple Street art could not load. Using the original block.', err);
       return null;
     }) : null;
-  return Promise.all([parse(D.vehicles), parse(D.people), parse(D.town), Promise.all(facadeJobs), maple])
-    .then(([vehicles, people, town, facades, maplePack]) => {
-      const A = { vehicles: vehicles.scene, people: people.scene, town: town.scene, facades: Object.fromEntries(facades), maple: maplePack };
-      for (const s of [A.vehicles, A.people, A.town]) s.updateMatrixWorld(true);
+  const walkers = parse(D.people).catch((err) => {
+    console.warn('Pedestrian models could not load.', err);
+    return null;
+  });
+  const foliage = D.foliage ? RT.Foliage.load(D.foliage, tier, { toBuffer, loader, tex }) : null;
+  return Promise.all([parse(D.vehicles), walkers, parse(D.town), Promise.all(facadeJobs), maple, foliage])
+    .then(([vehicles, people, town, facades, maplePack, foliagePack]) => {
+      const A = { vehicles: vehicles.scene, people: people?.scene, peopleClips: people?.animations || [],
+        town: town.scene, facades: Object.fromEntries(facades), maple: maplePack, foliage: foliagePack };
+      for (const s of [A.vehicles, A.people, A.town]) s?.updateMatrixWorld(true);
       RT.ASSETS = A;
       delete window.RT_ASSET_DATA;
       return A;

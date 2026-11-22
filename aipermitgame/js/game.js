@@ -214,7 +214,7 @@ RT.startGame = function (savedPrefs = {}) {
     return { q: pool[Math.floor(Math.random() * pool.length)], secondLook: false };
   }
 
-  function openCardMode() { mode = 'card'; keys.clear(); audio.setEngine(0, 0, false); }
+  function openCardMode() { mode = 'card'; clearDriveInput(); audio.setEngine(0, 0, false); }
 
   function onRedLight(ap, release) {
     P.stats.redStops++;
@@ -336,7 +336,10 @@ RT.startGame = function (savedPrefs = {}) {
     if (signaled) { P.stats.signaled++; return; }
     if (P.stats.time - lastSignalTip < 40) return;
     lastSignalTip = P.stats.time;
-    if (prefs.signals) ui.say('Remember to signal before you turn ' + dir + ': press ' + (dir === 'left' ? 'Q' : 'E') + '.', 'tip', 4);
+    if (prefs.signals) {
+      const prompt = usesTouch() ? `Tap the ${dir} signal before you turn.` : `Remember to signal before you turn ${dir}: press ${dir === 'left' ? 'Q' : 'E'}.`;
+      ui.say(prompt, 'tip', 4);
+    }
   }
 
   function onFinish() {
@@ -346,7 +349,7 @@ RT.startGame = function (savedPrefs = {}) {
     P.finished = true;
     save();
     mode = 'finish';
-    keys.clear();
+    clearDriveInput();
     audio.sfx.finish();
     world.finishBeacon.visible = false;
     lessons.setDestination(null);
@@ -370,12 +373,25 @@ RT.startGame = function (savedPrefs = {}) {
   // ---------- input ----------
   const keys = new Set();
   const KEYMAP = { KeyW: 'gas', ArrowUp: 'gas', KeyS: 'reverse', ArrowDown: 'reverse', KeyA: 'left', ArrowLeft: 'left', KeyD: 'right', ArrowRight: 'right', Space: 'brake' };
+  const touchDrive = RT.createTouchDrive(canvas, car, () => mode === 'drive' && !document.hidden, () => {
+    keys.clear();
+    audio.start();
+  });
+  const usesTouch = () => isTouch || touchDrive.active;
+  function clearDriveInput() {
+    keys.clear();
+    touchDrive.cancel();
+  }
   window.addEventListener('keydown', (e) => {
     if (e.target && e.target.tagName === 'INPUT') { if (e.code === 'Enter') startDrive(false); return; }
     audio.start();
     if (mode === 'card') { ui.handleCardKey(e); return; }
     if (mode === 'drive') {
-      if (KEYMAP[e.code]) { keys.add(KEYMAP[e.code]); e.preventDefault(); }
+      if (KEYMAP[e.code]) {
+        if (!e.repeat && touchDrive.active) touchDrive.reset();
+        keys.add(KEYMAP[e.code]);
+        e.preventDefault();
+      }
       if (e.repeat) return;
       if (e.code === 'KeyQ') car.setBlinker(1);
       if (e.code === 'KeyE') car.setBlinker(-1);
@@ -389,26 +405,17 @@ RT.startGame = function (savedPrefs = {}) {
     else if (mode === 'notes' && e.code === 'Escape') { ui.show('notesScreen', false); mode = 'pause'; ui.show('pauseScreen', true); }
   });
   window.addEventListener('keyup', (e) => { if (KEYMAP[e.code]) keys.delete(KEYMAP[e.code]); });
-  window.addEventListener('blur', () => keys.clear());
+  window.addEventListener('blur', clearDriveInput);
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) { audio.suspend(); if (mode === 'drive' && !window.__rtTest) openPause(); }
-    else audio.resume();
-  });
-
-  // touch controls
-  document.querySelectorAll('#touch button').forEach((b) => {
-    const k = b.dataset.k;
-    const down = (e) => {
-      e.preventDefault(); audio.start(); b.classList.add('down');
-      if (k === 'sigL') car.setBlinker(1); else if (k === 'sigR') car.setBlinker(-1); else keys.add(k);
-    };
-    const up = (e) => { e.preventDefault(); b.classList.remove('down'); if (k !== 'sigL' && k !== 'sigR') keys.delete(k); };
-    b.addEventListener('pointerdown', down);
-    b.addEventListener('pointerup', up); b.addEventListener('pointercancel', up); b.addEventListener('pointerleave', up);
+    if (document.hidden) {
+      clearDriveInput();
+      audio.suspend();
+      if (mode === 'drive' && !window.__rtTest) openPause();
+    } else audio.resume();
   });
 
   function readInput() {
-    return {
+    return touchDrive.read() ?? {
       throttle: keys.has('gas') ? 1 : 0,
       reverse: keys.has('reverse') ? 1 : 0,
       brake: keys.has('brake') ? 1 : 0,
@@ -417,9 +424,9 @@ RT.startGame = function (savedPrefs = {}) {
   }
 
   // ---------- screens ----------
-  function openPause() { if (mode !== 'drive') return; mode = 'pause'; keys.clear(); ui.show('pauseScreen', true); audio.setEngine(0, 0, false); }
+  function openPause() { if (mode !== 'drive') return; mode = 'pause'; clearDriveInput(); ui.show('pauseScreen', true); audio.setEngine(0, 0, false); }
   function closePause() { ui.show('pauseScreen', false); mode = 'drive'; }
-  function openMap() { if (mode !== 'drive') return; mode = 'map'; keys.clear(); ui.drawBigMap(car.state, car.state.heading, route); ui.show('mapScreen', true); }
+  function openMap() { if (mode !== 'drive') return; mode = 'map'; clearDriveInput(); ui.drawBigMap(car.state, car.state.heading, route); ui.show('mapScreen', true); }
   function closeMap() { ui.show('mapScreen', false); mode = 'drive'; }
   const $ = ui.$;
   $('pauseBtn').onclick = openPause;
@@ -465,6 +472,7 @@ RT.startGame = function (savedPrefs = {}) {
   }
 
   function placeAtStart() {
+    touchDrive.reset();
     car.place(map.spawn.x, map.spawn.z, map.spawn.heading);
     rules.reset();
     traffic.reset(car.state);
@@ -486,7 +494,8 @@ RT.startGame = function (savedPrefs = {}) {
     ui.setStreet('Permit Office lot');
     setTimeout(() => {
       if (resume) { startLesson(true); return; }
-      ui.say('Hi' + (P.name ? ' ' + P.name : '') + ', I am your driving instructor. Pull out of the lot (W to go) and follow the blue arrows. Keep to the right side of the road.', 'info', 8);
+      const pullOut = usesTouch() ? 'Hold the middle of the screen to pull out of the lot.' : 'Pull out of the lot (W to go).';
+      ui.say('Hi' + (P.name ? ' ' + P.name : '') + ', I am your driving instructor. ' + pullOut + ' Follow the blue arrows and keep to the right side of the road.', 'info', 8);
       setTimeout(() => startLesson(true), 8500);
     }, 600);
     startLesson(false);
@@ -556,7 +565,8 @@ RT.startGame = function (savedPrefs = {}) {
     if (!P.tips) P.tips = {};
     if (P.tips[kind]) return;
     P.tips[kind] = true;
-    ui.say(TIPS[kind], kind === 'green' ? 'good' : 'tip', 7);
+    const tip = kind === 'stop' && usesTouch() ? 'Stop sign ahead! Lift your thumb to brake at the white line. A full stop unlocks a Road Note about AI.' : TIPS[kind];
+    ui.say(tip, kind === 'green' ? 'good' : 'tip', 7);
   }
   function updateAlert(dt) {
     const s = car.state, ap = rules.approach;
@@ -594,6 +604,8 @@ RT.startGame = function (savedPrefs = {}) {
   // ---------- "stuck? reset" ----------
   function resetCar() {
     if (mode !== 'drive') return;
+    keys.clear();
+    touchDrive.reset();
     const s = car.state;
     if (map.locate(s.x, s.z).lot) { car.place(map.spawn.x, map.spawn.z, map.spawn.heading); ui.say('Back in your parking spot. No points lost.', 'info', 3); return; }
     let best = null;
@@ -622,9 +634,10 @@ RT.startGame = function (savedPrefs = {}) {
     const s = car.state;
     const mph = U.mph(Math.abs(s.v));
     const limit = rules.limit;
-    ui.setSpeed(mph, limit, s.reversing, mph > limit + settings.speedingTolerance);
+    ui.setSpeed(mph, limit, s.reversing || touchDrive.reversing, mph > limit + settings.speedingTolerance);
     const on = s.blinker !== 0 && (s.blinkT % 0.8) < 0.45;
     ui.setBlinker(s.blinker, on);
+    touchDrive.sync();
     if (on !== blinkPrev) { if (on) audio.sfx.tick(); blinkPrev = on; }
 
     updateAlert(dt);
@@ -743,7 +756,8 @@ RT.startGame = function (savedPrefs = {}) {
     get graphics() {
       const { calls, triangles } = renderer.info.render;
       return { tier: prefs.quality, mapleStreet: !!world.upgradedBlock, fps, calls, triangles,
-        shadows: renderer.shadowMap.enabled, bloom: !!composer, pixelRatio: renderer.getPixelRatio() };
+        shadows: renderer.shadowMap.enabled, bloom: !!composer, pixelRatio: renderer.getPixelRatio(),
+        pedestrians: props.active, pedestrianLooks: props.riggedLooks, foliage: { ...world.foliage.stats } };
     },
     // Test hook: advance the simulation without relying on animation frames.
     // input is {throttle, reverse, brake, steer} or a function (t) => input. Stops early if a card opens.

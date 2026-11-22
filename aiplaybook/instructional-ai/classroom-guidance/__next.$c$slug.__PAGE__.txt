@@ -1,5 +1,0 @@
-1:"$Sreact.fragment"
-2:I[97367,["/aiplaybook/_next/static/chunks/01xlw8hd842-c.js","/aiplaybook/_next/static/chunks/0d3shmwh5_nmn.js"],"OutletBoundary"]
-3:"$Sreact.suspense"
-0:{"rsc":["$","$1","c",{"children":[["$","main",null,{"id":"main-content","children":[["$","meta",null,{"httpEquiv":"refresh","content":"0; url=/aiplaybook/academic-integrity/classroom-guidance/"}],["$","a",null,{"href":"/aiplaybook/academic-integrity/classroom-guidance/","children":"Continue to the Playbook page"}]]}],[["$","script","script-0",{"src":"/aiplaybook/_next/static/chunks/10j_vbdl7mmq1.js","async":true}]],["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"isPartial":false,"staleTime":300,"varyParams":null,"buildId":"4Fhq2TDqaMdddAVoEgpOx"}
-4:null

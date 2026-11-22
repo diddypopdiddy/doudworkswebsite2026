@@ -140,7 +140,7 @@ RT.Maple = (function () {
       mesh.castShadow = quality.shadows && !['Room', 'WindowLit', 'Glass', 'Walk', 'LampLit', 'LightPool', 'Ridge'].includes(name);
       mesh.receiveShadow = name !== 'Glass' && name !== 'Oak';
     });
-    if (oak) { oak.removeFromParent(); oak.updateMatrixWorld(true); }
+    oak?.removeFromParent();
     if (pools) pools.visible = false;
     pack.model.position.set((block.x1 + block.x0) / 2, 0, (block.z1 + block.z0) / 2);
     scene.add(pack.model);
@@ -153,26 +153,6 @@ RT.Maple = (function () {
           pools.visible = f > 0.025;
           pools.traverse((o) => { if (o.isMesh) o.material.opacity = f * 0.32; });
         }
-      },
-      plantOaks(trees) {
-        if (!oak) return false;
-        if (!trees.length) return true;
-        const pos = new T.Vector3(), scale = new T.Vector3(), rot = new T.Quaternion();
-        const up = new T.Vector3(0, 1, 0), matrix = new T.Matrix4();
-        oak.traverse((part) => {
-          if (!part.isMesh) return;
-          const batch = new T.InstancedMesh(part.geometry, part.material, trees.length);
-          batch.castShadow = quality.shadows;
-          trees.forEach((tree, i) => {
-            pos.set(tree.x, 0.06, tree.z);
-            scale.setScalar(tree.s * 0.88);
-            rot.setFromAxisAngle(up, i * 2.4);
-            batch.setMatrixAt(i, matrix.compose(pos, rot, scale).multiply(part.matrixWorld));
-          });
-          batch.instanceMatrix.needsUpdate = true;
-          scene.add(batch);
-        });
-        return true;
       },
       update(pos) {
         const dx = Math.max(0, block.x0 - pos.x, pos.x - block.x1);
