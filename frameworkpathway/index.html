@@ -5,19 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AI Production Framework and Pathway · Guided tour</title>
 <meta name="description" content="A guided, step-by-step tour of the AI Production Framework and Pathway for teachers and school leaders, grades 7–12.">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <style>
 /* A guided tour: one idea per screen, one way forward. Every screen fits the window (see fit() below).
-   Paper ground, Fraunces headlines, Geist text. One accent per chapter: blue = Framework, amber = Pathway.
-   Mode colours appear only inside the Modes chapter. Fonts and logos are local files: no third-party requests. */
-@font-face { font-family: "Fraunces"; src: url("assets/fonts/fraunces-latin.woff2") format("woff2"); font-weight: 400 700; font-display: swap; }
+   Brand palette: red #940000, cream #FBF1E4, ink #2D2320, navy #1C2748, lime #DDEA79. Barlow Condensed headlines, Geist text.
+   One accent per chapter: navy = Framework, red = Pathway. The cover and end screen are red on cream; chapter openers are navy.
+   AI Mode colours appear only inside the AI Modes chapter. Fonts and logos are local files: no third-party requests. */
+@font-face { font-family: "Barlow Condensed"; src: url("assets/fonts/barlow-condensed-bold.ttf") format("truetype"); font-weight: 600 700; font-display: swap; }
 @font-face { font-family: "Geist"; src: url("assets/fonts/geist-latin.woff2") format("woff2"); font-weight: 400 800; font-display: swap; }
 :root {
-  --paper-base: #F6F1E7; --road: #232B42; --card: #FFFDF9; --ink: #161D36; --muted: #555D75; --faint: #8A8FA0; --line: #E0D8C8; --wash: #EEE7D8;
-  --blue: #2447D0; --amber: #A86700; --amber-fill: #F0A41A;
-  --ok: #157A43; --warn: #B4520A; --stop: #B8281C;
+  --paper-base: #FBF1E4; --road: #2D2320; --card: #FFFCF7; --ink: #2D2320; --muted: #5E524C; --faint: #93857C; --line: #E7D8C4; --wash: #F3E5D2;
+  --red: #940000; --navy: #1C2748; --lime: #DDEA79;
+  --blue: #1C2748; --amber: #940000; --amber-fill: #DDEA79;
+  /* Red belongs to the brand, so Pause and Road closed are ink. */
+  --ok: #157A43; --warn: #B4520A; --stop: #2D2320;
   --idea: #A86700; --learning: #2447D0; --feedback: #6D35D9; --practice: #0B7F70; --tool: #C2275F;
+  /* The four Core Competencies: Prompting, Data & Privacy, Ethics, Verification. Same hues as the Student Workbook. */
+  --cp: #2F47D8; --cd: #087554; --ce: #6A3FD6; --cv: #AE4F08;
   --acc: var(--ink);
-  --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --serif: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
   --sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --gut: max(clamp(20px, 5vw, 72px), env(safe-area-inset-left, 0px));
@@ -25,9 +32,10 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --paper-base: #0F131E; --road: #3A4258; --card: #171C2A; --ink: #ECEEF4; --muted: #AAB1C4; --faint: #7C849A; --line: #2A3145; --wash: #1B2131;
-    --blue: #8FAAFF; --amber: #F1B655; --ok: #5FD08C; --warn: #F6A262; --stop: #FF8A7A;
+  :root { --paper-base: #1A1412; --road: #4A3D37; --card: #251D1A; --ink: #FBF1E4; --muted: #CDBFB3; --faint: #9A8B80; --line: #3B2F29; --wash: #2C2320;
+    --blue: #B9C4EE; --amber: #FF9C8C; --ok: #5FD08C; --warn: #F6A262; --stop: #FBF1E4;
     --idea: #F1B655; --learning: #8FAAFF; --feedback: #B79CFF; --practice: #5AD3C3; --tool: #FF8FB6;
+    --cp: #8FA2FF; --cd: #3FD9A3; --ce: #AE8BFF; --cv: #FFA45C;
     --sh: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.6); color-scheme: dark; }
 }
 * { box-sizing: border-box; }
@@ -41,14 +49,14 @@ body[data-m="idea"] { --tint: var(--idea); --tc: var(--idea); } body[data-m="lea
 body[data-m="feedback"] { --tint: var(--feedback); --tc: var(--feedback); } body[data-m="practice"] { --tint: var(--practice); --tc: var(--practice); }
 body[data-m="tool"] { --tint: var(--tool); --tc: var(--tool); }
 /* Chapter openers: night theme, echoing the License card */
-body.inv { --paper-base: #0D1640; --tint: #0D1640; --tc: #FFFFFF; --ink: #FFFFFF; --muted: rgba(255,255,255,.8); --faint: rgba(255,255,255,.55); --line: rgba(255,255,255,.18);
-  --card: rgba(255,255,255,.08); --wash: rgba(255,255,255,.1); --blue: #FFC64A; --amber: #FFC64A; --acc: #FFC64A; --sh: none; }
+body.inv { --paper-base: #1C2748; --tint: #1C2748; --tc: #FFFFFF; --ink: #FBF1E4; --muted: rgba(251,241,228,.82); --faint: rgba(251,241,228,.55); --line: rgba(251,241,228,.18);
+  --card: rgba(251,241,228,.08); --wash: rgba(251,241,228,.1); --blue: #DDEA79; --amber: #DDEA79; --acc: #DDEA79; --sh: none; }
 /* Backdrop layers: dot grid, night sky, network motif */
 body::before { content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
   background: radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--ink) 13%, transparent) 1px, transparent 1.6px) 0 0 / 26px 26px;
   -webkit-mask-image: radial-gradient(ellipse 75% 70% at 38% 48%, transparent 45%, #000 100%); mask-image: radial-gradient(ellipse 75% 70% at 38% 48%, transparent 45%, #000 100%); }
 .night { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .45s;
-  background: radial-gradient(60rem 34rem at 88% -12%, rgba(59,100,242,.6), rgba(59,100,242,0) 62%), radial-gradient(42rem 26rem at -4% 112%, rgba(240,164,26,.3), rgba(240,164,26,0) 62%), linear-gradient(160deg, #0A1233, #14236A); }
+  background: radial-gradient(60rem 34rem at 88% -12%, rgba(221,234,121,.14), rgba(221,234,121,0) 62%), #1C2748; }
 body.inv .night { opacity: 1; }
 .motif { position: fixed; z-index: 0; right: -5rem; top: -3.5rem; width: 25rem; height: auto; color: var(--tc); opacity: .1; pointer-events: none; transition: color .45s;
   -webkit-mask-image: radial-gradient(circle at 70% 30%, #000 30%, transparent 72%); mask-image: radial-gradient(circle at 70% 30%, #000 30%, transparent 72%); }
@@ -67,6 +75,10 @@ b, strong { font-weight: 650; }
 /* ---------- Shell ---------- */
 .top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .9rem var(--gut); font-size: .9rem; color: var(--muted); }
 .top a { text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: .6rem; }
+.lockup { display: block; height: 2.1rem; width: auto; }
+.lockup .lr { fill: var(--lk-a, #940000); } .lockup .lc { fill: var(--lk-b, #FBF1E4); } .lockup .li { fill: var(--ink); }
+@media (prefers-color-scheme: dark) { .lockup { --lk-a: #FBF1E4; --lk-b: #940000; } }
+body.inv .lockup { --lk-a: #FBF1E4; --lk-b: #940000; }
 .mark { position: relative; width: 1.9rem; height: 1.35rem; }
 .mark i { position: absolute; width: 1.3rem; height: .85rem; border-radius: 3px; }
 .mark i:first-child { left: 0; top: 0; background: linear-gradient(140deg, #FFCB55, #EA870B); transform: rotate(-8deg); }
@@ -80,12 +92,12 @@ html.js .slide { display: none; }
 html.js .slide.on { display: grid; }
 html.js .nav { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 1.5rem; padding: .8rem var(--gut) max(.8rem, env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); }
 html.js body.cover .nav, html.js body.cover .top { display: none; }
-.go { background: var(--ink); color: var(--paper); border: 0; border-radius: 999px; padding: .8rem 1.5rem; font-weight: 650; font-size: 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: .5rem; }
+.go { background: var(--red); color: #FBF1E4; border: 0; border-radius: 999px; padding: .8rem 1.5rem; font-weight: 650; font-size: 1rem; text-decoration: none; display: inline-flex; align-items: center; gap: .5rem; }
 .go::after { content: "→"; }
 .go:hover { opacity: .88; }
 .go[disabled], .ghost[disabled] { opacity: .3; cursor: default; }
 .prog { min-width: 0; }
-.prog-l { font-size: .82rem; color: var(--muted); display: flex; justify-content: space-between; gap: 1rem; margin-bottom: .4rem; }
+.prog-l { font-size: .88rem; color: var(--muted); display: flex; justify-content: space-between; gap: 1rem; margin-bottom: .4rem; }
 .prog-l b { color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .segs { display: flex; gap: 4px; }
 .segs i { height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
@@ -99,6 +111,8 @@ html.js body.cover .nav, html.js body.cover .top { display: none; }
 html.js .slide { border: 0; }
 .fit, .in, .way { width: 100%; max-width: 68rem; margin-inline: auto; }
 .narrow { max-width: 46rem; }
+/* The busiest screens use the full width, so they need less shrinking to fit. */
+[id$="-talk"] :is(.fit, .in, .way), #kit :is(.fit, .in), #path-3 :is(.fit, .in, .way), #modes-recap :is(.fit, .in, .way) { max-width: 86rem; }
 .center { text-align: center; display: grid; justify-items: center; }
 [data-ch="lit"], [data-ch="comp"], [data-ch="modes"] { --acc: var(--blue); }
 [data-ch="path"] { --acc: var(--amber); }
@@ -110,14 +124,14 @@ html.js .slide { border: 0; }
   @keyframes enter { from { opacity: 0; transform: translateX(calc(var(--dir, 1) * 26px)); } to { opacity: 1; transform: none; } }
   .slide :nth-child(1) { --i: 0; } .slide :nth-child(2) { --i: 1; } .slide :nth-child(3) { --i: 2; } .slide :nth-child(4) { --i: 3; } .slide :nth-child(5) { --i: 4; }
   .slide :nth-child(6) { --i: 5; } .slide :nth-child(7) { --i: 6; } .slide :nth-child(8) { --i: 7; } .slide :nth-child(9) { --i: 8; }
-  html.js:not(.noanim) .slide.on :is(.ilist > li, .cols > *, .stairs > li, .five > li, .beats > li, .logos > li, .nine > li, .convo > .turn, .sum > .card, .stops > li, .lanes .cy, .line4 > li, .motto > li) {
+  html.js:not(.noanim) .slide.on:not(.seen) :is(.ilist > li, .cols > *, .stairs > li, .five > li, .beats > li, .logos > li, .nine > li, .convo > .turn, .sum > .card, .stops > li, .lanes .cy, .line4 > li, .motto > li) {
     animation: pop .42s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i) * 65ms + 160ms); }
-  html.js:not(.noanim) .slide.on .convo > .turn { animation-delay: calc(var(--i) * 140ms + 220ms); }
+  html.js:not(.noanim) .slide.on:not(.seen) .convo > .turn { animation-delay: calc(var(--i) * 140ms + 220ms); }
   @keyframes pop { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
   html.js:not(.noanim) .float img:first-child { animation: bob 7s ease-in-out infinite; } html.js:not(.noanim) .float img:last-child { animation: bob 7s ease-in-out -3.5s infinite; }
   @keyframes bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
 }
-.kicker { display: flex; align-items: center; gap: .7rem; font: 700 .76rem/1.3 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--acc); margin-bottom: .9rem; }
+.kicker { display: flex; align-items: center; gap: .7rem; font: 700 .82rem/1.3 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--acc); margin-bottom: .9rem; }
 .kicker::before { content: ""; width: 1.6rem; height: 2px; border-radius: 2px; background: currentColor; flex: none; }
 .center .kicker { justify-content: center; } .center .kicker::after { content: ""; width: 1.6rem; height: 2px; border-radius: 2px; background: currentColor; flex: none; }
 mark { color: inherit; background: linear-gradient(transparent 60%, color-mix(in srgb, var(--amber-fill) 55%, transparent) 60%, color-mix(in srgb, var(--amber-fill) 55%, transparent) 94%, transparent 94%); padding-inline: .08em; }
@@ -132,10 +146,10 @@ h1.xl { font-size: 3.8rem; }
 .below { margin-top: 2.25rem; }
 .fine { font-size: .93rem; color: var(--muted); margin-top: 1.4rem; max-width: 44rem; }
 .center .fine { margin-inline: auto; }
-.label { font: 700 .72rem/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+.label { font: 700 .8rem/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
 
 /* You-are-here stepper */
-.way { display: flex; flex-wrap: wrap; align-items: center; row-gap: .5rem; margin-bottom: 1.75rem; font-size: .85rem; color: var(--faint); }
+.way { display: flex; flex-wrap: wrap; align-items: center; row-gap: .5rem; margin-bottom: 1.75rem; font-size: .92rem; color: var(--faint); }
 .way li { display: flex; align-items: center; gap: .5rem; }
 .way li:not(:last-child)::after { content: ""; width: 1.5rem; height: 2px; border-radius: 2px; background: var(--line); margin: 0 .7rem 0 .2rem; }
 .way li.done:not(:last-child)::after { background: color-mix(in srgb, var(--acc) 45%, var(--line)); }
@@ -160,8 +174,21 @@ h1.xl { font-size: 3.8rem; }
 .box.wide { max-width: none; }
 .box { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .9rem; align-items: start; }
 .box > .ic { color: var(--amber); width: 1.5rem; height: 1.5rem; margin-top: .1rem; }
-.box b { display: block; font: 700 .72rem/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--amber); margin-bottom: .25rem; }
+.box b { display: block; font: 700 .8rem/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--amber); margin-bottom: .25rem; }
 .box p { font-size: 1rem; line-height: 1.5; }
+.box q { font-weight: 650; quotes: "\201C" "\201D"; }
+.sub { font-size: 1.08rem; line-height: 1.5; color: var(--muted); margin-top: .5rem; max-width: 30rem; text-wrap: pretty; }
+.label.gap { margin-top: 1.1rem; }
+.parts { counter-reset: n; display: grid; gap: .5rem; margin-top: .15rem; }
+.parts li { counter-increment: n; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .6rem; font-size: .97rem; line-height: 1.45; }
+.parts li::before { content: counter(n); display: grid; place-items: center; width: 1.35rem; height: 1.35rem; border-radius: 50%; margin-top: .05rem; background: color-mix(in srgb, var(--acc) 13%, var(--paper)); color: var(--acc); font-weight: 700; font-size: .72rem; }
+.yn { display: grid; gap: .65rem; margin-top: .2rem; }
+.yn li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .7rem; align-items: start; font-size: 1rem; line-height: 1.45; }
+.yn i { display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--c); color: var(--paper); margin-top: .1rem; }
+.yn i .ic { width: .95rem; height: .95rem; stroke-width: 2.6; }
+.yn em { display: block; font-style: normal; font-weight: 700; color: var(--c); }
+.rows li.set { align-items: flex-start; } .rows li.set .ic { color: var(--acc); margin-top: .1rem; }
+.bins.acc { --c: var(--acc); }
 .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
 .cols.c2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .cols.c4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -187,8 +214,8 @@ h1.xl { font-size: 3.8rem; }
 .pair { display: flex; justify-content: center; align-items: center; gap: 1.1rem; margin-bottom: 2.25rem; }
 .pair img { width: min(32vw, 14rem); border-radius: 10px; box-shadow: 0 16px 32px -16px rgba(22,29,54,.5); }
 .pair.float img { width: min(34vw, 17rem); border-radius: 12px; box-shadow: 0 26px 50px -22px rgba(0,0,0,.7); } .pair.float img:first-child { rotate: -4deg; } .pair.float img:last-child { rotate: 4deg; }
-body.inv .go { box-shadow: 0 10px 30px -10px rgba(255,198,74,.55); background: #FFC64A; color: #1A1200; }
-body.inv .stairs small { color: #FFC64A; }
+body.inv .go { background: #DDEA79; color: #1C2748; }
+body.inv .stairs small { color: #DDEA79; }
 .pair span { font-size: 1.4rem; color: var(--faint); }
 .center .go { margin-top: 2rem; padding: 1rem 2rem; font-size: 1.1rem; }
 .center .fine { margin-top: 1.1rem; }
@@ -202,7 +229,7 @@ body.inv .stairs small { color: #FFC64A; }
 
 /* Two halves */
 .half { padding: 1.75rem; display: flex; flex-direction: column; }
-.half .part { font: 700 .72rem/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--c); margin-bottom: .6rem; }
+.half .part { font: 700 .8rem/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--c); margin-bottom: .6rem; }
 .half h3 { font-size: 2rem; }
 .half > p { font-size: 1.05rem; }
 .half .pair { margin: auto 0 0; padding-top: 1.4rem; justify-content: flex-start; } .half .pair img { width: 9.5rem; }
@@ -214,7 +241,7 @@ body.inv .stairs small { color: #FFC64A; }
 .stairs { display: grid; gap: .8rem; }
 .stairs li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1rem; align-items: center; padding: 1rem 1.2rem; }
 .stairs li:nth-child(2) { margin-left: 2.25rem; } .stairs li:nth-child(3) { margin-left: 4.5rem; }
-.stairs small { display: block; font: 700 .7rem/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--acc); }
+.stairs small { display: block; font: 700 .78rem/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--acc); }
 .stairs b { font: 600 1.45rem/1.2 var(--serif); }
 .stairs span:not(.plate) { display: block; color: var(--muted); font-size: .98rem; }
 .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; margin-top: 1rem; }
@@ -251,7 +278,7 @@ body.inv .stairs small { color: #FFC64A; }
 .bins li { display: grid; justify-items: center; gap: .5rem; text-align: center; padding: 1rem .5rem; border-radius: 12px; background: color-mix(in srgb, var(--c) 11%, var(--paper)); color: var(--c); font-weight: 650; font-size: .98rem; line-height: 1.2; }
 .bins .ic { width: 1.6rem; height: 1.6rem; stroke-width: 2.2; }
 
-/* Modes */
+/* AI Modes */
 .five { display: grid; gap: .6rem; }
 .five li { display: flex; align-items: center; gap: 1rem; padding: .8rem 1.1rem; }
 .five b { font: 600 1.5rem/1.2 var(--serif); color: var(--acc); }
@@ -269,7 +296,7 @@ body.inv .stairs small { color: #FFC64A; }
 .steps li div > span:not(.tag) { display: block; color: var(--muted); font-size: .98rem; font-weight: 400; margin-top: .1rem; }
 .steps li.fin { border-top: 0; background: color-mix(in srgb, var(--acc) 10%, var(--paper)); margin: .3rem -.9rem .4rem; padding: .95rem .9rem; border-radius: 12px; }
 .steps li.fin::before { background: var(--acc); color: var(--paper); }
-.tag { display: inline-flex; align-items: center; gap: .35rem; font: 700 .7rem/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--acc); margin-top: .55rem; }
+.tag { display: inline-flex; align-items: center; gap: .35rem; font: 700 .78rem/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--acc); margin-top: .55rem; }
 .tag .ic { width: 1rem; height: 1rem; }
 .convo { display: grid; gap: .75rem; }
 .turn { max-width: 90%; display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: .6rem; }
@@ -287,24 +314,25 @@ body.inv .stairs small { color: #FFC64A; }
 .turn.ai { justify-self: end; }
 .say { font-size: .98rem; line-height: 1.45; padding: .7rem 1rem; border-radius: 16px 16px 16px 4px; background: color-mix(in srgb, var(--acc) 11%, var(--paper)); }
 .turn.ai .say { background: var(--card); border: 1px solid var(--line); border-radius: 16px 16px 4px 16px; color: var(--muted); }
-.spk { font: 700 .66rem/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--acc); margin-bottom: .35rem; display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+.spk { font: 700 .76rem/1 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--acc); margin-bottom: .35rem; display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
 .turn.ai .spk { color: var(--faint); }
 .turn.final { max-width: none; }
 .turn.final .say { background: var(--acc); color: var(--paper); border-radius: 16px; font-weight: 550; font-size: 1.03rem; }
 .turn.final .spk { color: inherit; opacity: .8; }
-.tnote { font-size: .84rem; color: var(--faint); margin-top: .3rem; padding-inline: .3rem; display: flex; flex-wrap: wrap; gap: .25rem .4rem; align-items: center; }
-.chip { display: inline-grid; place-items: center; width: 1.25rem; height: 1.25rem; border-radius: 4px; background: var(--ink); color: var(--paper); font: 700 .64rem/1 var(--sans); }
+.tnote { font-size: .92rem; color: var(--faint); margin-top: .3rem; padding-inline: .3rem; display: flex; flex-wrap: wrap; gap: .25rem .4rem; align-items: center; }
+.chip { display: inline-grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 5px; background: var(--ink); color: var(--paper); font: 700 .76rem/1 var(--sans); }
+.chip[data-c="p"] { background: var(--cp); } .chip[data-c="d"] { background: var(--cd); } .chip[data-c="e"] { background: var(--ce); } .chip[data-c="v"] { background: var(--cv); }
 .pr { font-weight: 700; color: var(--acc); }
-.flag { font: 700 .7rem/1 var(--sans); letter-spacing: 0; text-transform: none; color: var(--stop); border: 1px solid currentColor; border-radius: 4px; padding: .18rem .4rem; }
+.flag { font: 700 .78rem/1 var(--sans); letter-spacing: 0; text-transform: none; color: var(--stop); border: 1px solid currentColor; border-radius: 4px; padding: .18rem .4rem; }
 .bad { text-decoration: underline wavy var(--stop); text-underline-offset: .2em; }
 .say table { border-collapse: collapse; font: 400 .86rem/1.35 var(--mono); margin-top: .2rem; }
 .say th, .say td { text-align: left; padding: .2rem 1.1rem .2rem 0; border-bottom: 1px solid var(--line); font-weight: 400; }
 .say .tot { font: 400 .86rem var(--mono); margin-top: .35rem; }
-.legend { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; font-size: .84rem; color: var(--muted); margin-top: 1.4rem; }
+.legend { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .5rem; font-size: .92rem; color: var(--muted); margin-top: 1.4rem; }
 .legend .chip { margin-left: .4rem; } .legend .chip:first-child { margin-left: 0; }
 .grid { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 1rem; background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--sh); overflow: hidden; }
 .grid th, .grid td { text-align: left; vertical-align: middle; padding: .8rem 1.1rem; border-top: 1px solid var(--line); line-height: 1.35; }
-.grid thead th { border: 0; font: 700 .7rem/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+.grid thead th { border: 0; font: 700 .78rem/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
 .grid thead th .ic { width: 1rem; height: 1rem; vertical-align: -.2em; margin-right: .35rem; }
 .grid tbody th { font: 600 1.25rem/1.2 var(--serif); color: var(--acc); white-space: nowrap; }
 .grid tbody th .ic { vertical-align: -.25em; margin-right: .55rem; }
@@ -317,7 +345,7 @@ body.inv .stairs small { color: #FFC64A; }
 .map { position: relative; height: 12.5rem; margin-top: 2rem; border-radius: 22px; overflow: hidden; }
 .map .zone { position: absolute; top: 0; bottom: 0; border-radius: 22px; background: color-mix(in srgb, var(--z) 11%, var(--paper)); border: 1px solid color-mix(in srgb, var(--z) 22%, transparent); }
 .map .zp { --z: var(--amber-fill); left: 0; width: calc(60% - .35rem); } .map .zl { --z: var(--blue); right: 0; width: calc(40% - .35rem); }
-.map .zname { position: absolute; left: 1rem; bottom: .9rem; display: flex; align-items: center; gap: .7rem; font: 700 .74rem/1.2 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--zt); white-space: nowrap; }
+.map .zname { position: absolute; left: 1rem; bottom: .9rem; display: flex; align-items: center; gap: .7rem; font: 700 .8rem/1.2 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--zt); white-space: nowrap; }
 .map .zp .zname { --zt: var(--amber); } .map .zl .zname { --zt: var(--blue); left: auto; right: 1rem; }
 .map .zname img { width: 3.3rem; border-radius: 4px; rotate: -5deg; box-shadow: 0 5px 10px -4px rgba(22,29,54,.45); }
 .map .roadwrap { position: absolute; inset: 0; z-index: 1; }
@@ -333,7 +361,7 @@ body.inv .stairs small { color: #FFC64A; }
 .pin b { position: relative; height: 3rem; display: grid; place-items: center; font: 600 1.45rem/1 var(--serif); color: #fff; }
 .pin:not(.l) b { color: #2A1900; }
 .map .gate { position: absolute; z-index: 2; left: 80%; top: 50%; translate: -50% -50%; width: .6rem; height: 3.5rem; border-radius: 4px; background: repeating-linear-gradient(180deg, var(--stop) 0 7px, #fff 7px 14px); box-shadow: 0 0 0 1.5px var(--stop), 0 4px 8px -2px rgba(22,29,54,.4); }
-.map .gate b { position: absolute; bottom: calc(100% + .4rem); left: 50%; translate: -50% 0; text-align: center; background: var(--card); border: 2px solid var(--stop); border-radius: 7px; padding: .3rem .5rem; font: 700 .64rem/1.25 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--stop); }
+.map .gate b { position: absolute; bottom: calc(100% + .4rem); left: 50%; translate: -50% 0; text-align: center; background: var(--card); border: 2px solid var(--stop); border-radius: 7px; padding: .3rem .5rem; font: 700 .72rem/1.25 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--stop); }
 .stops { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 1.1rem; text-align: center; }
 .stops li { padding: 0 .6rem; }
 .stops b { display: block; font: 600 1.25rem/1.2 var(--serif); }
@@ -341,11 +369,11 @@ body.inv .stairs small { color: #FFC64A; }
 .stops .n { display: none; }
 .stops .z { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 @media (prefers-reduced-motion: no-preference) {
-  html.js:not(.noanim) .slide.on .roadwrap { animation: unroll 1s cubic-bezier(.3,.6,.2,1) .15s both; }
+  html.js:not(.noanim) .slide.on:not(.seen) .roadwrap { animation: unroll 1s cubic-bezier(.3,.6,.2,1) .15s both; }
   @keyframes unroll { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
-  html.js:not(.noanim) .slide.on .pin { animation: drop .5s cubic-bezier(.3,1.5,.5,1) both; animation-delay: calc(var(--x) * 9ms + 250ms); }
+  html.js:not(.noanim) .slide.on:not(.seen) .pin { animation: drop .5s cubic-bezier(.3,1.5,.5,1) both; animation-delay: calc(var(--x) * 9ms + 250ms); }
   @keyframes drop { from { opacity: 0; translate: -50% -150%; } to { opacity: 1; translate: -50% -100%; } }
-  html.js:not(.noanim) .slide.on .map .gate { animation: fadein .4s ease 1.1s both; }
+  html.js:not(.noanim) .slide.on:not(.seen) .map .gate { animation: fadein .4s ease 1.1s both; }
   @keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
 }
 .dec { border-top: 4px solid var(--c); }
@@ -353,7 +381,7 @@ body.inv .stairs small { color: #FFC64A; }
 .dec .dot .ic { width: 1.3rem; height: 1.3rem; stroke-width: 2.2; }
 .dec h3 { color: var(--c); }
 .lanes { display: grid; grid-template-columns: 6.5rem repeat(6, minmax(0, 1fr)); gap: .9rem .7rem; margin-top: 1.75rem; }
-.lanes .lane { display: flex; align-items: center; gap: .4rem; font: 700 .72rem/1.3 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); align-self: center; padding-left: .8rem; z-index: 1; }
+.lanes .lane { display: flex; align-items: center; gap: .4rem; font: 700 .78rem/1.3 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); align-self: center; padding-left: .8rem; z-index: 1; }
 .lanes .lane .ic { width: 1.1rem; height: 1.1rem; }
 .lanes .lane { grid-column: 1; }
 .lanes .t { grid-row: 1; } .lanes .s { grid-row: 2; }
@@ -362,7 +390,7 @@ body.inv .stairs small { color: #FFC64A; }
 .cy { position: relative; padding: .85rem .9rem; border-radius: 12px; box-shadow: none; }
 .cy b { display: block; font: 600 1.15rem/1.2 var(--serif); }
 .cy b i { font-style: normal; display: inline-grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--acc); color: var(--paper); font: 700 .78rem/1 var(--sans); margin-right: .4rem; vertical-align: .1em; }
-.cy p { font-size: .85rem; line-height: 1.38; margin-top: .35rem; }
+.cy p { font-size: .92rem; line-height: 1.38; margin-top: .35rem; }
 .cy.s b i { background: var(--blue); }
 .loop { display: flex; align-items: center; gap: .5rem; margin-top: 1.2rem; font-size: 1rem; color: var(--muted); }
 .loop .ic { color: var(--acc); } .loop b { color: var(--ink); }
@@ -390,7 +418,7 @@ body.inv .stairs small { color: #FFC64A; }
 .logos .lg { display: grid; place-items: center; width: 3.2rem; height: 3.2rem; margin: 0 auto .6rem; border-radius: 12px; background: #fff; border: 1px solid #ECE6D8; }
 .logos svg { width: 1.7rem; height: 1.7rem; }
 .logos b { display: block; font-size: .95rem; line-height: 1.2; }
-.logos span { display: block; font-size: .8rem; color: var(--muted); line-height: 1.3; margin-top: .2rem; }
+.logos span { display: block; font-size: .88rem; color: var(--muted); line-height: 1.3; margin-top: .2rem; }
 .plain { margin-top: 1.4rem; display: grid; gap: .6rem; max-width: 30rem; }
 .plain li { position: relative; padding-left: 1.4rem; font-size: 1.1rem; line-height: 1.4; }
 .plain li::before { content: ""; position: absolute; left: 0; top: .55em; width: .5rem; height: .5rem; border-radius: 50%; background: var(--acc); }
@@ -409,7 +437,24 @@ body.inv .stairs small { color: #FFC64A; }
 .kitc ul { margin-top: .8rem; }
 .kitc li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: .6rem; padding: .5rem 0; border-top: 1px solid var(--line); font-size: .95rem; font-weight: 550; line-height: 1.3; }
 .kitc li .ic { width: 1.05rem; height: 1.05rem; color: var(--c); margin-top: .1rem; }
-.kitc li span { display: block; font-size: .84rem; font-weight: 400; color: var(--muted); }
+.kitc li span { display: block; font-size: .92rem; font-weight: 400; color: var(--muted); }
+
+/* Ways out to the two companion resources */
+.onward { display: flex; flex-wrap: wrap; justify-content: center; gap: .9rem; margin-top: 2rem; }
+.center .onward .go { margin-top: 0; padding: .8rem 1.6rem; text-align: left; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: .9rem; align-items: center; font-size: 1.05rem; }
+.onward .go small { grid-column: 1; font: 700 .76rem/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; opacity: .7; }
+.onward .go::after { grid-column: 2; grid-row: 1 / span 2; }
+.center .fine a { font-weight: 600; }
+.outs { margin-top: 1rem; }
+.out { display: inline-flex; align-items: center; gap: .5rem; font-weight: 650; font-size: 1rem; color: var(--acc, var(--ink)); text-decoration: underline; text-decoration-thickness: 1.5px; }
+.out::after { content: "→"; }
+.toc-out { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; padding: 1rem 1.75rem 1.4rem; border-top: 1px solid var(--line); }
+.toc-out span { font: 700 .76rem/1.3 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); width: 100%; }
+
+
+.resource-links { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; margin-top: .65rem; }
+.resource-links a { display: inline-flex; align-items: center; min-height: 2rem; color: var(--blue); font-weight: 650; text-underline-offset: .17em; }
+#welcome .resource-links { justify-content: center; margin-top: .9rem; }
 
 /* Contents */
 dialog { border: 0; padding: 0; background: var(--paper); color: var(--ink); width: min(64rem, 100vw - 2rem); max-height: calc(100dvh - 2rem); border-radius: 18px; box-shadow: 0 30px 80px -20px rgba(0,0,0,.5); }
@@ -429,7 +474,9 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
   .sum > i { justify-self: center; } .beats li::after, .flow li::after { display: none; }
   .slide { align-content: start; }
   .motif { display: none; }
-  .way li:not(.now) { font-size: 0; gap: 0; } .way li:not(:last-child)::after { width: .8rem; margin: 0 .35rem; } .way li.now .d { margin-right: .1rem; }
+  .way { flex-wrap: nowrap; } .way li { flex: none; } .way li.now { flex: 0 1 auto; min-width: 0; white-space: nowrap; }
+  .way li:not(.now) { font-size: 0; gap: 0; } .way li:not(:last-child)::after { width: .55rem; margin: 0 .25rem; flex: none; } .way li.now .d { margin-right: .1rem; flex: none; }
+  .onward { flex-direction: column; align-items: stretch; width: 100%; }
   .plate:not(.sm) { width: 3.6rem; height: 3.6rem; margin-bottom: 1rem; } .plate:not(.sm) .ic { width: 1.7rem; height: 1.7rem; }
   .stairs li:nth-child(2) { margin-left: 1rem; } .stairs li:nth-child(3) { margin-left: 2rem; }
   .stackcards { justify-self: start; max-width: 20rem; }
@@ -455,51 +502,59 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
   html.js .nav { gap: .75rem; } .prog-l span { display: none; }
   .turn { max-width: 96%; } .convo.two { columns: 1; }
 }
-@media print { html.js body { height: auto; overflow: visible; display: block; } html.js .slide { display: grid !important; break-after: page; } .fit { zoom: 1 !important; } .nav, .top, dialog { display: none !important; } }
-/* Entry points for the three audiences */
-.audience-start { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; }
-.audience-start a { display: grid; align-content: center; gap: .12rem; min-height: 3.7rem; padding: .6rem .85rem;
-  border: 1px solid var(--line); border-radius: .9rem; color: var(--ink); background: var(--card);
-  text-decoration: none; line-height: 1.22; }
-.audience-start a:hover { border-color: var(--blue); }
-.audience-start a span { color: var(--muted); font-size: .875rem; font-weight: 600; }
-.audience-start a strong { font-size: .98rem; }
-.resource-links { display: flex; flex-wrap: wrap; gap: .55rem 1.25rem; margin-top: .65rem; }
-.resource-links a { display: inline-flex; align-items: center; min-height: 2rem; color: var(--blue); font-weight: 650;
-  text-underline-offset: .2em; }
-@media (max-width: 600px) {
-  .audience-start { grid-template-columns: 1fr; width: 100%; gap: .45rem; }
-  .audience-start a { grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr); align-items: center; min-height: 2.85rem; text-align: left; }
+/* ---------- Brand type: Barlow Condensed Bold, uppercase, for every headline ---------- */
+h1, .card h3, .stairs b, .five b, .beats b, .stops b, .sum .card b, .grid tbody th, .cy b, .line4 b, .motto.bigm li, .toc-h h2, .equals, .tiles li, .cardlead { text-transform: uppercase; letter-spacing: .012em; font-weight: 700 !important; }
+h1 { font-size: 3.7rem; line-height: .98; } h1.xl { font-size: 4.8rem; }
+.card h3 { font-size: 1.55rem; } .stairs b, .five b { font-size: 1.7rem; } .beats b, .stops b, .sum .card b { font-size: 1.4rem; } .cy b { font-size: 1.3rem; }
+.grid tbody th { font-size: 1.45rem; } .line4 b { font-size: 1.6rem; } .half h3 { font-size: 2.5rem; } .motto.bigm li { font-size: 3.2rem; line-height: 1.02; }
+.big { font-size: 3.1rem; line-height: 1.08; font-weight: 700; } .rule { font-size: 1.7rem; line-height: 1.2; font-weight: 700; } .big-rows li { font-size: 1.45rem; font-weight: 700; }
+.segs i span { background: var(--ink); } .segs i[data-ch="lit"] span, .segs i[data-ch="comp"] span, .segs i[data-ch="modes"] span { background: var(--blue); } .segs i[data-ch="path"] span { background: var(--amber); }
+.pin { --z: var(--red); } .pin.l { --z: var(--navy); } .pin:not(.l) b { color: #FBF1E4; } .map .zp { --z: var(--red); } .map .zl { --z: var(--navy); }
+.sg.closed { background: repeating-linear-gradient(-45deg, #2D2320 0 12px, #FBF1E4 12px 24px); border-color: #2D2320; }
+.sg.pull { background: var(--lime); color: #2D2320; }
+.stops li:not(.lz) .n { color: #FBF1E4; }
+mark { background: linear-gradient(transparent 55%, var(--lime) 55%, var(--lime) 94%, transparent 94%); }
+.motif { opacity: .07; }
+.pair img, .stackcards img, .cardfig img, .map .zname img { border-radius: 4%; }
+/* Cover and end screen: the main red-on-cream logo */
+.cover-logo { display: block; margin: 0 auto 1.8rem; } .cover-logo img { height: 17rem; width: auto; margin: 0 auto; }
+#welcome h1 { font-size: 1.9rem; letter-spacing: .09em; color: var(--muted); }
+#welcome .kicker, #end .kicker { color: var(--red); }
+#welcome .go, #end .go { box-shadow: 0 12px 28px -14px rgba(148,0,0,.7); }
+@media (prefers-color-scheme: dark) {
+  .go { background: #FBF1E4; color: #940000; } #welcome .kicker, #end .kicker { color: var(--amber); }
+  mark { background: none; text-decoration: underline; text-decoration-color: var(--lime); text-decoration-thickness: .12em; }
+  .pin { --z: #B3261E; } .pin.l { --z: #3A4A86; } .map .zp { --z: #B3261E; } .map .zl { --z: #6F7FC0; }
+  .sg.closed { background: repeating-linear-gradient(-45deg, #FBF1E4 0 12px, #2D2320 12px 24px); border-color: #FBF1E4; }
+  .box b, .box > .ic { color: var(--lime); }
 }
-#welcome .audience-start { width: min(100%, 42rem); margin-inline: auto; margin-top: .45rem; }
-#welcome .audience-start a { text-align: left; }
-#welcome .audience-start a:hover { border-color: var(--amber); background: var(--wash); }
-#welcome .audience-start a:first-child { border-color: color-mix(in srgb, var(--amber) 68%, transparent); }
+@media (max-width: 860px) { h1 { font-size: 2.5rem; } h1.xl { font-size: 3rem; } .big { font-size: 2.1rem; } .motto.bigm li { font-size: 2.2rem; } .half h3 { font-size: 2rem; } .cover-logo img { height: 12rem; } #welcome h1 { font-size: 1.35rem; } }
+@media print { html.js body { height: auto; overflow: visible; display: block; } html.js .slide { display: grid !important; break-after: page; } .fit { zoom: 1 !important; } .nav, .top, dialog { display: none !important; } }
 </style>
 </head>
 <body class="cover">
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-idea" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol><symbol id="i-learning" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol><symbol id="i-feedback" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 8h8"/><path d="M8 12h5"/></symbol><symbol id="i-practice" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol><symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M7 21h10"/><path d="M5 7h14"/><path d="M5 7l-3 7a3 3 0 0 0 6 0z"/><path d="M19 7l-3 7a3 3 0 0 0 6 0z"/></symbol><symbol id="i-verify" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></symbol><symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol><symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol><symbol id="i-human" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M17 11l2 2 4-4"/></symbol><symbol id="i-teacher" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol><symbol id="i-school" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol><symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></symbol><symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></symbol><symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h8"/></symbol><symbol id="i-clip" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol><symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></symbol><symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L4.5 19a2 2 0 0 0 1.8 3h11.4a2 2 0 0 0 1.8-3L14 9V3"/><path d="M7.5 15h9"/></symbol><symbol id="i-access" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="7.5" r="1"/><path d="M7.5 10.5h9"/><path d="M12 10.5v4l-2.5 4"/><path d="M12 14.5l2.5 4"/></symbol><symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></symbol><symbol id="i-repeat" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5 10 17.5 19 7"/></symbol><symbol id="i-help" viewBox="0 0 24 24"><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol><symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol><symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></symbol><symbol id="i-books" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15v4M17 17h4"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></symbol><symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8z"/><path d="M7 7h.01"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></symbol><symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></symbol><symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M9 19h6.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H15"/></symbol><symbol id="i-net" viewBox="0 0 24 24"><circle cx="5" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M6.6 7.3l3.9 3.5M6.6 16.7l3.9-3.5M13.5 10.8l3.9-3.5M13.5 13.2l3.9 3.5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol><symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-idea" viewBox="0 0 24 24"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></symbol><symbol id="i-learning" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></symbol><symbol id="i-feedback" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 8h8"/><path d="M8 12h5"/></symbol><symbol id="i-practice" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol><symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M7 21h10"/><path d="M5 7h14"/><path d="M5 7l-3 7a3 3 0 0 0 6 0z"/><path d="M19 7l-3 7a3 3 0 0 0 6 0z"/></symbol><symbol id="i-verify" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-6"/></symbol><symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></symbol><symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol><symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol><symbol id="i-human" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M17 11l2 2 4-4"/></symbol><symbol id="i-teacher" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol><symbol id="i-school" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol><symbol id="i-shuffle" viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></symbol><symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></symbol><symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h8"/></symbol><symbol id="i-clip" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol><symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></symbol><symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L4.5 19a2 2 0 0 0 1.8 3h11.4a2 2 0 0 0 1.8-3L14 9V3"/><path d="M7.5 15h9"/></symbol><symbol id="i-access" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="7.5" r="1"/><path d="M7.5 10.5h9"/><path d="M12 10.5v4l-2.5 4"/><path d="M12 14.5l2.5 4"/></symbol><symbol id="i-ban" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/></symbol><symbol id="i-repeat" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5 10 17.5 19 7"/></symbol><symbol id="i-help" viewBox="0 0 24 24"><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></symbol><symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol><symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></symbol><symbol id="i-books" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></symbol><symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 15v4M17 17h4"/></symbol><symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol><symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></symbol><symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8z"/><path d="M7 7h.01"/></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/></symbol><symbol id="i-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/></symbol><symbol id="i-route" viewBox="0 0 24 24"><circle cx="6" cy="19" r="3"/><circle cx="18" cy="5" r="3"/><path d="M9 19h6.5a3.5 3.5 0 0 0 0-7h-7a3.5 3.5 0 0 1 0-7H15"/></symbol><symbol id="i-net" viewBox="0 0 24 24"><circle cx="5" cy="6" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M6.6 7.3l3.9 3.5M6.6 16.7l3.9-3.5M13.5 10.8l3.9-3.5M13.5 13.2l3.9 3.5"/></symbol><symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01"/></symbol><symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol><symbol id="i-toggle" viewBox="0 0 24 24"><rect x="1" y="6" width="22" height="12" rx="6"/><circle cx="8" cy="12" r="3"/></symbol><symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol></svg>
 <div class="night" aria-hidden="true"></div>
 <svg class="motif" viewBox="0 0 345 320" aria-hidden="true"><g stroke="currentColor" stroke-width="1.2" fill="none"><path d="M30 40L125 40"/><path d="M30 40L125 120"/><path d="M30 40L125 200"/><path d="M30 40L125 280"/><path d="M30 120L125 40"/><path d="M30 120L125 120"/><path d="M30 120L125 200"/><path d="M30 120L125 280"/><path d="M30 200L125 40"/><path d="M30 200L125 120"/><path d="M30 200L125 200"/><path d="M30 200L125 280"/><path d="M30 280L125 40"/><path d="M30 280L125 120"/><path d="M30 280L125 200"/><path d="M30 280L125 280"/><path d="M125 40L220 80"/><path d="M125 40L220 160"/><path d="M125 40L220 240"/><path d="M125 120L220 80"/><path d="M125 120L220 160"/><path d="M125 120L220 240"/><path d="M125 200L220 80"/><path d="M125 200L220 160"/><path d="M125 200L220 240"/><path d="M125 280L220 80"/><path d="M125 280L220 160"/><path d="M125 280L220 240"/><path d="M220 80L315 120"/><path d="M220 80L315 200"/><path d="M220 160L315 120"/><path d="M220 160L315 200"/><path d="M220 240L315 120"/><path d="M220 240L315 200"/></g><g fill="currentColor"><circle cx="30" cy="40" r="10"/><circle cx="30" cy="120" r="10"/><circle cx="30" cy="200" r="10"/><circle cx="30" cy="280" r="10"/><circle cx="125" cy="40" r="10"/><circle cx="125" cy="120" r="10"/><circle cx="125" cy="200" r="10"/><circle cx="125" cy="280" r="10"/><circle cx="220" cy="80" r="10"/><circle cx="220" cy="160" r="10"/><circle cx="220" cy="240" r="10"/><circle cx="315" cy="120" r="10"/><circle cx="315" cy="200" r="10"/></g></svg>
 <header class="top">
-  <a href="#welcome"><span class="mark" aria-hidden="true"><i></i><i></i></span>AI Production Framework and Pathway</a>
+  <a href="#welcome"><svg class="lockup" viewBox="0 0 401.57 100" role="img" aria-label="AI Production Framework and Pathway"><path class="lr" fill-rule="evenodd" d="M0,0L100,0L100,100L0,100ZM140.92,13.14Q140.92,18.91 137.82,22.38Q134.72,25.85 129.7,25.85L125.05,25.85Q124.74,25.85 124.74,26.16L124.74,42.66Q124.74,42.97 124.53,43.18Q124.31,43.4 124,43.4L116.74,43.4Q116.43,43.4 116.22,43.18Q116,42.97 116,42.66L116,0.68Q116,0.37 116.22,0.16Q116.43,-0.06 116.74,-0.06L129.27,-0.06Q132.68,-0.06 135.34,1.61Q138.01,3.29 139.47,6.29Q140.92,9.3 140.92,13.14ZM132.18,13.33Q132.18,10.6 130.97,9.05Q129.76,7.5 127.78,7.5L125.05,7.5Q124.74,7.5 124.74,7.81L124.74,18.72Q124.74,19.03 125.05,19.03L127.78,19.03Q129.76,19.03 130.97,17.51Q132.18,16 132.18,13.33ZM162.38,42.78L157.6,25.67Q157.48,25.42 157.29,25.42L155.18,25.42Q154.87,25.42 154.87,25.73L154.87,42.66Q154.87,42.97 154.66,43.18Q154.44,43.4 154.13,43.4L146.88,43.4Q146.57,43.4 146.35,43.18Q146.13,42.97 146.13,42.66L146.13,0.74Q146.13,0.43 146.35,0.22Q146.57,0 146.88,0L159.4,0Q162.81,0 165.48,1.64Q168.14,3.29 169.6,6.26Q171.06,9.24 171.06,13.08Q171.06,16.74 169.66,19.53Q168.27,22.32 165.79,23.87Q165.66,23.93 165.6,24.02Q165.54,24.12 165.6,24.24L171.3,42.53L171.37,42.78Q171.37,43.4 170.68,43.4L163.24,43.4Q162.56,43.4 162.38,42.78ZM154.87,7.81L154.87,18.41Q154.87,18.72 155.18,18.72L157.97,18.72Q159.9,18.72 161.1,17.2Q162.31,15.69 162.31,13.14Q162.31,10.54 161.1,9.02Q159.9,7.5 157.97,7.5L155.18,7.5Q154.87,7.5 154.87,7.81ZM175.95,31.62L175.95,11.78Q175.95,6.2 179.36,2.85Q182.77,-0.5 188.48,-0.5Q194.18,-0.5 197.62,2.85Q201.06,6.2 201.06,11.78L201.06,31.62Q201.06,37.2 197.62,40.55Q194.18,43.9 188.48,43.9Q182.77,43.9 179.36,40.55Q175.95,37.2 175.95,31.62ZM192.32,31.99L192.32,11.41Q192.32,9.42 191.27,8.21Q190.21,7.01 188.48,7.01Q186.74,7.01 185.72,8.21Q184.7,9.42 184.7,11.41L184.7,31.99Q184.7,33.98 185.72,35.19Q186.74,36.39 188.48,36.39Q190.21,36.39 191.27,35.19Q192.32,33.98 192.32,31.99ZM207.14,42.66L207.14,0.74Q207.14,0.43 207.36,0.22Q207.57,0 207.88,0L219.11,0Q224.75,0 228.16,3.29Q231.57,6.57 231.57,12.03L231.57,31.37Q231.57,36.83 228.16,40.11Q224.75,43.4 219.11,43.4L207.88,43.4Q207.57,43.4 207.36,43.18Q207.14,42.97 207.14,42.66ZM216.19,35.9L218.98,35.84Q220.66,35.77 221.71,34.41Q222.76,33.05 222.83,30.81L222.83,12.59Q222.83,10.23 221.77,8.87Q220.72,7.5 218.92,7.5L216.19,7.5Q215.88,7.5 215.88,7.81L215.88,35.59Q215.88,35.9 216.19,35.9ZM237.71,31.06L237.71,0.74Q237.71,0.43 237.92,0.22Q238.14,0 238.45,0L245.7,0Q246.01,0 246.23,0.22Q246.45,0.43 246.45,0.74L246.45,31.93Q246.45,33.91 247.44,35.15Q248.43,36.39 250.04,36.39Q251.66,36.39 252.62,35.15Q253.58,33.91 253.58,31.93L253.58,0.74Q253.58,0.43 253.79,0.22Q254.01,0 254.32,0L261.58,0Q261.89,0 262.1,0.22Q262.32,0.43 262.32,0.74L262.32,31.06Q262.32,36.89 258.94,40.39Q255.56,43.9 250.04,43.9Q244.46,43.9 241.08,40.39Q237.71,36.89 237.71,31.06ZM268.21,31.68L268.21,11.59Q268.21,6.08 271.59,2.79Q274.97,-0.5 280.55,-0.5Q286.19,-0.5 289.57,2.79Q292.95,6.08 292.95,11.59L292.95,12.28Q292.95,12.59 292.73,12.8Q292.51,13.02 292.2,13.02L284.95,13.33Q284.21,13.33 284.21,12.65L284.21,11.04Q284.21,9.24 283.21,8.12Q282.22,7.01 280.55,7.01Q278.94,7.01 277.94,8.12Q276.95,9.24 276.95,11.04L276.95,32.43Q276.95,34.22 277.94,35.31Q278.94,36.39 280.55,36.39Q282.22,36.39 283.21,35.31Q284.21,34.22 284.21,32.43L284.21,30.75Q284.21,30.44 284.42,30.22Q284.64,30.01 284.95,30.01L292.2,30.32Q292.51,30.32 292.73,30.53Q292.95,30.75 292.95,31.06L292.95,31.68Q292.95,37.26 289.54,40.58Q286.13,43.9 280.55,43.9Q274.97,43.9 271.59,40.58Q268.21,37.26 268.21,31.68ZM323.64,0.74L323.64,6.76Q323.64,7.07 323.42,7.28Q323.2,7.5 322.89,7.5L315.14,7.5Q314.83,7.5 314.83,7.81L314.83,42.66Q314.83,42.97 314.62,43.18Q314.4,43.4 314.09,43.4L306.84,43.4Q306.53,43.4 306.31,43.18Q306.09,42.97 306.09,42.66L306.09,7.81Q306.09,7.5 305.78,7.5L298.34,7.5Q298.03,7.5 297.81,7.28Q297.6,7.07 297.6,6.76L297.6,0.74Q297.6,0.43 297.81,0.22Q298.03,0 298.34,0L322.89,0Q323.2,0 323.42,0.22Q323.64,0.43 323.64,0.74ZM329.09,42.66L329.09,0.74Q329.09,0.43 329.31,0.22Q329.53,0 329.84,0L337.09,0Q337.4,0 337.62,0.22Q337.84,0.43 337.84,0.74L337.84,42.66Q337.84,42.97 337.62,43.18Q337.4,43.4 337.09,43.4L329.84,43.4Q329.53,43.4 329.31,43.18Q329.09,42.97 329.09,42.66ZM343.97,31.62L343.97,11.78Q343.97,6.2 347.38,2.85Q350.79,-0.5 356.5,-0.5Q362.2,-0.5 365.64,2.85Q369.08,6.2 369.08,11.78L369.08,31.62Q369.08,37.2 365.64,40.55Q362.2,43.9 356.5,43.9Q350.79,43.9 347.38,40.55Q343.97,37.2 343.97,31.62ZM360.34,31.99L360.34,11.41Q360.34,9.42 359.29,8.21Q358.23,7.01 356.5,7.01Q354.76,7.01 353.74,8.21Q352.72,9.42 352.72,11.41L352.72,31.99Q352.72,33.98 353.74,35.19Q354.76,36.39 356.5,36.39Q358.23,36.39 359.29,35.19Q360.34,33.98 360.34,31.99ZM393.64,0L400.83,0Q401.14,0 401.36,0.22Q401.57,0.43 401.57,0.74L401.57,42.66Q401.57,42.97 401.36,43.18Q401.14,43.4 400.83,43.4L392.64,43.4Q392.02,43.4 391.84,42.78L384.15,18.79Q384.09,18.6 383.93,18.63Q383.78,18.66 383.78,18.85L383.84,42.66Q383.84,42.97 383.62,43.18Q383.41,43.4 383.1,43.4L375.9,43.4Q375.59,43.4 375.38,43.18Q375.16,42.97 375.16,42.66L375.16,0.74Q375.16,0.43 375.38,0.22Q375.59,0 375.9,0L384.03,0Q384.65,0 384.83,0.62L392.58,24.61Q392.64,24.8 392.8,24.77Q392.95,24.74 392.95,24.55L392.89,0.74Q392.89,0.43 393.11,0.22Q393.33,0 393.64,0Z"/><path class="lc" fill-rule="evenodd" d="M27,82L37.24,18L48.76,18L59,82L51,82L48.44,66L37.56,66L35,82ZM39.16,55.76L46.84,55.76L43,32.08ZM63.8,18L72.76,18L72.76,82L63.8,82Z"/><path class="li" fill-rule="evenodd" d="M137.95,64.1L125.05,64.1Q124.74,64.1 124.74,64.41L124.74,74.21Q124.74,74.52 125.05,74.52L132.43,74.52Q132.74,74.52 132.96,74.73Q133.17,74.95 133.17,75.26L133.17,81.28Q133.17,81.59 132.96,81.8Q132.74,82.02 132.43,82.02L125.05,82.02Q124.74,82.02 124.74,82.33L124.74,99.26Q124.74,99.57 124.53,99.78Q124.31,100 124,100L116.74,100Q116.43,100 116.22,99.78Q116,99.57 116,99.26L116,57.34Q116,57.03 116.22,56.82Q116.43,56.6 116.74,56.6L137.95,56.6Q138.26,56.6 138.47,56.82Q138.69,57.03 138.69,57.34L138.69,63.36Q138.69,63.67 138.47,63.88Q138.26,64.1 137.95,64.1ZM159.75,99.38L154.97,82.27Q154.85,82.02 154.66,82.02L152.56,82.02Q152.25,82.02 152.25,82.33L152.25,99.26Q152.25,99.57 152.03,99.78Q151.81,100 151.5,100L144.25,100Q143.94,100 143.72,99.78Q143.5,99.57 143.5,99.26L143.5,57.34Q143.5,57.03 143.72,56.82Q143.94,56.6 144.25,56.6L156.77,56.6Q160.18,56.6 162.85,58.24Q165.51,59.89 166.97,62.86Q168.43,65.84 168.43,69.68Q168.43,73.34 167.03,76.13Q165.64,78.92 163.16,80.47Q163.03,80.53 162.97,80.62Q162.91,80.72 162.97,80.84L168.68,99.13L168.74,99.38Q168.74,100 168.06,100L160.62,100Q159.93,100 159.75,99.38ZM152.25,64.41L152.25,75.01Q152.25,75.32 152.56,75.32L155.35,75.32Q157.27,75.32 158.48,73.81Q159.69,72.29 159.69,69.74Q159.69,67.14 158.48,65.62Q157.27,64.1 155.35,64.1L152.56,64.1Q152.25,64.1 152.25,64.41ZM191.53,99.32L190.54,93.37Q190.54,93.06 190.17,93.06L182.29,93.06Q181.92,93.06 181.92,93.37L180.93,99.32Q180.87,100 180.12,100L172.87,100Q172.06,100 172.25,99.19L181.36,57.28Q181.49,56.6 182.17,56.6L190.54,56.6Q191.22,56.6 191.35,57.28L200.4,99.19L200.46,99.44Q200.46,100 199.78,100L192.34,100Q191.59,100 191.53,99.32ZM183.41,86.3L188.99,86.3Q189.3,86.3 189.24,85.99L186.32,69.06Q186.26,68.88 186.14,68.88Q186.01,68.88 185.95,69.06L183.16,85.99Q183.16,86.3 183.41,86.3ZM226.17,56.6L233.36,56.6Q233.67,56.6 233.89,56.82Q234.1,57.03 234.1,57.34L234.1,99.26Q234.1,99.57 233.89,99.78Q233.67,100 233.36,100L226.1,100Q225.79,100 225.58,99.78Q225.36,99.57 225.36,99.26L225.36,71.42Q225.36,71.17 225.24,71.17Q225.11,71.17 224.99,71.36L220.15,79.91Q219.84,80.41 219.66,80.41Q219.47,80.41 219.16,79.91L214.32,71.36Q214.2,71.17 214.08,71.17Q213.95,71.17 213.95,71.42L213.95,99.26Q213.95,99.57 213.74,99.78Q213.52,100 213.21,100L205.95,100Q205.64,100 205.43,99.78Q205.21,99.57 205.21,99.26L205.21,57.34Q205.21,57.03 205.43,56.82Q205.64,56.6 205.95,56.6L213.08,56.6Q213.7,56.6 214.01,57.1L219.53,66.95Q219.72,67.2 219.9,66.95L225.24,57.1Q225.48,56.6 226.17,56.6ZM262.78,64.1L249.83,64.1Q249.52,64.1 249.52,64.41L249.52,74.21Q249.52,74.52 249.83,74.52L257.27,74.52Q257.58,74.52 257.79,74.73Q258.01,74.95 258.01,75.26L258.01,81.28Q258.01,81.59 257.79,81.8Q257.58,82.02 257.27,82.02L249.83,82.02Q249.52,82.02 249.52,82.33L249.52,92.19Q249.52,92.5 249.83,92.5L262.78,92.5Q263.1,92.5 263.31,92.72Q263.53,92.93 263.53,93.24L263.53,99.26Q263.53,99.57 263.31,99.78Q263.1,100 262.78,100L241.52,100Q241.21,100 240.99,99.78Q240.78,99.57 240.78,99.26L240.78,57.34Q240.78,57.03 240.99,56.82Q241.21,56.6 241.52,56.6L262.78,56.6Q263.1,56.6 263.31,56.82Q263.53,57.03 263.53,57.34L263.53,63.36Q263.53,63.67 263.31,63.88Q263.1,64.1 262.78,64.1ZM276.28,99.32L267.91,57.41L267.85,57.16Q267.85,56.6 268.53,56.6L276.09,56.6Q276.84,56.6 276.9,57.28L280.43,79.6Q280.49,79.85 280.62,79.85Q280.74,79.85 280.8,79.6L284.15,57.28Q284.21,56.6 284.96,56.6L291.22,56.6Q291.96,56.6 292.03,57.28L295.68,79.6Q295.75,79.85 295.87,79.85Q295.99,79.85 296.06,79.6L299.22,57.28Q299.28,56.6 300.02,56.6L307.34,56.6Q308.15,56.6 308.02,57.41L300.15,99.32Q300.09,100 299.34,100L292.65,100Q291.9,100 291.84,99.32L288.18,76.38Q288.12,76.13 288,76.13Q287.87,76.13 287.81,76.38L284.52,99.32Q284.46,100 283.72,100L277.08,100Q276.4,100 276.28,99.32ZM312.83,88.22L312.83,68.38Q312.83,62.8 316.24,59.45Q319.65,56.1 325.36,56.1Q331.06,56.1 334.5,59.45Q337.94,62.8 337.94,68.38L337.94,88.22Q337.94,93.8 334.5,97.15Q331.06,100.5 325.36,100.5Q319.65,100.5 316.24,97.15Q312.83,93.8 312.83,88.22ZM329.2,88.59L329.2,68.01Q329.2,66.02 328.15,64.81Q327.09,63.61 325.36,63.61Q323.62,63.61 322.6,64.81Q321.58,66.02 321.58,68.01L321.58,88.59Q321.58,90.58 322.6,91.78Q323.62,92.99 325.36,92.99Q327.09,92.99 328.15,91.78Q329.2,90.58 329.2,88.59ZM360.43,99.38L355.65,82.27Q355.53,82.02 355.34,82.02L353.24,82.02Q352.93,82.02 352.93,82.33L352.93,99.26Q352.93,99.57 352.71,99.78Q352.49,100 352.18,100L344.93,100Q344.62,100 344.4,99.78Q344.18,99.57 344.18,99.26L344.18,57.34Q344.18,57.03 344.4,56.82Q344.62,56.6 344.93,56.6L357.45,56.6Q360.86,56.6 363.53,58.24Q366.19,59.89 367.65,62.86Q369.11,65.84 369.11,69.68Q369.11,73.34 367.71,76.13Q366.32,78.92 363.84,80.47Q363.71,80.53 363.65,80.62Q363.59,80.72 363.65,80.84L369.36,99.13L369.42,99.38Q369.42,100 368.74,100L361.3,100Q360.61,100 360.43,99.38ZM352.93,64.41L352.93,75.01Q352.93,75.32 353.24,75.32L356.03,75.32Q357.95,75.32 359.16,73.81Q360.37,72.29 360.37,69.74Q360.37,67.14 359.16,65.62Q357.95,64.1 356.03,64.1L353.24,64.1Q352.93,64.1 352.93,64.41ZM374.79,99.26L374.79,57.34Q374.79,57.03 375,56.82Q375.22,56.6 375.53,56.6L382.79,56.6Q383.1,56.6 383.31,56.82Q383.53,57.03 383.53,57.34L383.53,72.97Q383.53,73.22 383.69,73.25Q383.84,73.28 383.9,73.03L391.9,57.16Q392.21,56.6 392.77,56.6L400.46,56.6Q400.89,56.6 401.05,56.82Q401.2,57.03 401.01,57.47L391.84,75.32Q391.78,75.57 391.78,75.7L401.51,99.13Q401.57,99.26 401.57,99.5Q401.57,100 400.95,100L393.2,100Q392.52,100 392.33,99.44L385.89,83.2Q385.82,83.01 385.7,83.04Q385.58,83.07 385.45,83.2L383.65,86.42Q383.53,86.67 383.53,86.79L383.53,99.26Q383.53,99.57 383.31,99.78Q383.1,100 382.79,100L375.53,100Q375.22,100 375,99.78Q374.79,99.57 374.79,99.26Z"/></svg></a>
   <button class="ghost" id="tocBtn" type="button">Contents</button>
 </header>
 
 <main id="deck">
 
-<section class="slide cover inv" id="welcome" data-ch="start" data-title="Welcome">
+<section class="slide cover" id="welcome" data-ch="start" data-title="Welcome">
 <div class="in center">
-<div class="pair float" aria-hidden="true"><img src="assets/permit.webp" alt="" width="856" height="540"><span>→</span><img src="assets/license.webp" alt="" width="856" height="540"></div>
-<p class="kicker">Classroom guide</p>
+<picture class="cover-logo"><source srcset="assets/logo-primary-cream.svg" media="(prefers-color-scheme: dark)"><img src="assets/logo-primary-red.svg" alt="AI Production Framework" width="150" height="235"></picture>
+<p class="kicker">For teachers and school leaders · Grades 7–12</p>
 <h1 class="xl" tabindex="-1">AI Production Framework and Pathway</h1>
 <p class="lede">A shared way for grades 7–12 classrooms to teach students to use AI while keeping the learning at the center.</p>
-<nav class="audience-start" aria-label="Start by audience">
-  <a href="#school-run"><span>School leaders</span><strong>Plan a pilot</strong></a>
-  <a href="/aiplaybook/"><span>Teachers</span><strong>Open the Playbook</strong></a>
-  <a href="/aiworkbook/"><span>Students</span><strong>Open the Workbook</strong></a>
-</nav>
 <a class="go" href="#big-two">Start the tour</a>
+<nav class="resource-links" aria-label="Companion resources">
+  <a href="#school-run">Plan a school pilot</a>
+  <a href="/aiplaybook/">Teacher Playbook</a>
+  <a href="/aiworkbook/">Student Workbook</a>
+</nav>
 <p class="fine">One idea per screen. Use Next, or the arrow keys.</p></div>
 </section>
 
@@ -511,8 +566,8 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
     <p>What students need to understand and how they should judge. Three connected components that apply every time AI is used in learning.</p>
     <ol class="mini3"><li><svg class="ic" aria-hidden="true"><use href="#i-cpu"/></svg>AI Literacy</li><li><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg>Core Competencies</li><li><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg>AI Modes</li></ol></div>
   <div class="card half c-amber"><span class="part">Part 2</span><h3>AI Production License Pathway</h3>
-    <p>Students begin with the AI Permit and guided practice. The AI Production License records readiness for independent use in the scope assessed. Each teacher-approved assignment specifies what help is allowed.</p>
-    <div class="pair" aria-hidden="true"><img src="assets/permit.webp" alt="" width="856" height="540"><span>→</span><img src="assets/license.webp" alt="" width="856" height="540"></div></div>
+    <p>Like learning to drive, students begin with supervised practice on the AI Permit. The AI Production License records readiness for independent use in the scope assessed. Each teacher-approved assignment sets what help is allowed.</p>
+    <div class="pair" aria-hidden="true"><img src="assets/permit.svg" alt="" width="856" height="540"><span>→</span><img src="assets/license.svg" alt="" width="856" height="540"></div></div>
 </div></div>
 </section>
 
@@ -528,7 +583,7 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <div><p class="kicker">Part 1 · The Framework</p><h1 tabindex="-1">Three connected components</h1><p class="lede">Together they help students understand AI, use it responsibly and choose help that has a purpose.</p></div>
 <ol class="stairs">
   <li class="card"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-cpu"/></svg></span><div><small>Component 1 · Understand AI</small><b>AI Literacy</b><span>The foundation</span></div></li>
-  <li class="card"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg></span><div><small>Component 2 · Use judgment</small><b>Core Competencies</b><span>Four connected judgments</span></div></li>
+  <li class="card"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg></span><div><small>Component 2 · Use judgment</small><b>Core Competencies</b><span>Four, used together every time</span></div></li>
   <li class="card"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg></span><div><small>Component 3 · Apply the help</small><b>AI Modes</b><span>Five kinds of purposeful help</span></div></li>
 </ol></div>
 </section>
@@ -572,78 +627,85 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 </div>
 </section>
 
-<section class="slide " id="comp-intro" data-ch="comp" data-title="Four judgments, used together" data-way="parts|2">
+<section class="slide " id="comp-intro" data-ch="comp" data-title="Four AI Core Competencies, used together" data-way="parts|2">
 <div class="in">
-<p class="kicker">Component 2 of 3 · Use judgment</p><h1 tabindex="-1">Four judgments, used together every time</h1><p class="lede">The Core Competencies aren't separate units. They are used together whenever AI is used, in every Mode.</p>
+<p class="kicker">Component 2 of 3 · Use judgment</p><h1 tabindex="-1">Four AI Core Competencies, used together every time</h1><p class="lede">They aren't separate units. They are used together whenever AI is used, in every AI Mode.</p>
 <div class="sum below">
-  <div class="card"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg></span><b>Prompting</b></div><i>+</i>
-  <div class="card"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg></span><b>Data &amp; Privacy</b></div><i>+</i>
-  <div class="card"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg></span><b>Ethics</b></div><i>+</i>
-  <div class="card"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-verify"/></svg></span><b>Verification</b></div>
+  <div class="card" style="--c:var(--cp)"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg></span><b>Prompting</b></div><i>+</i>
+  <div class="card" style="--c:var(--cd)"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg></span><b>Data &amp; Privacy</b></div><i>+</i>
+  <div class="card" style="--c:var(--ce)"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg></span><b>Ethics</b></div><i>+</i>
+  <div class="card" style="--c:var(--cv)"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-verify"/></svg></span><b>Verification</b></div>
 </div>
-<p class="equals"><i>=</i> every Mode, every time</p></div>
+<p class="equals"><i>=</i> every AI Mode, every time</p></div>
 </section>
 
-<section class="slide " id="comp-p" data-ch="comp" data-title="Prompting" data-way="comps|1">
+<section class="slide " id="comp-p" data-ch="comp" data-title="Prompting" data-way="comps|1" style="--acc:var(--cp)">
 <div class="in spread">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg></span><p class="kicker">Core Competency 1 of 4</p><h1 tabindex="-1">Prompting</h1>
-<p class="strong">Make the help fit the goal, context and boundary.</p>
-<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg><div><b>Example</b><p>Ask for questions about an unclear pronoun, not a replacement argument, when the reasoning must stay yours.</p></div></div></div>
+<p class="strong">Your words matter.</p>
+<p class="sub">The context and direction you put in shape the quality of what comes out. Vague prompts get vague results.</p>
+<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg><div><b>Example</b><ol class="parts"><li>Build an interactive page about rock formations. Students click a part of the picture to see what it is.</li><li>It's for my 8th-grade science class. Cover only sedimentary, igneous and metamorphic rock.</li><li>For example, clicking a sandstone layer shows its name and two sentences on how it formed.</li><li>Give me one page that opens in a browser.</li></ol></div></div></div>
 <div class="card diagram"><p class="label">Name four things</p>
-<ol class="rows num"><li>The goal</li><li>Useful approved context</li><li>The role AI is allowed to play</li><li>The response you need</li></ol>
+<ol class="rows num"><li>The goal</li><li>Context and limits</li><li>An example of success</li><li>The format you need</li></ol>
 <p class="cardfoot"><svg class="ic" aria-hidden="true"><use href="#i-repeat"/></svg>Test the fit and redirect when it doesn't match.</p></div></div>
 </section>
 
-<section class="slide " id="comp-d" data-ch="comp" data-title="Data &amp; Privacy" data-way="comps|2">
+<section class="slide " id="comp-d" data-ch="comp" data-title="Data &amp; Privacy" data-way="comps|2" style="--acc:var(--cd)">
 <div class="in spread">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg></span><p class="kicker">Core Competency 2 of 4</p><h1 tabindex="-1">Data &amp; Privacy</h1>
-<p class="strong">Choose minimal approved input and a safe destination.</p>
-<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg><div><b>Example</b><p>Use a generic, made-up misconception to plan reteaching instead of exporting an identifiable student record.</p></div></div></div>
+<p class="strong">Some information can go into AI. Some should not.</p>
+<p class="sub">Your data and privacy matter.</p>
+<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg><div><b>Example</b><p>Pasting an email to get help with a reply also shares the sender's name, their address and anything personal they wrote.</p></div></div></div>
 <div class="card diagram"><p class="label">Before you share</p>
 <ul class="rows"><li class="yes"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>Review the actual content before sharing</li>
 <li class="no"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg>Keep identifying data out</li><li class="no"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg>Keep sensitive data out</li><li class="no"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg>Keep unnecessary data out</li></ul>
+<p class="label gap">Control your settings</p>
+<ul class="rows"><li class="set"><svg class="ic" aria-hidden="true"><use href="#i-toggle"/></svg>Most AI tools let you turn off the setting that uses your conversations to train future models</li></ul>
 <p class="cardfoot"><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg>Removing names alone doesn't make it safe. Pause when approval is uncertain.</p></div></div>
 </section>
 
-<section class="slide " id="comp-e" data-ch="comp" data-title="Ethics" data-way="comps|3">
+<section class="slide " id="comp-e" data-ch="comp" data-title="Ethics" data-way="comps|3" style="--acc:var(--ce)">
 <div class="in spread">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg></span><p class="kicker">Core Competency 3 of 4</p><h1 tabindex="-1">Ethics</h1>
-<p class="strong">Respect permission, ownership, fairness and responsibility.</p>
-<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg><div><b>Example</b><p>Reject an AI-written interpretation when only layout feedback is allowed. A License can't override a No-AI direction.</p></div></div></div>
+<p class="strong">Sometimes AI is appropriate to use. Sometimes it's not.</p>
+<p class="sub">Respect permission, ownership, fairness and responsibility.</p>
+<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg><div><b>Example</b><ul class="yn"><li class="c-ok"><i><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></i><div><em>Appropriate</em>Using AI to make your niece's birthday card.</div></li>
+<li class="c-stop"><i><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></i><div><em>Not appropriate</em>Using AI to forge a tax document.</div></li></ul></div></div></div>
 <div class="card diagram"><p class="label">Four commitments</p>
 <ul class="tiles tall"><li><svg class="ic" aria-hidden="true"><use href="#i-human"/></svg>Keep the assessed thinking yours</li><li><svg class="ic" aria-hidden="true"><use href="#i-flag"/></svg>Follow task limits</li><li><svg class="ic" aria-hidden="true"><use href="#i-feedback"/></svg>Disclose help truthfully</li><li><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Consider the effects on people</li></ul>
 <p class="cardfoot"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg>Teachers keep consequential school decisions.</p></div></div>
 </section>
 
-<section class="slide " id="comp-v" data-ch="comp" data-title="Verification" data-way="comps|4">
+<section class="slide " id="comp-v" data-ch="comp" data-title="Verification" data-way="comps|4" style="--acc:var(--cv)">
 <div class="in spread">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-verify"/></svg></span><p class="kicker">Core Competency 4 of 4</p><h1 tabindex="-1">Verification</h1>
-<p class="strong">Trace important claims and test important operations.</p>
-<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg><div><b>Example</b><p>Compare every table row with the original notes, keep missing values, and work out the subtotal yourself.</p></div></div></div>
+<p class="strong">AI can be wrong.</p>
+<p class="sub">Know when and how to verify what it gives you.</p>
+<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg><div><b>Example</b><p>In 2023, two New York lawyers submitted six court opinions that a chatbot had made up. The judge ordered the two lawyers and their firm to pay a $5,000 penalty. <a href="https://www.nhd.uscourts.gov/sites/default/files/pdf/Mata-v-Avianca-sanctions-order.PDF">Court order</a></p></div></div></div>
 <div class="card diagram"><p class="label">Check</p>
 <p class="chips"><span>claims</span><span>sources</span><span>calculations</span><span>assumptions</span><span>changes</span></p>
-<p class="label" style="margin-top:1.1rem">Sort each one</p>
-<ul class="bins"><li class="c-ok"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Supported</li><li class="c-stop"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg>Contradicted</li><li class="c-warn"><svg class="ic" aria-hidden="true"><use href="#i-help"/></svg>Not established</li></ul>
+<p class="label gap">Verify with</p>
+<ul class="bins acc"><li><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg>A data set</li><li><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg>A human expert</li><li><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>An internet search</li></ul>
 <p class="cardfoot"><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg>Change or withhold work when evidence is missing.</p></div></div>
 </section>
 
-<section class="slide " id="modes-intro" data-ch="modes" data-title="Five Modes" data-way="parts|3">
+<section class="slide " id="modes-intro" data-ch="modes" data-title="Five AI Modes" data-way="parts|3">
 <div class="in spread">
-<div><p class="kicker">Component 3 of 3 · Apply the help</p><h1 tabindex="-1">Five Modes: choose the kind of help the learning needs</h1><p class="lede">Choose a fitting role for AI, direct the help and take responsibility for the result. Each Mode gives AI a different job.</p></div>
+<div><p class="kicker">Component 3 of 3 · Apply the help</p><h1 tabindex="-1">Five AI Modes: choose the kind of help the learning needs</h1><p class="lede">Choose a fitting role for AI, direct the help and take responsibility for the result. Each AI Mode gives AI a different job.</p></div>
 <ol class="five"><li class="card" data-m="idea"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg></span><b>Idea</b></li><li class="card" data-m="learning"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-learning"/></svg></span><b>Learning</b></li><li class="card" data-m="feedback"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-feedback"/></svg></span><b>Feedback</b></li><li class="card" data-m="practice"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-practice"/></svg></span><b>Practice</b></li><li class="card" data-m="tool"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-tool"/></svg></span><b>Tool</b></li></ol></div>
 </section>
 
-<section class="slide " id="modes-shape" data-ch="modes" data-title="Every Mode has the same shape" data-way="parts|3">
+<section class="slide " id="modes-shape" data-ch="modes" data-title="Every AI Mode has the same shape" data-way="parts|3">
 <div class="in">
-<p class="kicker">AI Modes</p><h1 tabindex="-1">In every Mode, the student finishes the work</h1><p class="lede">All five follow the same four beats. The last one is always a human action.</p>
+<p class="kicker">AI Modes</p><h1 tabindex="-1">In every AI Mode, the student finishes the work</h1><p class="lede">All five follow the same four beats. The last one is always a human action.</p>
 <ol class="beats below"><li class="card"><b>Set up</b></li><li class="card"><b>Use AI</b></li><li class="card"><b>Think it through</b></li><li class="card fin"><svg class="ic" aria-hidden="true"><use href="#i-human"/></svg><b>Final human action</b></li></ol>
-<p class="fine">Next: each Mode with a short sample conversation. All five use the same made-up classroom task: explaining wide, medium and close-up camera views to beginners.</p></div>
+<p class="fine">Next: each AI Mode with a short sample conversation. All five use the same made-up classroom task: explaining wide, medium and close-up camera views to beginners.</p></div>
 </section>
 
 <section class="slide " id="mode-idea" data-ch="modes" data-title="Idea Mode" data-way="modes|1" data-m="idea">
 <div class="in spread">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg></span><p class="kicker">AI Modes · 1 of 5</p><h1 class=xl tabindex="-1">Idea Mode</h1><p class="lede">Explore thoughts, questions and alternatives, then choose or adapt a direction and explain why it fits.</p>
-<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg><div><b>Try this</b><p>Ask for genuinely different alternatives, then follow up on the parts worth developing.</p></div></div></div>
+<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg><div><b>Try this</b><p>Ask for truly different alternatives. Then have AI combine two of them, or mix one with your own idea, and build on what's worth keeping.</p></div></div></div>
 <ol class="rows num steps card"><li><div><b>Share your starting thinking.</b><span>Bring your thoughts, questions, audience and constraints.</span></div></li><li><div><b>Explore alternatives.</b><span>Ask for different possibilities and tradeoffs while keeping the target thinking yours.</span></div></li><li><div><b>Choose what to explore.</b><span>Question, refine, combine or reject suggestions.</span></div></li><li class="fin"><div><b>Explain the idea's lineage.</b><span>Trace what you adapted, rejected or combined, and why the final direction fits.</span><span class="tag"><svg class="ic" aria-hidden="true"><use href="#i-human"/></svg>The human finish</span></div></li></ol></div>
 </section>
 
@@ -651,24 +713,24 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <div class="in spread top-a talk">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg></span><p class="kicker">Idea Mode · Sample conversation</p><h1 tabindex="-1">Idea Mode in action</h1><p class="lede">A fictional teaching example. The task: explaining wide, medium and close-up camera views to beginners.</p>
 <div class="box "><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div><b>What to keep</b><p>The learner's choice and explanation show the comparison. The full conversation shows the help that was allowed.</p></div></div>
-<p class="legend"><span class="chip">P</span>Prompting <span class="chip">D</span>Data &amp; Privacy <span class="chip">E</span>Ethics <span class="chip">V</span>Verification</p></div>
+<p class="legend"><span class="chip" data-c="p">P</span>Prompting <span class="chip" data-c="d">D</span>Data &amp; Privacy <span class="chip" data-c="e">E</span>Ethics <span class="chip" data-c="v">V</span>Verification</p></div>
 <ol class="convo">
           <li class="turn"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><div class="say"><div class="spk">Learner</div>I need a one-minute video explaining three camera views to beginners. Comparing approaches is assessed; generating options is allowed. Suggest three structures, not a script.</div>
-            <p class="tnote"><span class="chip">P</span><span class="chip">E</span>Names what's assessed and what help is allowed.</p></li>
+            <p class="tnote"><span class="chip" data-c="p">P</span><span class="chip" data-c="e">E</span>Names what's assessed and what help is allowed.</p></li>
           <li class="turn ai"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg></span><div class="say"><div class="spk">AI</div>Show the whole action and revisit each view; compare views side by side; or let viewers predict the view they need next.</div></li>
           <li class="turn"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><div class="say"><div class="spk">Learner</div>Side by side may make the detail too small. Keep the comparison, but use the full screen.</div>
-            <p class="tnote"><span class="chip">P</span>Keeps part, rejects part: the redirect.</p></li>
+            <p class="tnote"><span class="chip" data-c="p">P</span>Keeps part, rejects part: the redirect.</p></li>
           <li class="turn ai"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg></span><div class="say"><div class="spk">AI</div>Show the same moment twice, each view filling the screen. Repetition takes time and may interrupt the action.</div>
             <p class="tnote">The AI names a cost to weigh.</p></li>
           <li class="turn final"><div class="say"><div class="spk">Learner · final check</div>I choose the whole action first, then one full-screen comparison of the corner detail. I'll check the minute with a timed storyboard and write my own explanation.</div>
-            <p class="tnote"><span class="chip">E</span><span class="chip">V</span><span class="pr">The human finishes.</span></p></li>
+            <p class="tnote"><span class="chip" data-c="e">E</span><span class="chip" data-c="v">V</span><span class="pr">The human finishes.</span></p></li>
         </ol></div>
 </section>
 
 <section class="slide " id="mode-learning" data-ch="modes" data-title="Learning Mode" data-way="modes|2" data-m="learning">
 <div class="in spread">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-learning"/></svg></span><p class="kicker">AI Modes · 2 of 5</p><h1 class=xl tabindex="-1">Learning Mode</h1><p class="lede">Use explanations, questions and hints to build understanding you can explain, check and apply yourself.</p>
-<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg><div><b>Try this</b><p>Use paraphrasing to reveal understanding. More questions help only when they close a real gap.</p></div></div></div>
+<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg><div><b>Try this</b><p>After a new explanation, say <q>So if I understand you correctly…</q> and finish the sentence in your own words. The reply shows what you've learned and where the gaps are.</p></div></div></div>
 <ol class="rows num steps card"><li><div><b>Describe your understanding.</b><span>Share what you know, where you're stuck and the approved context.</span></div></li><li><div><b>Ask for help with the gap.</b><span>Request an explanation, hint, example or question. Keep the assessed answer yours.</span></div></li><li><div><b>Paraphrase and clarify.</b><span>Try "So if I understand you correctly…" in your own words.</span></div></li><li class="fin"><div><b>Check and apply it.</b><span>Test it against a trusted source, then explain a fresh example. AI agreement alone is not verification.</span><span class="tag"><svg class="ic" aria-hidden="true"><use href="#i-human"/></svg>The human finish</span></div></li></ol></div>
 </section>
 
@@ -676,23 +738,23 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <div class="in spread top-a talk">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-learning"/></svg></span><p class="kicker">Learning Mode · Sample conversation</p><h1 tabindex="-1">Learning Mode in action</h1><p class="lede">A fictional teaching example. The task: explaining wide, medium and close-up camera views to beginners.</p>
 <div class="box "><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div><b>What to keep</b><p>The learner's own explanation and usual work show understanding. AI praise is not verification.</p></div></div>
-<p class="legend"><span class="chip">P</span>Prompting <span class="chip">D</span>Data &amp; Privacy <span class="chip">E</span>Ethics <span class="chip">V</span>Verification</p></div>
+<p class="legend"><span class="chip" data-c="p">P</span>Prompting <span class="chip" data-c="d">D</span>Data &amp; Privacy <span class="chip" data-c="e">E</span>Ethics <span class="chip" data-c="v">V</span>Verification</p></div>
 <ol class="convo">
           <li class="turn"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><div class="say"><div class="spk">Learner</div>I'm confused about why a close-up isn't always more useful. Use the view guide, with a different example from my assessed video. Ask one question at a time.</div>
-            <p class="tnote"><span class="chip">P</span><span class="chip">E</span>Asks for a different example so the assessed answer stays theirs.</p></li>
+            <p class="tnote"><span class="chip" data-c="p">P</span><span class="chip" data-c="e">E</span>Asks for a different example so the assessed answer stays theirs.</p></li>
           <li class="turn ai"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg></span><div class="say"><div class="spk">AI</div>Imagine three blank cards on a desk. Which view would show where all three begin, and why?</div></li>
           <li class="turn"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><div class="say"><div class="spk">Learner</div>A close-up of each card? Then every card would be easy to see.</div>
             <p class="tnote">A wrong answer is useful evidence here.</p></li>
           <li class="turn ai"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg></span><div class="say"><div class="spk">AI</div>You'd see each card, but you might lose where they sit relative to each other. What would the wide view add?</div></li>
           <li class="turn final"><div class="say"><div class="spk">Learner · final check</div>My rule: choose the view for the information the viewer is missing. Wide for the setup, medium for the action, close-up for a hard-to-see detail. I checked it against the guide; it doesn't say one view is always best.</div>
-            <p class="tnote"><span class="chip">V</span>Checked against the guide, not the AI. <span class="pr">AI agreement isn't proof.</span></p></li>
+            <p class="tnote"><span class="chip" data-c="v">V</span>Checked against the guide, not the AI. <span class="pr">AI agreement isn't proof.</span></p></li>
         </ol></div>
 </section>
 
 <section class="slide " id="mode-feedback" data-ch="modes" data-title="Feedback Mode" data-way="modes|3" data-m="feedback">
 <div class="in spread">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-feedback"/></svg></span><p class="kicker">AI Modes · 3 of 5</p><h1 class=xl tabindex="-1">Feedback Mode</h1><p class="lede">Get critique on work you've already developed, against clear criteria, while you keep the judgment and the revision.</p>
-<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg><div><b>Try this</b><p>Give the AI the work and the criteria together. Useful critique points to a specific gap and explains its effect.</p></div></div></div>
+<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg><div><b>Try this</b><p>Share your work and criteria, then choose who the critique comes from: <q>You're my boss on a really bad day. Tear this proposal apart.</q> Harsh feedback is easier to hear when you set the terms.</p></div></div></div>
 <ol class="rows num steps card"><li><div><b>Share your work and criteria.</b><span>Include its purpose and the kind of feedback that's permitted.</span></div></li><li><div><b>Ask for gaps and reasons.</b><span>Request strengths, gaps and explanations, not a replacement.</span></div></li><li><div><b>Evaluate the advice.</b><span>Compare it with the brief and sources. Reject advice that's wrong or out of bounds.</span></div></li><li class="fin"><div><b>Make and explain your revision.</b><span>Write the change yourself, or keep sound work for a reason.</span><span class="tag"><svg class="ic" aria-hidden="true"><use href="#i-human"/></svg>The human finish</span></div></li></ol></div>
 </section>
 
@@ -700,24 +762,24 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <div class="in spread top-a talk">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-feedback"/></svg></span><p class="kicker">Feedback Mode · Sample conversation</p><h1 tabindex="-1">Feedback Mode in action</h1><p class="lede">A fictional teaching example. The task: explaining wide, medium and close-up camera views to beginners.</p>
 <div class="box "><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div><b>What to keep</b><p>The before-and-after work, the reasons, and the full conversation.</p></div></div>
-<p class="legend"><span class="chip">P</span>Prompting <span class="chip">D</span>Data &amp; Privacy <span class="chip">E</span>Ethics <span class="chip">V</span>Verification</p></div>
+<p class="legend"><span class="chip" data-c="p">P</span>Prompting <span class="chip" data-c="d">D</span>Data &amp; Privacy <span class="chip" data-c="e">E</span>Ethics <span class="chip" data-c="v">V</span>Verification</p></div>
 <ol class="convo">
           <li class="turn"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><div class="say"><div class="spk">Learner</div>My shot plan: wide workspace → close-up of a card corner → wide finished row → viewer check. Criteria: a beginner can follow the movement and see the detail. Flag gaps; don't rewrite.</div>
-            <p class="tnote"><span class="chip">P</span><span class="chip">E</span>The work and the criteria together, with a limit.</p></li>
+            <p class="tnote"><span class="chip" data-c="p">P</span><span class="chip" data-c="e">E</span>The work and the criteria together, with a limit.</p></li>
           <li class="turn ai"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg></span><div class="say"><div class="spk">AI <span class="flag">Partly flawed</span></div>No shot shows a card moving into place, so a beginner could miss the action. You could also drop the viewer check to save time.</div>
             <p class="tnote">One gap is real; one suggestion breaks the brief.</p></li>
           <li class="turn"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><div class="say"><div class="spk">Learner</div>I'll keep the check because the brief requires it. Explain the missing-action problem without choosing the replacement shot for me.</div>
-            <p class="tnote"><span class="chip">P</span><span class="chip">E</span><span class="chip">V</span>Checks the advice against the brief and keeps the decision.</p></li>
+            <p class="tnote"><span class="chip" data-c="p">P</span><span class="chip" data-c="e">E</span><span class="chip" data-c="v">V</span>Checks the advice against the brief and keeps the decision.</p></li>
           <li class="turn ai"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg></span><div class="say"><div class="spk">AI</div>The close-up shows a corner, then the next shot shows the finished row. The viewer never sees how a card gets there.</div></li>
           <li class="turn final"><div class="say"><div class="spk">Learner · final check</div>Revised plan: wide setup → medium movement → close-up detail → wide result → viewer check. I added the movement and rejected removing the required check.</div>
-            <p class="tnote"><span class="chip">E</span><span class="chip">V</span><span class="pr">The human finishes.</span></p></li>
+            <p class="tnote"><span class="chip" data-c="e">E</span><span class="chip" data-c="v">V</span><span class="pr">The human finishes.</span></p></li>
         </ol></div>
 </section>
 
 <section class="slide " id="mode-practice" data-ch="modes" data-title="Practice Mode" data-way="modes|4" data-m="practice">
 <div class="in spread">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-practice"/></svg></span><p class="kicker">AI Modes · 4 of 5</p><h1 class=xl tabindex="-1">Practice Mode</h1><p class="lede">Use AI to set up a rehearsal, role-play or challenge, then do the thinking yourself and use checked feedback to improve.</p>
-<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg><div><b>Try this</b><p>Keep the challenge separate from the solution. Practice works when you try before you see advice.</p></div></div></div>
+<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg><div><b>Try this</b><p>Give AI the script: <q>You are ___. I am ___. We'll go back and forth four times. At the end, give me feedback.</q></p></div></div></div>
 <ol class="rows num steps card"><li><div><b>Set the rehearsal.</b><span>Name the skill, scenario, roles and success criteria. One challenge at a time.</span></div></li><li><div><b>Attempt the skill first.</b><span>Have AI wait for your own thinking before giving feedback.</span></div></li><li><div><b>Check the feedback.</b><span>Use the criteria and trusted sources to decide what to improve.</span></div></li><li class="fin"><div><b>Try again and explain.</b><span>Apply the improvement in a fresh situation. AI praise alone doesn't show readiness.</span><span class="tag"><svg class="ic" aria-hidden="true"><use href="#i-human"/></svg>The human finish</span></div></li></ol></div>
 </section>
 
@@ -725,24 +787,24 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <div class="in spread top-a talk">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-practice"/></svg></span><p class="kicker">Practice Mode · Sample conversation</p><h1 tabindex="-1">Practice Mode in action</h1><p class="lede">A fictional teaching example. The task: explaining wide, medium and close-up camera views to beginners.</p>
 <div class="box "><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><div><b>What to keep</b><p>The actual attempts and the checked improvement. Rehearsal doesn't prove independent readiness.</p></div></div>
-<p class="legend"><span class="chip">P</span>Prompting <span class="chip">D</span>Data &amp; Privacy <span class="chip">E</span>Ethics <span class="chip">V</span>Verification</p></div>
+<p class="legend"><span class="chip" data-c="p">P</span>Prompting <span class="chip" data-c="d">D</span>Data &amp; Privacy <span class="chip" data-c="e">E</span>Ethics <span class="chip" data-c="v">V</span>Verification</p></div>
 <ol class="convo">
           <li class="turn"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><div class="say"><div class="spk">Learner</div>Act as a beginner watching a blank-card demonstration. Ask one view-choice question at a time and wait for my answer. Base feedback on the view guide.</div>
-            <p class="tnote"><span class="chip">P</span><span class="chip">V</span>Sets roles, limits and the source feedback must use.</p></li>
+            <p class="tnote"><span class="chip" data-c="p">P</span><span class="chip" data-c="v">V</span>Sets roles, limits and the source feedback must use.</p></li>
           <li class="turn ai"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg></span><div class="say"><div class="spk">AI</div>I can see one card clearly, but I don't know where all the cards start. What view would help me, and why?</div></li>
           <li class="turn"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><div class="say"><div class="spk">Learner</div>A close-up, because extra detail should make the cards clearer.</div>
             <p class="tnote">The attempt, made before any advice.</p></li>
           <li class="turn ai"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg></span><div class="say"><div class="spk">AI</div>The missing information is the whole arrangement, and the guide gives that job to the wide view. New situation: the corner touching a small mark is unclear. What would you add?</div>
-            <p class="tnote"><span class="chip">V</span>Feedback tied to the guide, then a fresh situation.</p></li>
+            <p class="tnote"><span class="chip" data-c="v">V</span>Feedback tied to the guide, then a fresh situation.</p></li>
           <li class="turn final"><div class="say"><div class="spk">Learner · final check</div>A close-up of the corner and mark. My second answer improved because I named the viewer's problem before choosing a view. My first answer needed guidance.</div>
-            <p class="tnote"><span class="chip">E</span>Honest about what needed guidance.</p></li>
+            <p class="tnote"><span class="chip" data-c="e">E</span>Honest about what needed guidance.</p></li>
         </ol></div>
 </section>
 
 <section class="slide " id="mode-tool" data-ch="modes" data-title="Tool Mode" data-way="modes|5" data-m="tool">
 <div class="in spread">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-tool"/></svg></span><p class="kicker">AI Modes · 5 of 5</p><h1 class=xl tabindex="-1">Tool Mode</h1><p class="lede">Have AI carry out a clearly directed operation, then check and approve the result yourself.</p>
-<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg><div><b>Try this</b><p>Preserve unknown values and verify important operations yourself.</p></div></div></div>
+<div class="box "><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg><div><b>Try this</b><p>Step up to a tool like Codex or Claude Code, where AI carries out multi-step work for you while you direct each step and approve the result.</p></div></div></div>
 <ol class="rows num steps card"><li><div><b>Specify the operation.</b><span>Use minimal approved input. Say what may change, what must stay and which decisions are yours.</span></div></li><li><div><b>Direct the bounded task.</b><span>Format, organize, calculate or transform. Keep missing values visible.</span></div></li><li><div><b>Compare input and output.</b><span>Look for invented, missing or changed content. A correction still needs checking.</span></div></li><li class="fin"><div><b>Verify and approve it.</b><span>Approve supported results; repair or withhold anything unresolved.</span><span class="tag"><svg class="ic" aria-hidden="true"><use href="#i-human"/></svg>The human finish</span></div></li></ol></div>
 </section>
 
@@ -750,37 +812,37 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <div class="in spread top-a talk wide">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-tool"/></svg></span><p class="kicker">Tool Mode · Sample conversation</p><h1 tabindex="-1">Tool Mode in action</h1><p class="lede">A fictional teaching example. The task: explaining wide, medium and close-up camera views to beginners.</p>
 
-<p class="legend"><span class="chip">P</span>Prompting <span class="chip">D</span>Data &amp; Privacy <span class="chip">E</span>Ethics <span class="chip">V</span>Verification</p></div>
+<p class="legend"><span class="chip" data-c="p">P</span>Prompting <span class="chip" data-c="d">D</span>Data &amp; Privacy <span class="chip" data-c="e">E</span>Ethics <span class="chip" data-c="v">V</span>Verification</p></div>
 <ol class="convo two">
           <li class="turn"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><div class="say"><div class="spk">Learner</div>Format my notes as ID | view | duration: S1 wide 12 s; S2 medium, duration not supplied; S3 close-up 8 s. Preserve gaps. No estimates.</div>
-            <p class="tnote"><span class="chip">P</span><span class="chip">D</span>Minimal input; says what must stay unknown. <span class="pr">Privacy by default.</span></p></li>
+            <p class="tnote"><span class="chip" data-c="p">P</span><span class="chip" data-c="d">D</span>Minimal input; says what must stay unknown. <span class="pr">Privacy by default.</span></p></li>
           <li class="turn ai"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg></span><div class="say"><div class="spk">AI <span class="flag">Invented a value</span></div>
             <table><thead><tr><th>ID</th><th>view</th><th>duration</th></tr></thead><tbody><tr><td>S1</td><td>wide</td><td>12 s</td></tr><tr><td>S2</td><td>medium</td><td><span class="bad">15 s</span></td></tr><tr><td>S3</td><td>close-up</td><td>8 s</td></tr></tbody></table>
             <p class="tot">Total: 35 s</p></div>
             <p class="tnote">Fills the gap the learner said to keep.</p></li>
           <li class="turn"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><div class="say"><div class="spk">Learner</div>You invented S2's 15 seconds. The source says "not supplied." Restore that gap.</div>
-            <p class="tnote"><span class="chip">V</span>Catches the invented value against the source.</p></li>
+            <p class="tnote"><span class="chip" data-c="v">V</span>Catches the invented value against the source.</p></li>
           <li class="turn ai"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-spark"/></svg></span><div class="say"><div class="spk">AI <span class="flag">Misleading label</span></div>
             <table><thead><tr><th>ID</th><th>view</th><th>duration</th></tr></thead><tbody><tr><td>S2</td><td>medium</td><td>not supplied</td></tr></tbody></table>
             <p class="tot"><span class="bad">Total: 20 s</span></p></div>
             <p class="tnote">A correction still needs checking.</p></li>
           <li class="turn"><span class="av" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><div class="say"><div class="spk">Learner</div>Call 20 seconds the known-duration subtotal, and say total runtime is unknown until S2 is timed.</div>
-            <p class="tnote"><span class="chip">P</span><span class="chip">V</span>Names the subtotal honestly.</p></li>
+            <p class="tnote"><span class="chip" data-c="p">P</span><span class="chip" data-c="v">V</span>Names the subtotal honestly.</p></li>
           <li class="turn final"><div class="say"><div class="spk">Learner · final check</div>I rechecked every row against my notes. My own addition: 12 + 8 = 20. I approve this partial table; S2 must be timed before the total is known.</div>
-            <p class="tnote"><span class="chip">V</span>Own arithmetic: 12 + 8 = 20. <span class="pr">The human finishes.</span></p></li>
+            <p class="tnote"><span class="chip" data-c="v">V</span>Own arithmetic: 12 + 8 = 20. <span class="pr">The human finishes.</span></p></li>
         </ol></div>
 </section>
 
-<section class="slide " id="modes-recap" data-ch="modes" data-title="The five Modes side by side" data-way="parts|3">
+<section class="slide " id="modes-recap" data-ch="modes" data-title="The five AI Modes side by side" data-way="parts|3">
 <div class="in">
-<p class="kicker">AI Modes · Recap</p><h1 tabindex="-1">The five Modes, side by side</h1>
-<table class="grid below"><thead><tr><th scope="col">Mode</th><th scope="col">1 · Set up</th><th scope="col">2 · Use AI</th><th scope="col">3 · Think it through</th><th scope="col"><svg class="ic" aria-hidden="true"><use href="#i-human"/></svg>4 · Final human action</th></tr></thead><tbody><tr data-m="idea"><th scope="row"><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg>Idea</th><td data-l="Set up">Bring a starting idea</td><td data-l="Use AI">Explore possibilities</td><td data-l="Think it through">Combine, redirect or select</td><td data-l="Human finish">Choose and explain why</td></tr><tr data-m="learning"><th scope="row"><svg class="ic" aria-hidden="true"><use href="#i-learning"/></svg>Learning</th><td data-l="Set up">State what you know and your goal</td><td data-l="Use AI">Ask for tailored explanations</td><td data-l="Think it through">Ask clarifying or deeper questions</td><td data-l="Human finish">Show and check your understanding</td></tr><tr data-m="feedback"><th scope="row"><svg class="ic" aria-hidden="true"><use href="#i-feedback"/></svg>Feedback</th><td data-l="Set up">Bring your own work</td><td data-l="Use AI">Set criteria and limits ("Don't rewrite")</td><td data-l="Think it through">Evaluate the suggestions</td><td data-l="Human finish">Revise, or justify keeping it</td></tr><tr data-m="practice"><th scope="row"><svg class="ic" aria-hidden="true"><use href="#i-practice"/></svg>Practice</th><td data-l="Set up">Define the situation, roles and limits</td><td data-l="Use AI">Attempt the simulation</td><td data-l="Think it through">Debrief strengths and gaps</td><td data-l="Human finish">Improve and retry until the goal is met</td></tr><tr data-m="tool"><th scope="row"><svg class="ic" aria-hidden="true"><use href="#i-tool"/></svg>Tool</th><td data-l="Set up">Specify the task and result</td><td data-l="Use AI">Direct AI's work</td><td data-l="Think it through">Check and refine</td><td data-l="Human finish">Verify and approve the result</td></tr></tbody></table></div>
+<p class="kicker">AI Modes · Recap</p><h1 tabindex="-1">The five AI Modes, side by side</h1>
+<table class="grid below"><thead><tr><th scope="col">AI Mode</th><th scope="col">1 · Set up</th><th scope="col">2 · Use AI</th><th scope="col">3 · Think it through</th><th scope="col"><svg class="ic" aria-hidden="true"><use href="#i-human"/></svg>4 · Final human action</th></tr></thead><tbody><tr data-m="idea"><th scope="row"><svg class="ic" aria-hidden="true"><use href="#i-idea"/></svg>Idea</th><td data-l="Set up">Bring a starting idea</td><td data-l="Use AI">Explore possibilities</td><td data-l="Think it through">Combine, redirect or select</td><td data-l="Human finish">Choose and explain why</td></tr><tr data-m="learning"><th scope="row"><svg class="ic" aria-hidden="true"><use href="#i-learning"/></svg>Learning</th><td data-l="Set up">State what you know and your goal</td><td data-l="Use AI">Ask for tailored explanations</td><td data-l="Think it through">Ask clarifying or deeper questions</td><td data-l="Human finish">Show and check your understanding</td></tr><tr data-m="feedback"><th scope="row"><svg class="ic" aria-hidden="true"><use href="#i-feedback"/></svg>Feedback</th><td data-l="Set up">Bring your own work</td><td data-l="Use AI">Set criteria and limits ("Don't rewrite")</td><td data-l="Think it through">Evaluate the suggestions</td><td data-l="Human finish">Revise, or justify keeping it</td></tr><tr data-m="practice"><th scope="row"><svg class="ic" aria-hidden="true"><use href="#i-practice"/></svg>Practice</th><td data-l="Set up">Define the situation, roles and limits</td><td data-l="Use AI">Attempt the simulation</td><td data-l="Think it through">Debrief strengths and gaps</td><td data-l="Human finish">Improve and retry until the goal is met</td></tr><tr data-m="tool"><th scope="row"><svg class="ic" aria-hidden="true"><use href="#i-tool"/></svg>Tool</th><td data-l="Set up">Specify the task and result</td><td data-l="Use AI">Direct AI's work</td><td data-l="Think it through">Check and refine</td><td data-l="Human finish">Verify and approve the result</td></tr></tbody></table></div>
 </section>
 
 <section class="slide " id="modes-remember" data-ch="modes" data-title="Three things to remember" data-way="parts|3">
 <div class="in">
-<p class="kicker">AI Modes</p><h1 tabindex="-1">Three things to remember about Modes</h1>
-<div class="cols below"><div class="card "><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-shuffle"/></svg></span><h3>No fixed order</h3><p>For everyday tasks, choose, combine, revisit or skip Modes for a reason.</p></div><div class="card "><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg></span><h3>All five for the License</h3><p>The License assessment asks for documented, purposeful use of every Mode.</p></div><div class="card "><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-verify"/></svg></span><h3>Competencies stay on</h3><p>Prompting, privacy, ethics and verification apply in every Mode.</p></div></div>
+<p class="kicker">AI Modes</p><h1 tabindex="-1">Three things to remember about AI Modes</h1>
+<div class="cols below"><div class="card "><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-shuffle"/></svg></span><h3>No fixed order</h3><p>For everyday tasks, choose, combine, revisit or skip AI Modes for a reason.</p></div><div class="card "><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg></span><h3>All five for the License</h3><p>The License assessment asks for documented, purposeful use of every AI Mode.</p></div><div class="card "><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-verify"/></svg></span><h3>Core Competencies stay on</h3><p>Prompting, Data &amp; Privacy, Ethics and Verification apply in every AI Mode.</p></div></div>
 <div class="box wide"><svg class="ic" aria-hidden="true"><use href="#i-practice"/></svg><div><b>Align AI with learning</b><p>AI should support the work without replacing the thinking students are learning. When learning to operate AI is itself the objective, Tool Mode can be a fitting choice.</p></div></div></div>
 </section>
 
@@ -794,15 +856,15 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <section class="slide inv" id="path-intro" data-ch="path" data-title="From Permit to License">
 <div class="in spread">
 <div><p class="kicker">Part 2 · The Pathway</p><h1 class=xl tabindex="-1">From Permit to License</h1><p class="lede">Like learning to drive: first practice with a teacher beside you, then show you're ready to go on your own.</p></div>
-<div class="stackcards" aria-hidden="true"><img src="assets/permit.webp" alt="" width="856" height="540"><img src="assets/license.webp" alt="" width="856" height="540"></div></div>
+<div class="stackcards" aria-hidden="true"><img src="assets/permit.svg" alt="" width="856" height="540"><img src="assets/license.svg" alt="" width="856" height="540"></div></div>
 </section>
 
 <section class="slide " id="path-route" data-ch="path" data-title="The route">
 <div class="in">
 <p class="kicker">The Pathway · Overview</p><h1 tabindex="-1">The route: two stages, five steps</h1><p class="lede">Students move on only when the teacher has evidence, and the route can loop back.</p>
 <div class="map" aria-hidden="true">
-  <div class="zone zp"><span class="zname"><img src="assets/permit.webp" alt="" width="856" height="540">Stage 1 · Permit</span></div>
-  <div class="zone zl"><span class="zname"><img src="assets/license.webp" alt="" width="856" height="540">Stage 2 · License</span></div>
+  <div class="zone zp"><span class="zname"><img src="assets/permit.svg" alt="" width="856" height="540">Stage 1 · Permit</span></div>
+  <div class="zone zl"><span class="zname"><img src="assets/license.svg" alt="" width="856" height="540">Stage 2 · License</span></div>
   <div class="roadwrap"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><path class="r-shadow" d="M -10 64 C 0 64, 0 36, 10 36 C 20 36, 20 64, 30 64 C 40 64, 40 36, 50 36 C 60 36, 60 64, 70 64 C 80 64, 80 36, 90 36 C 100 36, 100 64, 110 64"/><path class="r-kerb" d="M -10 64 C 0 64, 0 36, 10 36 C 20 36, 20 64, 30 64 C 40 64, 40 36, 50 36 C 60 36, 60 64, 70 64 C 80 64, 80 36, 90 36 C 100 36, 100 64, 110 64"/><path class="r-road" d="M -10 64 C 0 64, 0 36, 10 36 C 20 36, 20 64, 30 64 C 40 64, 40 36, 50 36 C 60 36, 60 64, 70 64 C 80 64, 80 36, 90 36 C 100 36, 100 64, 110 64"/><path class="r-dash" d="M -10 64 C 0 64, 0 36, 10 36 C 20 36, 20 64, 30 64 C 40 64, 40 36, 50 36 C 60 36, 60 64, 70 64 C 80 64, 80 36, 90 36 C 100 36, 100 64, 110 64"/></svg></div>
   <span class="gate"><b>Teacher<br>decides</b></span>
   <span class="pin" style="--x:10;--y:36"><b>1</b></span><span class="pin" style="--x:30;--y:64"><b>2</b></span><span class="pin" style="--x:50;--y:36"><b>3</b></span>
@@ -810,8 +872,8 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 </div>
 <ol class="stops">
   <li class="first"><span class="z">Stage 1 · Permit</span><span class="n">1</span><b>Check eligibility</b><span class="d">School and tool rules</span></li>
-  <li><span class="n">2</span><b>Build foundations</b><span class="d">Literacy and competencies</span></li>
-  <li class="endz"><span class="n">3</span><b>Guided practice</b><span class="d">Experience all five Modes</span></li>
+  <li><span class="n">2</span><b>Build foundations</b><span class="d">AI Literacy and Core Competencies</span></li>
+  <li class="endz"><span class="n">3</span><b>Guided practice</b><span class="d">Experience all five AI Modes</span></li>
   <li class="first lz"><span class="z">Stage 2 · License</span><span class="n">4</span><b>Open-AI assessment</b><span class="d">Use and document all five</span></li>
   <li class="endz lz"><span class="z gate">Teacher decides</span><span class="n">5</span><b>Scoped independent use</b><span class="d">Teacher-approved tasks only</span></li>
 </ol></div>
@@ -844,15 +906,15 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 
 <section class="slide " id="path-3" data-ch="path" data-title="Step 3 · Guided practice" data-way="route|3">
 <div class="in">
-<p class="kicker">Stage 1 · Permit · Step 3</p><h1 tabindex="-1">Intentional guided practice</h1><p class="lede">A six-step cycle the teacher repeats across all five Modes.</p>
-<div class="lanes"><span class="lane t"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg>Teacher</span><span class="lane s"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Students</span><span class="bg t"></span><span class="bg s"></span><div class="cy card" data-who="Teacher" style="grid-row:1;grid-column:2"><b><i>1</i>Design</b><p>Pick a Mode and task that support the learning objective without doing the thinking students are meant to learn.</p></div><div class="cy card" data-who="Teacher" style="grid-row:1;grid-column:3"><b><i>2</i>Model</b><p>Show students how to direct the help and make decisions.</p></div><div class="cy card" data-who="Teacher" style="grid-row:1;grid-column:4"><b><i>3</i>Supply</b><p>Give starter prompts and resources: a useful starting point.</p></div><div class="cy card s" data-who="Students" style="grid-row:2;grid-column:5"><b><i>4</i>Engage</b><p>Use the prompts and resources, direct the conversation and complete the work.</p></div><div class="cy card s" data-who="Students" style="grid-row:2;grid-column:6"><b><i>5</i>Share</b><p>Send the conversation through the class's private route.</p></div><div class="cy card" data-who="Teacher" style="grid-row:1;grid-column:7"><b><i>6</i>Review</b><p>Assess the conversations, discuss the choices and give feedback.</p></div></div>
-<p class="loop"><svg class="ic" aria-hidden="true"><use href="#i-repeat"/></svg><b>Next Mode.</b> Repeat until all five Modes are done.</p></div>
+<p class="kicker">Stage 1 · Permit · Step 3</p><h1 tabindex="-1">Intentional guided practice</h1><p class="lede">A six-step cycle the teacher repeats across all five AI Modes.</p>
+<div class="lanes"><span class="lane t"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg>Teacher</span><span class="lane s"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Students</span><span class="bg t"></span><span class="bg s"></span><div class="cy card" data-who="Teacher" style="grid-row:1;grid-column:2"><b><i>1</i>Design</b><p>Pick an AI Mode and task that support the learning objective without doing the thinking students are meant to learn.</p></div><div class="cy card" data-who="Teacher" style="grid-row:1;grid-column:3"><b><i>2</i>Model</b><p>Show students how to direct the help and make decisions.</p></div><div class="cy card" data-who="Teacher" style="grid-row:1;grid-column:4"><b><i>3</i>Supply</b><p>Give starter prompts and resources: a useful starting point.</p></div><div class="cy card s" data-who="Students" style="grid-row:2;grid-column:5"><b><i>4</i>Engage</b><p>Use the prompts and resources, direct the conversation and complete the work.</p></div><div class="cy card s" data-who="Students" style="grid-row:2;grid-column:6"><b><i>5</i>Share</b><p>Send the conversation through the class's private route.</p></div><div class="cy card" data-who="Teacher" style="grid-row:1;grid-column:7"><b><i>6</i>Review</b><p>Assess the conversations, discuss the choices and give feedback.</p></div></div>
+<p class="loop"><svg class="ic" aria-hidden="true"><use href="#i-repeat"/></svg><b>Next AI Mode.</b> Repeat until all five AI Modes are done.</p></div>
 </section>
 
 <section class="slide " id="path-keep" data-ch="path" data-title="Keep the whole conversation" data-way="route|3">
 <div class="in spread">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-feedback"/></svg></span><p class="kicker">Stage 1 · Permit · Step 3</p><h1 tabindex="-1">Keep the whole conversation</h1><p class="lede">Keep the full, dedicated conversation for each assigned AI task. A private portfolio across tasks is optional.</p></div>
-<div class="card"><p class="label">Each finished cycle adds a Mode mark to the Permit</p>
+<div class="card"><p class="label">Each finished cycle adds an AI Mode mark to the Permit</p>
 <ul class="marks" aria-label="Example: Idea, Learning and Feedback marked; Practice and Tool not yet">
 <li class="done"><i><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></i>Idea</li><li class="done"><i><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></i>Learning</li><li class="done"><i><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></i>Feedback</li><li><i></i>Practice</li><li><i></i>Tool</li></ul>
 <p class="cardfoot">The example marks are illustrative, not a required count.</p></div></div>
@@ -861,7 +923,7 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <section class="slide " id="path-4" data-ch="path" data-title="Step 4 · Earning the License" data-way="route|4" style="--acc:var(--blue)">
 <div class="in spread">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-learning"/></svg></span><p class="kicker">Stage 2 · License · Step 4</p><h1 tabindex="-1">Earning the License</h1><p class="lede">An open-AI assessment. Like an open-book test, students may use AI and approved resources to show what they can do.</p></div>
-<ul class="ilist "><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg></span><div>Complete an open-ended task after guided practice.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg></span><div>Use and document every Mode to some degree, each for a real purpose.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-shuffle"/></svg></span><div>There's no required order or equal amount of use.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-human"/></svg></span><div>The learner chooses the prompts.</div></li></ul>
+<ul class="ilist "><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg></span><div>Complete an open-ended task after guided practice.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg></span><div>Use and document every AI Mode to some degree, each for a real purpose.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-shuffle"/></svg></span><div>There's no required order or equal amount of use.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-human"/></svg></span><div>The learner chooses the prompts.</div></li></ul>
 </div>
 </section>
 
@@ -876,17 +938,17 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <section class="slide " id="path-criteria" data-ch="path" data-title="Assessment criteria" data-way="route|4" style="--acc:var(--blue)">
 <div class="in spread">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-clip"/></svg></span><p class="kicker">Stage 2 · License · Step 4</p><h1 tabindex="-1">Assessment criteria: what to look for</h1></div>
-<ul class="ilist tight"><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg></span><div><b>Purposeful Mode use</b><span>What each of the five Modes contributed, and the decisions made.</span></div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg></span><div><b>Prompting</b><span>Clear context and requests, redirected when needed.</span></div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg></span><div><b>Data &amp; Privacy</b><span>The information shared is protected.</span></div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg></span><div><b>Ethics</b><span>Task permission followed; contribution explained honestly.</span></div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-verify"/></svg></span><div><b>Verification</b><span>Important claims and operations checked before use.</span></div></li></ul>
+<ul class="ilist tight"><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg></span><div><b>Purposeful AI Mode use</b><span>What each of the five AI Modes contributed, and the decisions made.</span></div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-pen"/></svg></span><div><b>Prompting</b><span>Clear context and requests, redirected when needed.</span></div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg></span><div><b>Data &amp; Privacy</b><span>The information shared is protected.</span></div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg></span><div><b>Ethics</b><span>Task permission followed; contribution explained honestly.</span></div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-verify"/></svg></span><div><b>Verification</b><span>Important claims and operations checked before use.</span></div></li></ul>
 </div>
 </section>
 
 <section class="slide " id="path-decision" data-ch="path" data-title="The teacher's decision" data-way="route|4" style="--acc:var(--blue)">
 <div class="in">
 <p class="kicker">For teachers</p><h1 tabindex="-1">The teacher's decision</h1>
-<p class="rule">Judge learning from the student’s work and responsible AI use from the full task conversation. Before deciding, check independent judgment on a fresh task.</p>
+<p class="rule">Judge subject learning from the student’s work and responsible AI use from the full task conversation. Before deciding, check independent judgment on a fresh transfer task.</p>
 <div class="cols below">
-<div class="card dec c-ok"><span class="dot"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><h3>Ready</h3><p>Shows the learning target, explains their own choices, documents all five Modes, follows permission and privacy rules, and verifies results.</p></div>
-<div class="card dec c-warn"><span class="dot"><svg class="ic" aria-hidden="true"><use href="#i-repeat"/></svg></span><h3>Needs another attempt</h3><p>Return the specific gap for practice, then check fresh evidence. Missing Modes, unsupported claims or unclear ownership are not a pass.</p></div>
+<div class="card dec c-ok"><span class="dot"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><h3>Ready</h3><p>Shows the learning target, explains their own choices, documents all five AI Modes, follows permission and privacy rules, and verifies results.</p></div>
+<div class="card dec c-warn"><span class="dot"><svg class="ic" aria-hidden="true"><use href="#i-repeat"/></svg></span><h3>Needs another attempt</h3><p>Return the specific gap for practice, then check fresh evidence. Missing AI Modes, unsupported claims or unclear ownership are not a pass.</p></div>
 <div class="card dec c-stop"><span class="dot"><svg class="ic" aria-hidden="true"><use href="#i-pause"/></svg></span><h3>Pause</h3><p>Stop live use when tool eligibility, data permission or task permission isn't met. Follow school procedure before resuming.</p></div></div></div>
 </section>
 
@@ -904,8 +966,8 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <div class="in">
 <p class="kicker">Pathway mockups</p><h1 tabindex="-1">What the cards can look like</h1><p class="lede">A visible marker of where each student is on the route. These are fictional examples, not issued credentials.</p>
 <div class="cols c2 below cardrow">
-<figure class="cardfig"><img src="assets/permit.webp" width="856" height="540" alt="AI Permit mockup. Teacher-guided AI experiences. Mode record: Idea, Learning and Feedback are marked; Tool and Practice are not yet."><figcaption><b>AI Permit.</b> Tracks teacher-guided experiences across the five Modes.</figcaption></figure>
-<figure class="cardfig"><img src="assets/license.webp" width="856" height="540" alt="AI License mockup. Independent AI User. Valid for teacher-approved AI use."><figcaption><b>AI License.</b> The student's pledge: "I can explain my choices and stand behind my work."</figcaption></figure>
+<figure class="cardfig"><img src="assets/permit.svg" width="856" height="540" alt="AI Permit mockup. Teacher-guided AI experiences. AI Mode record: Idea, Learning and Feedback are marked; Practice and Tool are not yet."><figcaption><b>AI Permit.</b> Tracks teacher-guided experiences across the five AI Modes.</figcaption></figure>
+<figure class="cardfig"><img src="assets/license.svg" width="856" height="540" alt="AI License mockup. Independent AI User. Valid for teacher-approved AI use."><figcaption><b>AI License.</b> The student's pledge: "I can explain my choices and stand behind my work."</figcaption></figure>
 </div></div>
 </section>
 
@@ -914,15 +976,15 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <p class="kicker">Plan a pilot</p><h1 tabindex="-1">AI Production for School Leaders</h1><p class="lede">Choose one class and a learning goal. Confirm approved tools, student access and a private evidence route before deciding which steps your pilot can cover.</p>
 <nav class="resource-links" aria-label="Pilot planning"><a href="#school-before">Check readiness before live use</a><a href="#school-access">Plan your pilot and review</a></nav>
 <ol class="cols c4 below flow">
-<li class="card"><span class="n">1</span><h3>Literacy and competencies</h3><p>Teach what AI is and the four judgments. Paper examples and discussion work before any live tool.</p></li>
-<li class="card c-amber"><span class="n">2</span><h3>Permit and supervised practice</h3><p>Teacher-guided practice in all five Modes. Keep the full conversation for every task.</p></li>
-<li class="card c-blue"><span class="n">3</span><h3>Fresh readiness assessment</h3><p>An open-AI task where students use and document all five Modes. The teacher decides.</p></li>
+<li class="card"><span class="n">1</span><h3>AI Literacy and Core Competencies</h3><p>Teach what AI is and the four AI Core Competencies. Paper examples and discussion work before any live tool.</p></li>
+<li class="card c-amber"><span class="n">2</span><h3>Permit and supervised practice</h3><p>Teacher-guided practice in all five AI Modes. Keep the full conversation for every task.</p></li>
+<li class="card c-blue"><span class="n">3</span><h3>Fresh readiness assessment</h3><p>An open-AI task where students use and document all five AI Modes. The teacher decides.</p></li>
 <li class="card c-blue"><span class="n">4</span><h3>Scoped independent use</h3><p>AI on teacher-approved tasks only, under each assignment's guidelines.</p></li></ol></div>
 </section>
 
 <section class="slide " id="school-before" data-ch="school" data-title="Before live use">
 <div class="in spread">
-<div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-school"/></svg></span><p class="kicker">Planning · School leaders</p><h1 tabindex="-1">Before live use</h1><p class="lede">Settle these before any student opens a live tool.</p></div>
+<div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-school"/></svg></span><p class="kicker">Planning · Mostly for administrators</p><h1 tabindex="-1">Before live use</h1><p class="lede">Settle these before any student opens a live tool.</p></div>
 <ul class="ilist tight checks"><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div>Confirm the approved service, account eligibility, features, notice or consent, and local technology and privacy review.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div>Teacher access does not authorize student access. Verify current terms and settings with the responsible school owners.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div>Set up private evidence access, storage, retention and an incident procedure before collecting task records.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div>Prepare an accessible, mediated or non-AI route.</div></li></ul>
 </div>
 </section>
@@ -936,7 +998,7 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <section class="slide " id="school-record" data-ch="school" data-title="What to record">
 <div class="in spread">
 <div><span class="plate " aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-folder"/></svg></span><p class="kicker">Records and safeguards</p><h1 tabindex="-1">What to record</h1><p class="lede">Keep a short index to the evidence and a teacher-made decision. Store actual student records only in approved school systems.</p></div>
-<ul class="ilist tight"><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-tag"/></svg></span><div>Class or subject, learner code, assessor, date and route.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg></span><div>Four separate competency judgments.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-practice"/></svg></span><div>Practice context, Mode, the student's finish and the support actually given.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-star"/></svg></span><div>For a License: independent work in all five Modes, complete evidence and a fresh transfer task.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-repeat"/></svg></span><div>A precise gap, the next teaching move, a fresh reassessment and the current scope.</div></li></ul>
+<ul class="ilist tight"><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-tag"/></svg></span><div>Class or subject, learner code, assessor, date and route.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-scale"/></svg></span><div>Each of the four AI Core Competencies, assessed separately.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-practice"/></svg></span><div>Practice context, AI Mode, the student's finish and the support actually given.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-star"/></svg></span><div>For a License: independent work in all five AI Modes, complete evidence and a fresh transfer task.</div></li><li><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-repeat"/></svg></span><div>A precise gap, the next teaching move, a fresh reassessment and the current scope.</div></li></ul>
 </div>
 </section>
 
@@ -949,13 +1011,13 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <section class="slide " id="wrap-you" data-ch="wrap" data-title="What it asks of you">
 <div class="in">
 <p class="kicker">Where to start</p><h1 tabindex="-1">What it asks of you</h1>
-<div class="cols below"><div class="card c-blue"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><h3>For teachers</h3><p>Start with the foundations, run guided practice in each Mode, and use the License decision guide when students are ready.</p></div><div class="card c-amber"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-school"/></svg></span><h3>For school leaders</h3><p>Confirm approved tools, eligibility, privacy review and evidence storage before live use, and begin with a bounded pilot.</p></div><div class="card "><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg></span><h3>For everyone</h3><p>AI can help students learn when it supports the work and the student keeps the thinking.</p></div></div></div>
+<div class="cols below"><div class="card c-blue"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-teacher"/></svg></span><h3>For teachers</h3><p>Start with the foundations, run guided practice in each AI Mode, and use the License decision guide when students are ready.</p></div><div class="card c-amber"><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-school"/></svg></span><h3>For administrators</h3><p>Confirm approved tools, eligibility, privacy review and evidence storage before live use, and begin with a bounded pilot.</p></div><div class="card "><span class="plate sm" aria-hidden="true"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg></span><h3>For everyone</h3><p>AI can help students learn when it supports the work and the student keeps the thinking.</p></div></div></div>
 </section>
 
 <section class="slide " id="wrap-nine" data-ch="wrap" data-title="Nine principles">
 <div class="in">
 <p class="kicker">Wrap-up</p><h1 tabindex="-1">Nine principles that run through everything</h1>
-<ol class="nine"><li class=card><div><b>The human finishes.</b><span>Every Mode ends with the student's decision, check or explanation.</span></div></li><li class=card><div><b>AI agreement isn't proof.</b><span>AI praise or agreement is not verification or readiness.</span></div></li><li class=card><div><b>Two separate judgments.</b><span>Subject learning and responsible AI use are assessed apart.</span></div></li><li class=card><div><b>Keep the full conversation.</b><span>It's the evidence of AI use. Portfolios are optional.</span></div></li><li class=card><div><b>"Road closed" wins.</b><span>A License never overrides a teacher's No-AI direction.</span></div></li><li class=card><div><b>Teachers decide.</b><span>No automated credentials and no AI scoring of student work.</span></div></li><li class=card><div><b>Protect fresh assessment.</b><span>Keys and future cases stay with the teacher.</span></div></li><li class=card><div><b>Privacy by default.</b><span>Minimal approved input, learner codes, fictional examples, private routes.</span></div></li><li class=card><div><b>Purpose over sequence.</b><span>No fixed Mode order for everyday tasks; the License needs all five, used for a reason.</span></div></li></ol></div>
+<ol class="nine"><li class=card><div><b>The human finishes.</b><span>Every AI Mode ends with the student's decision, check or explanation.</span></div></li><li class=card><div><b>AI agreement isn't proof.</b><span>AI praise or agreement is not verification or readiness.</span></div></li><li class=card><div><b>Two separate judgments.</b><span>Subject learning and responsible AI use are assessed apart.</span></div></li><li class=card><div><b>Keep the full conversation.</b><span>It's the evidence of AI use. Portfolios are optional.</span></div></li><li class=card><div><b>"Road closed" wins.</b><span>A License never overrides a teacher's No-AI direction.</span></div></li><li class=card><div><b>Teachers decide.</b><span>No automated credentials and no AI scoring of student work.</span></div></li><li class=card><div><b>Protect fresh assessment.</b><span>Keys and future cases stay with the teacher.</span></div></li><li class=card><div><b>Privacy by default.</b><span>Minimal approved input, learner codes, fictional examples, private routes.</span></div></li><li class=card><div><b>Purpose over sequence.</b><span>No fixed AI Mode order for everyday tasks; the License needs all five, used for a reason.</span></div></li></ol></div>
 </section>
 
 <section class="slide " id="kit" data-ch="wrap" data-title="The classroom kit">
@@ -973,14 +1035,16 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <p class="fine">Teacher-only files hold keys and future assessment material. Classroom files: Revision 2, 11 October 2026. Where an older file differs, follow the current License decision guide.</p></div>
 </section>
 
-<section class="slide cover inv" id="end" data-ch="wrap" data-title="The end">
+<section class="slide cover" id="end" data-ch="wrap" data-title="The end">
 <div class="in center">
-<div class="pair float" aria-hidden="true"><img src="assets/permit.webp" alt="" width="856" height="540"><span>→</span><img src="assets/license.webp" alt="" width="856" height="540"></div>
+<div class="pair float" aria-hidden="true"><img src="assets/permit.svg" alt="" width="856" height="540"><span>→</span><img src="assets/license.svg" alt="" width="856" height="540"></div>
 <p class="kicker">That's the tour</p>
 <ol class="motto bigm" tabindex="-1"><li>Understand the system.</li><li>Direct the help.</li><li>Own the thinking.</li></ol>
-<p class="lede">AI Production Framework and Pathway, created by Vince Doud. Every example in this tour is fictional.</p>
-<a class="go" href="#welcome">Back to the start</a>
-<p class="fine">© 2026 Vince Doud</p></div>
+<p class="lede">AI Production Framework and Pathway, created by Vince Doud. The classroom examples in this tour are fictional.</p>
+<div class="onward">
+<a class="go" href="/aiplaybook/"><small>For teachers</small>AI Production Teacher Playbook</a>
+<a class="go" href="/aiworkbook/"><small>For students</small>AI Production Student Workbook</a></div>
+<p class="fine"><a href="#welcome">Back to the start</a> · © 2026 Vince Doud</p></div>
 </section>
 
 </main>
@@ -994,6 +1058,7 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
 <dialog id="toc" aria-labelledby="tocH">
   <div class="toc-h"><h2 id="tocH">Contents</h2><button class="ghost" id="tocClose" type="button">Close</button></div>
   <div class="toc-b" id="tocB"></div>
+  <nav class="toc-out" aria-label="Companion resources"><span>Companion resources</span><a class="out" href="/aiplaybook/">AI Production Teacher Playbook</a><a class="out" href="/aiworkbook/">AI Production Student Workbook</a></nav>
 </dialog>
 
 <script>
@@ -1001,7 +1066,7 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
   var CH = { start: "Start", big: "The big picture", lit: "Framework · AI Literacy", comp: "Framework · Core Competencies", modes: "Framework · AI Modes", path: "The Pathway", school: "In your school", wrap: "Wrap-up" };
   var WAYS = {
     parts: [["AI Literacy", "cpu"], ["Core Competencies", "scale"], ["AI Modes", "grid"]],
-    comps: [["Prompting", "pen"], ["Data & Privacy", "lock"], ["Ethics", "scale"], ["Verification", "verify"]],
+    comps: [["Prompting", "pen", "", "var(--cp)"], ["Data & Privacy", "lock", "", "var(--cd)"], ["Ethics", "scale", "", "var(--ce)"], ["Verification", "verify", "", "var(--cv)"]],
     modes: [["Idea", "idea", "idea"], ["Learning", "learning", "learning"], ["Feedback", "feedback", "feedback"], ["Practice", "practice", "practice"], ["Tool", "tool", "tool"]],
     route: [["Eligibility", 1, "", "var(--amber)"], ["Foundations", 2, "", "var(--amber)"], ["Guided practice", 3, "", "var(--amber)"], ["Assessment", 4, "", "var(--blue)"], ["Independent use", 5, "", "var(--blue)"]]
   };
@@ -1009,7 +1074,7 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
   var slides = [].slice.call(document.querySelectorAll(".slide"));
   var deck = document.getElementById("deck"), prev = document.getElementById("prev"), next = document.getElementById("next");
   var segs = document.getElementById("segs"), toc = document.getElementById("toc"), tocB = document.getElementById("tocB");
-  var cur = 0;
+  var cur = 0, shown = false;
   root.classList.add("js");
   if (/noanim/.test(location.search)) root.classList.add("noanim");
 
@@ -1037,11 +1102,16 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
   function fit() {
     var s = slides[cur], f = s.firstChild; f.style.zoom = "";
     if (window.innerWidth <= 860) return;
-    for (var k = 0; k < 3; k++) {
-      var over = s.scrollHeight - deck.clientHeight; if (over <= 1) break;
-      var z = parseFloat(f.style.zoom || 1), h = f.getBoundingClientRect().height;
-      f.style.zoom = Math.max(.6, z * (h - over - 2) / h).toFixed(3);
+    if (s.scrollHeight - deck.clientHeight <= 1) return;
+    // Find the largest scale that fits. Scaling also re-wraps the text, so search instead of estimating.
+    var lo = .6, hi = 1;
+    for (var k = 0; k < 7; k++) {
+      var mid = (lo + hi) / 2; f.style.zoom = mid.toFixed(3);
+      if (s.scrollHeight - deck.clientHeight <= 1) lo = mid; else hi = mid;
     }
+    f.style.zoom = lo.toFixed(3);
+    // Re-wrapping can make a slightly larger scale shorter than a smaller one, so confirm the result.
+    for (var z = lo; z > .6 && s.scrollHeight - deck.clientHeight > 1; z -= .02) f.style.zoom = (z - .02).toFixed(3);
   }
 
   var order = [], groups = {};
@@ -1054,7 +1124,9 @@ dialog::backdrop { background: rgba(15,20,35,.55); }
   });
 
   function show(i, focus) {
-    i = Math.max(0, Math.min(slides.length - 1, i)); deck.style.setProperty("--dir", i < cur ? -1 : 1); cur = i;
+    i = Math.max(0, Math.min(slides.length - 1, i)); deck.style.setProperty("--dir", i < cur ? -1 : 1);
+    // The staggered build-up plays the first time a screen is shown, not on every return to it.
+    if (shown && i !== cur) slides[cur].classList.add("seen"); shown = true; cur = i;
     slides.forEach(function (s, n) { s.classList.toggle("on", n === i); });
     var s = slides[i], c = s.dataset.ch, g = groups[c], pos = g.indexOf(i) + 1;
     document.body.classList.toggle("cover", s.classList.contains("cover") && i === 0);
