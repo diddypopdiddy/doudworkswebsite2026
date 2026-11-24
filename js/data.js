@@ -37,8 +37,8 @@ const FRAMEWORK = {
 const PLAYBOOK = {
   id: "ai-educator-playbook",
   title: "AI Production Teacher Playbook",
-  kind: "Free lesson preview",
-  summary: "Teach the free AI Literacy lesson with its printable plan and quiz, then explore the seven-module Playbook outline.",
+  kind: "Open teaching guide",
+  summary: "Use seven teaching modules with lesson plans, AI Mode practice, subject examples, and classroom printables.",
   preview: "ai-educator-playbook-modules.webp",
   previewAlt: "The Teacher Playbook preview with the new logo, AI Permit and AI License cards.",
   href: "/aiplaybook/",

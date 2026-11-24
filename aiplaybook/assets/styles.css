@@ -1,6 +1,3 @@
-/* Keep legacy preview layout rules, then apply the current red/cream Desktop brand. */
-@import url("legacy-layout.css");
-
 /* AI Production Teacher Playbook. Brand palette: red #940000, cream #FBF1E4, ink #2D2320, navy #1C2748, lime #DDEA79.
    Barlow Condensed headlines, Geist text, and the Framework's AI Mode colours. */
 @font-face { font-family: "Barlow Condensed"; src: url("fonts/barlow-condensed-bold.ttf") format("truetype"); font-weight: 600 700; font-display: swap; }
@@ -861,14 +858,3 @@ h3 { font-size: 1.5rem; line-height: 1.05; }
   .print-logo { display: block; height: 30px; width: auto; margin: 0 0 12px var(--gut); }
   .foot-logo { display: none; }
 }
-
-/* Bridge the authored Studio preview shell to the current Desktop brand without
-   changing its access-gated HTML or its sample content. */
-.site .brand { flex: 0 1 214px; min-width: 0; }
-.site .brand picture, .site .brand img { display: block; width: 100%; height: auto; }
-.road { border-top: 0 !important; background: transparent !important; }
-.road ol { gap: .4rem !important; }
-.road a { border: 1px solid var(--line) !important; border-radius: 8px !important; background: var(--card) !important; }
-.road a.here { border-color: var(--amber) !important; background: color-mix(in srgb, var(--amber-fill) 15%, var(--card)) !important; }
-.road .stop { background: var(--board) !important; color: var(--chalk) !important; }
-.road a.here .stop { background: var(--red) !important; }
