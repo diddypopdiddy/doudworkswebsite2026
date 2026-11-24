@@ -8,9 +8,7 @@ const COVER_CLOSE_MS = 600;
 const DROP_MS = 250;
 const FADE_MS = 200;
 
-/* A close-up of the same bookshelf that's in the basement: both boards packed with plain books in the same
-   colours, and the plant at the bottom right. The project books have a title printed
-   down the spine (one line, one type size, nothing else on the spine).
+/* A close-up of the basement bookshelf, with illustrated jackets on the project books.
    Hover or focus one and everything else dims while it slides up, grows and turns to show its cover
    (so there's never any sideways text to read); select it and the cover comes to the center and opens
    to a title page and table of contents. */
@@ -31,8 +29,8 @@ const PLANT = { w: 186, h: 242, sink: 5 }; // shelf-plant.webp is 227 × 295; `s
 // book is and `hs` how tall, relative to its art, so the row doesn't look like one book repeated.
 const B = (art, t = 1.2, hs = 1) => ({ art: `book-plain-${art}`, t, hs });
 const P = (book, t = 1.25, hs = 1) => ({ book, t, hs });
-// The project books are all about the same height (taller than most of the plain ones) so their titles can share one type size.
-const SHELVES = [
+// The jacket builder uses these proportions to keep the lettering in shape on the shelf.
+export const SHELVES = [
   { floorY: 135, row: [B("orange", 1.2, 1.0), B("brown", 1.3, 0.96), B("ivory", 1.15, 1.04), P(1, 1.3, 1.075), B("slate", 1.15, 0.82), P(6, 1.275, 0.955), P(0, 1.3, 0.925),
     B("ivory", 1.3, 0.98), B("sand", 1.15, 1.06), P(2, 1.3, 0.96), B("brown", 1.15, 1.0), B("orange", 1.3, 0.95), B("sand", 1.2, 1.0)] },
   { floorY: 568, row: [P(5, 1.3, 1.09), B("ivory", 1.2, 1.05), P(3, 1.3, 1.05), B("ink-blue", 1.2, 0.86), B("brick", 1.25, 0.97), B("sky", 1.15, 0.86), P(4, 1.3, 1.0),
@@ -66,8 +64,7 @@ export default {
       // The cover is the book's right-hand side, folded back out of sight until the book turns. --cw is its width in shelf pixels.
       return `<button class="book is-project" data-id="${p.b.id}" style="${style};--cw:${(p.h * COVER_RATIO).toFixed(1)}">
           <span class="book-body" aria-hidden="true">
-            <img src="assets/objects/${p.art}.webp" alt="" draggable="false">
-            <span class="spine-name">${esc(p.b.spine)}</span>
+            <img src="assets/spines/${p.b.id}.webp" alt="" draggable="false">
             <span class="book-cover"><img src="assets/covers/${p.b.id}-shelf.webp" alt="" draggable="false"></span>
           </span>
           <span class="sr-only">${esc(p.b.title)}. ${esc(p.b.kind)}. ${esc(p.b.summary)}${p.b.href ? "" : " (coming soon)"}</span>
@@ -168,7 +165,7 @@ export default {
             <div class="bo-book">
               <div class="bo-back"></div>
               <div class="bo-edge is-fore"></div><div class="bo-edge is-top"></div><div class="bo-edge is-foot"></div>
-              <div class="bo-spine" aria-hidden="true"><img src="assets/objects/${b.art}.webp" alt="" draggable="false"><i class="spine-bands"></i><span>${esc(b.spine)}</span></div>
+              <div class="bo-spine" aria-hidden="true"><img src="assets/spines/${b.id}.webp" alt="" draggable="false"></div>
               <div class="bo-page">
                 <${tag} class="bo-right"${link} inert>
                   <header class="bo-contents-head">
@@ -320,6 +317,7 @@ export default {
           openEl.className = "book-open";
           opened = null;
           trigger.focus({ preventScroll: true });
+          if (coarse && !trigger.matches(":focus-visible")) pull(null);
         }, motion ? DROP_MS : FADE_MS);
       }
 

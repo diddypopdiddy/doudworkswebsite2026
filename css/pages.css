@@ -445,28 +445,19 @@
 /* Each book tips on its own perspective, straight toward you. (One shared vanishing point for the whole shelf
    made books away from the middle slew sideways into their neighbours.) */
 .book-body { position: absolute; inset: 0; display: block; transform-origin: 50% 100%; transform: perspective(1100px) rotateX(0deg) scale(1); transition: transform .55s cubic-bezier(.34, 1.45, .55, 1), filter .35s ease; }
-/* printed details on the plain spines: gold bands top and bottom */
-.spine-bands { position: absolute; left: 9%; right: 9%; top: 6%; bottom: 6%; pointer-events: none;
-  border-top: .6cqh double rgba(240, 205, 120, .7); border-bottom: .6cqh double rgba(240, 205, 120, .7); }
 .book.is-filler { cursor: default; transform: rotate(var(--lean, 0deg)); animation: none; }
-.book.is-filler .spine-bands { border-color: rgba(240, 205, 120, .35); }
 .book.is-lying { pointer-events: none; }
 .book.is-lying img { position: absolute; left: 50%; top: 50%; max-width: none; transform: translate(-50%, -50%) rotate(90deg); }
 .book.is-filler.is-nudge { animation: nudge .5s ease; }
 @keyframes nudge { 30% { transform: rotate(calc(var(--lean, 0deg) - 1.5deg)); } 65% { transform: rotate(calc(var(--lean, 0deg) + 1deg)); } }
 
 /* --- the project books ---
-   On the shelf they're plain spines like the rest, with the soft glow that marks things you can open.
+   On the shelf the illustrated jackets identify the books you can open.
    Lifted, the book slides up and turns a quarter turn about its right-hand edge, so its cover (the book's
    side, folded back until then) swings round to face you, centered where the spine was.
    --u is one pixel of the shelf drawing; --cw is the cover's width in those pixels. */
 .shelf { --u: calc(var(--sw) / 1385); }
 .book.is-project { container-type: normal; }
-/* the title, printed once down the spine: one line, one size and one colour on every book */
-.spine-name { position: absolute; left: 0; right: 0; top: 9%; bottom: 4%; display: flex; align-items: center; justify-content: center; pointer-events: none;
-  writing-mode: vertical-rl; white-space: nowrap; font: 600 calc(var(--u) * 20) / 1 "Newsreader", Georgia, "Times New Roman", serif; letter-spacing: .015em;
-  color: #f7f0de; text-shadow: 0 calc(var(--u) * 1) 0 rgba(0, 0, 0, .4); }
-.book[data-id="ai-road-test"] .spine-name { color: #2a1a0a; text-shadow: 0 calc(var(--u) * 1) 0 rgba(255, 255, 255, .25); }
 .book.is-project .book-body { transform-origin: 100% 100%; transform-style: preserve-3d;
   transform: perspective(1500px) translateX(0px) translateY(0%) scale(1) rotateY(0deg);
   transition: transform .6s cubic-bezier(.3, .85, .3, 1); }
@@ -546,12 +537,8 @@
 .bo-edge.is-top { top: 0; } .bo-edge.is-foot { top: 100%; }
 .bo-spine { position: absolute; left: 50%; top: calc(-1 * var(--m)); bottom: calc(-1 * var(--m)); width: calc(var(--tc) + 2 * var(--bt));
   transform-origin: 0 50%; transform: translateZ(calc(-1 * var(--bt))) rotateY(-90deg); background: var(--c); border-radius: .5cqh; overflow: hidden;
-  box-shadow: 0 0 0 var(--line) var(--bo-ink); container-type: size; }
+  box-shadow: 0 0 0 var(--line) var(--bo-ink); }
 .bo-spine img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; }
-.bo-spine span { position: absolute; inset: 14% 0; display: flex; align-items: center; justify-content: center; writing-mode: vertical-rl; white-space: nowrap;
-  font: 700 min(30cqw, 4.4cqh)/1 Georgia, "Times New Roman", serif; letter-spacing: .07em; text-transform: uppercase; color: #f3d68e;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, .5); }
-.book-open[data-book="ai-road-test"] .bo-spine span { color: #3d2606; text-shadow: 0 1px 0 rgba(255, 255, 255, .25); }
 
 /* The page wrapper receives clicks while the contents are still inert. */
 .bo-page {
