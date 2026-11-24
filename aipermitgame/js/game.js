@@ -133,7 +133,9 @@ RT.startGame = function (savedPrefs = {}) {
   function startLesson(announce) {
     lessons.setDestination(currentDest());
     world.finishBeacon.visible = isReturning();
-    if (!announce || isTouch) return;
+    if (!announce) return;
+    // Phones name the lesson in one short line instead of the instructor bubble.
+    if (isTouch) { ui.toast('➤ ' + lessonTitle(), '#34e2ff'); return; }
     if (isReturning()) ui.say('Hour 6: every credit is earned and your hours are in. Follow the blue arrows back to the Permit Office and park in the gold circle to sign your log.', 'good', 8);
     else if (P.hours < HOURS - 1 && !P.freeDrive) ui.say(lessons.LESSONS[P.hours].intro + ' Follow the blue arrows on the road.', 'info', 7);
     else ui.say('Next stop: ' + lessons.DESTS[currentDest()].name + '. Red lights still bring questions.', 'info', 5);
@@ -150,7 +152,7 @@ RT.startGame = function (savedPrefs = {}) {
     }
     save();
     const waitMsg = P.hours >= HOURS - 1 && !P.complete;
-    nextLesson = { t: waitMsg ? 6.5 : 1.2, announce: !waitMsg };
+    nextLesson = { t: waitMsg ? 6.5 : 1.2, announce: !waitMsg || isTouch };
     lessons.setDestination(null);
   }
 
@@ -227,7 +229,7 @@ RT.startGame = function (savedPrefs = {}) {
     const order = U.shuffle([0, 1, 2, 3].slice(0, q.options.length));
     const credited = practice ? false : P.credits[cat.id] < GOAL;
     ui.showQuestion({
-      q, order, secondLook, credited,
+      q, order, secondLook, credited, have: P.credits[cat.id], goal: GOAL,
       chipCredit: credited ? 'Credit ' + (P.credits[cat.id] + 1) + ' of ' + GOAL : 'Practice',
       onAnswer(correct) {
         P.answered++; P.stats.questions++;
@@ -270,7 +272,7 @@ RT.startGame = function (savedPrefs = {}) {
     audio.sfx.finish();
     ui.toast('All ' + GOAL * cats.length + ' permit credits earned!', '#e3a514');
     ui.confetti();
-    if (P.hours >= HOURS - 1) { ui.say('That is every permit credit! Drive back to the Permit Office and park in the gold circle to sign your driving log.', 'good', 8); startLesson(false); }
+    if (P.hours >= HOURS - 1) { ui.say('That is every permit credit! Drive back to the Permit Office and park in the gold circle to sign your driving log.', 'good', 8); startLesson(isTouch); }
     else ui.say('That is every permit credit! Finish your practice hours, then you will head back to sign your log. Red lights are practice now.', 'good', 8);
   }
 
@@ -290,13 +292,14 @@ RT.startGame = function (savedPrefs = {}) {
       note = NOTES[P.noteCursor % NOTES.length]; P.noteCursor++; review = true;
     }
     ui.setNotes(P.seenNotes.length);
-    if (isTouch) { save(); return; }
+    save();
     openCardMode();
     audio.sfx.note();
     ui.showNote({
       note, review, index: P.seenNotes.length, total: NOTES.length,
       onClose() {
-        save(); mode = 'drive';
+        mode = 'drive';
+        syncSteering();
         if (Math.random() < 0.35) ui.say(U.shuffle(['Nice full stop. Look both ways, then go.', 'Good stop. Remember: stop, look, then go.', 'That is how you handle a stop sign.'])[0], 'good', 3);
       }
     });
@@ -382,9 +385,11 @@ RT.startGame = function (savedPrefs = {}) {
   const landscape = window.matchMedia('(orientation: landscape)');
   const screenAngle = () => (Number(screen.orientation?.angle ?? window.orientation ?? (landscape.matches ? 90 : 0)) + (sideways ? 90 : 0) + 360) % 360;
   const tilt = RT.createTiltSteering(screenAngle, syncSteering);
+  let lessonCue = false; // phones: name the lesson on the first press of the road, once steering is set up
   const touchDrive = RT.createTouchDrive(canvas, car, tilt, () => mode === 'drive' && !steeringBlocked && !document.hidden, () => {
     keys.clear();
     audio.start();
+    if (lessonCue) { lessonCue = false; startLesson(true); }
   });
   const usesTouch = () => isTouch || touchDrive.active;
   function clearDriveInput() {
@@ -496,7 +501,16 @@ RT.startGame = function (savedPrefs = {}) {
   }
 
   // ---------- screens ----------
-  function openPause() { if (mode !== 'drive' || steeringBlocked) return; mode = 'pause'; clearDriveInput(); ui.show('pauseScreen', true); audio.setEngine(0, 0, false); }
+  function showPauseProgress() {
+    const chips = [
+      '🎓 ' + totalCredits() + '/' + GOAL * cats.length + ' credits',
+      '⏱ ' + Math.min(P.hours, HOURS) + '/' + HOURS + ' hrs',
+      '📒 ' + P.seenNotes.length + (P.seenNotes.length === 1 ? ' note' : ' notes'),
+      '🛡️ ' + Math.round(P.score)
+    ];
+    $('pauseProgress').replaceChildren(...chips.map((text) => Object.assign(document.createElement('span'), { textContent: text })));
+  }
+  function openPause() { if (mode !== 'drive' || steeringBlocked) return; mode = 'pause'; clearDriveInput(); showPauseProgress(); ui.show('pauseScreen', true); audio.setEngine(0, 0, false); }
   function closePause() { ui.show('pauseScreen', false); mode = 'drive'; syncSteering(); }
   let mapFromPause = false;
   function openMap() {
@@ -542,10 +556,11 @@ RT.startGame = function (savedPrefs = {}) {
   $('startBtn').disabled = false;
   if (isTouch) {
     $('closeMapBtn').textContent = 'Back';
-    for (const [id, label] of [['mapBtn', 'Town map'], ['resetBtn', 'Reset car']]) {
+    // Pause is the phone's control panel: the map sits with the other screens, reset with the car controls.
+    for (const [id, label, place] of [['mapBtn', 'Town map', (b) => $('resumeDriveBtn').after(b)], ['resetBtn', 'Reset car', (b) => $('touchTools').append(b)]]) {
       const btn = $(id);
       btn.textContent = label; btn.className = 'btn';
-      $('mobileTools').append(btn);
+      place(btn);
     }
   }
 
@@ -580,7 +595,7 @@ RT.startGame = function (savedPrefs = {}) {
     mode = 'drive';
     ui.setStreet('Permit Office lot');
     startLesson(false);
-    if (isTouch) { beginTilt(); return; }
+    if (isTouch) { lessonCue = true; beginTilt(); return; }
     setTimeout(() => {
       if (resume) { startLesson(true); return; }
       const pullOut = usesTouch() ? 'Hold the middle of the screen to pull out of the lot.' : 'Pull out of the lot (W to go).';
@@ -598,6 +613,7 @@ RT.startGame = function (savedPrefs = {}) {
     placeAtStart();
     mode = 'drive';
     startLesson(false);
+    lessonCue = isTouch;
     syncSteering();
     ui.say('Fresh logbook! Follow the blue arrows to your first stop.', 'info', 5);
   }
@@ -686,10 +702,14 @@ RT.startGame = function (savedPrefs = {}) {
           glow.visible = true;
         }
         if (isTouch && kind) {
+          const speed = Math.abs(s.v);
+          const liftDistance = car.firmBrakeDistance() + U.clamp(speed * 0.5, 3, 6);
           if (kind === 'green') text = 'Go';
-          else if (kind === 'red' && ap.answered) text = 'Wait';
-          else if (Math.abs(s.v) < 0.5 && dl < 9) text = 'Stopped';
-          else text = dist;
+          else if (kind === 'red' && ap.answered) text = 'Wait for green';
+          else if (kind === 'yellow') text = 'Yellow · brake if safe';
+          else if (speed < 0.4) text = dl < ap.stopRange ? 'Hold still' : 'Pull up to the line';
+          else if (dl <= liftDistance) text = 'Lift to brake';
+          else text = (kind === 'stop' ? 'Stop sign' : 'Red light') + ' · ' + dist;
         } else if (kind && !(kind === 'red' && ap.answered)) coach(kind);
       }
     }
@@ -736,10 +756,12 @@ RT.startGame = function (savedPrefs = {}) {
     if (on !== blinkPrev) { if (on) audio.sfx.tick(); blinkPrev = on; }
 
     updateAlert(dt);
-    const guide = mode === 'drive' && !steeringBlocked ? lessons.update(dt, car, rules.approach) : null;
+    const guide = mode === 'drive' && !steeringBlocked ? lessons.update(dt, car) : null;
     if (guide) {
       const d = Math.round(guide.dist / 10) * 10;
-      if (!isTouch) ui.setObjective(`<span class="obj-title">${U.escapeHtml(lessonTitle())}</span><span class="obj-step"><span class="turn">${guide.icon}</span>${U.escapeHtml(guide.text)}<em>${d} m</em></span>`, isReturning());
+      // Phones get the next turn on its own in a small pill; bigger screens add the lesson title.
+      const step = `<span class="obj-step"><span class="turn">${guide.icon}</span><span class="txt">${U.escapeHtml(guide.text)}</span><em>${d} m</em></span>`;
+      ui.setObjective(isTouch ? step : `<span class="obj-title">${U.escapeHtml(lessonTitle())}</span>` + step, isReturning());
       if (guide.arrived) onArrive();
     }
     if (isReturning()) world.finishBeacon.userData.ring.rotation.z += dt;

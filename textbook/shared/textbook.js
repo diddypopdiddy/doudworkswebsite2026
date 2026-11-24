@@ -116,6 +116,17 @@
   // 16:9 media fills the frame; older 4:3 films are letterboxed rather than cropped.
   T.fit = rec => rec && rec.w && rec.h && rec.w / rec.h < 1.6 ? 'contain' : 'cover';
   T.mediaURL = rec => new URL(rec.file, mediaBase).href;
+  T.preloadCamera = id => {
+    const body = window.TEXTBOOK_CAMERA_BODIES?.[id];
+    if (!body) return;
+    for (const view of [body.defaultView, 'top']) {
+      const record = MEDIA[body.views[view]?.media];
+      if (!record) continue;
+      const link = el('link', { rel: 'preload', as: 'image', href: T.mediaURL(record) });
+      if (record.src800) link.imageSrcset = T.mediaURL({ file: record.src800 }) + ' 800w, ' + link.href + ' 1600w';
+      document.head.append(link);
+    }
+  };
   T.placeholderBox = (rec, small) => {
     const what = /photo/.test(rec.type) ? 'Photos needed' : 'Clip needed';
     return el('div', { className: 'placeholder' + (small ? ' small' : ''), role: 'img', 'aria-label': what + ': ' + (rec.alt || rec.need) },
@@ -220,11 +231,13 @@
 
   /* ------------------------------------------------------------------ Blocks (T5) */
   T.blocks.text = b => ({ el: T.html(b.html, 'div') , cls: 'text' });
-  T.blocks.figure = b => ({ el: el('figure', { className: 'fig' }, b.svg ? T.svg(b.svg, 'illus', b.alt) : T.media(b.media), b.caption ? el('figcaption', { html: T.rich(b.caption) }) : null), wide: b.wide });
+  T.blocks.figure = b => ({ el: el('figure', { className: 'fig' },
+    b.body && b.view ? T.cameraPlate(b) : b.svg ? T.svg(b.svg, 'illus', b.alt) : T.media(b.media),
+    b.caption ? el('figcaption', { html: T.rich(b.caption) }) : null), wide: b.wide });
   T.blocks['figure-row'] = b => {
     const row = el('div', { className: 'fig-row' });
     row.style.setProperty('--n', b.items.length);
-    b.items.forEach(it => row.append(el('figure', {}, it.svg ? T.svg(it.svg, 'illus', it.alt) : T.media(it.media || it), it.caption ? el('figcaption', { html: T.rich(it.caption) }) : null)));
+    b.items.forEach(it => row.append(el('figure', {}, it.body && it.view ? T.cameraPlate(it) : it.svg ? T.svg(it.svg, 'illus', it.alt) : T.media(it.media || it), it.caption ? el('figcaption', { html: T.rich(it.caption) }) : null)));
     return { el: el('div', {}, row, b.caption ? el('p', { className: 'caption', style: 'margin-top:8px', html: T.rich(b.caption) }) : null), wide: b.wide };
   };
   T.blocks.steps = b => ({ el: el('ol', { className: 'text' }, b.items.map(s => el('li', { html: T.rich(s) }))) });
@@ -251,7 +264,7 @@
     // The number only shows in the 'card' section style, the default (data.sectionStyle: 'plain' turns it off).
     const head = el('div', { className: 'section-head' }, el('span', { className: 'sec-num', 'aria-hidden': 'true', text: String(i + 1) }),
       el('div', {}, el('h2', { html: T.rich(s.title) }), s.intro ? el('p', { className: 'intro', html: T.rich(s.intro) }) : null));
-    const sec = el('section', { className: 'section' }, head);
+    const sec = el('section', { className: 'section', id: s.id }, head);
     const body = el('div', { className: 'section-body' });
     let row = null;
     const start = () => (row = { text: [], media: [], more: [], callouts: [] });
@@ -489,6 +502,13 @@
       el('p', { text: 'Twelve parts, from your first file to your finished film. Every topic starts with the words you need, shows you how it works, and lets you try it.' })));
     page.append(el('div', { className: 'how' },
       ['read', 'explore', 'watch', 'practice'].map(m => el('div', { className: 'card' }, T.modes([m]), el('p', { style: 'margin-top:8px', text: { read: 'Explanations with picture examples.', explore: 'Hands-on tools. Nothing can go wrong.', watch: 'Video examples in short pieces.', practice: 'You make it. The page checks it.' }[m] })))));
+    page.append(el('div', { className: 'part-tools home-tools' },
+      el('a', { className: 'card tool-card', href: T.url('cameras/index.html') },
+        el('strong', { text: 'Camera simulators' }),
+        el('span', { text: 'Choose a class camera, record a take and play it back.' })),
+      el('a', { className: 'card tool-card', href: T.url('production-studio/index.html') },
+        el('strong', { text: 'Production Studio' }),
+        el('span', { text: 'The open studio. Switch lighting, camera and sound on or off, place the equipment around one subject, then check the monitor and the mixing board.' }))));
     const list = el('div', { className: 'parts' });
     TOC.parts.forEach(p => {
       const built = p.topics.filter(t => t.built).length;

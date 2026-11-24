@@ -1,9 +1,8 @@
 {
   "product": "The AI Road Test",
   "edition": "Permit Drive",
-  "release": "2026-11-22-permit-drive-tilt-first",
-  "previousSourceSnapshotSHA256": "426659e23eadcef34b1b7a9893edfda9fab11e3f449dde16bfbcf392a7091bc9",
-  "standaloneSourceCommit": "deb5219aea2a8794a6da7378011f45d91631d366",
-  "runtimeManifestSHA256": "720efab529a661550e4dfcb63243c410f0247dc0d1aeb144a4b8f6b2201f44b4",
+  "release": "2026-11-23-permit-drive-cards-and-logbook",
+  "previousRuntimeManifestSHA256": "720efab529a661550e4dfcb63243c410f0247dc0d1aeb144a4b8f6b2201f44b4",
+  "runtimeManifestSHA256": "18475577d5ae7912ed1a0b008a00b6dfbb456a1f6e11d19885a6b233a6dc3a24",
   "runtimeManifestFormat": "SHA-256 per file, two spaces, sorted relative path, LF; release.json excluded"
 }

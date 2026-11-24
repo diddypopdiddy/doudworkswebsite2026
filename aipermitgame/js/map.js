@@ -67,8 +67,9 @@ RT.buildMap = function () {
   for (const n of nodes) {
     const exits = Object.keys(n.exits).filter((k) => n.exits[k] !== null);
     n.degree = exits.length;
-    if (!n.exits.N && !n.exits.S) n.halfX = 0;
-    if (!n.exits.E && !n.exits.W) n.halfZ = 0;
+    // (compare with null: street number 0 is a real street)
+    if (n.exits.N === null && n.exits.S === null) n.halfX = 0;
+    if (n.exits.E === null && n.exits.W === null) n.halfZ = 0;
     if (n.degree >= 3) n.kind = (isAveCol(n.i) || isAveRow(n.j)) ? 'signal' : 'stop';
   }
   // Which travel axes must stop at a stop-sign intersection. Side streets meeting the

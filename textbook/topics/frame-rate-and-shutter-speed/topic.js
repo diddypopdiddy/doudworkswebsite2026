@@ -69,6 +69,25 @@
           ] },
           { type: 'quick-check', q: 'You want a slow-motion shot of a jump. What should you change?', options: ['Film at a higher frame rate, like 60 or 120 fps', { text: 'Use a slower shutter speed', clue: 'That adds blur, not slow motion.' }, { text: 'Zoom in', clue: 'Zoom changes size, not speed.' }], answer: 0, explain: 'Film fast, play back at normal speed.' }
         ]
+      },
+      {
+        id: 'camera-practice', title: 'Film the moving ball',
+        intro: 'For each take, start recording, choose Call action and keep rolling until the ball passes the top of its arc.',
+        blocks: [{
+          type: 'camera-sim', title: 'Change the way motion looks', body: 'g97', level: 3, scene: 'ball-toss', callAction: true,
+          start: { power: true, mode: 'video', settings: { exposureMode: 'M', iso: 'AUTO' } },
+          tasks: [
+            { text: 'Record a ball toss at 1/500 second or faster to give the moving ball a sharp edge.',
+              hint: 'In Creative Video with manual exposure, turn the shutter-speed dial. Call action and watch the ball reach the top.',
+              check: s => s.takes.some(t => t.covers('peak', 'peak', .2) && !t.slow && t.settings.shutter >= 500) },
+            { text: 'Record a second take at FHD 60p and 1/125 second for a more natural trail.',
+              hint: 'Choose FHD 60p under Rec Quality, then set the shutter speed to 1/125.',
+              check: s => s.takes.some(t => t.covers('peak', 'peak', .2) && !t.slow && t.settings.fps === 60 && t.settings.shutter === 125) },
+            { text: 'Use S&Q to record a slow-motion take. Play it back and listen.',
+              hint: 'Turn the mode dial to S&Q, record the ball, then play the saved take.',
+              check: s => s.takes.some(t => t.covers('peak', 'peak', .2) && t.slow && t.played && t.sound.level === 'none') }
+          ], doneText: 'You recorded three different versions of the same movement.'
+        }]
       }
     ],
     check: [

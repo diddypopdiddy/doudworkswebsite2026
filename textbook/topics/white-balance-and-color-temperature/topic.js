@@ -10,6 +10,23 @@
     photo('saturate(.15)'),
   ];
   H.study({
+    cameraSection: {
+      id: 'camera-practice', title: 'Balance the interview camera',
+      intro: 'A warm lamp is lighting the interview. Use a preset, then measure the light falling on the speaker.',
+      blocks: [{
+        type: 'camera-sim', title: 'Set white balance under the lamp', body: ['g97', 'hcx1600'], level: 3, scene: 'interview-window',
+        start: { power: true, mode: 'video', settings: { wb: 'daylight' } }, kit: ['white-card'],
+        forBody: { hcx1600: { start: { power: true, mode: 'MANU', settings: { wb: 'daylight' } } } },
+        tasks: [
+          { text: 'Film a short test using the warm-lamp preset or a 3200 K setting.',
+            hint: 'Open WB or WHITE BAL. Choose Incandescent or a 3200 K preset, then record for at least one second.',
+            check: s => s.takes.some(t => t.length >= 1 && t.balanced(500) && ['incandescent', 'kelvin'].includes(t.settings.wb)) },
+          { text: 'Put the white card in the subject’s light, measure a custom white balance, and record a balanced take.',
+            hint: 'Use the white card from the kit. Select white set on the G97 or a memory channel on the camcorder, then measure and remove the card before recording.',
+            check: s => s.did('whiteSet') && s.takes.some(t => t.length >= 1 && t.balanced() && ['white', 'Ach', 'Bch'].includes(t.settings.wb) && t.history.every(sample => !sample.whiteCard)) }
+        ], doneText: 'Your take carries the white balance you measured on set.'
+      }]
+    },
     slug: 'white-balance-and-color-temperature',
     frames: frames,
     captions: ['Orange cast', 'Neutral', 'Blue cast', 'Low saturation'],

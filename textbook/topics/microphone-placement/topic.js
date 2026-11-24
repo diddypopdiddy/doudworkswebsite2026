@@ -56,6 +56,12 @@
         H.row([frames[2], 'Boom clear of the frame'], [frames[3], 'Boom tip visible in the frame']),
         H.watch('study-mic', 'Placement study', 2.3, 'Is the tip of the boom inside the camera border?'),
       ),
+      H.section(
+        'Place the microphones yourself',
+        'Closer is clearer, but the microphone must stay out of the shot.',
+        H.text('Roll a take after every change. Listen for how much room you hear around the voice.'),
+        { type: 'studio-room', lesson: 'microphone-placement' },
+      ),
     ],
     rounds: [
       [

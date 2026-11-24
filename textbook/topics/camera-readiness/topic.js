@@ -1,18 +1,17 @@
 /* 3.01 Camera readiness. Drawings come from Textbook.draw (shared/camera.js). */
 (function () {
   const T = Textbook, D = T.draw;
-  const status = s => ({ svg: D.cameraStatus(s), alt: s.alt || 'A camera screen.' });
 
   T.topic({
     slug: 'camera-readiness',
     minutes: 12,
     bigIdea: 'Check the camera before you need it.',
     hook: {
-      svg: D.cameraStatus({ battery: 0.6, card: 'full' }), alt: 'A camera screen showing a person in the frame and the warning CARD FULL.',
+      svg: D.cameraStatus({ battery: 0.6, card: 'full' }), alt: 'A camera screen showing a person in the frame and R0m00s of recording time left.',
       question: 'The interview is starting. You press record and nothing happens. What went wrong?',
       options: ['The battery is dead', 'The memory card is full', 'The lens cap is on'],
       answer: 1,
-      reveal: 'The screen says CARD FULL, and the card counter shows [0]. The [[memory card]] has no space left, so the camera can’t record. A ten-second check before the shoot would have caught it.'
+      reveal: 'R0m00s in the lower right means zero recording time remains. The [[memory card]] has no space left, so the camera can’t record. A ten-second check before the shoot would have caught it.'
     },
     notes: {
       sketch: 'Draw the back of a camera or phone. Label where you check the battery, the card space and the record light.',
@@ -32,14 +31,45 @@
         intro: 'Every camera, from a phone to a cinema camera, has the same few things to check.',
         blocks: [
           { type: 'text', html: '<p>Before you film, check four things: the [[battery]] has power, the [[memory card]] has space, the [[lens]] is clean and uncovered, and the camera is steady. A [[tripod]] is the most common way to keep it steady. Anything that keeps the picture steady is called [[stabilization]].</p>' },
-          { type: 'hotspots', svg: D.cameraBack(), alt: 'The back of a camera with a screen, buttons and a battery door.', prompt: 'Tap each number to see what to check on a camera like this.', points: [
-            { x: 26, y: 40, label: 'Battery level', text: '<p>The battery icon and percentage. Start every shoot with a full [[battery]] and a spare. Video drains power fast.</p>' },
-            { x: 56, y: 40, label: 'Card space', text: '<p>The number in brackets shows how many clips (or minutes) still fit on the [[memory card]]. [0] means full.</p>' },
-            { x: 46, y: 69, label: 'Record light', text: '<p>A red dot and the letters REC appear only while the camera is recording. No red dot, no recording.</p>' },
-            { x: 77, y: 41, label: 'Record button', text: '<p>Press once to start, once to stop. Many cameras put it near your thumb.</p>' },
-            { x: 77, y: 62, label: 'Menu and settings', text: '<p>Check the settings you need, like frame rate and resolution, before the shoot, not during it.</p>' },
-            { x: 54, y: 89, label: 'Tripod mount', text: '<p>The screw hole on the bottom attaches the camera to a [[tripod]] plate. Make sure the plate is locked tight.</p>' }
-          ] }
+          { type: 'hotspots', cameras: {
+            g97: { name: 'LUMIX G97', views: {
+              rear: { name: 'Back', points: [
+                { control: 'lcd', label: 'Monitor', text: 'Look at the battery in the upper right and the recording time left in the lower right. R8m30s means eight minutes and thirty seconds remain. Four dashes mean there is no card.' },
+                { control: 'play', label: 'Playback', text: 'Open the clips on the card. Play a test take to check the picture and sound.' }
+              ] },
+              top: { name: 'Top', points: [
+                { control: 'power', label: 'ON/OFF', text: 'Turn the camera on. A live picture and readable status icons tell you the monitor is awake.' },
+                { control: 'record', label: 'Motion picture button', text: 'Use this button to record video. Check for the red dot in the upper right of the monitor and the running timer.' }
+              ] },
+              right: { name: 'Card side', points: [{ control: 'card-door', label: 'SD card door', text: 'The card lives behind the grip door. Wait until the card activity mark goes out before opening it.' }] },
+              bottom: { name: 'Bottom', points: [{ control: 'battery-door', label: 'Battery door', text: 'Turn the camera off, then open this door to change the battery.' }] }
+            } },
+            fz300: { name: 'LUMIX FZ300', views: {
+              top: { name: 'Top', points: [
+                { control: 'record', label: 'Motion picture button', text: 'Press once to start a movie, then press again to stop.' },
+                { control: 'power', label: 'ON/OFF', text: 'Switch on before checking the battery and time left.' }
+              ] },
+              bottom: { name: 'Bottom', points: [{ control: 'battery-door', label: 'Card and battery door', text: 'Both the card and battery are behind this door. A tripod plate may cover it.' }] },
+              left: { name: 'Microphone side', points: [{ control: 'mic-socket', label: 'MIC', text: 'The wireless receiver plugs in here. Watch the meters and listen to a test take in playback.' }] }
+            } },
+            elph180: { name: 'PowerShot ELPH 180', views: {
+              rear: { name: 'Back', points: [
+                { control: 'record', label: 'Movie button', text: 'The small movie button on the back starts and stops video. The shutter on top takes still pictures.' },
+                { control: 'play', label: 'Playback', text: 'Use Playback to check a saved movie with sound from the built-in microphone.' }
+              ] },
+              bottom: { name: 'Bottom', points: [{ control: 'battery-door', label: 'Card and battery cover', text: 'Turn the camera off. Open this shared cover to change the battery or the card.' }] }
+            } },
+            hcx1600: { name: 'HC-X1600 camcorder', views: {
+              lcd: { name: 'LCD side', points: [
+                { control: 'power', label: 'Power', text: 'Switch the camcorder on, open the lens cover, then check the screen.' },
+                { control: 'slot-select', label: 'SLOT SEL', text: 'Select the slot with a writable SD card. Check the remaining time for that card.' }
+              ] },
+              rear: { name: 'Rear', points: [
+                { control: 'record', label: 'REC', text: 'Use the grip-side REC button to start and stop the take.' },
+                { control: 'battery-bay', label: 'Rear battery mount', text: 'The battery attaches at the back of this camcorder.' }
+              ] }
+            } }
+          } }
         ]
       },
       {
@@ -61,31 +91,46 @@
         ]
       },
       {
-        title: 'Practice: ready or not?',
-        intro: 'You’re the camera operator. Find the camera that is ready to record.',
+        id: 'camera-practice', title: 'Get your camera ready',
+        intro: 'Pick the camera you use in class. Each one starts with a different problem.',
         blocks: [
-          { type: 'picture-choice', closing: 'Check first, then record.', rounds: [
-            { prompt: 'Which camera is ready to record a 20-minute interview?', options: [
-              Object.assign(status({ battery: 0.08, alt: 'Battery at 8 percent.' }), { label: 'Camera A', clue: 'Look at the battery: 8% won’t last 20 minutes.' }),
-              Object.assign(status({ battery: 0.9, alt: 'Battery at 90 percent, card space 245, person in the frame.' }), { label: 'Camera B' }),
-              Object.assign(status({ battery: 0.9, card: 'none', alt: 'Battery at 90 percent but NO CARD.' }), { label: 'Camera C', clue: 'This camera has no memory card in it.' })
-            ], answer: 1, explain: 'Full battery, space on the card and a clear picture.' },
-            { prompt: 'This camera shows a black screen. Everything else is fine. What is the problem?', stem: status({ battery: 0.9, cap: true, alt: 'A black camera screen with the battery at 90 percent.' }), options: [
-              Object.assign(status({ battery: 0.9, card: 'full', alt: 'Card full.' }), { label: 'The card is full', clue: 'The card counter on the black screen shows space.' }),
-              Object.assign(status({ battery: 0.1, alt: 'Battery low.' }), { label: 'The battery is low', clue: 'The battery shows 90%.' }),
-              Object.assign(status({ battery: 0.9, cap: true, alt: 'Black screen with lens cap on.' }), { label: 'The lens cap is on' })
-            ], answer: 2, explain: 'A black picture with normal icons usually means the lens is covered.' },
-            { prompt: 'You will film a sports game for two hours. Which camera should you take?', options: [
-              Object.assign(status({ battery: 0.9, card: 'full', alt: 'Battery 90 percent, card full.' }), { label: 'Camera A', clue: 'The card is full.' }),
-              Object.assign(status({ battery: 0.35, alt: 'Battery 35 percent.' }), { label: 'Camera B', clue: '35% won’t last two hours.' }),
-              Object.assign(status({ battery: 1, alt: 'Battery 100 percent with space on the card.' }), { label: 'Camera C' })
-            ], answer: 2, explain: 'A full battery and an empty card. Bring a spare battery too.' }
-          ] }
+          {
+            type: 'camera-sim', title: 'Check a class camera', body: ['g97', 'fz300', 'elph180', 'hcx1600'],
+            level: 1, scene: 'note-library', start: { power: false }, kit: ['battery', 'card', 'cloth'],
+            forBody: {
+              g97: { faults: ['cap'] },
+              fz300: { faults: ['no-card'] },
+              elph180: { faults: ['battery-flat'] },
+              hcx1600: { faults: ['lens-cover', 'slot'] }
+            },
+            tasks: [
+              { text: 'Get a clear live picture with battery power and space on the selected card.',
+                hint: 'If there is a picture, check the time left on the card. If the monitor is dark, check for power and a covered lens.',
+                check: s => s.power && !s.cap && s.battery > 0 && s.card.present && !s.card.full && s.card.minutes > 0 && s.display.open && s.display.on === 'monitor' && !s.display.asleep },
+              { text: 'Record at least two seconds with the camera ready, then play back that take.',
+                hint: 'Press the movie or REC button to start and stop. Open Playback, choose your clip and press Play.',
+                check: s => s.takes.some(t => t.length >= 2 && t.played && !t.interrupted && !t.picture.black) }
+            ],
+            doneText: 'You have checked a real recording. Choose another camera to try its setup.'
+          },
+          {
+            type: 'camera-sim', title: 'Get a phone ready', body: 'phone', level: 1, scene: 'note-library',
+            start: { power: true }, faults: ['airplane-off', 'upright', 'photo-mode', 'smudge'], kit: ['cloth'],
+            tasks: [
+              { text: 'Turn the phone sideways, switch to Video, turn on airplane mode, and wipe the lens.',
+                hint: 'Use the phone controls for orientation, camera mode and airplane mode. Use the cloth from the kit bag on the lens.',
+                check: s => ['airplane-off', 'upright', 'photo-mode', 'smudge'].every(id => s.fixed(id)) },
+              { text: 'Record and play back two clear seconds in landscape video.',
+                hint: 'The red button becomes a stop square while you record. Open the saved take and play it.',
+                check: s => s.takes.some(t => t.length >= 2 && t.settings.sideways && t.settings.airplane && !t.interrupted && t.played && !t.picture.smudge) }
+            ], doneText: 'The phone is set for an uninterrupted take.'
+          }
         ]
       }
     ],
     check: [
-      { svg: D.cameraStatus({ battery: 0.1 }), alt: 'A camera screen with the battery at 10 percent.', q: 'What should you do before filming with this camera?', options: ['Swap in a charged battery', { text: 'Clear the memory card', clue: 'The card has space. Look at the battery icon.' }, { text: 'Nothing. It is ready.', clue: 'Check the battery percentage.' }], answer: 0, explain: 'The battery is at 10%.' },
+      { svg: D.cameraStatus({ battery: 0.1 }), alt: 'A nearly empty battery icon and recording time on the card.', q: 'What should you do before filming with this camera?', options: ['Swap in a charged battery', { text: 'Clear the memory card', clue: 'The card shows recording time. Look at the battery icon.' }, { text: 'Nothing. It is ready.', clue: 'Check the battery icon.' }], answer: 0, explain: 'The battery icon is nearly empty.' },
+      { q: 'Which class camera needs a separate audio recorder to use the wireless lav?', options: ['Canon PowerShot ELPH 180', 'LUMIX FZ300', 'LUMIX G97', 'HC-X1600 camcorder'], answer: 0, explain: 'The ELPH 180 records with its built-in microphone. The other three cameras have a microphone input for the wireless receiver.' },
       { q: 'What does a memory card do?', options: ['Stores the video files the camera records', { text: 'Powers the camera', clue: 'That is the battery.' }, { text: 'Holds the camera still', clue: 'That is a tripod.' }], answer: 0, explain: 'No card, or a full card, means no recording.' },
       { q: 'Which is an example of stabilization?', options: ['Putting the camera on a tripod', { text: 'Charging the battery', clue: 'Stabilization keeps the picture steady.' }, { text: 'Cleaning the lens', clue: 'That keeps the picture clear, not steady.' }], answer: 0, explain: 'A tripod keeps the camera still.' },
       { q: 'What is the last step of a pre-shoot check?', options: ['Record a few seconds and play it back', { text: 'Turn off the camera', clue: 'You need to test that it records.' }, { text: 'Delete old clips during the shoot', clue: 'Clear the card before the shoot, not during it.' }], answer: 0, explain: 'A test recording proves everything works.' }

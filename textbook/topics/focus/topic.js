@@ -62,6 +62,35 @@
             { prompt: 'In this interview, autofocus grabbed the background. Which shot is that?', options: [ scene(SHELF, 'Shelves sharp, person blurry.', 'A'), scene(PERSON, 'Person sharp.', 'B', 'The person is sharp. That is the right focus.'), scene(MUG, 'Mug sharp.', 'C', 'The mug is in the foreground, in front of the person.') ], answer: 0, explain: 'The background is sharp and the person is soft. Lock focus on the eyes.' }
           ] }
         ]
+      },
+      {
+        id: 'camera-practice', title: 'Hold focus, then pull focus',
+        intro: 'Put attention on the reader even when someone crosses the frame.',
+        blocks: [{
+          type: 'camera-sim', title: 'Keep the reader sharp', body: ['g97', 'phone'], level: 2, scene: 'note-library',
+          start: { power: true, mode: 'P', settings: { focusOn: 'mug' } }, callAction: true, show: ['focus'],
+          tasks: [
+            { text: 'Focus on the reader and lock. Record through the moment someone passes in front of the camera.',
+              hint: 'Touch the reader, then press AF/AE LOCK. Start recording and choose Call action. Keep rolling until the person in front has passed.',
+              check: s => s.takes.some(t => t.covers('crossing', 'crossing', .8) && t.settings.focusLocked && t.sharpOn('reader')) },
+            { text: 'Switch to MF. During a new take, pull focus from the mug to the reader.',
+              hint: 'Unlock, switch the focus lever to MF, and use the lens focus control. Set the mug sharp first, start recording, then turn the focus control toward the reader.',
+              check: s => s.takes.some(t => t.settings.focusMode === 'MF' && t.history.some((sample, i, all) => sample.picture.sharp === 'reader' && all.slice(0, i).some(earlier => earlier.picture.sharp === 'mug'))) }
+          ],
+          forBody: { phone: { start: { power: true, settings: { focusOn: 'mug', sideways: true } }, tasks: [
+            { text: 'Lock focus on the reader, record through the crossing, and check the take in playback.',
+              hint: 'Select the reader, hold for AE/AF LOCK, start recording, choose Call action and wait for the passerby to leave before stopping.',
+              check: s => s.takes.some(t => t.covers('crossing', 'crossing', .8) && t.sharpOn('reader') && t.settings.focusLocked && t.played) }
+          ] } }, doneText: 'The take shows where you put the viewer’s attention.'
+        }]
+      },
+      {
+        id: 'studio-practice', title: 'Try it in the studio',
+        intro: 'Lose focus on purpose, then find it again.',
+        blocks: [
+          { type: 'text', html: '<p>Zoom in, turn the focus slider and watch the Sharp and Soft readout on the monitor.</p>' },
+          { type: 'studio-room', lesson: 'focus' }
+        ]
       }
     ],
     check: [
@@ -75,6 +104,6 @@
       '[[Autofocus]] can guess wrong; [[manual focus]] and [[focus lock]] keep you in control.',
       'A [[rack focus]] moves viewers’ eyes without a cut.'
     ],
-    realCamera: 'Put an object close to your phone with a friend behind it. Tap to focus on the object, then on your friend. Then press and hold to lock focus and film five seconds.'
+    realCamera: 'Put an object close to your phone with a friend behind it. Tap to focus on the object, then on your friend. Press and hold to lock focus and film five seconds. On a class G97, check for AFL on the screen. The factory setting locks exposure only. The practice camera uses the AF/AE LOCK setting with Lock Hold on.'
   });
 })();

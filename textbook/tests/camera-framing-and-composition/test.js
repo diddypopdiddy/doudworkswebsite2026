@@ -35,6 +35,13 @@
       {
         title: 'Section B · Recognize it', note: '(Level 2)',
         items: [
+          { id: 'b9', type: 'mc', level: 2, topic: 'camera-readiness', obj: 0,
+            pair: [
+              { cameraPlate: { body: 'g97', view: 'rear', alt: 'Marker 1 is on the small triangle button beside the G97 eyepiece.', labels: [{ control: 'play', label: '1' }] }, caption: 'Back' },
+              { cameraPlate: { body: 'g97', view: 'top', alt: 'Marker 2 is on the small red button on the G97 top plate.', labels: [{ control: 'record', label: '2' }] }, caption: 'Top' }
+            ],
+            stem: 'The G97 is on and ready. Which marked control starts recording a movie in iA mode?',
+            options: ['2, on the top', '1, on the back', 'Either control', 'Both controls together'] },
           { id: 'b1', type: 'mc', level: 2, topic: 'record-and-verify-a-take', obj: 2, svg: D.take({ kind: 'none', n: 1, len: '0:00' }), alt: 'A take thumbnail: no file, 0:00, flat sound meter.', stem: 'You play back your last take and see this. What happened?', options: ['The camera never started recording', 'The lens cap was on', 'The take is out of focus', 'The microphone was off but the picture recorded'] },
           { id: 'b2', type: 'mc', level: 2, topic: 'shot-sizes', obj: 0, media: { id: 'scene-shelf', crop: [520, 8, 832] }, stem: 'What shot size is this?', options: ['Wide shot', 'Medium shot', 'Close-up', 'Extreme close-up'] },
           { id: 'b3', type: 'mc', level: 2, topic: 'common-shot-types', obj: 0, media: 'p6-conversation-1', alt: 'Over one person’s shoulder, looking at the other person.', stem: 'What type of shot is this?', options: ['Two-shot', 'Over-the-shoulder shot', 'Point-of-view shot', 'Insert shot'] },
@@ -48,7 +55,7 @@
       {
         title: 'Section C · Use it', note: '(Level 3)',
         items: [
-          { id: 'c1', type: 'mc', level: 3, topic: 'camera-readiness', obj: 1, svg: D.cameraStatus({ battery: 0.35 }), alt: 'A camera screen: battery 35 percent, card space 245.', stem: 'You will film a two-hour game with this camera. What should you do first?', options: ['Charge the battery or bring a spare', 'Clear the memory card', 'Turn on digital zoom', 'Nothing. It is ready.'] },
+          { id: 'c1', type: 'mc', level: 3, topic: 'camera-readiness', obj: 1, svg: D.cameraStatus({ battery: 0.35, timeLeft: 'R135m00s' }), alt: 'A camera screen with two battery segments and 135 minutes left on the card.', stem: 'You will film a two-hour game with this camera. What should you do first?', options: ['Charge the battery or bring a spare', 'Clear the memory card', 'Turn on digital zoom', 'Nothing. It is ready.'] },
           { id: 'c2', type: 'mc', level: 3, topic: 'headroom', obj: 1, media: shot('interview-a', false, R(0.30, 0.64, 0.55)), stem: 'What is the best fix for this interview frame?', options: ['Tilt down so the head is near the top, with a little space above', 'Zoom out', 'Move the subject to the centre', 'Use a low angle'] },
           { id: 'c3', type: 'mc', level: 3, topic: 'lead-room', obj: 1, media: shot('interview-b', false, R(0.36, 0.30, 0.33)), stem: 'This person looks screen left. How do you fix the frame?', options: ['Move the frame so the empty space is in front of the face, on the left', 'Add more headroom', 'Zoom in until the face is centred', 'Turn the camera to a Dutch angle'] },
           { id: 'c4', type: 'mc', level: 3, topic: 'focus', obj: 1, media: 'p3-focus-far', alt: 'Bookshelves sharp; the person and mug blurry.', stem: 'This is an interview. What went wrong, and what is the fix?', options: ['Autofocus chose the background; lock focus on the person’s eyes', 'The shutter was too slow; use a faster shutter', 'The headroom is wrong; tilt down', 'Nothing. A blurry person is fine.'] },

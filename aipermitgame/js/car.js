@@ -2,6 +2,7 @@
 RT.createPlayerCar = function (scene, map) {
   const T = THREE, U = RT.U, B = RT.Build;
   const LENGTH = 4.0, WIDTH = 1.8, WHEELBASE = 2.5;
+  const FIRM_BRAKE = 19;
 
   // ---------- model (built facing +z) ----------
   const model = RT.useModels ? RT.Vehicles.playerCarFromModel(0x16a3a8, 0xf4f4ef) : RT.Vehicles.playerCar(0x16a3a8, 0xf4f4ef);
@@ -74,7 +75,7 @@ RT.createPlayerCar = function (scene, map) {
     if (input.brake > 0) {
       s.braking = true;
       // A phone lift brakes firmly enough to stop a 25 mph car in about three metres.
-      const b = (input.firmBrake ? 19 : 11) * input.brake;
+      const b = (input.firmBrake ? FIRM_BRAKE : 11) * input.brake;
       if (s.v > 0) s.v = Math.max(0, s.v - b * dt); else if (s.v < 0) s.v = Math.min(0, s.v + b * dt);
     }
     s.v += accel * dt;
@@ -139,8 +140,9 @@ RT.createPlayerCar = function (scene, map) {
   function place(x, z, heading) { s.x = x; s.z = z; s.heading = heading; s.v = 0; s.steer = 0; root.position.set(x, 0, z); root.rotation.y = heading; }
 
   function frontPoint() { const f = forward(); return { x: s.x + f.x * LENGTH / 2, z: s.z + f.z * LENGTH / 2 }; }
+  function firmBrakeDistance() { return s.v * s.v / (2 * FIRM_BRAKE); }
 
   function setDusk(f) { model.mats.headlight?.color.setRGB(0.94 + 2.6 * f, 0.94 + 2.0 * f, 0.94 + f); }
 
-  return { state: s, root, update, setBlinker, place, forward, frontPoint, setDusk, LENGTH, WIDTH, corners };
+  return { state: s, root, update, setBlinker, place, forward, frontPoint, firmBrakeDistance, setDusk, LENGTH, WIDTH, corners };
 };

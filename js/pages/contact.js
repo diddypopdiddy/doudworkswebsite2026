@@ -149,7 +149,7 @@ function stickerSVG(email) {
       <rect width="940" height="600" fill="url(#stk-paper)"/>
       <rect width="940" height="92" fill="#1c3f94"/>
       <rect y="92" width="940" height="13" fill="#c9212c"/>
-      <text x="34" y="67" fill="#fff" font-family="Inter, Arial, sans-serif" font-size="60" font-weight="900" font-style="italic" letter-spacing="-1">PRIORITY E-MAIL</text>
+      <text x="34" y="67" fill="#fff" font-family="Inter, Arial, sans-serif" font-size="60" font-weight="900" font-style="italic" letter-spacing="-1">USPS POSTAGE</text>
       <g fill="#1c3f94" font-family="Inter, Arial, sans-serif" font-weight="800">
         <text x="34" y="146" font-size="24">FROM:</text>
         <text x="34" y="398" font-size="34">TO:</text>

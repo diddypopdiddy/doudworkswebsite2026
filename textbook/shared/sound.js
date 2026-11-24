@@ -313,7 +313,8 @@
   T.players.add(nativePlayback);
   document.addEventListener('play', (event) => {
     const current = event.target;
-    if (current.tagName !== 'AUDIO') return;
+    // A camera take mixes its microphone and room tracks under one registered transport.
+    if (current.tagName !== 'AUDIO' || current.closest('.cam-sim')) return;
     if (!current.closest('.hook-audio')) {
       T.stopPlayers(nativePlayback);
       activeNative = current;

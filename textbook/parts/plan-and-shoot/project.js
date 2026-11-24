@@ -134,7 +134,7 @@ window.TEXTBOOK_PROJECT = {
   ]
 };
 
-if (typeof document !== 'undefined') document.addEventListener('textbook-ready', () => {
+if (typeof document !== 'undefined') document.addEventListener('DOMContentLoaded', () => {
   const sheets = document.createElement('section');
   sheets.className = 'test-section page-break';
   const el = Textbook.el;

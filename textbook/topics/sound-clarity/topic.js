@@ -53,6 +53,12 @@
           ],
         ),
       ),
+      H.section(
+        'Hear the distance',
+        'Three microphones, three distances, one voice.',
+        H.text('Use mute and solo on the mixing board to compare the microphones.'),
+        { type: 'studio-room', lesson: 'sound-clarity' },
+      ),
     ],
     rounds: [],
     questions: [

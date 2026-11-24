@@ -485,6 +485,7 @@
       sections.push(
         H.section(c.practiceTitle || 'Apply the evidence', c.practiceIntro || c.objectives[0], ...judged),
       );
+    if (c.cameraSection) sections.push(c.cameraSection);
     H.lesson({
       ...c,
       sections,

@@ -43,6 +43,12 @@
           ]),
         ),
       ),
+      H.section(
+        'Set the fill yourself',
+        'The key stays put. The fill is yours.',
+        H.text('Add the fill light, then use its dimmer to choose how dark the shadow side gets.'),
+        { type: 'studio-room', lesson: 'fill-shadows-and-contrast' },
+      ),
     ],
     rounds: [
       [

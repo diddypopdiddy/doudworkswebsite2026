@@ -67,6 +67,14 @@
             { prompt: 'Your phone shows “5x” and the picture is blurry. Which picture would be sharper?', options: [ { media: 'p3-perspective-zoom', filter: 'blur(2px)', alt: 'Zoomed with digital zoom.', label: 'Keep the 5x digital zoom', clue: 'Digital zoom enlarges pixels, so it blurs.' }, { media: 'p3-perspective-dolly', alt: 'Walked closer.', label: 'Walk closer at 1x' } ], answer: 1, explain: 'Walking closer keeps the full quality of the picture.' }
           ] }
         ]
+      },
+      {
+        id: 'studio-practice', title: 'Try it in the studio',
+        intro: 'Make the same close-up two ways.',
+        blocks: [
+          { type: 'text', html: '<p>Zoom in from the middle mark. Then zoom out and move the camera in instead.</p>' },
+          { type: 'studio-room', lesson: 'zoom-versus-camera-movement' }
+        ]
       }
     ],
     check: [

@@ -5,6 +5,30 @@
   const wave = (label, id) => H.wave(label, id);
   const frames = [wave('A', 'p5-gain-good'), wave('B', 'p5-gain-clipped'), wave('C', 'p5-gain-low')];
   H.study({
+    cameraSection: {
+      id: 'camera-practice', title: 'Set the level on the interview camera',
+      intro: 'Connect the wireless lav. Start recording, call action, then listen through the loudest words before stopping. Play the test back.',
+      blocks: [{
+        type: 'camera-sim', title: 'Record a clean test line', body: ['g97', 'fz300'], level: 2, scene: 'interview-window', callAction: true,
+        start: { power: true, mode: 'P', settings: { gain: 6 } }, faults: ['mic-unplugged', 'meter-hidden'], kit: ['mic-wireless', 'headphones'],
+        tasks: [
+          { text: 'Connect the wireless receiver and use headphones to monitor the input.',
+            hint: 'Open the covers on the left side. Plug the wireless receiver into MIC and the headphones into the headphone socket.',
+            check: s => s.settings.mic === 'wireless' && s.settings.headphones && s.settings.levelBars },
+          { text: 'Adjust the recording level. Record the loudest line and listen to the whole test for clipping.',
+            hint: 'In the Motion Picture menu use Sound Rec Level Adj. Watch the level bars through the loudest words.',
+            check: s => s.takes.some(t => t.settings.mic === 'wireless' && t.settings.headphones && t.heard() && t.covers('loudest', 'loudest', .25) && t.reviewed && t.reviewedSound) }
+        ],
+        forBody: { fz300: { faults: ['mic-unplugged'], kit: ['mic-wireless'], tasks: [
+          { text: 'Plug the wireless receiver into MIC and show the level bars.',
+            hint: 'Open the MIC cover on the lens side. Plugging in the receiver enables the level display.',
+            check: s => s.settings.mic === 'wireless' && s.settings.levelBars },
+          { text: 'Use Mic Level Adj. and the bars to set a good level. Record the loudest line, then listen to the whole test in playback.',
+            hint: 'The FZ300 has no headphone jack. Use the meter while setting the level, then play the test.',
+            check: s => s.takes.some(t => t.settings.mic === 'wireless' && t.heard() && t.covers('loudest', 'loudest', .25) && t.reviewed && t.reviewedSound) }
+        ] } }, doneText: 'You have verified the sound on the recorded clip.'
+      }]
+    },
     slug: 'gain-levels-and-headphone-monitoring',
     frames: frames,
     captions: ['Headroom', 'Flat-topped peaks', 'Very low level'],
@@ -50,6 +74,12 @@
             },
           ],
         },
+      ),
+      H.section(
+        'Set a level on the mixing board',
+        'Loud enough to hear, never loud enough to clip.',
+        H.text('Push the faders until the mix clips, then bring them back to a safe level.'),
+        { type: 'studio-room', lesson: 'gain-levels-and-headphone-monitoring' },
       ),
     ],
     rounds: [],

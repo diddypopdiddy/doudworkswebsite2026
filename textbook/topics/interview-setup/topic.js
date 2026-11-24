@@ -151,6 +151,21 @@
           "closing": "The seat sets the direction. Your frame gives the gaze room."
         }
       ]
+    },
+    {
+      "id": "studio-practice",
+      "title": "Set up the whole interview",
+      "intro": "Light, camera and sound, in one studio.",
+      "blocks": [
+        {
+          "type": "text",
+          "html": "<p>Work through the departments in order: light the subject, frame the shot, place the microphone. Then roll a take.</p>"
+        },
+        {
+          "type": "studio-room",
+          "lesson": "interview-setup"
+        }
+      ]
     }
   ],
   "check": [

@@ -1,7 +1,6 @@
 /* 3.02 Record and verify a take. The on-set check right after a take (kept 2026-11-19). */
 (function () {
   const T = Textbook, D = T.draw;
-  const take = (kind, n, len, label, clue) => ({ svg: D.take({ kind, n, len }), alt: 'Take ' + n + ' thumbnail with its length and sound meter.', label, clue });
 
   T.topic({
     slug: 'record-and-verify-a-take',
@@ -45,15 +44,35 @@
         ]
       },
       {
-        title: 'Practice: which take failed?',
-        intro: 'Four takes of the same shot. Find the one that failed and say why.',
+        id: 'camera-practice', title: 'Record and verify a take',
+        intro: 'Film the reader sitting down and dropping a note. Leave the editor room at each end.',
         blocks: [
-          { type: 'picture-choice', closing: 'Play back every take before you move on.', rounds: [
-            { prompt: 'Which take never recorded at all?', options: [ take('good', 1, '0:09', 'Take 1', 'Take 1 has a picture, sound and a length.'), take('none', 2, '0:00', 'Take 2'), take('soft', 3, '0:09', 'Take 3', 'Take 3 recorded, but it is blurry.') ], answer: 1, explain: 'No file, 0:00. The camera never started recording. Check for the red dot.' },
-            { prompt: 'Which take was cut off before the action ended?', options: [ take('cut', 1, '0:03', 'Take 1'), take('good', 2, '0:09', 'Take 2', 'Take 2 is the full length with the person in frame.'), take('silent', 3, '0:09', 'Take 3', 'Take 3 is full length. Its problem is sound.') ], answer: 0, explain: 'Only 3 seconds long, and the person is leaving the edge of the frame. Stop was pressed too early.' },
-            { prompt: 'Which take is out of focus?', options: [ take('good', 1, '0:09', 'Take 1', 'Take 1 is sharp.'), take('silent', 2, '0:09', 'Take 2', 'Take 2 is sharp. Its problem is sound.'), take('soft', 3, '0:09', 'Take 3') ], answer: 2, explain: 'The whole picture is soft. Refocus and shoot it again.' },
-            { prompt: 'Which take has no sound?', options: [ take('silent', 1, '0:09', 'Take 1'), take('good', 2, '0:09', 'Take 2', 'Take 2 has a busy sound meter.'), take('cut', 3, '0:03', 'Take 3', 'Take 3 was cut short, but it has sound.') ], answer: 0, explain: 'The sound meter is flat. Check the microphone and record again.' }
-          ] }
+          {
+            type: 'camera-sim', title: 'Film the whole action', body: 'g97', level: 1, scene: 'note-library',
+            start: { power: true }, callAction: true,
+            tasks: [
+              { text: 'Record from at least two seconds before the reader sits until two seconds after the note falls.',
+                hint: 'Start recording, then choose Call action. Wait until the note lands, count two, and stop.',
+                check: s => s.takes.some(t => t.covers('sit', 'noteFalls', 2) && !t.interrupted) },
+              { text: 'Watch your complete take through to the end.',
+                hint: 'Open Playback, select the take, press Play and watch for the note.',
+                check: s => s.takes.some(t => t.covers('sit', 'noteFalls', 2) && t.reviewed) }
+            ], doneText: 'Your editor has the complete action and room to cut.'
+          },
+          {
+            type: 'camera-sim', title: 'Review the card', body: 'g97', level: 1, scene: 'note-library',
+            start: { power: true }, seedTakes: [
+              { start: 0, end: 11, settings: { focusLocked: true } },
+              { start: 0, end: 5, settings: { focusLocked: true } },
+              { start: 6, end: 11, settings: { focusLocked: true } },
+              { start: 0, end: 11, settings: { focusMode: 'MF', focusOn: 'shelves', focusDistance: 7 } }
+            ],
+            tasks: [
+              { text: 'Watch all four clips through to the end. Keep the sharp take that covers the whole action. Delete the other three.',
+                hint: 'Look for both the sit and the falling note. Compare the reader with the shelves. Use the delete control while viewing a failed clip.',
+                check: s => s.takes.some(t => t.n === 1 && t.reviewed) && [2, 3, 4].every(n => !s.takes.some(t => t.n === n) && s.did('delete', e => e.n === n && e.reviewed)) }
+            ], doneText: 'The complete, sharp take is still on the card.'
+          }
         ]
       }
     ],

@@ -1,5 +1,5 @@
 /* Chapter 3 · AI Modes · Boss: The Autopilot.
-   Each round: a need, the right Mode, then three choices (opening prompt, next move, human finish).
+   Each round: a need, the right AI Mode, then three choices (opening prompt, next move, human finish).
    In every choice list, option 0 is correct; the game shuffles them. */
 window.WB = window.WB || {};
 
@@ -12,7 +12,7 @@ WB.modes = {
     tool:     { name: "Tool",     job: "Carry out a task",       finish: "Verify and approve the result",        icon: "⚙" },
     none:     { name: "No AI",    job: "This one's all you",     finish: "Do the work yourself",                 icon: "✋" }
   },
-  /* the four steps each Mode moves through (from the Framework's Mode matrix) */
+  /* the four steps each AI Mode moves through (from the Framework's AI Mode matrix) */
   matrix: {
     idea:     ["Bring a starting idea", "Explore possibilities", "Combine, redirect or select", "Choose and explain why"],
     learning: ["State what you know and your goal", "Ask for tailored explanations", "Ask clarifying or deeper questions", "Show and check your understanding"],
@@ -129,14 +129,14 @@ WB.modes = {
     {
       mode: "none",
       need: "Final strike! Your teacher says this reflection on your own growth this semester must be written with No AI.",
-      modeWhy: "No Mode fits when the answer is “no AI.” A teacher's No-AI direction always wins.",
+      modeWhy: "No AI Mode fits when the answer is “no AI.” A teacher's No-AI direction always wins.",
       open: null,
       ai: null,
       next: null,
       finish: [
         { t: "I write it myself. If I'm stuck, I ask my teacher.", why: "The human finishes, all the way. That's how you beat the Autopilot." },
         { t: "I'll use AI just for the first sentence.", why: "No AI means no AI. Ask your teacher if you think it should be different." },
-        { t: "I'll use Learning Mode so it doesn't really count.", why: "Calling it a Mode doesn't change the direction." }
+        { t: "I'll use Learning Mode so it doesn't really count.", why: "Calling it an AI Mode doesn't change the direction." }
       ]
     }
   ],

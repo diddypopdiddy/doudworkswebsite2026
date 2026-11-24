@@ -50,7 +50,7 @@ const TEXTBOOK = {
   id: "video-production-textbook",
   title: "Video Production Textbook",
   kind: "Interactive textbook",
-  summary: "126 topics across 12 parts, from organizing files to sharing a finished film. Compare shots, try camera and editing tools, and print guided notes.",
+  summary: "Explore 126 topics across 12 parts. Practice with camera simulators, a live 3D production studio, and editing tools. Print guided notes for each topic.",
   preview: "video-production-textbook-2026-11-21.webp",
   previewAlt: "The Shot Sizes viewfinder shows a wide shot and the controls for reframing it.",
   href: "/textbook/",

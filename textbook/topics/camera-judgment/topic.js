@@ -65,6 +65,19 @@
               success: 'A close-up that keeps the chin and gives the gaze room.' }
           ] }
         ]
+      },
+      {
+        id: 'camera-practice', title: 'Reshoot a soft take',
+        intro: 'Someone recorded the library action, but the subject is soft. Use playback to diagnose it.',
+        blocks: [{
+          type: 'camera-sim', title: 'Find and correct the focus error', body: 'g97', level: 3, scene: 'note-library',
+          start: { power: true, settings: { focusOn: 'shelves' } }, seedTakes: [{ start: 0, end: 8, settings: { focusMode: 'MF', focusOn: 'shelves', focusDistance: 7 } }],
+          tasks: [
+            { text: 'Play the take on the card and compare the reader with the shelves.', hint: 'Open Playback and press Play.', check: s => s.takes.some(t => t.n === 1 && t.played) },
+            { text: 'Record and play a replacement that holds the reader sharp for at least two seconds.', hint: 'Return to the live picture, set focus on the reader and lock it before recording.',
+              check: s => s.takes.some(t => t.n > 1 && t.length >= 2 && t.sharpOn('reader') && t.played) }
+          ], doneText: 'You have a sharp replacement and the original for comparison.'
+        }]
       }
     ],
     check: [

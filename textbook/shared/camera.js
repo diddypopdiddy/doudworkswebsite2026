@@ -338,8 +338,41 @@
   };
 
   /* ================================================================== Slider demo, hotspots */
+  // A lesson, print question and simulator all use the coordinates of the same render.
+  const fullCameraView = { x: 0, y: 0, w: 100, h: 100 };
+  function plateCrop(view, name) {
+    if (name === 'top' && view?.bodyCrop) return view.bodyCrop;
+    return view?.defaultCrop || fullCameraView;
+  }
+  function markOnPlate(box, view, name) {
+    if (!box) return null;
+    const crop = plateCrop(view, name);
+    return {
+      x: (box.x + box.w / 2 - crop.x) * 100 / crop.w,
+      y: (box.y + box.h / 2 - crop.y) * 100 / crop.h
+    };
+  }
+  T.cameraPlate = (b, print) => {
+    const view = window.TEXTBOOK_CAMERA_BODIES?.[b.body]?.views[b.view];
+    const base = view && T.mediaRecord(view.media);
+    if (!base) return el('p', { className: 'muted', text: b.alt || 'Camera view unavailable.' });
+    const source = print && view.print && T.mediaRecord(view.print) || base;
+    T.mediaUsed.add(view.media);
+    const crop = plateCrop(view, b.view);
+    const img = el('img', { src: T.mediaURL(source), alt: b.alt || base.alt, loading: print ? 'eager' : 'lazy' });
+    Object.assign(img.style, { width: 10000 / crop.w + '%', left: -100 * crop.x / crop.w + '%', top: -100 * crop.y / crop.h + '%' });
+    const pic = el('div', { className: 'camera-plate', style: 'aspect-ratio:' + (view.aspect * crop.w / crop.h) }, img);
+    for (const point of b.labels || []) {
+      const center = markOnPlate(view.controls[point.control], view, b.view);
+      if (!center) continue;
+      pic.append(el('span', { className: 'camera-plate-mark', 'aria-hidden': 'true',
+        style: 'left:' + center.x + '%;top:' + center.y + '%', text: point.label }));
+    }
+    return pic;
+  };
   function visual(v) {
     if (!v) return null;
+    if (v.body && v.view) return T.cameraPlate(v);
     if (v.svg) return T.svg(v.svg, 'illus', v.alt);
     return T.media({ id: v.media || v.id, crop: v.crop, mirror: v.mirror, alt: v.alt, filter: v.filter, t: v.t });
   }
@@ -365,11 +398,38 @@
   };
   // b: svg | media, points [{x, y (percent), label, text}], prompt.
   T.blocks.hotspots = b => {
+    if (b.cameras) {
+      const choices = el('select', { 'aria-label': 'Camera guide' });
+      const sides = el('select', { 'aria-label': 'Camera view' });
+      const content = el('div');
+      function showView() {
+        const guide = b.cameras[choices.value];
+        const current = guide.views[sides.value];
+        content.replaceChildren(T.blocks.hotspots({ ...current, body: choices.value, view: sides.value }).el);
+      }
+      function showCamera() {
+        const guide = b.cameras[choices.value];
+        sides.replaceChildren(...Object.entries(guide.views).map(([id, data]) => el('option', { value: id, text: data.name })));
+        showView();
+      }
+      for (const [id, guide] of Object.entries(b.cameras)) choices.append(el('option', { value: id, text: guide.name }));
+      choices.addEventListener('change', showCamera);
+      sides.addEventListener('change', showView);
+      showCamera();
+      return { el: el('div', {}, el('div', { className: 'camera-hotspot-choices' },
+        el('label', {}, 'Camera ', choices), el('label', {}, 'View ', sides)), content), wide: true, interactive: true };
+    }
     const pic = el('div', { className: 'hot-pic' }, visual(b));
     const info = el('div', { className: 'card', 'aria-live': 'polite' }, el('p', { className: 'label', text: 'Tap a number' }), el('p', { html: T.rich(b.prompt || 'Each number marks a part. Tap one to learn what it does.') }));
     const seen = new Set(), count = el('p', { className: 'hint-line' });
     const btns = b.points.map((p, i) => {
-      const btn = el('button', { type: 'button', className: 'hot-dot', style: 'left:' + p.x + '%;top:' + p.y + '%', 'aria-label': (i + 1) + ': ' + p.label, text: String(i + 1) });
+      const view = window.TEXTBOOK_CAMERA_BODIES?.[b.body]?.views[b.view];
+      const box = p.control === 'lcd' ? view?.lcd : view?.controls?.[p.control];
+      const { x, y } = markOnPlate(box, view, b.view) || p;
+      const placed = Number.isFinite(x) && Number.isFinite(y);
+      const btn = el('button', { type: 'button', className: placed ? 'hot-dot' : 'button small',
+        style: placed ? 'left:' + x + '%;top:' + y + '%' : null,
+        'aria-label': (i + 1) + ': ' + p.label, text: placed ? String(i + 1) : p.label });
       btn.addEventListener('click', () => {
         btns.forEach(x => x.classList.toggle('on', x === btn)); seen.add(i); btn.classList.add('seen');
         info.replaceChildren(el('p', { className: 'label', text: (i + 1) + ' of ' + b.points.length }), el('h3', { text: p.label }), T.html(p.text));
@@ -404,21 +464,21 @@
     '<circle cx="245" cy="92" r="13" fill="#fff"/><circle cx="245" cy="92" r="9" fill="#e04b3a"/>' + txt(74, 56, '00:00', { fill: '#fff', size: 10 }) +
     '<rect x="70" y="122" width="20" height="9" rx="2" fill="none" stroke="#fff" stroke-width="1.4"/><rect x="72" y="124" width="7" height="5" fill="#ffd24a"/>' + txt(96, 130, '1x', { fill: '#fff', size: 9 }) +
     '<rect x="140" y="74" width="40" height="36" fill="none" stroke="#ffd24a" stroke-width="1.6"/>');
-  // A camera's status screen. s: { battery 0–1, card ('ok' | 'full' | 'none'), cap (lens cap on), rec, label }.
+  // A simplified G97 recording display for the printed and on-page readiness questions.
   D.cameraStatus = s => {
-    const bat = s.battery == null ? 0.8 : s.battery, col = bat < 0.15 ? '#e04b3a' : bat < 0.4 ? '#ffd24a' : '#9fe0b4';
-    const pic = s.cap ? '<rect x="40" y="26" width="240" height="128" fill="#0b0d10"/>' : '<rect x="40" y="26" width="240" height="128" fill="#7d97ab"/><rect x="40" y="110" width="240" height="44" fill="#a99b84"/>' + D.person(160, 74, 0.8, 'right', COBALT);
-    let warn = '';
-    if (s.card === 'full') warn = 'CARD FULL';
-    if (s.card === 'none') warn = 'NO CARD';
-    if (bat < 0.15) warn = warn || 'BATTERY LOW';
-    return svg('<rect width="320" height="180" fill="#20252a"/>' + pic +
-      '<rect x="50" y="34" width="26" height="11" rx="2" fill="none" stroke="#fff" stroke-width="1.5"/><rect x="52" y="36" width="' + Math.max(1, 20 * bat) + '" height="7" fill="' + col + '"/><rect x="76" y="37" width="2" height="5" fill="#fff"/>' +
-      txt(84, 44, Math.round(bat * 100) + '%', { fill: '#fff', size: 10 }) +
-      txt(270, 44, s.card === 'full' ? '[0]' : s.card === 'none' ? '[–]' : '[245]', { fill: '#fff', size: 10, anchor: 'end' }) +
-      (s.rec ? '<circle cx="56" cy="142" r="5" fill="#e04b3a"/>' + txt(66, 146, 'REC 00:12', { fill: '#fff', size: 10 }) : txt(50, 146, 'STBY', { fill: '#fff', size: 10 })) +
-      (warn ? '<rect x="96" y="80" width="128" height="24" rx="4" fill="rgba(0,0,0,.7)"/>' + txt(160, 96, warn, { fill: '#ffd24a', size: 12, anchor: 'middle', weight: 800 }) : '') +
-      (s.label ? txt(160, 172, s.label, { fill: '#c9ccd0', size: 10, anchor: 'middle' }) : ''));
+    const battery = s.battery ?? .8;
+    const blocks = Math.max(1, Math.ceil(4 * battery));
+    const color = battery <= .15 ? '#ff776d' : '#fff';
+    const batteryIcon = '<rect x="232" y="33" width="28" height="12" rx="2" fill="#172126" stroke="' + color +
+      '" stroke-width="2"/><rect x="261" y="36" width="3" height="6" fill="' + color + '"/>' +
+      Array.from({ length: blocks }, (_, i) => '<rect x="' + (235 + i * 6) + '" y="36" width="4" height="6" fill="' + color + '"/>').join('');
+    const picture = s.cap ? '' : '<rect x="40" y="26" width="240" height="128" fill="#708a98"/><rect x="40" y="110" width="240" height="44" fill="#8e7d69"/>' + D.person(154, 77, .8, 'right', COBALT);
+    const time = s.card === 'full' ? 'R0m00s' : s.card === 'none' ? '----' : s.timeLeft || 'R8m30s';
+    return svg('<rect width="320" height="180" fill="#22292d"/>' + picture +
+      txt(49, 45, 'iA   FHD 30p', { fill: '#fff', size: 12, weight: 700 }) + batteryIcon +
+      '<rect x="204" y="132" width="70" height="18" rx="2" fill="#293338"/>' +
+      txt(269, 146, time, { fill: '#fff', size: 12, anchor: 'end' }) +
+      (s.rec ? '<circle cx="267" cy="55" r="4" fill="#ea3931"/>' + txt(49, 61, '12s', { fill: '#fff', size: 11 }) : ''));
   };
   // A recorded take as a thumbnail with its length and a sound meter. t: { kind: 'good' | 'none' | 'cut' | 'soft' | 'silent', len, n }.
   const uid = p => p + Math.random().toString(36).slice(2, 8);

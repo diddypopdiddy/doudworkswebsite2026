@@ -6,7 +6,7 @@
   <title>AI Road Test: Permit Drive</title>
   <meta name="description" content="Drive a student-driver car around town, stop at red lights to answer AI literacy questions, and make full stops at stop signs to collect Road Notes about AI.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='20' y='4' width='24' height='56' rx='8' fill='%2313294b'/%3E%3Ccircle cx='32' cy='17' r='7' fill='%23ff3b30'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23ffc233'/%3E%3Ccircle cx='32' cy='47' r='7' fill='%2322e07a'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="css/style.css?v=26">
+  <link rel="stylesheet" href="css/style.css?v=34">
 </head>
 <body>
 <div id="app">
@@ -143,45 +143,56 @@
   <!-- ================= PAUSE ================= -->
   <div id="pauseScreen" class="layer screen dim" hidden>
     <div class="sheet">
-      <h2>Paused</h2>
-      <div class="steering-settings touch-help" role="group" aria-labelledby="steeringLabel">
-        <div class="steering-row">
-          <b id="steeringLabel">Steering</b>
-          <div class="steering-options">
-            <button type="button" class="btn" id="touchSteerBtn" aria-pressed="true">Touch</button>
-            <button type="button" class="btn" id="tiltSteerBtn" aria-pressed="false">Tilt</button>
+      <div class="pause-head">
+        <h2>Paused</h2>
+        <!-- Phones have no permit tracker on the road, so Pause shows progress at a glance. -->
+        <div id="pauseProgress" class="mobile-only" aria-label="Progress so far"></div>
+      </div>
+      <div class="pause-cols">
+        <div class="pause-col pause-nav">
+          <div class="sheet-grid">
+            <button class="btn primary" id="resumeDriveBtn">Keep driving</button>
+            <button class="btn" id="notesBtn">Road Notes logbook</button>
+            <button class="btn" id="logBtn">Driving log so far</button>
+            <button class="btn" id="helpBtn">How to play</button>
           </div>
         </div>
-        <p id="steeringStatus" class="muted" role="status"></p>
-        <button type="button" class="btn" id="centerTiltBtn" hidden>Recenter tilt</button>
-      </div>
-      <div class="sheet-grid">
-        <button class="btn primary" id="resumeDriveBtn">Keep driving</button>
-        <button class="btn" id="notesBtn">Road Notes logbook</button>
-        <button class="btn" id="logBtn">Driving log so far</button>
-        <button class="btn" id="helpBtn">How to play</button>
-      </div>
-      <div id="mobileTools" class="mobile-only">
-        <div id="touchTools" role="group" aria-label="Turn signals and reverse">
-          <button type="button" class="btn" id="signalLeftBtn" aria-label="Left turn signal" aria-pressed="false">Left signal</button>
-          <button type="button" class="btn" id="signalRightBtn" aria-label="Right turn signal" aria-pressed="false">Right signal</button>
-          <button type="button" class="btn" id="reverseBtn" aria-pressed="false">Shift to reverse</button>
+        <!-- Phone-only car controls. Town map and Reset car move in here on touch screens. -->
+        <div class="pause-col pause-car touch-help">
+          <div class="steering-settings" role="group" aria-labelledby="steeringLabel">
+            <div class="steering-row">
+              <b id="steeringLabel">Steering</b>
+              <div class="steering-options">
+                <button type="button" class="btn" id="touchSteerBtn" aria-pressed="true">Touch</button>
+                <button type="button" class="btn" id="tiltSteerBtn" aria-pressed="false">Tilt</button>
+              </div>
+            </div>
+            <p id="steeringStatus" class="muted" role="status"></p>
+            <button type="button" class="btn" id="centerTiltBtn" hidden>Recenter tilt</button>
+          </div>
+          <div id="touchTools" role="group" aria-label="Turn signals, reverse and reset">
+            <button type="button" class="btn" id="signalLeftBtn" aria-label="Left turn signal" aria-pressed="false">◀ Signal</button>
+            <button type="button" class="btn" id="signalRightBtn" aria-label="Right turn signal" aria-pressed="false">Signal ▶</button>
+            <button type="button" class="btn" id="reverseBtn" aria-pressed="false">Shift to reverse</button>
+          </div>
         </div>
-      </div>
-      <h3>Settings</h3>
-      <div class="settings">
-        <label><input type="checkbox" id="optSound" checked> Sound</label>
-        <label><input type="checkbox" id="optEngine" checked> Engine hum</label>
-        <label><input type="checkbox" id="optSignals" checked> Turn-signal reminders</label>
-        <label>Graphics
-          <select id="optQuality"><option value="high">High</option><option value="normal">Normal</option><option value="low">Low (older laptops)</option></select>
-        </label>
-        <label>Camera
-          <select id="optCamera"><option value="chase">Behind the car</option><option value="far">Far behind</option><option value="hood">Driver's view</option></select>
-        </label>
-      </div>
-      <div class="sheet-foot">
-        <button class="btn danger ghost" id="restartBtn">Start a new drive</button>
+        <div class="pause-col pause-settings">
+          <h3>Settings</h3>
+          <div class="settings">
+            <label><input type="checkbox" id="optSound" checked> Sound</label>
+            <label><input type="checkbox" id="optEngine" checked> Engine hum</label>
+            <label><input type="checkbox" id="optSignals" checked> Turn-signal reminders</label>
+            <label>Graphics
+              <select id="optQuality"><option value="high">High</option><option value="normal">Normal</option><option value="low">Low (older laptops)</option></select>
+            </label>
+            <label>Camera
+              <select id="optCamera"><option value="chase">Behind the car</option><option value="far">Far behind</option><option value="hood">Driver's view</option></select>
+            </label>
+          </div>
+          <div class="sheet-foot">
+            <button class="btn danger ghost" id="restartBtn">Start a new drive</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -202,7 +213,16 @@
         <div><b>↺ Stuck?</b><span>Press R (or the ↺ button) to put the car back on the road. No points lost.</span></div>
         <div><b>🔊 Read aloud</b><span>Every card has a Read aloud button that reads the question or note to you.</span></div>
       </div>
-      <p class="muted touch-help">Tilt left or right to turn. Hold the road for gas and lift to brake. Follow the blue arrows. Stop signs record your stop, and red lights give you a question. You can recenter tilt or choose touch steering in Pause.</p>
+      <div class="help-grid touch-grid">
+        <div><b>📱 Steer</b><span>Tilt your phone like a steering wheel. Or choose Touch in Pause and slide your thumb left or right.</span></div>
+        <div><b>👆 Gas and brake</b><span>Hold anywhere on the road to go. Lift your finger to brake.</span></div>
+        <div><b>🚦 Red light</b><span>Lift at the white line. You get an AI question. A right answer earns a permit credit.</span></div>
+        <div><b>🛑 Stop sign</b><span>Come to a full stop at the line to collect a Road Note about AI. Tap Drive on when you finish reading.</span></div>
+        <div><b>➤ Blue arrows</b><span>Follow them to each practice-hour destination. The day turns to sunset as you log all six hours.</span></div>
+        <div><b>🎓 Finish</b><span>Earn 3 credits in each category (12 total), then park in the gold circle at the Permit Office.</span></div>
+        <div><b>🛡️ Safe driving</b><span>Speeding, running lights, rolling stops, the wrong lane and bumps cost points. Clean driving earns them back.</span></div>
+        <div><b>⏸ Pause</b><span>Your progress, the town map, turn signals, reverse, Reset car and Recenter tilt are all in Pause.</span></div>
+      </div>
       <p class="muted keyboard-help" style="font-weight:700">Keys: W/↑ gas · S/↓ brake then reverse · A D/← → steer · Space brake · Q/E turn signals · C camera · M map · R reset car · Esc pause</p>
     </div>
   </div>
@@ -257,25 +277,25 @@
 <script src="content/road-notes.js?v=20"></script>
 <!-- Game -->
 <script src="js/util.js?v=20"></script>
-<script src="js/map.js?v=20"></script>
+<script src="js/map.js?v=21"></script>
 <script src="js/builder.js?v=20"></script>
 <script src="js/foliage.js?v=23"></script>
 <script src="js/world.js?v=24"></script>
 <script src="js/sky.js?v=21"></script>
 <script src="js/pedestrians.js?v=24"></script>
 <script src="js/props.js?v=22"></script>
-<script src="js/lessons.js?v=25"></script>
+<script src="js/lessons.js?v=27"></script>
 <script src="js/assets-data.js?v=24"></script>
 <script src="js/maple.js?v=23"></script>
 <script src="js/assets.js?v=23"></script>
 <script src="js/vehicles.js?v=21"></script>
-<script src="js/car.js?v=25"></script>
+<script src="js/car.js?v=26"></script>
 <script src="js/traffic.js?v=21"></script>
-<script src="js/rules.js?v=20"></script>
+<script src="js/rules.js?v=21"></script>
 <script src="js/audio.js?v=20"></script>
-<script src="js/ui.js?v=25"></script>
+<script src="js/ui.js?v=31"></script>
 <script src="js/tilt-steering.js?v=3"></script>
 <script src="js/touch-drive.js?v=3"></script>
-<script src="js/game.js?v=25"></script>
+<script src="js/game.js?v=29"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 /* Chapter 2 · Core Competencies · Station Rotation
    Four stations in any order (P, D, E, V), each scored out of 1000, then the Crossroads,
-   where one scenario needs all four judgments at once. */
+   where one scenario needs all four AI Core Competencies at once. */
 (function () {
   const esc = WB.esc;
   const ORDER = ["prompting", "privacy", "ethics", "verification"];
@@ -522,14 +522,14 @@
         <section class="wrap page">
           <a class="back" href="#/stations">Station Rotation</a>
           <div class="page-hero"><span class="page-badge">${WB.icon("stations")}</span><div><p class="kicker">Chapter 2 · Finale</p><h1>The Crossroads</h1></div></div>
-          <p class="lede">One real situation. Four decisions. Each one leans on a different competency, but you need all four to get it right.</p>
+          <p class="lede">One real situation. Four decisions. Each one leans on a different Core Competency, but you need all four to get it right.</p>
           ${n < 4 ? `<div class="note">You have ${n} of 4 station stamps. The Crossroads works best after all four, but you can try it now.</div>` : ""}
           <div class="xr-grid">
             ${caseCard()}
             <div class="xr-main">
               <p class="q" style="margin-top:0">Your four decisions</p>
               ${tracker()}
-              <p class="muted">Read the situation, then make one decision for each competency. Get it right first try for 250 points.</p>
+              <p class="muted">Read the situation, then make one decision for each Core Competency. Get it right first try for 250 points.</p>
               <button type="button" class="btn btn-big" id="go">Start ${WB.icon("arrow")}</button>
             </div>
           </div>
@@ -619,7 +619,7 @@
         <section class="wrap page result">
           ${WB.starRow(WB.starsFor("crossroads", points), "big")}
           <p class="kicker">Chapter 2 complete</p>
-          <h1>All four lenses, lit.</h1>
+          <h1>All four Core Competencies, lit.</h1>
           ${lensRow()}
           <p class="lede">${points} / 1000${newBest ? " · new best" : ""}. One essay needed all four: Ethics to know what help fits the rules, Data & Privacy to know what to paste, Prompting to ask for the right help, and Verification to check what the AI claimed. That's why they're not levels. They're always on.</p>
           <div id="ticket"></div>

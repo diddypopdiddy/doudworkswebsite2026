@@ -31,6 +31,12 @@
         H.text('Predict which setup would give a sharp nose shadow, then switch.'),
         { ...H.compare(frames[0], frames[1], ['Hard', 'Soft'], captions), mode: 'divider' },
       ),
+      H.section(
+        'Change the size of the light',
+        'The same light, with and without a softbox.',
+        H.text('Put the softbox on and take it off. Watch the edge of the nose shadow each time.'),
+        { type: 'studio-room', lesson: 'hard-and-soft-light' },
+      ),
     ],
     rounds: [
       [

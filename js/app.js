@@ -95,13 +95,15 @@ async function swap(route) {
 
 addEventListener("popstate", render);
 addEventListener("routechange", render);
-// Same-site links (href="/music") route in place instead of reloading the page.
+// Studio rooms route in place. Standalone pages load their own HTML.
 addEventListener("click", (e) => {
   if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   const a = e.target.closest("a[href^='/']");
   if (!a || a.target || a.hasAttribute("download")) return;
   const url = new URL(a.href);
   if (url.origin !== location.origin) return;
+  const section = url.pathname.split("/")[1];
+  if (section && !Object.hasOwn(PAGES, section)) return;
   e.preventDefault();
   navigate(url.pathname);
 });

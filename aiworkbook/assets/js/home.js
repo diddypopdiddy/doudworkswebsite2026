@@ -84,9 +84,9 @@
     main.innerHTML = `
       <section class="wrap hero">
         <div class="hero-copy">
-          <span class="tag">${I("pencil")} Interactive practice · Grades 7–12</span>
-          <h1>Practice with the <span class="hl">AI&nbsp;Production</span> Framework.</h1>
-          <p class="lede">The AI Production Student Workbook has three game-based practice chapters. Learn what AI is, practice the four judgments you use every time, then put them together against the final boss.</p>
+          <span class="tag">${I("pencil")} Digital workbook · Grades 7–12</span>
+          <h1>Play your way through the <span class="hl">AI&nbsp;Framework</span>.</h1>
+          <p class="lede">Three chapters, three kinds of game. Learn what AI is, practice the four AI Core Competencies you use every time, then put it all together against the final boss.</p>
           <div class="hero-cta">
             <a class="btn btn-big" href="#/${next}">${started ? "Keep playing" : "Start Chapter 1"} ${I("arrow")}</a>
             <a class="btn btn-ghost btn-big" href="#/workbook">My workbook</a>
@@ -128,6 +128,7 @@
           <span class="how-i">${I("team")}</span>
           <h3>For teachers</h3>
           <p>Project the Quiz Board in team mode as a whole-class opener. Run the four stations as a rotation, one group per station. Save the boss for the last day.</p>
+          <a class="how-link" href="../playbook/index.html">Lesson plans in the Teacher Playbook ${I("arrow")}</a>
         </div>
         <div>
           <span class="how-i">${I("shield")}</span>
@@ -155,7 +156,7 @@
             <div class="wb-stat"><b>${WB.totalXP().toLocaleString()}</b><small>Points</small></div>
           </div>
         </div>
-        <p class="lede">Stars and points show interactive practice progress, not Permit or License readiness. Everything here is saved only in this browser. Exit tickets are shared only when your teacher assigns them. Your teacher directs the next Permit or License check.</p>
+        <p class="lede">Everything here is saved only in this browser. Print it to hand in, or reset it to start over.</p>
         <div class="wb-actions">
           <button class="btn" type="button" id="print">${I("print")} Print my workbook</button>
           <button class="btn btn-ghost" type="button" id="reset">${I("reset")} Reset progress</button>

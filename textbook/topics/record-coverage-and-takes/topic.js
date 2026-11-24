@@ -143,6 +143,19 @@
           ]
         }
       ]
+    },
+    {
+      id: 'camera-practice', title: 'Slate and record three takes',
+      intro: 'Your shot list calls this setup S04. Keep that shot number and change the take number on each attempt.',
+      blocks: [{
+        type: 'camera-sim', title: 'Record two attempts and a safety', body: 'g97', level: 1, scene: 'note-library',
+        start: { power: true }, kit: ['slate'], callAction: true,
+        tasks: [1, 2, 3].map(n => ({
+          text: 'Slate S04 take ' + n + (n === 3 ? ' as the safety' : '') + ' and record the reader sitting down.',
+          hint: 'Choose the slate in the kit bag, set shot S04 and take ' + n + ', start recording, and call action. Keep rolling until the reader has settled into the chair.',
+          check: s => s.takes.some(t => t.slate && t.slate.shot === 'S04' && Number(t.slate.take) === n && t.covers('sit', 'sit', .5) && !t.interrupted)
+        })), doneText: 'The editor can identify both attempts and the safety take.'
+      }]
     }
   ],
   "check": [

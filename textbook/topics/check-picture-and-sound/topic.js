@@ -57,6 +57,18 @@
           "svg": D.take({kind:"soft"}),
           "alt": "A soft test image with a moving sound trace.",
           "caption": "Replay both signals before calling the cast. Revisit <a href=\"../camera-judgment/index.html\">camera judgment</a> and <a href=\"../gain-levels-and-headphone-monitoring/index.html\">headphone monitoring</a> for the individual checks."
+        },
+        {
+          type: 'figure-row',
+          wide: true,
+          items: [
+            { body: 'g97', view: 'rear', labels: [{ control: 'menu', label: '1' }],
+              alt: 'Back of the G97 with MENU/SET marked.',
+              caption: '<strong>1. G97.</strong> Press MENU/SET and open the Motion Picture menu. Sound Rec Level Adj. changes how loudly the microphone records.' },
+            { body: 'hcx1600', view: 'lcd', labels: [{ control: 'gain', label: '2' }],
+              alt: 'LCD side of the HC-X1600 with its GAIN button marked.',
+              caption: '<strong>2. HC-X1600.</strong> The GAIN button changes picture brightness. Use the audio meter and play back a spoken line to check microphone level.' }
+          ]
         }
       ]
     },
@@ -148,6 +160,24 @@
           ]
         }
       ]
+    },
+    {
+      id: 'camera-practice', title: 'Run a pre-take check',
+      intro: 'The interview is ready to start. Find the fault on the camera you choose, then verify a test take.',
+      blocks: [{
+        type: 'camera-sim', title: 'Check the interview rig', body: ['g97', 'fz300', 'elph180', 'hcx1600'], level: 2,
+        scene: 'interview-window', start: { power: true }, kit: ['mic-wireless', 'headphones', 'cloth', 'card'],
+        forBody: { g97: { faults: ['mic-tx-off'] }, fz300: { faults: ['mic-unplugged'] },
+          elph180: { level: 1, faults: ['smudge'], kit: ['cloth'], start: { power: true, settings: { meterOn: 'reader' } } }, hcx1600: { faults: ['lens-cover'] } },
+        tasks: [
+          { text: 'Get a clear picture and a working microphone for this camera.',
+            hint: 'Check the lens, then the audio connection. The pocket camera uses its own microphone.',
+            check: s => s.fixed({ g97: 'mic-tx-off', fz300: 'mic-unplugged', elph180: 'smudge', hcx1600: 'lens-cover' }[s.body]) },
+          { text: 'Record a two-second test with a sharp face, usable exposure and sound. Play the whole take with sound on.',
+            hint: 'Check the face and the level bars or listen in playback. A good take includes the voice.',
+            check: s => s.takes.some(t => t.length >= 2 && !t.interrupted && !t.picture.black && !t.picture.smudge && t.sharpOn('reader') && t.exposed() && t.heard() && t.reviewed && t.reviewedSound) }
+        ], doneText: 'The picture and sound both survived the recording.'
+      }]
     }
   ],
   "check": [

@@ -2,6 +2,7 @@
  * driver, triggers question / road-note cards, and reports driving mistakes. */
 RT.createRules = function (map, signals, car, settings, hooks) {
   const U = RT.U;
+  const STOP_LINE_TOLERANCE = 0.8;
   let ap = null;              // current approach to an intersection
   let segName = null, segLimit = settings.speedLimits.street;
   const announced = new Set();
@@ -20,7 +21,7 @@ RT.createRules = function (map, signals, car, settings, hooks) {
     const axis = U.axisOf(travel);
     let kind = node.degree >= 3 ? node.kind : 'none';
     if (kind === 'stop' && !map.stopsFor(node, axis)) kind = 'none';
-    return { key: node.id + ':' + travel, seg, travel, node, axis, kind,
+    return { key: node.id + ':' + travel, seg, travel, node, axis, kind, stopRange: kind === 'stop' ? 9 : 32,
       decided: false, outcome: null, stopT: 0, stoppedDone: false, answered: false, crossed: false, dlPrev: Infinity,
       blinkerSeen: 0, carded: false };
   }
@@ -120,28 +121,34 @@ RT.createRules = function (map, signals, car, settings, hooks) {
       if (ap.kind === 'signal' && !ap.decided && dl < 85 && dl > 0 && s.v > 1) decide(ap, dl);
       if (ap.kind === 'signal' && ap.decided && ap.outcome === 'green' && signals.lockAge(ap.node.id) > 25 && !ap.crossed) signals.unlock(ap.node.id);
 
-      // crossing the stop line
-      if (!ap.crossed && ap.dlPrev >= -0.3 && dl < -0.3 && s.v > 0) {
+      // Use the same line tolerance for crossing and for a qualifying stop.
+      const beforeLine = dl >= -STOP_LINE_TOLERANCE;
+      if (!ap.crossed && ap.dlPrev >= -STOP_LINE_TOLERANCE && !beforeLine && s.v > 0) {
         ap.crossed = true;
         if (ap.kind === 'signal') {
           if (lightFor(ap) === 'red') hooks.violation('red-light');
         } else if (ap.kind === 'stop' && !ap.stoppedDone) hooks.violation('rolled-stop');
       }
       ap.dlPrev = dl;
+      const atStop = speed < 0.4 && beforeLine && dl < ap.stopRange;
 
       // stopped at a stop sign
       if (ap.kind === 'stop' && !ap.stoppedDone && !ap.crossed) {
-        if (speed < 0.4 && dl > -0.8 && dl < 9) {
+        if (atStop) {
           ap.stopT += dt;
           if (ap.stopT > 0.35) { ap.stoppedDone = true; hooks.stopSign(ap); }
-        } else if (speed < 0.2 && dl >= 9 && dl < 25 && farHintFor !== ap.key) {
-          farHintFor = ap.key; hooks.say('Pull up closer to the white stop line before you stop.', 'tip', 4);
-        } else ap.stopT = 0;
+        } else {
+          ap.stopT = 0;
+          if (speed < 0.2 && dl >= ap.stopRange && dl < 25 && farHintFor !== ap.key) {
+            farHintFor = ap.key;
+            hooks.say('Pull up closer to the white stop line before you stop.', 'tip', 4);
+          }
+        }
       }
 
       // stopped at a red (or yellow) light
       if (ap.kind === 'signal' && !ap.answered && !ap.crossed) {
-        if (speed < 0.4 && dl > -0.8 && dl < 32 && lightFor(ap) !== 'green') {
+        if (atStop && lightFor(ap) !== 'green') {
           ap.stopT += dt;
           if (ap.stopT > 0.5) {
             ap.answered = true; sinceQuestion = 0;

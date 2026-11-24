@@ -4,6 +4,21 @@
     H = T.studio;
   const frames = ['dark-clutter', 'clean', 'pole', 'window'].map((bg) => ({ id: 'p4-bg-' + bg }));
   H.study({
+    cameraSection: {
+      id: 'camera-practice', title: 'Correct the interview take',
+      intro: 'Review the clip from the previous operator. The face and the white card should both read clearly.',
+      blocks: [{
+        type: 'camera-sim', title: 'Fix exposure and color', body: 'g97', level: 3, scene: 'interview-window',
+        start: { power: true, mode: 'P', settings: { comp: 2, wb: 'daylight' } },
+        seedTakes: [{ start: 0, end: 6, settings: { comp: 2, wb: 'daylight' } }], kit: ['white-card'],
+        tasks: [
+          { text: 'Play the existing clip. Look at the face and the white card.', hint: 'Open Playback and start the clip.', check: s => s.takes.some(t => t.n === 1 && t.played) },
+          { text: 'Record and play a two-second replacement with a readable face and neutral color.',
+            hint: 'Reduce exposure using the ± control. Choose an indoor white balance or measure the card.',
+            check: s => s.takes.some(t => t.n > 1 && t.length >= 2 && t.exposed() && t.balanced(500) && t.played) }
+        ], doneText: 'Compare the original with the corrected take before the next setup.'
+      }]
+    },
     slug: 'build-a-frame-for-a-purpose',
     frames,
     captions: ['Clutter and dark face', 'Readable interview', 'Pole near head', 'Competing window'],

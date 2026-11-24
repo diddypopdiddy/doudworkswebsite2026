@@ -45,9 +45,8 @@
         },
         {
           "type": "figure",
-          "svg": "<svg viewBox=\"0 0 320 180\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"Inter,sans-serif\"><rect width=\"320\" height=\"180\" fill=\"#f3f1ec\"/><rect x=\"17\" y=\"68\" width=\"60\" height=\"34\" rx=\"3\" fill=\"#3157c8\"/><circle cx=\"32\" cy=\"55\" r=\"17\" fill=\"#777\"/><circle cx=\"64\" cy=\"55\" r=\"17\" fill=\"#777\"/><path d=\"M75 79l20-10v30l-20-10z\" fill=\"#171b1f\"/><path d=\"M47 100l-18 29m18-29 15 29\" stroke=\"#171b1f\" stroke-width=\"4\"/><rect x=\"125\" y=\"70\" width=\"61\" height=\"32\" rx=\"5\" fill=\"#3157c8\"/><path d=\"M138 69v-8h25\" stroke=\"#171b1f\" stroke-width=\"4\" fill=\"none\"/><path d=\"M186 79l12-8v26l-12-7z\" fill=\"#171b1f\"/><rect x=\"238\" y=\"37\" width=\"41\" height=\"83\" rx=\"7\" fill=\"#171b1f\"/><rect x=\"243\" y=\"44\" width=\"31\" height=\"62\" fill=\"#c9d7ee\"/><text x=\"11\" y=\"152\" font-size=\"11\" font-weight=\"650\" fill=\"#171b1f\">Film camera</text><text x=\"121\" y=\"152\" font-size=\"11\" font-weight=\"650\" fill=\"#171b1f\">Camcorder</text><text x=\"240\" y=\"152\" font-size=\"11\" font-weight=\"650\" fill=\"#171b1f\">Phone</text></svg>",
-          "alt": "Schematic comparison of film camera, camcorder and phone.",
-          "caption": "Examples from the timeline: <a href=\"https://www.sony.com/en/SonyInfo/IR/library/ar/1983-E.pdf\">Sony’s 1983 camera-recorder</a>, <a href=\"https://global.sharp/corporate/info/his/only_one/item/t34.html\">Sharp’s 2000 camera phone</a>, and <a href=\"https://www.moma.org/interactives/exhibitions/1995/videospaces/london.html\">MoMA on early portable video</a>."
+          "body": "hcx1600", "view": "hero", "alt": "Class HC-X1600 camcorder with built-in lens and recorder.",
+          "caption": "This is the class HC-X1600, a modern camcorder. One operator can carry both the camera and recorder in one unit."
         }
       ]
     },
@@ -94,18 +93,18 @@
   ],
   "check": [
     {
-      "q": "Which pictured device could record video on location before camera phones existed?",
+      "q": "Which feature makes the pictured device a camcorder?",
       "options": [
-        "The middle device",
+        "It captures and records video in one body.",
         {
-          "text": "The film camera on the left",
-          "clue": "Read the labels and look at the bodies."
+          "text": "It sends the picture to a separate film recorder.",
+          "clue": "Look for a camera with its recorder built into the same body."
         }
       ],
       "answer": 0,
-      "explain": "The middle device combines a video camera and recorder. The film camera on the left exposes film.",
-      "svg": "<svg viewBox=\"0 0 320 180\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"Inter,sans-serif\"><rect width=\"320\" height=\"180\" fill=\"#f3f1ec\"/><rect x=\"17\" y=\"68\" width=\"60\" height=\"34\" rx=\"3\" fill=\"#3157c8\"/><circle cx=\"32\" cy=\"55\" r=\"17\" fill=\"#777\"/><circle cx=\"64\" cy=\"55\" r=\"17\" fill=\"#777\"/><path d=\"M75 79l20-10v30l-20-10z\" fill=\"#171b1f\"/><path d=\"M47 100l-18 29m18-29 15 29\" stroke=\"#171b1f\" stroke-width=\"4\"/><rect x=\"125\" y=\"70\" width=\"61\" height=\"32\" rx=\"5\" fill=\"#3157c8\"/><path d=\"M138 69v-8h25\" stroke=\"#171b1f\" stroke-width=\"4\" fill=\"none\"/><path d=\"M186 79l12-8v26l-12-7z\" fill=\"#171b1f\"/><rect x=\"238\" y=\"37\" width=\"41\" height=\"83\" rx=\"7\" fill=\"#171b1f\"/><rect x=\"243\" y=\"44\" width=\"31\" height=\"62\" fill=\"#c9d7ee\"/><text x=\"11\" y=\"152\" font-size=\"11\" font-weight=\"650\" fill=\"#171b1f\">Film camera</text><text x=\"121\" y=\"152\" font-size=\"11\" font-weight=\"650\" fill=\"#171b1f\">Camcorder</text><text x=\"240\" y=\"152\" font-size=\"11\" font-weight=\"650\" fill=\"#171b1f\">Phone</text></svg>",
-      "alt": "The middle device is the camcorder."
+      "explain": "A camcorder captures and records video in one portable unit.",
+      "media": "cam-hcx1600-hero",
+      "alt": "A class HC-X1600 with its lens, grip and recording controls."
     },
     {
       "q": "A resident records a flooded street as news for neighbors. What practice does this illustrate?",

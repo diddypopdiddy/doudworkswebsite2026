@@ -66,6 +66,14 @@
             { prompt: 'A dream scene where something feels wrong.', options: [ A('eye', 'Eye level.', 'Eye level', 'Eye level feels normal.'), A('dutch', 'Dutch angle.', 'Dutch angle'), A('bird', 'Bird’s-eye view.', 'Bird’s-eye', 'This shows a layout, not a feeling.') ], answer: 1, explain: 'A tilted frame feels off balance.' }
           ] }
         ]
+      },
+      {
+        id: 'studio-practice', title: 'Try it in the studio',
+        intro: 'Raise and lower one camera.',
+        blocks: [
+          { type: 'text', html: '<p>Change the height of the tripod and watch what happens to the face on the monitor.</p>' },
+          { type: 'studio-room', lesson: 'camera-height-and-angles' }
+        ]
       }
     ],
     check: [

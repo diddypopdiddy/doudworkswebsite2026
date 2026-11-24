@@ -193,7 +193,8 @@ window.TEXTBOOK_TOC = {
      "modes": [
       "read",
       "explore",
-      "watch"
+      "watch",
+      "practice"
      ],
      "priority": false,
      "history": false,
@@ -315,7 +316,8 @@ window.TEXTBOOK_TOC = {
      "modes": [
       "read",
       "explore",
-      "watch"
+      "watch",
+      "practice"
      ],
      "priority": false,
      "history": false,
@@ -330,7 +332,8 @@ window.TEXTBOOK_TOC = {
      "slug": "depth-of-field",
      "modes": [
       "read",
-      "explore"
+      "explore",
+      "practice"
      ],
      "priority": true,
      "history": false,
@@ -391,7 +394,8 @@ window.TEXTBOOK_TOC = {
      "modes": [
       "read",
       "explore",
-      "watch"
+      "watch",
+      "practice"
      ],
      "priority": false,
      "history": false,
@@ -487,7 +491,8 @@ window.TEXTBOOK_TOC = {
      "slug": "exposure",
      "modes": [
       "read",
-      "explore"
+      "explore",
+      "practice"
      ],
      "priority": true,
      "history": false,
@@ -578,7 +583,8 @@ window.TEXTBOOK_TOC = {
      "slug": "white-balance-and-color-temperature",
      "modes": [
       "read",
-      "explore"
+      "explore",
+      "practice"
      ],
      "priority": true,
      "history": false,
@@ -736,7 +742,8 @@ window.TEXTBOOK_TOC = {
      "slug": "gain-levels-and-headphone-monitoring",
      "modes": [
       "read",
-      "explore"
+      "explore",
+      "practice"
      ],
      "priority": true,
      "history": false,
@@ -1026,7 +1033,8 @@ window.TEXTBOOK_TOC = {
      "slug": "record-coverage-and-takes",
      "modes": [
       "read",
-      "watch"
+      "watch",
+      "practice"
      ],
      "priority": false,
      "history": false,

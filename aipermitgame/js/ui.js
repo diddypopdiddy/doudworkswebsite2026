@@ -102,19 +102,37 @@ RT.createUI = function (map, cats, noteKinds, mobile) {
     clearTimeout(sayTimer);
     sayTimer = setTimeout(() => { el.classList.remove('show'); sayPriority = 0; }, secs * 1000);
   }
+  // Phones show one short line at a time under the top bar, and hold it back while a card is open.
+  const toastQueue = [];
+  let toastBusy = false;
+  function nextMobileToast() {
+    if (!$('cardLayer').hidden) { setTimeout(nextMobileToast, 300); return; }
+    const t = toastQueue.shift();
+    toastBusy = !!t;
+    if (!t) return;
+    $('toasts').replaceChildren(t);
+    setTimeout(() => { t.remove(); nextMobileToast(); }, toastQueue.length ? 1900 : 3000);
+  }
   function toast(text, color, bad) {
-    if (mobile) return;
     const t = document.createElement('div');
     t.className = 'toast' + (bad ? ' bad' : '');
     if (color) t.style.setProperty('--c', color);
     t.textContent = text;
+    if (mobile) {
+      if (toastQueue.length >= 3) toastQueue.shift();
+      toastQueue.push(t);
+      // Start on the next tick: a stop can open its card in the same step that praises it.
+      if (!toastBusy) { toastBusy = true; setTimeout(nextMobileToast, 0); }
+      return;
+    }
     $('toasts').appendChild(t);
     setTimeout(() => t.remove(), 3200);
   }
 
   // ---------- cards ----------
   const ICONS = {
-    light: '<svg viewBox="0 0 40 40" width="40" height="40"><rect x="12" y="2" width="16" height="36" rx="5" fill="#1d2733"/><circle cx="20" cy="10" r="4.5" fill="#ff3b30"/><circle cx="20" cy="20" r="4.5" fill="#4a3a10"/><circle cx="20" cy="30" r="4.5" fill="#0f3a22"/></svg>',
+    // a live signal: CSS lights it red while a question is open and green once it is answered
+    light: '<div class="signal" aria-hidden="true"><i></i><i></i><i></i></div>',
     stop: '<svg viewBox="0 0 40 40" width="40" height="40"><polygon points="13,2 27,2 38,13 38,27 27,38 13,38 2,27 2,13" fill="#fff"/><polygon points="14,4.5 26,4.5 35.5,14 35.5,26 26,35.5 14,35.5 4.5,26 4.5,14" fill="#c8102e"/><text x="20" y="24" font-size="10" font-weight="900" text-anchor="middle" fill="#fff" font-family="Arial">STOP</text></svg>',
     look: '<svg viewBox="0 0 40 40" width="40" height="40"><circle cx="13" cy="24" r="8" fill="#fff"/><circle cx="27" cy="24" r="8" fill="#fff"/><rect x="13" y="14" width="14" height="9" fill="#fff"/><circle cx="13" cy="24" r="4" fill="#31777A"/><circle cx="27" cy="24" r="4" fill="#31777A"/></svg>'
   };
@@ -122,7 +140,7 @@ RT.createUI = function (map, cats, noteKinds, mobile) {
   let cardOpenedAt = 0;
   function openCard(html, color, light) {
     const card = $('card');
-    card.classList.remove('answered');
+    card.className = 'card';
     card.style.setProperty('--c', color);
     card.style.setProperty('--cl', light || '#f5f7fb');
     card.innerHTML = html;
@@ -131,6 +149,10 @@ RT.createUI = function (map, cats, noteKinds, mobile) {
     card.scrollTop = 0;
   }
   function closeCard() { $('cardLayer').hidden = true; cardKeyHandler = null; stopSpeaking(); }
+  // A card can appear under a thumb that was about to press the road. Ignore that first stray tap.
+  if (mobile) $('cardLayer').addEventListener('click', (e) => {
+    if (e.isTrusted && performance.now() - cardOpenedAt < 450) { e.stopPropagation(); e.preventDefault(); }
+  }, true);
 
   // ---------- read aloud (built-in browser voices, works offline on most devices) ----------
   const canSpeak = 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
@@ -151,39 +173,58 @@ RT.createUI = function (map, cats, noteKinds, mobile) {
     };
     chips.prepend(b);
   }
+  // chips are plain labels, or { html } for a ready-made chip
   function band(icon, kicker, title, chips) {
     return `<div class="card-band"><div class="trigger">${ICONS[icon]}</div>
-      <div><div class="kicker">${esc(kicker)}</div><h2 id="cardTitle">${esc(title)}</h2></div>
-      <div class="chips">${chips.map((c) => `<span class="chip">${esc(c)}</span>`).join('')}</div></div>`;
+      <div class="band-text"><div class="kicker">${esc(kicker)}</div><h2 id="cardTitle">${esc(title)}</h2></div>
+      <div class="chips">${chips.map((c) => (c && c.html) || `<span class="chip">${esc(c)}</span>`).join('')}</div></div>`;
+  }
+
+  // The thing a question is about (a prompt, a record, a post, a photo). "A • B • C" content becomes a short list.
+  const EX_ICON = { prompt: '💬', record: '📋', headline: '📰', photo: '🖼️' };
+  function exhibitHtml(ex) {
+    if (!ex) return '';
+    const kind = EX_ICON[ex.kind] ? ex.kind : 'record';
+    const label = ex.label || 'Example';
+    const parts = String(ex.content).split(/\s+•\s+/);
+    const content = parts.length > 1
+      ? `<ul class="ex-items">${parts.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>`
+      : `<div class="ex-content">${esc(ex.content)}</div>`;
+    const typed = kind === 'prompt' && parts.length === 1 && /prompt/i.test(label) ? ' typed' : '';
+    return `<div class="exhibit ${kind}${typed}"><div class="ex-label"><span aria-hidden="true">${EX_ICON[kind]}</span>${esc(label)}</div>${content}</div>`;
   }
 
   /**
-   * opts: { q, order (array of original option indexes), chipCredit, secondLook, practice,
+   * opts: { q, order (array of original option indexes), credited, have, goal, chipCredit, secondLook,
    *         onAnswer(correct) -> { title, stamp }, onClose() }
    */
   function showQuestion(opts) {
     const { q } = opts;
     const cat = catById[q.category];
-    const ex = q.exhibit ? `<div class="exhibit ${esc(q.exhibit.kind || '')}"><div class="ex-label">${esc(q.exhibit.label || 'Example')}</div><div class="ex-content">${esc(q.exhibit.content)}</div></div>` : '';
-    const heading = mobile ? band('light', 'Red light', 'AI question', []) : band('light', 'Red light · AI question', cat.label, [q.type, opts.chipCredit]);
+    const have = opts.have || 0, goal = opts.goal || 3;
+    const stake = opts.credited
+      ? { html: `<span class="chip stake" role="img" aria-label="Playing for credit ${have + 1} of ${goal}">Credit<span class="pips" aria-hidden="true">${Array.from({ length: goal }, (_, i) => `<i class="${i < have ? 'on' : i === have ? 'at' : ''}"></i>`).join('')}</span></span>` }
+      : (opts.chipCredit || 'Practice');
+    const heading = mobile ? band('light', 'Red light', 'AI question', []) : band('light', 'Red light · AI question', cat.icon + ' ' + cat.label, [q.type, stake]);
     const html = heading + `
-      <div class="card-body">
+      <div class="card-body question-body">
         <div class="question-context">
         ${opts.secondLook ? '<div class="second-look">🔁 Second look: you missed this one earlier</div>' : ''}
-        ${ex}
+        ${exhibitHtml(q.exhibit)}
         <p class="question">${esc(q.question)}</p>
         </div>
         <div class="answer-panel">
         <div class="opts" role="group" aria-label="Answer choices">
-          ${opts.order.map((oi, k) => `<button class="opt" data-k="${k}" data-oi="${oi}"><span class="key">${k + 1}</span><span>${esc(q.options[oi])}</span></button>`).join('')}
+          ${opts.order.map((oi, k) => `<button class="opt" style="--i:${k}" data-k="${k}" data-oi="${oi}"><span class="key">${k + 1}</span><span>${esc(q.options[oi])}</span></button>`).join('')}
         </div>
         <div id="verdictSlot"></div>
         <div class="card-foot"><span class="hint">Choose with a click or keys 1–4</span><span></span></div>
         </div>
       </div>`;
     openCard(html, cat.color, cat.light);
-    let answered = false;
+    let answered = false, spoken = '';
     const buttons = [...document.querySelectorAll('#card .opt')];
+    const tag = (b, text) => { const t = document.createElement('em'); t.className = 'tag'; t.textContent = text; b.appendChild(t); };
     const choose = (k) => {
       if (answered) return;
       answered = true;
@@ -192,48 +233,86 @@ RT.createUI = function (map, cats, noteKinds, mobile) {
       buttons.forEach((b) => {
         b.disabled = true;
         const boi = Number(b.dataset.oi);
-        if (boi === q.answer) b.classList.add('correct');
-        else if (b === buttons[k]) b.classList.add('wrong');
+        if (boi === q.answer) { b.classList.add('correct'); tag(b, correct ? 'Correct' : 'Best answer'); }
+        else if (b === buttons[k]) { b.classList.add('wrong'); tag(b, 'Your pick'); }
         else b.classList.add('faded');
       });
       const res = opts.onAnswer(correct);
       const best = esc(q.options[q.answer]);
-      const title = mobile ? (correct ? (opts.credited ? 'Correct · +1 credit' : 'Correct') : 'Best answer') : res.title;
-      $('verdictSlot').innerHTML = correct
-        ? `<div class="verdict good"><div class="stamp">${res.stamp}</div><div><b>${esc(title)}</b><p>${esc(q.reason)}</p></div></div>`
-        : `<div class="verdict bad"><div class="stamp">🔁</div><div><b>${esc(title)}</b><p>${mobile ? '' : 'Best answer: '}${best}<br>${esc(q.reason)}</p></div></div>`;
+      spoken = (correct ? 'Correct. ' : 'The best answer is: ' + q.options[q.answer] + '. ') + q.reason;
+      if (mobile) {
+        const title = correct ? (opts.credited ? 'Correct · +1 credit' : 'Correct') : 'Best answer';
+        $('verdictSlot').innerHTML = correct
+          ? `<div class="verdict good"><div><b>${esc(title)}</b><p>${esc(q.reason)}</p></div></div>`
+          : `<div class="verdict bad"><div><b>${esc(title)}</b><p>${best}<br>${esc(q.reason)}</p></div></div>`;
+      } else {
+        // the stamp lands, the reason explains, and the category's big idea ties it back together
+        const seal = correct
+          ? (opts.credited ? '<div class="stamp seal"><span>+1</span><small>credit</small></div>' : '<div class="stamp seal"><span>✓</span></div>')
+          : '<div class="stamp seal retry"><span>↻</span></div>';
+        const rule = cat.blurb ? `<div class="v-rule"><strong>${esc(cat.label)} rule of the road:</strong> ${esc(cat.blurb)}</div>` : '';
+        $('verdictSlot').innerHTML = `<div class="verdict ${correct ? 'good' : 'bad'}">${seal}<div>
+          <b>${esc(res.title)}</b><p>${esc(q.reason)}</p>
+          ${correct ? '' : '<div class="v-note">You will get a second look at this one later.</div>'}${rule}</div></div>`;
+        if (correct && opts.credited) { const pip = document.querySelector('#card .pips .at'); if (pip) pip.className = 'on pop'; }
+      }
       $('card').classList.add('answered');
-      document.querySelector('#card .card-foot').innerHTML = `<span class="hint">Press Enter to continue</span><button class="btn primary" id="cardContinue">${mobile ? 'Drive on' : 'Continue'}</button>`;
+      document.querySelector('#card .card-foot').innerHTML = `<span class="hint">Press Enter to drive on</span><button class="btn primary" id="cardContinue">Drive on</button>`;
       const cont = $('cardContinue');
       cont.focus({ preventScroll: true });
       cont.onclick = () => { closeCard(); opts.onClose(correct); };
     };
     buttons.forEach((b, k) => { b.onclick = () => choose(k); });
     addReadAloud(() => {
-      const v = document.querySelector('#card .verdict');
-      if (v) return v.innerText.replace(/\s+/g, ' ');
-      const example = q.exhibit ? (q.exhibit.label || 'Example') + '. ' + q.exhibit.content + '. ' : '';
+      if (answered) return spoken;
+      const example = q.exhibit ? (q.exhibit.label || 'Example') + '. ' + String(q.exhibit.content).replace(/\s+•\s+/g, ', ') + '. ' : '';
       return example + q.question + ' ' + opts.order.map((oi, k) => 'Option ' + (k + 1) + ': ' + q.options[oi] + '.').join(' ');
     });
     buttons[0].focus({ preventScroll: true });
     cardKeyHandler = (e) => {
       if (performance.now() - cardOpenedAt < 350 || e.repeat) return;
-      if (!answered && /^Digit[1-4]$|^Numpad[1-4]$/.test(e.code)) { choose(Number(e.code.slice(-1)) - 1); e.preventDefault(); }
+      if (!answered && /^Digit[1-4]$|^Numpad[1-4]$/.test(e.code)) { const k = Number(e.code.slice(-1)) - 1; if (buttons[k]) choose(k); e.preventDefault(); }
       else if (answered && (e.code === 'Enter' || e.code === 'NumpadEnter' || e.code === 'Space')) { e.preventDefault(); $('cardContinue').click(); }
     };
+  }
+
+  // A Road Note title like "1950: Can machines think?" or "Myth: AI is neutral" carries a tag worth showing on its own.
+  function noteParts(note) {
+    const year = /^(\d{4}s?):\s*(.+)$/.exec(note.title);
+    if (year) return { tag: year[1], title: year[2], body: note.body };
+    const myth = note.kind === 'myth' && /^Myth:\s*(.+)$/i.exec(note.title);
+    const fact = myth && /^Fact:\s*([\s\S]+)$/i.exec(note.body);
+    if (myth && fact) return { tag: 'Myth', title: myth[1], body: fact[1], myth: true };
+    return { tag: '', title: note.title, body: note.body };
+  }
+  // First sentence leads; the rest follows in a lighter voice.
+  function leadHtml(body) {
+    const m = /^(.+?[.!?])\s+(?=[A-Z'"“‘])/.exec(body);
+    return m ? `<span class="lead">${esc(m[1])}</span> ${esc(body.slice(m[0].length))}` : `<span class="lead">${esc(body)}</span>`;
   }
 
   function showNote(opts) {
     const { note, index, total, review } = opts;
     const k = noteKinds[note.kind] || noteKinds['how-ai-works'];
-    const html = band('stop', 'Stop sign · Road Note', k.icon + ' ' + k.label, [review ? 'Review' : 'Note ' + index + ' of ' + total, 'No quiz']) + `
-      <div class="card-body">
-        <h3 class="note-title">${esc(note.title)}</h3>
-        <p class="note-body">${esc(note.body)}</p>
+    const n = noteParts(note);
+    const heading = mobile ? band('stop', 'Stop sign', 'Road Note', []) : band('stop', 'Stop sign · Road Note', k.label, [review ? 'Review' : 'New note', 'No quiz']);
+    const html = heading + `
+      <div class="card-body note-page${n.myth ? ' myth' : ''}">
+        <div class="note-head">
+          <div class="note-glyph" aria-hidden="true">${k.icon}</div>
+          <div>${n.tag ? `<div class="note-tag">${esc(n.tag)}</div>` : ''}<h3 class="note-title">${esc(n.title)}</h3></div>
+        </div>
+        ${n.myth
+          ? `<div class="note-fact"><div class="note-tag fact">Fact</div><p class="note-body">${leadHtml(n.body)}</p></div>`
+          : `<p class="note-body">${leadHtml(n.body)}</p>`}
         ${note.source ? `<div class="note-source">Source: ${esc(note.source)}</div>` : ''}
-        <div class="card-foot"><span class="hint">Saved to your Road Notes logbook · Enter to drive on</span><button class="btn primary" id="cardContinue">Drive on</button></div>
+        <div class="note-progress" role="img" aria-label="${index} of ${total} Road Notes collected">
+          <span>📒 ${review ? 'Logbook' : 'Saved to your logbook'}</span><span class="np-bar"><i style="width:${Math.round(100 * index / Math.max(1, total))}%"></i></span><span class="np-count">${index} / ${total}</span>
+        </div>
+        <div class="card-foot"><span class="hint">Nothing to answer · Enter to drive on</span><button class="btn primary" id="cardContinue">Drive on</button></div>
       </div>`;
     openCard(html, k.color, k.light);
+    $('card').classList.add('go');
     addReadAloud(() => note.title + '. ' + note.body);
     const cont = $('cardContinue');
     cont.focus({ preventScroll: true });
@@ -244,16 +323,18 @@ RT.createUI = function (map, cats, noteKinds, mobile) {
     };
   }
 
+  const VIEW = '<svg class="reflect-view" viewBox="0 0 760 92" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><defs><linearGradient id="rvSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fd8e6"/><stop offset="1" stop-color="#fde9c4"/></linearGradient></defs><rect width="760" height="92" fill="url(#rvSky)"/><circle cx="610" cy="30" r="26" fill="#ffe7a8" opacity=".6"/><circle cx="610" cy="30" r="16" fill="#ffd166"/><path d="M0 70 Q120 34 250 62 T470 50 T760 60 V92 H0Z" fill="#7fb7a4"/><path d="M0 80 Q170 54 330 76 T620 68 T760 76 V92 H0Z" fill="#4f9a8c"/><path d="M0 92 V86 Q200 74 400 86 T760 84 V92Z" fill="#5aa0dc"/></svg>';
   function showReflection(opts) {
     const r = opts.r;
-    const html = band('look', 'Scenic overlook · Think it over', 'AI & Society', ['No right answer']) + `
+    const html = band('look', 'Scenic overlook · Think it over', 'AI & Society', ['No right answer']) + VIEW + `
       <div class="card-body">
         <p class="reflect-prompt">${esc(r.prompt)}</p>
-        <div class="reflect-nudge">💭 ${esc(r.nudge)}</div>
+        <div class="reflect-nudge"><small>Try this</small>${esc(r.nudge)}</div>
         <p class="muted" style="font-weight:700;margin:12px 0 0">Take a breath and enjoy the view. Talk it over with a partner, or just think it through. There is no wrong answer here.</p>
         <div class="card-foot"><span class="hint">Enter to head back</span><button class="btn primary" id="cardContinue">Back to the road</button></div>
       </div>`;
     openCard(html, '#31777A', '#DDEFF0');
+    $('card').classList.add('go');
     addReadAloud(() => r.prompt + ' ' + r.nudge);
     const cont = $('cardContinue');
     cont.focus({ preventScroll: true });
@@ -389,18 +470,47 @@ RT.createUI = function (map, cats, noteKinds, mobile) {
   }
 
   // ---------- screens ----------
-  function show(id, on = true) { $(id).hidden = !on; }
+  function show(id, on = true) {
+    const el = $(id);
+    el.hidden = !on;
+    // A reopened sheet starts at its top, not wherever it was last scrolled.
+    const sheet = on && el.querySelector('.sheet');
+    if (sheet) sheet.scrollTop = 0;
+  }
 
-  function renderNotes(allNotes, seen) {
-    $('notesSummary').textContent = `You have collected ${seen.length} of ${allNotes.length} Road Notes. Make full stops at stop signs to collect more.`;
-    const seenSet = new Set(seen);
-    const order = seen.map((id) => allNotes.find((n) => n.id === id)).filter(Boolean);
-    const lockedCount = allNotes.length - order.length;
-    $('notesList').innerHTML = order.map((n) => {
-      const k = noteKinds[n.kind] || noteKinds['how-ai-works'];
-      return `<div class="note-tile" style="--c:${k.color};--cl:${k.light}"><div class="k">${k.icon} ${esc(k.label)}</div><b>${esc(n.title)}</b><p>${esc(n.body)}</p></div>`;
-    }).join('') + Array.from({ length: Math.min(lockedCount, 6) }, () => '<div class="note-tile locked">🛑 Stop to unlock</div>').join('');
-    void seenSet;
+  // The logbook: progress up top, topic chips that filter, then the notes dressed like their cards.
+  function renderNotes(allNotes, seen, kind = '') {
+    const kindOf = (n) => (noteKinds[n.kind] ? n.kind : 'how-ai-works');
+    const got = seen.map((id) => allNotes.find((n) => n.id === id)).filter(Boolean);
+    const count = (list, id) => list.filter((n) => !id || kindOf(n) === id).length;
+    $('notesSummary').textContent = got.length >= allNotes.length
+      ? 'Every Road Note is in your logbook.'
+      : 'Make a full stop at a stop sign to collect a new Road Note.';
+    const chip = (id, label, style) => `<button type="button" class="nf${id === kind ? ' on' : ''}" data-kind="${id}" aria-pressed="${id === kind}"${style}>${label}<em>${count(got, id)}/${count(allNotes, id)}</em></button>`;
+    const head = `<div class="notes-progress">
+        <div class="notes-count"><b>${got.length}</b><span>of ${allNotes.length} collected</span></div>
+        <span class="np-bar"><i style="width:${Math.round(100 * got.length / Math.max(1, allNotes.length))}%"></i></span>
+        <div class="notes-filters" role="group" aria-label="Show notes by topic">
+          ${chip('', 'All', '')}${Object.keys(noteKinds).map((id) => chip(id, `<span aria-hidden="true">${noteKinds[id].icon}</span> ${esc(noteKinds[id].label)}`, ` style="--c:${noteKinds[id].color};--cl:${noteKinds[id].light}"`)).join('')}
+        </div>
+      </div>`;
+    const tiles = got.filter((n) => !kind || kindOf(n) === kind).map((note) => {
+      const k = noteKinds[kindOf(note)], n = noteParts(note);
+      return `<article class="note-tile${n.myth ? ' myth' : ''}" style="--c:${k.color};--cl:${k.light}">
+        <div class="nt-head"><span class="nt-glyph" aria-hidden="true">${k.icon}</span><div><div class="k">${esc(k.label)}${n.tag && !n.myth ? ` · ${esc(n.tag)}` : ''}</div><b>${esc(n.title)}</b></div></div>
+        <p>${n.myth ? '<span class="note-tag fact">Fact</span> ' : ''}${leadHtml(n.body)}</p></article>`;
+    }).join('');
+    // show which topics still have notes waiting, a few at a time
+    const waiting = Object.keys(noteKinds).filter((id) => !kind || id === kind)
+      .flatMap((id) => Array.from({ length: count(allNotes, id) - count(got, id) }, () => id));
+    const shown = kind ? waiting.slice(0, 6) : Object.keys(noteKinds).flatMap((id) => waiting.filter((w) => w === id).slice(0, 2)).slice(0, 6);
+    const locked = shown.map((id) => `<div class="note-tile locked" style="--c:${noteKinds[id].color};--cl:${noteKinds[id].light}"><span class="nt-glyph" aria-hidden="true">?</span><div><div class="k">${esc(noteKinds[id].label)}</div>Stop to unlock</div></div>`).join('');
+    const more = waiting.length > shown.length ? `<div class="notes-more">+ ${waiting.length - shown.length} more waiting at stop signs</div>` : '';
+    const list = $('notesList');
+    list.innerHTML = head + tiles + locked + more;
+    list.querySelectorAll('.nf').forEach((b) => {
+      b.onclick = () => { renderNotes(allNotes, seen, b.dataset.kind); const again = list.querySelector('.nf.on'); if (again) again.focus({ preventScroll: true }); };
+    });
   }
 
   function rating(score) { const n = score >= 92 ? 5 : score >= 78 ? 4 : score >= 62 ? 3 : score >= 40 ? 2 : 1; return '★'.repeat(n) + '☆'.repeat(5 - n); }

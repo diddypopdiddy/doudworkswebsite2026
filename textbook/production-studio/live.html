@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Studio</title>
+<link rel="stylesheet" href="../shared/studio-live.css">
+</head>
+<body class="lv-page">
+<div id="studio"></div>
+<script defer src="../hosted-bootstrap.js"></script>
+<script type="text/textbook-script" src="../config.js"></script>
+<script type="text/textbook-script" src="../shared/media.js"></script>
+<script type="text/textbook-script" src="../shared/vendor/three.bundle.js"></script>
+<script type="text/textbook-script" src="../shared/studio-models.js"></script>
+<script type="text/textbook-script" src="../shared/studio-live.js"></script>
+<script type="text/textbook-script">
+const host = document.getElementById('studio');
+const params = new URLSearchParams(location.search);
+const embed = window.parent !== window && params.get('embed') === '1';
+if (embed) document.body.classList.add('lv-embedded');
+// A lesson can narrow the studio to the departments it teaches: ?dept=light, ?dept=camera, ?dept=sound or a list.
+window.live = LiveStudio.mount(host, { embed, dept: params.get('dept') || '' });
+if (embed) {
+  const targetOrigin = location.protocol === 'file:' ? '*' : location.origin;
+  new ResizeObserver(([entry]) => {
+    window.parent.postMessage({ type: 'live-studio:size', height: entry.contentRect.height }, targetOrigin);
+  }).observe(host);
+}
+</script>
+</body>
+</html>

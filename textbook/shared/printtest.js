@@ -22,11 +22,12 @@
   };
 
   function pictures(it) {
-    const list = it.pair || (it.media || it.svg ? [it] : null);
+    const list = it.pair || (it.media || it.svg || it.cameraPlate ? [it] : null);
     if (!list) return null;
     const row = el('div', { className: 'pics' });
     row.style.setProperty('--n', list.length);
-    list.forEach(m => row.append(el('figure', {}, m.svg ? T.svg(m.svg, 'illus', m.alt) : T.media(m.media || m), m.caption ? el('figcaption', { text: m.caption }) : null)));
+    list.forEach(m => row.append(el('figure', {}, m.cameraPlate ? T.cameraPlate(m.cameraPlate, true) :
+      m.svg ? T.svg(m.svg, 'illus', m.alt) : T.media(m.media || m), m.caption ? el('figcaption', { text: m.caption }) : null)));
     return row;
   }
 

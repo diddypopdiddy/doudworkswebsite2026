@@ -40,6 +40,12 @@
           ]),
         ),
       ),
+      H.section(
+        'Move the light yourself',
+        'One light and five places to put it.',
+        H.text('Drag the light to each place in the studio. After every move, find the shadow on the monitor.'),
+        { type: 'studio-room', lesson: 'light-direction' },
+      ),
     ],
     rounds: [
       [

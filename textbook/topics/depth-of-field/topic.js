@@ -58,6 +58,22 @@
             { prompt: 'Same f-stop in both. Which shot has the shallower depth of field?', options: [ lens(4, 1.2, 'Camera close to the person.', 'Camera close'), lens(4, 3.5, 'Camera far from the person.', 'Camera far', 'Moving away makes the depth of field deeper.') ], answer: 0, explain: 'Moving the camera closer to the subject makes the depth of field shallower.' }
           ] }
         ]
+      },
+      {
+        id: 'camera-practice', title: 'Choose what stays sharp',
+        intro: 'Make two versions of the same library shot. Leave ISO on Auto so you can compare focus.',
+        blocks: [{
+          type: 'camera-sim', title: 'Separate the reader from the shelves', body: 'g97', level: 3, scene: 'note-library',
+          start: { power: true, mode: 'video', settings: { exposureMode: 'M', iso: 'AUTO', focusOn: 'reader' } },
+          tasks: [
+            { text: 'Film the reader with a soft background. Zoom to 60 mm and open the aperture to f/5.6.',
+              hint: 'Use the zoom ring, focus on the reader, and turn the aperture dial to its smallest available f-number.',
+              check: s => s.takes.some(t => t.length >= 1 && t.settings.zoom === 60 && t.picture.fstop <= 5.6 && t.sharpOn('reader') && !t.sharpOn('shelves')) },
+            { text: 'Make a second take with more depth. Zoom out to 12 mm and stop down until both the mug and reader look sharp.',
+              hint: 'Use the wide end of the zoom and f/16 or f/22. Keep focus on the reader.',
+              check: s => s.takes.some(t => t.length >= 1 && t.settings.zoom === 12 && t.sharpOn('mug') && t.sharpOn('reader')) }
+          ], doneText: 'Compare the mug and shelves in your two takes.'
+        }]
       }
     ],
     check: [

@@ -59,6 +59,12 @@
         H.text('Watch the order in which the three positions light up.'),
         H.watch('study-three', 'Three-lamp plot', 2.75, 'Which lamp is behind the chair?'),
       ),
+      H.section(
+        'Build the setup in the studio',
+        'Three lights from the kit, one job each.',
+        H.text('Start in the dark. Place the key, the fill and the back light, and check the monitor after each one.'),
+        { type: 'studio-room', lesson: 'three-point-lighting' },
+      ),
     ],
     rounds: [
       [

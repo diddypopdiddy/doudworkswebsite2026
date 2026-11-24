@@ -1,5 +1,5 @@
 /* Chapter 3 · AI Modes · Final Boss: The Autopilot
-   Each round: pick the Mode for the need, choose the opening prompt, choose the next move,
+   Each round: pick the AI Mode for the need, choose the opening prompt, choose the next move,
    then choose the human finish. Good choices damage the Autopilot; Autopilot choices cost a heart. */
 (function () {
   const esc = WB.esc;
@@ -26,14 +26,14 @@
             <p class="kicker">Chapter 3 · Apply the help</p>
             <h1>Final Boss: The Autopilot</h1>
             <p class="taunt">“${esc(M().taunts.start)}”</p>
-            <p class="lede">The Autopilot wants AI to do your thinking for you. Beat it in six rounds. Each round is a real need. Pick the Mode that fits, steer the conversation, and finish like a human.</p>
+            <p class="lede">The Autopilot wants AI to do your thinking for you. Beat it in six rounds. Each round is a real need. Pick the AI Mode that fits, steer the conversation, and finish like a human.</p>
           </div>
         </div>
         <ol class="boss-steps">
-          <li><b>Pick the Mode</b> that fits the need.</li>
+          <li><b>Pick the AI Mode</b> that fits the need.</li>
           <li><b>Open the conversation</b> with the best prompt.</li>
           <li><b>Make your next move</b> after the AI replies.</li>
-          <li><b>Finish like a human.</b> Every Mode ends with you.</li>
+          <li><b>Finish like a human.</b> Every AI Mode ends with you.</li>
         </ol>
         <div class="mode-cards static">${["idea", "learning", "feedback", "practice", "tool"].map(k => `
           <div class="mode-card m-${k}"><span class="mode-head">${WB.icon(k)}</span><b>${list[k].name} Mode</b><small>AI's job: ${list[k].job}</small></div>`).join("")}
@@ -73,7 +73,7 @@
 
     function draw() {
       const phases = R.mode === "none" ? ["mode", "finish"] : ["mode", "open", "next", "finish"];
-      const labels = { mode: "Pick the Mode", open: "Open", next: "Next move", finish: "Human finish" };
+      const labels = { mode: "Pick the AI Mode", open: "Open", next: "Next move", finish: "Human finish" };
       const steps = R.mode !== "none" && st.phase !== "mode" ? M().matrix[R.mode] : null;
       const curStep = { open: 1, next: 2, finish: 3 }[st.phase];
       main.innerHTML = `
@@ -95,7 +95,7 @@
     function choices() {
       const box = WB.$("#choices", main);
       if (st.phase === "mode") {
-        box.innerHTML = `<p class="q">Which Mode fits this need?</p>
+        box.innerHTML = `<p class="q">Which AI Mode fits this need?</p>
           <div class="mode-cards">${Object.keys(list).map(k => `
             <button type="button" class="mode-card m-${k}" data-m="${k}"><span class="mode-head">${WB.icon(k)}</span><b>${list[k].name}${k === "none" ? "" : " Mode"}</b><small>${list[k].job}</small></button>`).join("")}
           </div>`;
@@ -120,7 +120,7 @@
       } else if (m === "none") {
         b.disabled = true; b.classList.add("is-dim");
         WB.sfx("tap");
-        WB.$("#after", main).innerHTML = `<div class="after"><p class="verdict mid">No AI is always an option.</p><p>Here, AI help is allowed, and one Mode fits this need well. Try a Mode.</p></div>`;
+        WB.$("#after", main).innerHTML = `<div class="after"><p class="verdict mid">No AI is always an option.</p><p>Here, AI help is allowed, and one AI Mode fits this need well. Try an AI Mode.</p></div>`;
       } else {
         b.disabled = true; b.classList.add("is-wrong");
         miss(`That's ${list[m].name} Mode, where AI's job is to ${list[m].job.toLowerCase()}. Is that what this need calls for?`);
@@ -239,22 +239,21 @@
         <p class="kicker">Chapter 3 complete · Autopilot defeated</p>
         <h1>The human finished the work.</h1>
         <p class="taunt">“${esc(M().taunts.win)}”</p>
-        <p class="lede">${B.score.toLocaleString()} points${newBest ? " · new best" : ""}. You matched every need to a Mode, steered every conversation, and finished every round yourself.</p>
-        <p class="muted">Stars and points show interactive practice progress, not Permit or License readiness. This exit ticket stays on this device and is shared only when your teacher assigns it. Your teacher directs the next Permit or License check.</p>
-        <h2 class="h2">Your Mode field guide</h2>
-        <p class="muted">Keep this. Every Mode has four steps, and the last one is always yours.</p>
+        <p class="lede">${B.score.toLocaleString()} points${newBest ? " · new best" : ""}. You matched every need to an AI Mode, steered every conversation, and finished every round yourself.</p>
+        <h2 class="h2">Your AI Mode field guide</h2>
+        <p class="muted">Keep this. Every AI Mode has four steps, and the last one is always yours.</p>
         <div class="table-wrap"><table class="matrix">
-          <thead><tr><th scope="col">Mode</th><th scope="col">1 · Set up</th><th scope="col">2 · Use AI</th><th scope="col">3 · Think it through</th><th scope="col" class="fin">4 · Final human action</th></tr></thead>
+          <thead><tr><th scope="col">AI Mode</th><th scope="col">1 · Set up</th><th scope="col">2 · Use AI</th><th scope="col">3 · Think it through</th><th scope="col" class="fin">4 · Final human action</th></tr></thead>
           <tbody>${Object.keys(mx).map(k => `<tr class="m-${k}"><th scope="row"><span class="mode-i">${WB.icon(k)}</span> ${list[k].name}</th>${mx[k].map((c, i) => `<td class="${i === 3 ? "fin" : ""}">${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody>
         </table></div>
-        <div class="note"><b>No fixed order.</b> For everyday tasks, choose, combine, revisit or skip Modes for a reason. <b>Competencies stay on:</b> prompting, privacy, ethics and verification apply in every Mode.</div>
+        <div class="note"><b>No fixed order.</b> For everyday tasks, choose, combine, revisit or skip AI Modes for a reason. <b>Core Competencies stay on:</b> Prompting, Data &amp; Privacy, Ethics and Verification apply in every AI Mode.</div>
         <div id="ticket"></div>
         <div class="row-gap">
           <a class="btn btn-big" href="#/workbook">See my workbook</a>
           <button type="button" class="btn btn-ghost" id="again">Fight again</button>
         </div>
       </section>`;
-    WB.exitTicket(WB.$("#ticket", main), "Which Mode will you use most this week, and what will your human finish look like?",
+    WB.exitTicket(WB.$("#ticket", main), "Which AI Mode will you use most this week, and what will your human finish look like?",
       () => WB.state.boss.reflection, v => { WB.state.boss.reflection = v; });
     WB.$("#again", main).addEventListener("click", () => intro(main));
   }

@@ -1,0 +1,242 @@
+/* Live Studio. Same visual language as shared/studio.css.
+   Each department has one colour everywhere it appears (rail, tags, ring, plan, controls):
+   lights are amber, the camera is blue, sound is mint. */
+@font-face { font-family: Inter; src: url('fonts/InterVariable.ttf') format('truetype'); font-weight: 100 900; font-display: swap; }
+.lv-page { margin: 0; padding: 18px; background: #08090a; }
+.lv-page.lv-embedded { padding: 0; }
+.lv-app { --tx: #eceef0; --tx2: #9ba3aa; --tx3: #6c757d; --fill: #ffffff0d; --fill2: #ffffff1c; --hair: #ffffff14;
+  --light: #f2c065; --light-ink: #1c1406; --light-soft: #f2c06524;
+  --cam: #7ea2ff; --cam-ink: #0a1430; --cam-soft: #7ea2ff24;
+  --sound: #5fd1a5; --sound-ink: #05231a; --sound-soft: #5fd1a524;
+  --accent: var(--tx); --accent-ink: #101214; --accent-soft: var(--fill);
+  max-width: 1500px; margin: 0 auto; overflow: hidden; border-radius: 16px; background: #101214; color: var(--tx);
+  font: 14px/1.4 Inter, system-ui, -apple-system, "Segoe UI", sans-serif; }
+.lv-app *, .lv-app *::before, .lv-app *::after { box-sizing: border-box; }
+.lv-app h1, .lv-app h2, .lv-app h3, .lv-app p { margin: 0; }
+.lv-app button { border: 0; background: none; font: inherit; color: inherit; cursor: pointer; }
+.lv-app button:disabled { cursor: not-allowed; }
+.lv-app :focus-visible { outline: 3px solid #7f9cf5; outline-offset: 2px; }
+.lv-app [hidden] { display: none !important; }
+.lv-app a { color: #abbffd; }
+.lv-icon { width: 18px; height: 18px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.lv-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.lv-spacer { flex: 1; }
+.lv-label { display: inline-flex; align-items: center; gap: 6px; color: var(--tx3); font-size: 11.5px; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; }
+
+/* Department themes */
+[data-dept="light"] { --accent: var(--light); --accent-ink: var(--light-ink); --accent-soft: var(--light-soft); }
+[data-dept="camera"] { --accent: var(--cam); --accent-ink: var(--cam-ink); --accent-soft: var(--cam-soft); }
+.lv-sound { --accent: var(--sound); --accent-ink: var(--sound-ink); --accent-soft: var(--sound-soft); }
+
+/* ---------- Header ---------- */
+.lv-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 14px 18px 12px; }
+.lv-title { display: grid; flex-shrink: 0; }
+.lv-bar h1 { font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+.lv-app .lv-title a { color: var(--tx3); font-size: 12px; text-decoration: none; }
+.lv-app .lv-title a:hover { color: var(--tx); }
+.lv-lede { color: var(--tx2); font-size: 14px; }
+.lv-cast { display: flex; align-items: center; gap: 8px; }
+.lv-subject-status { color: var(--tx2); font-size: 13px; }
+.lv-subject-status:empty { position: absolute; }
+.lv-app .lv-quiet { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 12px; border-radius: 9px; color: var(--tx2); font-size: 13px; font-weight: 550; }
+.lv-app .lv-quiet:hover { background: var(--fill); color: var(--tx); }
+.lv-quiet .lv-icon { width: 16px; height: 16px; }
+
+/* Switch: a track and a knob, plus the word, so the state never relies on colour */
+.lv-app .lv-switch { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px 0 8px; border-radius: 9px; color: var(--tx2); font-size: 13px; font-weight: 600; }
+.lv-app .lv-switch:hover { background: var(--fill); color: var(--tx); }
+.lv-switch-track { position: relative; width: 32px; height: 18px; border-radius: 9px; background: #ffffff2e; transition: background .15s; }
+.lv-switch-track::after { content: ''; position: absolute; left: 2px; top: 2px; width: 14px; height: 14px; border-radius: 50%; background: #d8dce0; transition: transform .15s; }
+.lv-switch[aria-checked="true"] { color: var(--tx); }
+.lv-switch[aria-checked="true"] .lv-switch-track { background: var(--accent); }
+.lv-switch[aria-checked="true"] .lv-switch-track::after { transform: translateX(14px); background: #fff; }
+.lv-switch-sound { --accent: var(--sound); }
+.lv-switch-sound .lv-icon { width: 16px; height: 16px; }
+.lv-switch-sound[aria-checked="true"] .lv-icon { color: var(--sound); }
+
+/* Segmented buttons */
+.lv-seg { display: inline-flex; flex-wrap: wrap; padding: 3px; border-radius: 9px; background: var(--fill); }
+.lv-app .lv-seg button { min-height: 34px; padding: 0 11px; border-radius: 6px; color: var(--tx2); font-size: 13px; font-weight: 550; }
+.lv-app .lv-seg button:hover { color: var(--tx); }
+.lv-app .lv-seg button[aria-pressed="true"] { background: var(--fill2); color: #fff; }
+.lv-app .lv-seg-sm button { min-height: 30px; padding: 0 10px; font-size: 12.5px; }
+.lv-app [data-dept] .lv-seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 650; }
+
+/* Chips */
+.lv-app .lv-chip { display: inline-flex; align-items: center; gap: 7px; min-height: 40px; padding: 0 14px; border-radius: 9px; background: var(--fill); font-size: 13px; font-weight: 550; }
+.lv-app .lv-chip:hover:not(:disabled) { background: var(--fill2); }
+.lv-app .lv-chip-sm { min-height: 34px; padding: 0 11px; font-size: 12.5px; }
+.lv-app .lv-chip-sm .lv-icon { width: 15px; height: 15px; }
+.lv-chip:disabled { opacity: .4; }
+.lv-app .lv-chip[aria-pressed="true"] { background: var(--accent-soft); color: #fff; box-shadow: inset 0 0 0 1.5px var(--accent); }
+
+/* ---------- Work area ---------- */
+.lv-work { display: grid; grid-template-columns: minmax(0, 11fr) minmax(0, 9fr); gap: 12px; padding: 0 12px 12px; align-items: start; }
+.lv-left, .lv-side { display: grid; gap: 10px; min-width: 0; }
+.lv-set, .lv-monitor { position: relative; overflow: hidden; border-radius: 12px; background: #0b0c0e; }
+.lv-set { aspect-ratio: 16 / 10; }
+.lv-monitor { aspect-ratio: 16 / 9; box-shadow: 0 0 0 1px #ffffff1a; }
+.lv-canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+.lv-set .lv-canvas.grab { cursor: grab; }
+.lv-set .lv-canvas.dragging { cursor: grabbing; }
+.lv-set .lv-canvas.lift, .lv-set .lv-canvas.lifting { cursor: ns-resize; }
+.lv-lift { position: absolute; z-index: 1; margin: -14px 0 0 22px; padding: 3px 8px; border-radius: 6px; background: #0c0e10e6; color: #fff;
+  font-size: 12px; font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; pointer-events: none; box-shadow: 0 1px 4px #000a; }
+.lv-shot { position: absolute; left: 12px; top: 10px; color: #fff; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums; text-shadow: 0 1px 3px #000c; pointer-events: none; }
+.lv-monitor-tag { position: absolute; right: 10px; top: 9px; display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px; border-radius: 6px; background: #0008;
+  color: #cfd5db; font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; pointer-events: none; }
+.lv-monitor-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--cam); }
+
+/* Set view overlays */
+.lv-view { position: absolute; right: 10px; top: 10px; display: flex; gap: 3px; padding: 3px; border-radius: 9px; background: #0c0e10c9; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.lv-app .lv-view button { min-width: 30px; min-height: 28px; padding: 0 9px; border-radius: 6px; color: var(--tx2); font-size: 13px; font-weight: 600; }
+.lv-app .lv-view button:hover { background: var(--fill2); color: #fff; }
+.lv-app .lv-view button[aria-pressed="true"] { background: var(--fill2); color: #fff; }
+.lv-set-hint { position: absolute; left: 10px; bottom: 10px; max-width: calc(100% - clamp(150px, 27%, 230px) - 34px); padding: 6px 10px; border-radius: 8px; background: #0c0e10c9; color: var(--tx2); font-size: 12px;
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); pointer-events: none; transition: opacity .4s; }
+.lv-set-hint b { color: var(--tx); font-weight: 600; }
+.lv-set-hint.is-gone { opacity: 0; }
+
+/* Tags over the gear in the set view */
+.lv-tags { position: absolute; inset: 0; pointer-events: none; }
+.lv-tags span { position: absolute; display: grid; place-items: center; width: 24px; height: 24px; margin: -12px 0 0 -12px; border-radius: 50%;
+  font-size: 12px; font-weight: 700; box-shadow: 0 1px 4px #000a; transition: transform .12s; }
+.lv-tags .lv-tag-light { background: var(--light); color: var(--light-ink); }
+.lv-tags .lv-tag-cam { border-radius: 7px; background: var(--cam); color: var(--cam-ink); }
+.lv-tags .lv-tag-cam .lv-icon { width: 15px; height: 15px; stroke-width: 2; }
+.lv-tags span.selected { box-shadow: 0 0 0 2px #101214, 0 0 0 4px #fff; }
+.lv-tags span.hover { transform: scale(1.18); }
+.lv-tags span.off { background: #5b6067; color: #d6dade; }
+.lv-tags span.fixed { opacity: .55; }
+
+/* ---------- Equipment rail ---------- */
+.lv-rail { display: flex; flex-wrap: wrap; gap: 10px; }
+.lv-rail-group { display: flex; flex-direction: column; gap: 8px; padding: 9px 10px 10px; border-radius: 12px; background: #ffffff05; box-shadow: inset 0 0 0 1px var(--hair); }
+.lv-rail-group { flex: 1 1 auto; }
+.lv-rail-lights { flex: 1 1 340px; min-width: 0; }
+.lv-rail-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; min-height: 30px; padding-left: 2px; }
+.lv-label-dept { color: var(--accent); }
+.lv-label-dept .lv-icon { width: 15px; height: 15px; }
+.lv-count { margin-left: 2px; color: var(--tx3); font-weight: 600; letter-spacing: 0; }
+.lv-label-quiet { text-transform: none; letter-spacing: 0; font-size: 12px; font-weight: 500; }
+.lv-rail-cards { display: flex; flex-wrap: wrap; gap: 6px; }
+.lv-card { display: flex; align-items: stretch; border-radius: 10px; background: var(--fill); transition: background .12s, box-shadow .12s; }
+.lv-card:hover { background: var(--fill2); }
+.lv-card.is-selected { background: var(--accent-soft); box-shadow: inset 0 0 0 2px var(--accent); }
+.lv-app .lv-card-pick { display: flex; align-items: center; gap: 10px; min-height: 50px; padding: 6px 14px 6px 8px; border-radius: 10px; text-align: left; }
+.lv-card-text { display: grid; line-height: 1.25; }
+.lv-card-text b { font-size: 13.5px; font-weight: 650; }
+.lv-card-sub { color: var(--tx2); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lv-card.is-selected .lv-card-sub { color: #d9dee3; }
+.lv-app .lv-card-power { display: grid; place-items: center; width: 40px; border-left: 1px solid var(--hair); border-radius: 0 10px 10px 0; color: var(--accent); }
+.lv-app .lv-card-power:hover { background: #ffffff10; }
+.lv-app .lv-card-power[aria-checked="false"] { color: var(--tx3); }
+.lv-card-power .lv-icon { width: 17px; height: 17px; stroke-width: 2.1; }
+.lv-card.is-off .lv-badge { background: #5b6067; color: #d6dade; }
+.lv-card.is-off b { color: var(--tx2); }
+.lv-app .lv-card-add { display: inline-flex; align-items: center; gap: 7px; min-height: 50px; padding: 0 14px; border-radius: 10px;
+  border: 1.5px dashed #ffffff33; color: var(--tx2); font-size: 13px; font-weight: 550; }
+.lv-app .lv-card-add:hover:not(:disabled) { border-color: var(--accent); color: var(--tx); }
+.lv-card-add:disabled { opacity: .45; }
+.lv-card-add .lv-icon { width: 16px; height: 16px; }
+
+/* Badges: the number or icon for a piece of gear, in its department colour */
+.lv-badge { display: inline-grid; place-items: center; width: 28px; height: 28px; flex-shrink: 0; border-radius: 8px; background: var(--accent); color: var(--accent-ink); font-size: 13px; font-weight: 750; }
+.lv-badge .lv-icon { width: 17px; height: 17px; stroke-width: 2; }
+.lv-badge-lg { width: 40px; height: 40px; border-radius: 11px; font-size: 18px; }
+.lv-badge-lg .lv-icon { width: 22px; height: 22px; }
+
+/* Bird's-eye plan: an inset map in the corner of the set view */
+.lv-plan-inset { position: absolute; right: 10px; bottom: 10px; width: clamp(150px, 27%, 230px); margin: 0; padding: 3px; border-radius: 11px;
+  background: #0c0e10c9; box-shadow: 0 4px 18px #0009, inset 0 0 0 1px #ffffff1a; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.lv-plan { display: block; width: 100%; border-radius: 8px; background: #0b0c0ee6; touch-action: none; user-select: none; -webkit-user-select: none; }
+.lv-plan-room { fill: #16191c; stroke: #ffffff26; stroke-width: .08; }
+.lv-plan-rail { stroke: #ffffff12; stroke-width: .08; }
+.lv-plan-paper { stroke: #8d8e89; stroke-width: .3; stroke-linecap: round; }
+.lv-plan-table { fill: #2c2a27; }
+.lv-plan-ring { fill: none; stroke: #ffffff1c; stroke-width: .06; stroke-dasharray: .3 .3; }
+.lv-plan-subject { fill: #c98f6b; }
+.lv-plan-view { fill: #7ea2ff1f; stroke: #7ea2ff80; stroke-width: .06; pointer-events: none; }
+.lv-plan-item { cursor: grab; outline: none; }
+.lv-plan-item.is-fixed { cursor: default; opacity: .55; }
+.lv-plan.dragging, .lv-plan.dragging .lv-plan-item { cursor: grabbing; }
+.lv-plan-hit { fill: transparent; }
+.lv-plan-beam { stroke: var(--light); stroke-width: .12; stroke-dasharray: .35 .25; opacity: .7; pointer-events: none; }
+.lv-plan-dot { fill: var(--light); stroke: #101214; stroke-width: .12; }
+.lv-plan-cam .lv-plan-dot { fill: var(--cam); }
+.lv-plan-number { fill: var(--light-ink); font-size: 1.15px; font-weight: 700; text-anchor: middle; pointer-events: none; }
+.lv-plan-item.off .lv-plan-dot { fill: #5b6067; }
+.lv-plan-item.off .lv-plan-number { fill: #d6dade; }
+.lv-plan-item.off .lv-plan-beam { opacity: .2; }
+.lv-plan-item[aria-pressed="true"] .lv-plan-dot { stroke: #fff; stroke-width: .22; }
+.lv-plan-item:focus-visible .lv-plan-dot { stroke: #7f9cf5; stroke-width: .3; }
+.lv-plan-item:not(.is-fixed):hover .lv-plan-dot { filter: brightness(1.15); }
+
+
+/* ---------- Controls for the selected gear ---------- */
+.lv-controls { padding: 14px 16px 16px; border-radius: 14px;
+  background: linear-gradient(180deg, var(--accent-soft), #ffffff00 120px), #14171a;
+  box-shadow: inset 0 0 0 1px var(--hair), inset 0 3px 0 var(--accent); }
+.lv-insp-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; min-height: 44px; margin-bottom: 12px; }
+.lv-insp-title { display: grid; gap: 1px; min-width: 0; }
+.lv-insp-title h2 { font-size: 16px; font-weight: 700; }
+.lv-insp-sub { color: var(--tx2); font-size: 13px; }
+.lv-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+.lv-group { display: flex; flex-direction: column; gap: 12px; padding: 12px 14px 14px; border-radius: 11px; background: #ffffff07; }
+.lv-group h3 { color: var(--accent); font-size: 11px; font-weight: 750; letter-spacing: .09em; text-transform: uppercase; }
+.lv-group > .lv-seg { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); }
+.lv-group > .lv-seg button { padding: 0 6px; }
+.lv-group > .lv-seg-directions { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; }
+.lv-picker { display: inline-flex; align-items: center; gap: 8px; color: var(--tx2); font-size: 13px; }
+.lv-select { -webkit-appearance: none; appearance: none; min-height: 34px; padding: 0 30px 0 11px; border: 0; border-radius: 8px; cursor: pointer;
+  background: var(--fill2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23cfd5db' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 11px center;
+  color: var(--tx); font: inherit; font-size: 13px; font-weight: 600; box-shadow: inset 0 0 0 1.5px var(--accent); }
+.lv-select:hover { background-color: #ffffff26; }
+.lv-select option { background: #1b1e22; color: var(--tx); }
+.lv-group-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.lv-hint { color: var(--tx3); font-size: 12px; }
+.lv-hint-block { color: var(--tx2); font-size: 13px; line-height: 1.45; }
+
+/* Sliders: the label and value sit above a track filled in the department colour */
+.lv-field { display: grid; gap: 4px; color: var(--tx2); font-size: 13px; }
+.lv-field-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; color: var(--tx2); font-size: 13px; }
+.lv-field output { color: var(--tx); font-weight: 650; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lv-field input { -webkit-appearance: none; appearance: none; width: 100%; height: 22px; margin: 0; background: none; cursor: pointer; }
+.lv-field input::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; background: linear-gradient(90deg, var(--accent) var(--p, 50%), #ffffff24 var(--p, 50%)); }
+.lv-field input::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; margin-top: -6px; border-radius: 50%; background: #fff;
+  box-shadow: 0 0 0 3px var(--accent), 0 2px 6px #000a; transition: transform .1s; }
+.lv-field input:active::-webkit-slider-thumb { transform: scale(1.12); }
+.lv-field input::-moz-range-track { height: 6px; border-radius: 3px; background: #ffffff24; }
+.lv-field input::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--accent); }
+.lv-field input::-moz-range-thumb { width: 16px; height: 16px; border: 3px solid var(--accent); border-radius: 50%; background: #fff; }
+.lv-field input:focus-visible { outline-offset: 4px; border-radius: 4px; }
+
+/* ---------- Sound ---------- */
+.lv-sound { margin: 12px; padding: 14px 16px 16px; border-radius: 14px;
+  background: linear-gradient(180deg, var(--accent-soft), #ffffff00 120px), #14171a;
+  box-shadow: inset 0 0 0 1px var(--hair), inset 0 3px 0 var(--accent); }
+.lv-sound-body { gap: 10px; }
+.lv-sound-mics { display: flex; flex-wrap: wrap; gap: 6px; }
+.lv-app .lv-sound .lv-chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); box-shadow: none; font-weight: 650; }
+.lv-app .lv-listen:not(:disabled) { background: var(--accent-soft); color: #fff; box-shadow: inset 0 0 0 1.5px var(--accent); }
+.lv-sound-message { color: var(--tx2); }
+
+.lv-notice { margin: 0; padding: 10px 22px; color: var(--tx2); }
+.lv-unavailable { padding: 24px; }
+.lv-unavailable p { margin: 10px 0; }
+
+/* ---------- Embedded in a lesson ---------- */
+.lv-embed .lv-bar { padding: 12px 14px 10px; }
+.lv-embed .lv-work { padding: 0 10px; }
+
+@media (max-width: 1024px) {
+  .lv-page { padding: 10px; }
+  .lv-groups { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+}
+@media (max-width: 760px) {
+  .lv-work { grid-template-columns: minmax(0, 1fr); }
+  .lv-lede { flex-basis: 100%; order: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lv-app *, .lv-app *::before, .lv-app *::after { transition: none !important; }
+}

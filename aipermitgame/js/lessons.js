@@ -1,30 +1,61 @@
 /* Practice hours: each hour is a short drive to a destination, guided by chevrons painted
- * on the road and turn-by-turn directions that use the real street names. */
+ * on the road and turn-by-turn directions that use the real street names.
+ *
+ * The guidance keeps one plan (a list of streets to take) and sticks to it while the car is
+ * on it. The moment the car is on a street the plan does not include, in either direction,
+ * a new plan is made from where the car really is. So wandering off always gets a fresh
+ * route, and the directions do not flip around while the driver is following them. */
 RT.createLessons = function (scene, map, world) {
   const T = THREE, U = RT.U;
   const N = map.N;
+  const DIRK = ['N', 'E', 'S', 'W'];
+  const TURN_COST = 22;   // metres a turn is "worth", so routes with fewer turns win ties
+  const CROSS_COST = 14;  // extra for a turn across the oncoming lane into or out of a lot
+  const SPACING = 6;      // metres between chevrons
 
-  // ---------- destinations ----------
-  const lane = (seg, travel, x, z) => ({ seg, travel, x, z });
   const segBetween = (i0, j0, i1, j1) => {
     const a = map.nodeAt(i0, j0), b = map.nodeAt(i1, j1);
     return map.segments.find((s) => (s.a === a.id && s.b === b.id) || (s.a === b.id && s.b === a.id));
   };
-  const DESTS = {
-    school: { name: 'Pathway School', icon: '🏫', r: 6 }, // placed just below
-    downtown: { name: 'Downtown on Hopper St', icon: '🏙️', r: 6, ...lane(segBetween(2, 1, 2, 2), 'S', map.colX(2) - map.colW(2) / 4, (map.rowZ(1) + map.rowZ(2)) / 2) },
-    plaza: { name: 'Pathway Plaza', icon: '⛲', r: 6, ...lane(segBetween(2, 3, 3, 3), 'W', 0, map.rowZ(3) - map.rowW(3) / 4) },
-    overlook: { name: 'Lakeview Overlook', icon: '🔭', r: 11, offroad: [map.nodeAt(N - 1, 2), map.nodeAt(N - 1, 3)], x: map.overlookSpot.x, z: map.overlookSpot.z },
-    park: { name: 'Pond Park', icon: '🌳', r: 6, ...lane(segBetween(3, 4, 4, 4), 'E', map.colX(3) + 40, map.rowZ(4) + map.rowW(4) / 4) },
-    office: { name: 'the Permit Office', icon: '🏢', r: map.finishSpot.r, offroad: [map.nodeAt(1, 3), map.nodeAt(2, 3)], x: map.finishSpot.x, z: map.finishSpot.z, gate: { x: map.finishSpot.x, z: map.lot.z0 - 1 } }
+  const otherEnd = (seg, id) => (seg.a === id ? seg.b : seg.a);
+  const coord = (seg, p) => (seg.axis === 'x' ? p.x : p.z);           // position along a street
+  const sign = (travel) => (travel === 'E' || travel === 'S' ? 1 : -1);
+  const onSeg = (seg, at) => { const a = map.nodes[seg.a]; return seg.axis === 'x' ? { x: at, z: a.z } : { x: a.x, z: at }; };
+  const laneOffset = (seg, travel) => { const r = U.rightOf(U.DIRS[travel]); return { x: r.x * seg.width / 4, z: r.z * seg.width / 4 }; };
+  const dirBetween = (a, b) => (b.x > a.x + 1 ? 'E' : b.x < a.x - 1 ? 'W' : b.z > a.z ? 'S' : 'N');
+  const turnOf = (inDir, outDir) => {
+    if (inDir === outDir) return 'straight';
+    if (outDir === U.OPPOSITE[inDir]) return 'uturn';
+    const r = U.rightOf(U.DIRS[inDir]), o = U.DIRS[outDir];
+    return r.x === o.x && r.z === o.z ? 'right' : 'left';
   };
-  // School spot: Summit St eastbound, in front of the school building.
-  {
-    const s = segBetween(2, 0, 3, 0) || segBetween(1, 0, 2, 0);
-    DESTS.school.seg = s; DESTS.school.travel = 'E';
-    DESTS.school.x = map.colX(2) + 38; DESTS.school.z = map.rowZ(0) + map.rowW(0) / 4;
-    if (DESTS.school.x > map.nodes[s.b].x - 12) DESTS.school.x = map.nodes[s.b].x - 14;
+
+  // ---------- destinations ----------
+  // A street stop is a ring across the whole street: drive into it from either direction.
+  function streetDest(name, icon, seg, at) {
+    const c = onSeg(seg, at);
+    return { name, icon, seg, at, x: c.x, z: c.z, r: seg.width / 2 + 2.5 };
   }
+  // A parking stop sits off the street, behind a gate: pull in and stop.
+  function parkDest(name, icon, seg, gate, spot, r, label) {
+    return { name, icon, seg, at: coord(seg, gate), gate, x: spot.x, z: spot.z, r, park: true, label };
+  }
+  const schoolSeg = segBetween(2, 0, 3, 0) || segBetween(1, 0, 2, 0);
+  const DESTS = {
+    school: streetDest('Pathway School', '🏫', schoolSeg, Math.min(map.colX(2) + 38, map.nodes[schoolSeg.b].x - 14)),
+    downtown: streetDest('Downtown on Hopper St', '🏙️', segBetween(2, 1, 2, 2), (map.rowZ(1) + map.rowZ(2)) / 2),
+    plaza: streetDest('Pathway Plaza', '⛲', segBetween(2, 3, 3, 3), 0),
+    overlook: parkDest('Lakeview Overlook', '🔭', segBetween(N - 1, 2, N - 1, 3),
+      { x: map.overlook.x0 - 1, z: (map.overlook.z0 + map.overlook.z1) / 2 }, map.overlookSpot, 11, 'the overlook'),
+    park: streetDest('Pond Park', '🌳', segBetween(3, 4, 4, 4), map.colX(3) + 40),
+    office: parkDest('the Permit Office', '🏢', segBetween(1, 3, 2, 3),
+      { x: map.finishSpot.x, z: map.lot.z0 - 1 }, map.finishSpot, map.finishSpot.r, 'the Permit Office lot')
+  };
+  // Off-street areas the car can be parked in, and how to get back onto the street.
+  const PLACES = {
+    lot: { dest: DESTS.office, exitDir: 'N', exitPt: (s) => ({ x: U.clamp(s.x, map.lot.x0 + 3, map.lot.x1 - 3), z: map.lot.z0 + 1 }) },
+    overlook: { dest: DESTS.overlook, exitDir: 'W', exitPt: (s) => ({ x: map.overlook.x0 + 1, z: U.clamp(s.z, map.overlook.z0 + 3, map.overlook.z1 - 3) }) }
+  };
 
   const LESSONS = [
     { title: 'Hour 1 · Neighborhood streets', dest: 'school', intro: 'Hour 1: quiet streets. Drive to Pathway School. Make full stops at every stop sign.' },
@@ -36,321 +67,333 @@ RT.createLessons = function (scene, map, world) {
   ];
   const EXTRA = ['plaza', 'school', 'park', 'downtown', 'overlook'];
 
-  // ---------- route search ----------
-  function neighbours(n) {
-    const out = [];
-    for (const k of ['N', 'E', 'S', 'W']) {
-      const si = n.exits[k];
-      if (si === null) continue;
-      const s = map.segments[si];
-      out.push({ node: map.nodes[s.a === n.id ? s.b : s.a], dir: k, seg: s });
-    }
-    return out;
-  }
-  // Shortest path between nodes. `cameFrom` avoids an immediate U-turn at the start.
-  function path(fromId, toIds, cameFrom, banned) {
-    const dist = new Map([[fromId, 0]]), prev = new Map(), open = new Set([fromId]);
-    let found = null;
-    while (open.size) {
-      let cur = null, cd = Infinity;
-      for (const id of open) if (dist.get(id) < cd) { cd = dist.get(id); cur = id; }
-      open.delete(cur);
-      if (toIds.includes(cur)) { found = cur; break; }
-      for (const nb of neighbours(map.nodes[cur])) {
-        if (cur === fromId && nb.node.id === cameFrom) continue;
-        if (banned && banned.has(cur + '>' + nb.node.id)) continue;
-        const nd = cd + map.SP;
-        if (nd < (dist.has(nb.node.id) ? dist.get(nb.node.id) : Infinity)) { dist.set(nb.node.id, nd); prev.set(nb.node.id, cur); open.add(nb.node.id); }
-      }
-    }
-    if (found === null) return null;
-    const p = [found];
-    while (p[0] !== fromId) p.unshift(prev.get(p[0]));
-    return p.map((id) => map.nodes[id]);
-  }
-  const dirBetween = (a, b) => (b.x > a.x + 1 ? 'E' : b.x < a.x - 1 ? 'W' : b.z > a.z ? 'S' : 'N');
-  const turnOf = (inDir, outDir) => {
-    if (inDir === outDir) return 'straight';
-    if (outDir === U.OPPOSITE[inDir]) return 'uturn';
-    const r = U.rightOf(U.DIRS[inDir]), o = U.DIRS[outDir];
-    return r.x === o.x && r.z === o.z ? 'right' : 'left';
-  };
-
-  // ---------- chevrons on the road ----------
-  const MAXC = 34;
-  const shape = new T.Shape();
-  shape.moveTo(-0.9, -0.5); shape.lineTo(0, 0.45); shape.lineTo(0.9, -0.5); shape.lineTo(0.9, -0.05); shape.lineTo(0, 0.9); shape.lineTo(-0.9, -0.05); shape.closePath();
-  const chevG = new T.ShapeGeometry(shape); chevG.rotateX(-Math.PI / 2); // points toward -z, i.e. "forward" after rotation below
-  chevG.rotateY(Math.PI);
-  chevG.scale(1.35, 1, 1.5);
-  const chevMat = new T.MeshBasicMaterial({ color: 0x3ee8ff, transparent: true, opacity: 0.92, depthWrite: false, fog: false });
-  const chev = new T.InstancedMesh(chevG, chevMat, MAXC);
-  // These instances follow the car. The empty title-screen bounds never describe the route.
-  chev.frustumCulled = false;
-  chev.renderOrder = 2;
-  chev.count = 0;
-  scene.add(chev);
-
-  const destBeacon = world.beacon(0x34e2ff, 6);
-  destBeacon.visible = false;
-
-  let dest = null, polyline = [], polyLen = [], route = null, flow = 0, recalc = 0;
+  let dest = null, plan = null, polyline = [], polyLen = [], flow = 0, recalc = 0;
   let last = { text: '', icon: '↑', dist: 0 };
 
-  function setDestination(id) {
-    dest = id ? DESTS[id] : null;
-    destBeacon.visible = !!dest && id !== 'office';
-    if (dest) {
-      destBeacon.position.set(dest.x, 0, dest.z);
-      destBeacon.scale.setScalar(dest.r / 6);
-    }
-    recalc = 0;
-    if (!dest) { polyline = []; polyLen = []; route = null; chev.count = 0; }
-  }
-
-  function lanePt(a, b, atA) {
-    const k = dirBetween(a, b), d = U.DIRS[k], r = U.rightOf(d);
-    const s = map.segments[a.exits[k]];
-    const off = s ? s.width / 4 : 2.25;
-    const n = atA ? a : b, h = map.halfAlong(n, k) * (atA ? 1 : -1);
-    return { x: n.x + d.x * h + r.x * off, z: n.z + d.z * h + r.z * off };
-  }
-
-  // When parked in the lot or at the overlook, first drive out onto the street.
-  let exitInfo = null;
-  function planExit(s) {
+  // ---------- where is the car? ----------
+  // Worked out from the car's own position and heading every time, so it is never stale.
+  function situation(s, f) {
     const loc = map.locate(s.x, s.z);
-    let A, Bn, exit, exitDir;
-    if (loc.lot) { A = map.nodeAt(1, 3); Bn = map.nodeAt(2, 3); exit = { x: U.clamp(s.x, map.lot.x0 + 3, map.lot.x1 - 3), z: map.lot.z0 + 1 }; exitDir = 'N'; }
-    else if (loc.overlook) { A = map.nodeAt(N - 1, 2); Bn = map.nodeAt(N - 1, 3); exit = { x: map.overlook.x0 + 1, z: U.clamp(s.z, map.overlook.z0 + 3, map.overlook.z1 - 3) }; exitDir = 'W'; }
-    else return null;
-    const seg = map.segments.find((q) => (q.a === A.id && q.b === Bn.id) || (q.a === Bn.id && q.b === A.id));
-    const options = [[A, Bn], [Bn, A]].map(([T, other]) => {
-      const travel = dirBetween(other, T);
-      return { T, other, travel, seg, cost: Math.hypot(T.x - exit.x, T.z - exit.z) };
-    });
-    return { options, exit, exitDir, seg };
+    if (loc.node) return { kind: 'box', node: loc.node };
+    if (loc.seg) {
+      const seg = loc.seg, dot = seg.axis === 'x' ? f.x : f.z, fwd = dot >= 0;
+      return { kind: 'seg', seg, dot, travel: seg.axis === 'x' ? (fwd ? 'E' : 'W') : (fwd ? 'S' : 'N'),
+        node: map.nodes[fwd ? seg.b : seg.a], from: map.nodes[fwd ? seg.a : seg.b] };
+    }
+    if (loc.lot) return { kind: 'lot' };
+    if (loc.overlook) return { kind: 'overlook' };
+    return { kind: 'none' };
+  }
+  function nearestNode(x, z) {
+    let best = null, bd = Infinity;
+    for (const n of map.nodes) { if (!n.degree) continue; const d = Math.hypot(n.x - x, n.z - z); if (d < bd) { bd = d; best = n; } }
+    return best;
+  }
+  // How far ahead the destination is for a car travelling `travel` along the destination street.
+  const ahead = (travel, p) => (dest.at - coord(dest.seg, p)) * sign(travel);
+  const reachable = (travel, p) => ahead(travel, p) > -(dest.park ? 4 : dest.r - 1);
+  function gateSide(travel) {
+    const r = U.rightOf(U.DIRS[travel]), c = onSeg(dest.seg, dest.at);
+    return (dest.x - c.x) * r.x + (dest.z - c.z) * r.z > 0 ? 'right' : 'left';
   }
 
-  function build(car, ap) {
-    const s = car.state;
-    route = null; polyline = []; exitInfo = null;
-    if (!dest) return;
-    const pts = [{ x: s.x, z: s.z }];
-    if (!ap) {
-      const ex = planExit(s);
-      if (ex) {
-        // pick the direction whose route is shorter, then pretend we are already on the street
-        let best = null;
-        for (const o of ex.options) {
-          const tg = dest.offroad ? dest.offroad.map((n) => n.id) : null;
-          const p = tg ? path(o.T.id, tg, o.other.id) : null;
-          const c = o.cost + (p ? p.length * map.SP : 0) + (dest.offroad && dest.offroad.includes(o.T) && dest.offroad.includes(o.other) ? 0 : 0);
-          const p2 = !tg ? path(o.T.id, [map.nodes[dest.seg.a].id, map.nodes[dest.seg.b].id], o.other.id) : null;
-          const cc = c + (p2 ? p2.length * map.SP : 0);
-          if (!best || cc < best.cc) best = { ...o, cc };
+  // ---------- route search ----------
+  // Shortest drive to the destination street. A state is (intersection, direction the car
+  // arrives in), so the search never asks for a U-turn and can count turns.
+  function search(starts) {
+    const key = (id, dir) => id * 4 + DIRK.indexOf(dir);
+    const dist = new Map(), prev = new Map(), open = [];
+    for (const st of starts) {
+      const k = key(st.node.id, st.dir);
+      if (dist.has(k) && dist.get(k) <= st.cost) continue;
+      dist.set(k, st.cost); prev.set(k, null); if (!open.includes(k)) open.push(k);
+    }
+    let best = null;
+    while (open.length) {
+      let bi = 0;
+      for (let q = 1; q < open.length; q++) if (dist.get(open[q]) < dist.get(open[bi])) bi = q;
+      const k = open.splice(bi, 1)[0], cd = dist.get(k);
+      if (best && cd >= best.cost) break;
+      const id = k >> 2, dir = DIRK[k & 3], n = map.nodes[id];
+      for (const out of DIRK) {
+        const si = n.exits[out];
+        if (si === null || out === U.OPPOSITE[dir]) continue;
+        const seg = map.segments[si], turn = out === dir ? 0 : TURN_COST;
+        if (seg === dest.seg) { // last leg: along the destination street up to the stop
+          const c = cd + turn + Math.abs(dest.at - coord(seg, n)) + (dest.park && gateSide(out) === 'left' ? CROSS_COST : 0);
+          if (!best || c < best.cost) best = { cost: c, k };
+          continue;
         }
-        const d = U.DIRS[best.travel], r = U.rightOf(d), off = best.seg.width / 4;
-        const c = map.nodes[best.seg.a];
-        pts.push(ex.exit);
-        pts.push(best.seg.axis === 'x' ? { x: ex.exit.x + d.x * 6, z: c.z + r.z * off } : { x: c.x + r.x * off, z: ex.exit.z + d.z * 6 });
-        ap = { node: best.T, travel: best.travel, seg: best.seg };
-        exitInfo = { exitDir: ex.exitDir, travel: best.travel, name: best.seg.name, exit: ex.exit };
+        const nk = key(otherEnd(seg, id), out), nc = cd + turn + map.SP;
+        if (dist.has(nk) && dist.get(nk) <= nc) continue;
+        dist.set(nk, nc); prev.set(nk, k); if (!open.includes(nk)) open.push(nk);
       }
     }
-    let nodes = null;
-    const onDestSeg = dest.seg && ap && ap.seg === dest.seg && ap.travel === dest.travel;
-    const before = onDestSeg && ((dest.x - s.x) * U.DIRS[dest.travel].x + (dest.z - s.z) * U.DIRS[dest.travel].z) > -2;
-    // already on the street with an off-road destination (lot / overlook) and its entrance is ahead?
-    let direct = false;
-    if (dest.offroad && ap) {
-      const ids = dest.offroad.map((n) => n.id);
-      const gate = dest.gate || { x: map.overlook.x0 - 1, z: (map.overlook.z0 + map.overlook.z1) / 2 };
-      const d = U.DIRS[ap.travel];
-      const loc = map.locate(s.x, s.z);
-      const inside = (dest === DESTS.office && loc.lot) || (dest === DESTS.overlook && loc.overlook);
-      if (inside) direct = true;
-      else if (ids.includes(ap.seg.a) && ids.includes(ap.seg.b) && ((gate.x - s.x) * d.x + (gate.z - s.z) * d.z) > -4) {
-        direct = true;
-        const r = U.rightOf(d), off = ap.seg.width / 4;
-        const c = map.nodes[ap.seg.a];
-        const along = ap.seg.axis === 'x' ? gate.x : gate.z;
-        if (((gate.x - s.x) * d.x + (gate.z - s.z) * d.z) > 6) pts.push(ap.seg.axis === 'x' ? { x: along - d.x * 4, z: c.z + r.z * off } : { x: c.x + r.x * off, z: along - d.z * 4 });
-        pts.push(gate);
+    if (!best) return null;
+    const nodes = [];
+    for (let k = best.k; k !== null && k !== undefined; k = prev.get(k)) nodes.unshift(map.nodes[k >> 2]);
+    return { cost: best.cost, nodes };
+  }
+
+  // One street of the plan, driven from one intersection to the next.
+  function edge(fromId, toId) {
+    const from = map.nodes[fromId], to = map.nodes[toId], travel = dirBetween(from, to);
+    return { from, to, travel, seg: map.segments[from.exits[travel]] };
+  }
+  function chain(first, res) {
+    const edges = first ? [first] : [];
+    for (let k = 0; k < res.nodes.length - 1; k++) edges.push(edge(res.nodes[k].id, res.nodes[k + 1].id));
+    const end = res.nodes[res.nodes.length - 1];
+    edges.push(edge(end.id, otherEnd(dest.seg, end.id)));
+    return edges;
+  }
+
+  function makePlan(sit, s, f) {
+    const place = PLACES[sit.kind];
+    if (place) {
+      if (place.dest === dest) return { edges: [], i: 0, inside: true };
+      // Parked off the street: pull out in whichever direction makes the shorter drive.
+      const exit = place.exitPt(s), seg = place.dest.seg;
+      let best = null;
+      for (const id of [seg.a, seg.b]) {
+        const travel = map.dirToward(seg, id), node = map.nodes[id];
+        const base = turnOf(place.exitDir, travel) === 'left' ? CROSS_COST : 0;
+        const first = edge(otherEnd(seg, id), id);
+        let cand = null;
+        if (seg === dest.seg && ahead(travel, exit) > 2) cand = { cost: base + ahead(travel, exit), edges: [first] };
+        else {
+          const res = search([{ node, dir: travel, cost: base + Math.hypot(node.x - exit.x, node.z - exit.z) }]);
+          if (res) cand = { cost: res.cost, edges: chain(first, res) };
+        }
+        if (cand && (!best || cand.cost < best.cost)) best = { ...cand, travel };
+      }
+      if (!best) return null;
+      const o = laneOffset(seg, best.travel), c = onSeg(seg, coord(seg, exit) + sign(best.travel) * 6);
+      return { edges: best.edges, i: 0,
+        exit: { pt: exit, join: { x: c.x + o.x, z: c.z + o.z }, turn: turnOf(place.exitDir, best.travel), name: seg.name } };
+    }
+    if (sit.kind === 'seg') {
+      const cur = edge(sit.from.id, sit.node.id);
+      if (sit.seg === dest.seg && reachable(sit.travel, s)) return { edges: [cur], i: 0 };
+      const res = search([{ node: sit.node, dir: sit.travel, cost: Math.hypot(sit.node.x - s.x, sit.node.z - s.z) }]);
+      return res ? { edges: chain(cur, res), i: 0 } : null;
+    }
+    // In an intersection or off the road: start at the closest intersection, the way the car faces.
+    const facing = Math.abs(f.x) > Math.abs(f.z) ? (f.x > 0 ? 'E' : 'W') : (f.z > 0 ? 'S' : 'N');
+    const n = sit.kind === 'box' ? sit.node : nearestNode(s.x, s.z);
+    const res = search([{ node: n, dir: facing, cost: Math.hypot(n.x - s.x, n.z - s.z) }]);
+    return res ? { edges: chain(null, res), i: 0, facing } : null;
+  }
+
+  // ---------- the line the chevrons follow ----------
+  function trace(sit, s) {
+    const pts = [{ x: s.x, z: s.z }];
+    if (!plan || plan.inside) pts.push({ x: dest.x, z: dest.z });
+    else {
+      if (plan.exit) pts.push(plan.exit.pt, plan.exit.join);
+      const onStreet = sit.kind === 'seg' || !!plan.exit;
+      for (let k = plan.i; k < plan.edges.length; k++) {
+        const e = plan.edges[k], d = U.DIRS[e.travel], o = laneOffset(e.seg, e.travel);
+        if (k > plan.i || !onStreet) {
+          const h = map.halfAlong(e.from, e.travel);
+          pts.push({ x: e.from.x + d.x * h + o.x, z: e.from.z + d.z * h + o.z, tag: 'out', d });
+        } else if (!plan.exit) {
+          // ease back into the lane just ahead instead of drawing one long diagonal
+          const m = coord(e.seg, s) + sign(e.travel) * 10;
+          const stop = k < plan.edges.length - 1 ? coord(e.seg, e.to) - sign(e.travel) * map.halfAlong(e.to, e.travel) : dest.at;
+          if ((stop - m) * sign(e.travel) > 6) { const c = onSeg(e.seg, m); pts.push({ x: c.x + o.x, z: c.z + o.z }); }
+        }
+        if (k < plan.edges.length - 1) {
+          const h = map.halfAlong(e.to, e.travel);
+          pts.push({ x: e.to.x - d.x * h + o.x, z: e.to.z - d.z * h + o.z, tag: 'in', d });
+          continue;
+        }
+        // the destination street: stay in lane up to the stop
+        const c = onSeg(e.seg, dest.at), p = { x: c.x + o.x, z: c.z + o.z };
+        if (!dest.park) { pts.push(p); break; }
+        const ref = pts[pts.length - 1];
+        if ((p.x - ref.x) * d.x + (p.z - ref.z) * d.z > 6) pts.push({ x: p.x - d.x * 4, z: p.z - d.z * 4 });
+        pts.push(dest.gate, { x: dest.x, z: dest.z });
       }
     }
-    if (!before && !direct) {
-      const start = ap ? ap.node : nearestNode(s.x, s.z);
-      const cameFrom = ap ? (ap.seg.a === ap.node.id ? ap.seg.b : ap.seg.a) : null;
-      let targets, wrongWayFrom;
-      const banned = new Set();
-      if (dest.offroad) {
-        targets = dest.offroad.map((n) => n.id);
-        const [A, Bn] = dest.offroad;
-        banned.add(A.id + '>' + Bn.id); banned.add(Bn.id + '>' + A.id); // arriving along the entrance street means we passed it
-        wrongWayFrom = dest.offroad.find((n) => n.id === start.id) ? dest.offroad.find((n) => n.id !== start.id).id : null;
-      } else {
-        const segNodes = [map.nodes[dest.seg.a], map.nodes[dest.seg.b]];
-        const entry = segNodes.find((n) => dirBetween(n, segNodes[0] === n ? segNodes[1] : segNodes[0]) === dest.travel);
-        targets = [entry.id];
-        wrongWayFrom = segNodes.find((n) => n !== entry).id;
-        banned.add(wrongWayFrom + '>' + entry.id); // must enter the street heading the right way
-      }
-      const startOk = cameFrom === null || cameFrom !== wrongWayFrom;
-      nodes = routeNodes(start, targets, cameFrom, startOk, banned) || [start];
-      if (ap) { // finish the street we are on, in our own lane
-        const d = U.DIRS[ap.travel], r = U.rightOf(d), off = ap.seg.width / 4, h = map.halfAlong(start, ap.travel);
-        pts.push({ x: start.x - d.x * h + r.x * off, z: start.z - d.z * h + r.z * off, tag: 'in' });
-      }
-      for (let k = 0; k < nodes.length - 1; k++) {
-        pts.push({ ...lanePt(nodes[k], nodes[k + 1], true), tag: 'out' });
-        pts.push({ ...lanePt(nodes[k], nodes[k + 1], false), tag: 'in' });
-      }
-      const last = nodes[nodes.length - 1];
-      if (!dest.offroad) {
-        const k = dest.travel, d = U.DIRS[k], r = U.rightOf(d), off = dest.seg.width / 4, h = map.halfAlong(last, k);
-        pts.push({ x: last.x + d.x * h + r.x * off, z: last.z + d.z * h + r.z * off, tag: 'out' });
-      } else {
-        // drive along the street toward the entrance, then turn in
-        const gate = dest.gate || { x: map.overlook.x0 - 1, z: (map.overlook.z0 + map.overlook.z1) / 2 };
-        const other = dest.offroad.find((n) => n !== last);
-        const k = dirBetween(last, other), d = U.DIRS[k], r = U.rightOf(d);
-        const s2 = map.segments[last.exits[k]], off = s2.width / 4;
-        const along = (gate.x - last.x) * d.x + (gate.z - last.z) * d.z;
-        pts.push({ x: last.x + d.x * map.halfAlong(last, k) + r.x * off, z: last.z + d.z * map.halfAlong(last, k) + r.z * off, tag: 'out' });
-        pts.push({ x: last.x + d.x * along + r.x * off, z: last.z + d.z * along + r.z * off });
-        pts.push(gate);
-      }
-    }
-    pts.push({ x: dest.x, z: dest.z });
     polyline = smoothTurns(pts);
     polyLen = [0];
     for (let k = 1; k < polyline.length; k++) {
       const a = polyline[k - 1], b = polyline[k];
       polyLen.push(polyLen[k - 1] + Math.hypot(b.x - a.x, b.z - a.z));
     }
-    route = nodes;
-  }
-
-  // Like path(), but if we are already at a target facing the wrong way, go around the block.
-  function routeNodes(start, targets, cameFrom, startOk, banned) {
-    if (startOk || !targets.includes(start.id)) return path(start.id, targets, cameFrom, banned);
-    let best = null;
-    for (const nb of neighbours(start)) {
-      if (nb.node.id === cameFrom) continue;
-      const p = path(nb.node.id, targets, start.id, banned);
-      if (p && (!best || p.length + 1 < best.length)) best = [start].concat(p);
-    }
-    return best;
   }
 
   // Replace each sharp corner through an intersection with a gentle curve.
   function smoothTurns(pts) {
     const out = [];
     for (let i = 0; i < pts.length; i++) {
-      const p = pts[i];
+      const p = pts[i], q = pts[i + 1];
       out.push(p);
-      const q = pts[i + 1];
-      if (p.tag !== 'in' || !q || q.tag !== 'out' || i === 0 || !pts[i + 2]) continue;
-      const a = pts[i - 1], c = pts[i + 2];
-      const d1x = p.x - a.x, d1z = p.z - a.z, d2x = c.x - q.x, d2z = c.z - q.z;
-      const l1 = Math.hypot(d1x, d1z) || 1, l2 = Math.hypot(d2x, d2z) || 1;
-      const cross = (d1x / l1) * (d2z / l2) - (d1z / l1) * (d2x / l2);
-      if (Math.abs(cross) < 0.3) continue; // straight through
-      // control point where the two lane lines meet
-      const t = ((q.x - p.x) * (d2z / l2) - (q.z - p.z) * (d2x / l2)) / cross;
-      const cx = p.x + (d1x / l1) * t, cz = p.z + (d1z / l1) * t;
+      if (p.tag !== 'in' || !q || q.tag !== 'out' || p.d === q.d) continue;
+      // control point where the two lane lines cross
+      const cx = p.d.x !== 0 ? q.x : p.x, cz = p.d.x !== 0 ? p.z : q.z;
       for (let k = 1; k < 6; k++) {
-        const s = k / 6, u = 1 - s;
-        out.push({ x: u * u * p.x + 2 * u * s * cx + s * s * q.x, z: u * u * p.z + 2 * u * s * cz + s * s * q.z });
+        const t = k / 6, u = 1 - t;
+        out.push({ x: u * u * p.x + 2 * u * t * cx + t * t * q.x, z: u * u * p.z + 2 * u * t * cz + t * t * q.z });
       }
     }
     return out;
   }
 
-  function nearestNode(x, z) {
-    let best = null, bd = Infinity;
-    for (const n of map.nodes) { if (!n.degree) continue; const d = Math.hypot(n.x - x, n.z - z); if (d < bd) { bd = d; best = n; } }
-    return best;
+  // ---------- keeping the plan current ----------
+  // In an intersection: has the car clearly driven past the middle toward a street the plan
+  // does not take next? Then treat it as already on that street.
+  function leavingAnotherWay(sit, s, f) {
+    const next = plan.edges.find((e, k) => k >= plan.i && e.from === sit.node);
+    if (!next) return null;
+    for (const out of DIRK) {
+      const si = sit.node.exits[out], d = U.DIRS[out];
+      if (si === null || out === next.travel || f.x * d.x + f.z * d.z < 0.85) continue;
+      if ((s.x - sit.node.x) * d.x + (s.z - sit.node.z) * d.z <= 0) continue;
+      const seg = map.segments[si];
+      return { kind: 'seg', seg, dot: 1, travel: out, from: sit.node, node: map.nodes[otherEnd(seg, sit.node.id)] };
+    }
+    return null;
   }
 
-  function instruction(car, ap) {
-    const s = car.state;
-    const total = polyLen.length ? polyLen[polyLen.length - 1] : 0;
-    if (exitInfo) {
-      const t = turnOf(exitInfo.exitDir, exitInfo.travel);
-      return { icon: t === 'left' ? '↰' : '↱', text: 'Pull out and turn ' + t + ' onto ' + exitInfo.name, dist: Math.hypot(exitInfo.exit.x - s.x, exitInfo.exit.z - s.z) };
+  function refresh(car) {
+    const s = car.state, f = car.forward();
+    let sit = situation(s, f);
+    if (plan && sit.kind === 'box') sit = leavingAnotherWay(sit, s, f) || sit;
+    const aligned = sit.kind === 'seg' && Math.abs(sit.dot) >= 0.35; // clearly driving along a street
+    let fresh = !plan;
+    if (plan) {
+      if (PLACES[sit.kind]) fresh = true;
+      else if (aligned) {
+        let j = -1;
+        for (let k = plan.i; k < plan.edges.length; k++) {
+          if (plan.edges[k].from === sit.from && plan.edges[k].to === sit.node) { j = k; break; }
+        }
+        if (j < 0) fresh = true; // on a street the plan does not use: plan again from here
+        else {
+          plan.i = j; plan.exit = null; plan.facing = null;
+          if (j === plan.edges.length - 1 && !reachable(sit.travel, s)) fresh = true; // drove past it
+        }
+      }
+      // inside an intersection, mid-turn, or clipping a corner: keep the plan as it is
     }
-    if (!route && dest.offroad && ap) {
-      const d = U.DIRS[ap.travel], r = U.rightOf(d), side = (dest.x - s.x) * r.x + (dest.z - s.z) * r.z;
-      return { icon: side > 0 ? '↱' : '↰', text: 'Pull into ' + (dest === DESTS.office ? 'the Permit Office lot' : 'the overlook') + ' on your ' + (side > 0 ? 'right' : 'left'), dist: total };
-    }
-    if (!route || !ap) return { icon: '📍', text: 'Head to ' + dest.name, dist: total };
-    // walk the route looking for the first real turn
-    let inDir = ap.travel, d = Math.hypot(route[0].x - s.x, route[0].z - s.z);
-    for (let k = 0; k < route.length; k++) {
-      const n = route[k];
-      let outDir, name;
-      if (k < route.length - 1) { outDir = dirBetween(n, route[k + 1]); name = map.segments[n.exits[outDir]].name; }
-      else if (!dest.offroad) { outDir = dest.travel; name = dest.seg.name; }
-      else { const other = dest.offroad.find((o) => o !== n); outDir = dirBetween(n, other); name = map.segments[n.exits[outDir]].name; }
-      const t = turnOf(inDir, outDir);
-      if (t === 'left') return { icon: '↰', text: 'Turn left onto ' + name, dist: d };
-      if (t === 'right') return { icon: '↱', text: 'Turn right onto ' + name, dist: d };
-      if (t === 'uturn') return { icon: '↶', text: 'Turn around when it is safe', dist: d };
-      inDir = outDir; d += map.SP;
-    }
-    if (dest.offroad) return { icon: '↱', text: 'Pull into ' + (dest === DESTS.office ? 'the Permit Office lot' : 'the overlook'), dist: Math.hypot(dest.x - s.x, dest.z - s.z) };
-    return { icon: '↑', text: 'Continue to ' + dest.name, dist: Math.hypot(dest.x - s.x, dest.z - s.z) };
+    if (fresh) plan = makePlan(sit, s, f);
+    if (fresh || aligned) trace(sit, s);
+    last = instruction(s);
   }
 
-  const m4 = new T.Matrix4(), q = new T.Quaternion(), up = new T.Vector3(0, 1, 0), one = new T.Vector3(1, 1, 1), p3 = new T.Vector3();
+  function instruction(s) {
+    const here = Math.hypot(dest.x - s.x, dest.z - s.z);
+    if (!plan) return { icon: '📍', text: 'Head to ' + dest.name, dist: here };
+    if (plan.inside) return { icon: '◎', text: 'Park in the ' + (dest === DESTS.office ? 'gold circle' : 'blue ring'), dist: here };
+    if (plan.exit) {
+      return { icon: plan.exit.turn === 'left' ? '↰' : '↱', text: 'Pull out and turn ' + plan.exit.turn + ' onto ' + plan.exit.name,
+        dist: Math.hypot(plan.exit.pt.x - s.x, plan.exit.pt.z - s.z) };
+    }
+    const turnStep = (t, name, dist) => ({ icon: t === 'left' ? '↰' : '↱', text: 'Turn ' + t + ' onto ' + name, dist });
+    if (plan.facing) {
+      const t = turnOf(plan.facing, plan.edges[0].travel);
+      if (t === 'left' || t === 'right') return turnStep(t, plan.edges[0].seg.name, 0);
+    }
+    // walk the plan looking for the first real turn
+    let d = 0;
+    for (let k = plan.i; k < plan.edges.length - 1; k++) {
+      const e = plan.edges[k], nx = plan.edges[k + 1];
+      d = k === plan.i ? Math.hypot(e.to.x - s.x, e.to.z - s.z) : d + map.SP;
+      const t = turnOf(e.travel, nx.travel);
+      if (t !== 'straight') return turnStep(t, nx.seg.name, d);
+    }
+    if (dest.park) {
+      const side = gateSide(plan.edges[plan.edges.length - 1].travel);
+      return { icon: side === 'right' ? '↱' : '↰', text: 'Pull into ' + dest.label + ' on your ' + side,
+        dist: Math.hypot(dest.gate.x - s.x, dest.gate.z - s.z) };
+    }
+    return { icon: '↑', text: here < 90 ? 'Drive into the blue ring' : 'Continue to ' + dest.name, dist: here };
+  }
+
+  // ---------- chevrons on the road ----------
+  // A bright arrow over a dark one, so the trail reads on pale concrete and on dark asphalt.
+  const MAXC = 30;
+  const shape = new T.Shape();
+  shape.moveTo(-1, -0.6); shape.lineTo(0, 0.35); shape.lineTo(1, -0.6); shape.lineTo(1, 0.15); shape.lineTo(0, 1.1); shape.lineTo(-1, 0.15); shape.closePath();
+  const chevG = new T.ShapeGeometry(shape);
+  chevG.translate(0, -0.25, 0);
+  chevG.rotateX(-Math.PI / 2); chevG.rotateY(Math.PI); // lie flat, pointing the way the car drives
+  chevG.scale(1.25, 1, 1.6);
+  const backG = chevG.clone(); backG.scale(1.3, 1, 1.3);
+  const chevMat = new T.MeshBasicMaterial({ color: 0x2fd6ff, transparent: true, opacity: 0.95, depthWrite: false, fog: false });
+  const backMat = new T.MeshBasicMaterial({ color: 0x0a2a4d, transparent: true, opacity: 0.6, depthWrite: false, fog: false });
+  const back = new T.InstancedMesh(backG, backMat, MAXC), chev = new T.InstancedMesh(chevG, chevMat, MAXC);
+  // These instances follow the car. The empty title-screen bounds never describe the route.
+  for (const [mesh, order] of [[back, 2], [chev, 3]]) { mesh.frustumCulled = false; mesh.renderOrder = order; mesh.count = 0; scene.add(mesh); }
+  const hideChevrons = () => { chev.count = 0; back.count = 0; };
+
+  const destBeacon = world.beacon(0x34e2ff, 6);
+  destBeacon.visible = false;
+
+  const m4 = new T.Matrix4(), q = new T.Quaternion(), up = new T.Vector3(0, 1, 0), size = new T.Vector3(), p3 = new T.Vector3();
   function drawChevrons(dt, car) {
-    chev.count = 0;
-    if (!polyline.length) return;
-    flow = (flow + dt * 7) % 5;
-    // start from the point of the polyline closest to the car
+    hideChevrons();
+    if (polyline.length < 2) return;
+    flow = (flow + dt * 7) % SPACING;
+    // start from the point of the line closest to the car (it was drawn from the car, so look near its start)
     const s = car.state;
     let bestD = Infinity, startAlong = 0;
-    for (let k = 0; k < polyline.length - 1; k++) {
+    for (let k = 0; k < polyline.length - 1 && polyLen[k] < 70; k++) {
       const a = polyline[k], b = polyline[k + 1];
       const L = polyLen[k + 1] - polyLen[k]; if (L < 0.01) continue;
-      let t = ((s.x - a.x) * (b.x - a.x) + (s.z - a.z) * (b.z - a.z)) / (L * L); t = U.clamp(t, 0, 1);
-      const px = a.x + (b.x - a.x) * t, pz = a.z + (b.z - a.z) * t;
-      const dd = Math.hypot(px - s.x, pz - s.z);
+      const t = U.clamp(((s.x - a.x) * (b.x - a.x) + (s.z - a.z) * (b.z - a.z)) / (L * L), 0, 1);
+      const dd = Math.hypot(a.x + (b.x - a.x) * t - s.x, a.z + (b.z - a.z) * t - s.z);
       if (dd < bestD) { bestD = dd; startAlong = polyLen[k] + t * L; }
     }
     const total = polyLen[polyLen.length - 1];
     let n = 0, seg = 0;
-    for (let along = startAlong + 4 + flow; along < Math.min(total - 1, startAlong + 160) && n < MAXC; along += 5) {
+    for (let along = startAlong + 4 + flow; along < Math.min(total - 1, startAlong + 170) && n < MAXC; along += SPACING) {
       while (seg < polyLen.length - 2 && polyLen[seg + 1] < along) seg++;
       const a = polyline[seg], b = polyline[seg + 1];
       const L = polyLen[seg + 1] - polyLen[seg]; if (L < 0.01) continue;
       const t = (along - polyLen[seg]) / L;
-      p3.set(a.x + (b.x - a.x) * t, 0.1, a.z + (b.z - a.z) * t);
       q.setFromAxisAngle(up, Math.atan2(b.x - a.x, b.z - a.z));
-      const fade = Math.min(1, (along - startAlong - 3) / 6);
-      m4.compose(p3, q, one.set(fade, 1, fade)); one.set(1, 1, 1);
-      chev.setMatrixAt(n++, m4);
+      const fade = U.clamp((along - startAlong - 3) / 6, 0.05, 1);
+      size.set(fade, 1, fade);
+      p3.set(a.x + (b.x - a.x) * t, 0.1, a.z + (b.z - a.z) * t);
+      m4.compose(p3, q, size); back.setMatrixAt(n, m4);
+      p3.y = 0.11;
+      m4.compose(p3, q, size); chev.setMatrixAt(n, m4);
+      n++;
     }
-    chev.count = n;
-    chev.instanceMatrix.needsUpdate = true;
-    chevMat.opacity = 0.8 + Math.sin(performance.now() / 300) * 0.12;
+    chev.count = back.count = n;
+    chev.instanceMatrix.needsUpdate = back.instanceMatrix.needsUpdate = true;
+    chevMat.opacity = 0.86 + Math.sin(performance.now() / 300) * 0.09;
+  }
+
+  function setDestination(id) {
+    dest = id ? DESTS[id] : null;
+    destBeacon.visible = !!dest && id !== 'office'; // the office has its own gold circle
+    if (dest) {
+      destBeacon.position.set(dest.x, 0, dest.z);
+      destBeacon.scale.setScalar(dest.r / 6);
+    }
+    plan = null; polyline = []; polyLen = []; recalc = 0;
+    if (!dest) hideChevrons();
   }
 
   /** Call every frame while driving. Returns guidance and whether the destination is reached. */
-  function update(dt, car, ap) {
-    if (!dest) { chev.count = 0; return null; }
+  function update(dt, car) {
+    if (!dest) { hideChevrons(); return null; }
     recalc -= dt;
-    if (recalc <= 0) { recalc = 0.5; build(car, ap); last = instruction(car, ap); }
+    if (recalc <= 0) { recalc = 0.2; refresh(car); }
     drawChevrons(dt, car);
     destBeacon.userData.ring.rotation.z += dt;
     const s = car.state;
-    const arrived = Math.hypot(s.x - dest.x, s.z - dest.z) < dest.r && Math.abs(s.v) < 1.2;
+    // Street stops count as soon as the car is in the ring; parking stops need a full stop.
+    const arrived = Math.hypot(s.x - dest.x, s.z - dest.z) < dest.r && (!dest.park || Math.abs(s.v) < 1.2);
     return { ...last, arrived, destName: dest.name, icon2: dest.icon };
   }
 
-  function hide() { chev.count = 0; destBeacon.visible = false; }
+  function hide() { hideChevrons(); destBeacon.visible = false; }
 
-  return { DESTS, LESSONS, EXTRA, setDestination, update, hide, get polyline() { return polyline; }, get dest() { return dest; } };
+  return { DESTS, LESSONS, EXTRA, setDestination, update, hide,
+    get polyline() { return polyline; }, get dest() { return dest; }, get plan() { return plan; } };
 };

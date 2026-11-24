@@ -156,7 +156,7 @@ window.TEXTBOOK_PROJECT = {
   }
 };
 
-if (typeof document !== 'undefined') document.addEventListener('textbook-ready', () => {
+if (typeof document !== 'undefined') document.addEventListener('DOMContentLoaded', () => {
   const exercise = document.createElement('section');
   exercise.className = 'project-editor no-print';
   exercise.id = 'project-files';

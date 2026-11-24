@@ -112,6 +112,14 @@
           ] },
           { type: 'callout', kind: 'onset', html: 'Don’t zoom if you can walk. Moving the camera closer usually looks better than zooming the lens.' }
         ]
+      },
+      {
+        id: 'studio-practice', title: 'Try it in the studio',
+        intro: 'One person, one camera, every size from medium to extreme close-up.',
+        blocks: [
+          { type: 'text', html: '<p>Use the zoom and the three camera marks. The monitor names the shot size you have made.</p>' },
+          { type: 'studio-room', lesson: 'shot-sizes' }
+        ]
       }
     ],
     check: [

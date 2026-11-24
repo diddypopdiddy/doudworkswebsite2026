@@ -6,6 +6,28 @@
   const captions = ['−3', '−2', '−1', '0', '+1', '+2', '+3'];
   const frames = [0.32, 0.52, 0.75, 1, 1.29, 1.68, 2.3].map((v) => photo('brightness(' + v + ')'));
   H.study({
+    cameraSection: {
+      id: 'camera-practice', title: 'Expose for a face by a window',
+      intro: 'Set up the interview so a pale shirt passing the camera does not change the brightness of the face.',
+      blocks: [{
+        type: 'camera-sim', title: 'Hold the interview exposure', body: ['g97', 'hcx1600', 'phone'], level: 2, scene: 'interview-window',
+        start: { power: true, mode: 'P', settings: { comp: 2 } }, callAction: true,
+        tasks: [
+          { text: 'Check highlights with zebras. Expose for the face, then lock and record through the person crossing in white.',
+            hint: 'Turn on Zebra Pattern, tap the face to meter it, adjust exposure toward zero and lock. Record, call action and wait until the person in white passes.',
+            check: s => s.takes.some(t => t.covers('crossing', 'crossing', .8) && t.exposed() && t.settings.zebras && t.settings.exposureLocked) }
+        ],
+        forBody: {
+          hcx1600: { level: 3, faults: ['nd-wrong'], start: { power: true, mode: 'MANU', settings: { iso: 'AUTO' } },
+            tasks: [{ text: 'Clear the heavy ND filter for this indoor interview and record a correctly exposed face.',
+              hint: 'Close the LCD to reach the ND FILTER switch. Choose CLR, then reopen the monitor to check the face. IRIS and GAIN also affect exposure.',
+              check: s => s.fixed('nd-wrong') && s.takes.some(t => t.length >= 2 && t.settings.nd === 0 && t.exposed()) }] },
+          phone: { start: { power: true, settings: { comp: 2, sideways: true } }, tasks: [{ text: 'Set exposure for the face, engage AE/AF LOCK and record through the person crossing in white.',
+            hint: 'Hold the face to lock. Adjust the sun control. Record, call action and keep rolling through the crossing.',
+            check: s => s.takes.some(t => t.covers('crossing', 'crossing', .8) && t.settings.exposureLocked && t.exposed()) }] }
+        }, doneText: 'Your take holds exposure on the interview subject.'
+      }]
+    },
     slug: 'exposure',
     frames: frames,
     captions: ['−3', '−2', '−1', '0', '+1', '+2', '+3'],
@@ -121,7 +143,7 @@
       '[[Underexposed]] shadows and [[overexposed]] highlights lose detail.',
       'Use [[zebras]] to check highlights before raising [[ISO]].',
     ],
-    realCamera: 'Hold on a face to lock exposure, then adjust brightness while checking a bright window.',
+    realCamera: 'On a phone, hold on a face to lock exposure, then adjust brightness while checking a bright window. On a G97 with factory settings, hold AF/AE LOCK while watching for AEL. The practice camera has AF/AE Lock Hold on, so one press keeps the lock.',
     sketch: 'Sketch which detail you would save on a face near a window.',
     frameLabels: ['First setup', 'Revised setup'],
     hookMedia: H.pair(frames[0], frames[6]),

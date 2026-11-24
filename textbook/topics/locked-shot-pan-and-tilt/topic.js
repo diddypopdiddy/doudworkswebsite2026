@@ -79,6 +79,14 @@
             { q: 'Reveal a long table of food, one dish at a time.', options: ['Pan', { text: 'Tilt', clue: 'The table runs sideways.' }, { text: 'Locked-off shot', clue: 'You want to reveal it bit by bit.' }], answer: 0, explain: 'A slow pan reveals the table.' }
           ] }
         ]
+      },
+      {
+        id: 'studio-practice', title: 'Try it in the studio',
+        intro: 'Turn the tripod head, then lock it off.',
+        blocks: [
+          { type: 'text', html: '<p>Pan and tilt with the thirds grid on, then centre the camera and leave it still.</p>' },
+          { type: 'studio-room', lesson: 'locked-shot-pan-and-tilt' }
+        ]
       }
     ],
     check: [
