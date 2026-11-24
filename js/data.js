@@ -86,7 +86,7 @@ const WRITE = {
 export const BOOKS = [
   {
     ...FRAMEWORK,
-    art: "book-plain-ink-blue", color: "#182751", spine: "AI Production Framework",
+    art: "book-plain-ink-blue", color: "#182751", spine: "AI Framework",
     chapters: [
       { t: "AI Literacy and Core Competencies", n: 1 },
       { t: "The five AI Modes", n: 7 },
@@ -106,7 +106,7 @@ export const BOOKS = [
       { t: "Assignment permissions and concerns", n: 5 },
       { t: "Printable quizzes and classroom resources", n: 6 },
     ],
-    art: "book-plain-brick", color: "#a3301f", spine: "AI Production Teacher Playbook",
+    art: "book-plain-brick", color: "#a3301f", spine: "Teacher Playbook",
   },
   {
     ...TEXTBOOK,
@@ -120,7 +120,7 @@ export const BOOKS = [
       { t: "Editing, graphics and captions", n: 31 },
       { t: "Finish and share", n: 41 },
     ],
-    art: "book-plain-teal", color: "#176a6d", spine: "Video Production Textbook",
+    art: "book-plain-teal", color: "#176a6d", spine: "Video Textbook",
   },
   {
     ...ROADTEST,
@@ -153,7 +153,7 @@ export const BOOKS = [
     href: "/aiworkbook/",
     sameTab: true,
     action: "Open the Workbook",
-    art: "book-plain-plum", color: "#52365e", spine: "AI Production Student Workbook",
+    art: "book-plain-plum", color: "#52365e", spine: "Student Workbook",
     coverAddress: "vincedoud.com/aiworkbook",
     emblem: "ai-workbook.svg",
     chapters: [
