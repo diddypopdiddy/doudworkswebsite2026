@@ -57,12 +57,7 @@
   WB.starRow = function (n, cls) {
     return `<span class="stars ${cls || ""}" role="img" aria-label="${n} of 3 stars">${[0, 1, 2].map(i => `<span class="star ${i < n ? "on" : ""}" style="--i:${i}">${WB.icon("star")}</span>`).join("")}</span>`;
   };
-  WB.totalStars = function () {
-    const s = WB.state, st = s.stations;
-    return WB.starsFor("literacy", s.literacy.best) +
-      ["prompting", "privacy", "ethics", "verification"].reduce((n, k) => n + WB.starsFor("station", st[k].best), 0) +
-      WB.starsFor("crossroads", st.crossroads.best) + WB.starsFor("boss", s.boss.best);
-  };
+  WB.totalStars = () => WB.starsFor("literacy", WB.state.literacy.best);
 
   /* keyboard: A to D (or 1 to 4) picks an answer in the newest answer group */
   document.addEventListener("keydown", function (e) {

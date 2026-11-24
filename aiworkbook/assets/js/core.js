@@ -39,22 +39,11 @@ window.WB = window.WB || {};
     WB.renderHud && WB.renderHud();
   };
   WB.reset = function () {
-    const sound = WB.state.sound;
-    WB.state = blank();
-    WB.state.sound = sound;
+    WB.state.literacy = blank().literacy;
     WB.save();
   };
 
-  /* Points shown in the header: best scores across all chapters. */
-  WB.totalXP = function () {
-    const s = WB.state;
-    const st = s.stations;
-    return s.literacy.best + st.prompting.best + st.privacy.best + st.ethics.best + st.verification.best + st.crossroads.best + s.boss.best;
-  };
-  WB.stationsDone = function () {
-    const st = WB.state.stations;
-    return ["prompting", "privacy", "ethics", "verification"].filter(k => st[k].done).length;
-  };
+  WB.totalXP = () => WB.state.literacy.best;
 
   /* ---------- helpers ---------- */
   WB.esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -144,11 +133,13 @@ window.WB = window.WB || {};
 
   function render() {
     const path = (location.hash || "#/").slice(1) || "/";
-    const fn = WB.routes[path] || WB.routes["/"];
+    const chapter = path.split("/")[1];
+    const gatedRoute = (chapter === "stations" || chapter === "boss") ? `/${chapter}` : "/";
+    const fn = WB.routes[path] || WB.routes[gatedRoute];
     const main = document.getElementById("main");
     main.innerHTML = "";
     main.className = "";
-    document.body.dataset.route = path.split("/")[1] || "home";
+    document.body.dataset.route = chapter || "home";
     window.scrollTo(0, 0);
     fn(main);
     WB.renderHud();
@@ -167,9 +158,8 @@ window.WB = window.WB || {};
       snd.setAttribute("aria-pressed", WB.state.sound ? "true" : "false");
       snd.querySelector("span").textContent = WB.state.sound ? "Sound on" : "Sound off";
     }
-    const s = WB.state;
-    const marks = { literacy: s.literacy.done, stations: s.stations.crossroads.done, boss: s.boss.done };
-    WB.$$("[data-ch]").forEach(el => { el.classList.toggle("done", !!marks[el.dataset.ch]); });
+    const literacy = document.querySelector('[data-ch="literacy"]');
+    if (literacy) literacy.classList.toggle("done", WB.state.literacy.done);
   };
 
   /* A reusable exit ticket: one reflection prompt, saved only in this browser. */

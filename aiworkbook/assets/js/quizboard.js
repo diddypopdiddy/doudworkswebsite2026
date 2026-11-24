@@ -258,8 +258,8 @@
         </div>
         <div id="ticket"></div>
         <div class="row-gap">
-          <a class="btn btn-big" href="#/stations">Next: Station Rotation ${WB.icon("arrow")}</a>
-          <button class="btn btn-ghost" id="again" type="button">Play again</button>
+          <button class="btn btn-big" id="again" type="button">Play again</button>
+          <a class="btn btn-ghost" href="#/stations">See the next chapter ${WB.icon("arrow")}</a>
         </div>
       </section>`;
     WB.exitTicket(WB.$("#ticket", main), "What's one thing about how AI works that surprised you, or that you'll remember next time you use it?",

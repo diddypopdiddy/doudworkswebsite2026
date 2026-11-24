@@ -2,6 +2,8 @@
 (function () {
   const esc = WB.esc;
   const I = (n, c) => WB.icon(n, c);
+  const sampleUrl = "/resources/student-workbook-sample/";
+  const purchaseUrl = "mailto:vinceandrewdoud@gmail.com?subject=Student%20Workbook%20purchase%20inquiry";
 
   function status(done, started) {
     if (done) return `<span class="pill pill-done">Complete</span>`;
@@ -65,10 +67,8 @@
   WB.route("/", function (main) {
     const s = WB.state;
     const st = s.stations;
-    const nStations = WB.stationsDone();
     const started = WB.totalXP() > 0;
-    const next = s.literacy.done ? (st.crossroads.done ? "boss" : "stations") : "literacy";
-    const ch = (n, key, href, kicker, title, text, done, startedCh, stars, extra) => `
+    const ch = (n, href, kicker, title, text, done, activity) => `
       <a class="chapter ch${n} ${done ? "is-done" : ""}" href="${href}">
         <div class="ch-top">
           <span class="ch-label">${kicker}</span>
@@ -78,7 +78,7 @@
         <div class="ch-body">
           <h2>${title}</h2>
           <p>${text}</p>
-          <div class="ch-meta">${WB.starRow(stars)}${status(done, startedCh)}${extra || ""}<span class="ch-go">${I("arrow")}</span></div>
+          <div class="ch-meta">${activity}<span class="ch-go">${I("arrow")}</span></div>
         </div>
       </a>`;
     main.innerHTML = `
@@ -88,10 +88,11 @@
           <h1>Play your way through the <span class="hl">AI&nbsp;Framework</span>.</h1>
           <p class="lede">Three chapters, three kinds of game. Learn what AI is, practice the four AI Core Competencies you use every time, then put it all together against the final boss.</p>
           <div class="hero-cta">
-            <a class="btn btn-big" href="#/${next}">${started ? "Keep playing" : "Start Chapter 1"} ${I("arrow")}</a>
+            <a class="btn btn-big" href="#/literacy">${started ? "Play the Quiz Board" : "Play the free Quiz Board"} ${I("arrow")}</a>
             <a class="btn btn-ghost btn-big" href="#/workbook">My workbook</a>
           </div>
-          <p class="scribble hero-note">${started ? `${WB.totalStars()} of 21 stars earned so far.` : "New here? Start with Chapter 1."}</p>
+          <p class="scribble hero-note">${started ? `${WB.totalStars()} of 3 stars earned.` : "Chapter 1 is free to play."}</p>
+          <p><a class="how-link" href="${purchaseUrl}">Ask about purchasing</a></p>
         </div>
         ${heroArt()}
       </section>
@@ -103,18 +104,15 @@
         </div>
         <div class="quest-grid">
           <div class="quest-path" aria-hidden="true"></div>
-          ${ch(1, "literacy", "#/literacy", "Understand AI", "The Quiz Board",
+          ${ch(1, "#/literacy", "Understand AI", "The Quiz Board",
             "AI Literacy as a game-show board: what AI is, how it works, its history, where it shows up and its limits. Solo or teams.",
-            s.literacy.done, s.literacy.best > 0, WB.starsFor("literacy", s.literacy.best),
-            s.literacy.best ? `<span class="best">Best ${s.literacy.best.toLocaleString()}</span>` : "")}
-          ${ch(2, "stations", "#/stations", "Use judgment", "Station Rotation",
+            s.literacy.done, WB.starRow(WB.totalStars()) + status(s.literacy.done, started))}
+          ${ch(2, "#/stations", "Use judgment", "Station Rotation",
             "Four stations, one per Core Competency, in any order. Then the Crossroads puts all four to work at once.",
-            st.crossroads.done, nStations > 0, WB.starsFor("crossroads", st.crossroads.best),
-            `<span class="best">${nStations}/4 stamps</span>`)}
-          ${ch(3, "boss", "#/boss", "Apply the help", "Final Boss: The Autopilot",
+            false, '<span class="pill">Full Workbook</span>')}
+          ${ch(3, "#/boss", "Apply the help", "Final Boss: The Autopilot",
             "Match each need to the right AI Mode, steer the conversation, and finish like a human before the Autopilot takes the wheel.",
-            s.boss.done, s.boss.best > 0, WB.starsFor("boss", s.boss.best),
-            s.boss.best ? `<span class="best">Best ${s.boss.best.toLocaleString()}</span>` : "")}
+            false, '<span class="pill">Full Workbook</span>')}
         </div>
       </section>
 
@@ -122,13 +120,13 @@
         <div>
           <span class="how-i">${I("solo")}</span>
           <h3>For students</h3>
-          <p>Go in order if you can. Every game explains its answers, so a wrong answer still teaches you something. Press A to D to answer fast.</p>
+          <p>Start with the Quiz Board. Every clue explains its answer. Press A to D to pick an answer.</p>
         </div>
         <div>
           <span class="how-i">${I("team")}</span>
           <h3>For teachers</h3>
           <p>Project the Quiz Board in team mode as a whole-class opener. Run the four stations as a rotation, one group per station. Save the boss for the last day.</p>
-          <a class="how-link" href="../playbook/index.html">Lesson plans in the Teacher Playbook ${I("arrow")}</a>
+          <a class="how-link" href="/aiplaybook/">Lesson plans in the Teacher Playbook ${I("arrow")}</a>
         </div>
         <div>
           <span class="how-i">${I("shield")}</span>
@@ -138,10 +136,27 @@
       </section>`;
   });
 
+  function chapterAccess(title) {
+    return function (main) {
+      main.innerHTML = `
+        <section class="wrap page">
+          <h1>${title}</h1>
+          <p class="lede">This chapter is part of the full Workbook. Teachers can request a printable activity or ask about purchasing.</p>
+          <div class="row-gap">
+            <a class="btn" href="${sampleUrl}">Request another sample</a>
+            <a class="btn btn-ghost" href="${purchaseUrl}">Ask about purchasing</a>
+          </div>
+          <p><a href="#/literacy">Play the free Quiz Board</a></p>
+        </section>`;
+    };
+  }
+
+  WB.route("/stations", chapterAccess("Station Rotation"));
+  WB.route("/boss", chapterAccess("The Autopilot"));
+
   /* ---------- My Workbook ---------- */
   WB.route("/workbook", function (main) {
     const s = WB.state;
-    const st = s.stations;
     const row = (name, best, done, kind) => `<tr><th scope="row">${name}</th><td>${WB.starRow(WB.starsFor(kind, best))}</td><td>${best ? best.toLocaleString() : "—"}</td><td>${done ? `<span class="done-mark">${I("check")} Complete</span>` : `<span class="muted">Not yet</span>`}</td></tr>`;
     const refl = (title, text) => `<div class="refl"><h3>${title}</h3><p>${text ? esc(text).replace(/\n/g, "<br>") : `<span class="muted">Not written yet.</span>`}</p></div>`;
     main.innerHTML = `
@@ -152,7 +167,7 @@
             <h1 style="margin-top:.8rem">My workbook</h1>
           </div>
           <div class="wb-total">
-            <div class="wb-stat"><b>${WB.totalStars()}<span style="font-size:.55em;opacity:.6"> / 21</span></b><small>Stars</small></div>
+            <div class="wb-stat"><b>${WB.totalStars()}<span style="font-size:.55em;opacity:.6"> / 3</span></b><small>Stars</small></div>
             <div class="wb-stat"><b>${WB.totalXP().toLocaleString()}</b><small>Points</small></div>
           </div>
         </div>
@@ -166,25 +181,16 @@
           <thead><tr><th scope="col">Game</th><th scope="col">Stars</th><th scope="col">Best score</th><th scope="col">Status</th></tr></thead>
           <tbody>
             ${row("Chapter 1 · Quiz Board", s.literacy.best, s.literacy.done, "literacy")}
-            ${row("Station P · Prompt Ladder", st.prompting.best, st.prompting.done, "station")}
-            ${row("Station D · Keep It Out", st.privacy.best, st.privacy.done, "station")}
-            ${row("Station E · Fence Line", st.ethics.best, st.ethics.done, "station")}
-            ${row("Station V · Fact Detective", st.verification.best, st.verification.done, "station")}
-            ${row("The Crossroads", st.crossroads.best, st.crossroads.done, "crossroads")}
-            ${row("Chapter 3 · The Autopilot", s.boss.best, s.boss.done, "boss")}
           </tbody>
-          <tfoot><tr><th scope="row">Total</th><td>${WB.totalStars()} / 21</td><td>${WB.totalXP().toLocaleString()}</td><td></td></tr></tfoot>
         </table>
         <h2 class="h2">Exit tickets</h2>
         <div class="refls">
           ${refl("Chapter 1 · Understand AI", s.literacy.reflection)}
-          ${refl("Chapter 2 · Use judgment", st.reflection)}
-          ${refl("Chapter 3 · Apply the help", s.boss.reflection)}
         </div>
       </section>`;
     WB.$("#print", main).addEventListener("click", () => window.print());
     WB.$("#reset", main).addEventListener("click", () => {
-      if (confirm("Reset all points, stamps and exit tickets on this device? This can't be undone.")) { WB.reset(); WB.go("/"); }
+      if (confirm("Reset your Quiz Board points and exit ticket on this device?")) { WB.reset(); WB.go("/"); }
     });
   });
 })();
