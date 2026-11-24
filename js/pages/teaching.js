@@ -9,7 +9,7 @@ const DROP_MS = 250;
 const FADE_MS = 200;
 
 /* A close-up of the same bookshelf that's in the basement: both boards packed with plain books in the same
-   colours, and the plant at the bottom right. Six of the books are the projects: the ones with a title printed
+   colours, and the plant at the bottom right. The project books have a title printed
    down the spine (one line, one type size, nothing else on the spine).
    Hover or focus one and everything else dims while it slides up, grows and turns to show its cover
    (so there's never any sideways text to read); select it and the cover comes to the center and opens
@@ -33,7 +33,7 @@ const B = (art, t = 1.2, hs = 1) => ({ art: `book-plain-${art}`, t, hs });
 const P = (book, t = 1.25, hs = 1) => ({ book, t, hs });
 // The project books are all about the same height (taller than most of the plain ones) so their titles can share one type size.
 const SHELVES = [
-  { floorY: 135, row: [B("orange", 1.2, 1.0), B("brown", 1.3, 0.96), B("ivory", 1.15, 1.04), P(1, 1.3, 1.075), B("slate", 1.15, 0.82), B("rust", 1.25, 1.0), P(0, 1.3, 0.925),
+  { floorY: 135, row: [B("orange", 1.2, 1.0), B("brown", 1.3, 0.96), B("ivory", 1.15, 1.04), P(1, 1.3, 1.075), B("slate", 1.15, 0.82), P(6, 1.275, 0.955), P(0, 1.3, 0.925),
     B("ivory", 1.3, 0.98), B("sand", 1.15, 1.06), P(2, 1.3, 0.96), B("brown", 1.15, 1.0), B("orange", 1.3, 0.95), B("sand", 1.2, 1.0)] },
   { floorY: 568, row: [P(5, 1.3, 1.09), B("ivory", 1.2, 1.05), P(3, 1.3, 1.05), B("ink-blue", 1.2, 0.86), B("brick", 1.25, 0.97), B("sky", 1.15, 0.86), P(4, 1.3, 1.0),
     B("sand", 1.15, 1.02), B("brown", 1.3, 1.04), { ...B("rust", 1.2, 1), gap: 34 }, { plant: true }] },

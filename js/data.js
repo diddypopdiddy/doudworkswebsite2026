@@ -162,6 +162,25 @@ export const BOOKS = [
       { t: "AI Modes: Final Boss", n: 3 },
     ],
   },
+  {
+    id: "rethink",
+    title: "Rethink",
+    kind: "Classroom creativity game",
+    summary: "Roll a challenge, draw everyday objects and invent something new in 60 seconds. Pitch your idea to a judge who changes each round.",
+    href: "/rethink/",
+    sameTab: true,
+    action: "Play Rethink",
+    art: "book-plain-forest", color: "#15523f", spine: "Rethink",
+    coverAddress: "vincedoud.com/rethink",
+    emblem: "rethink.svg",
+    chapters: [
+      { t: "Set up 3 to 8 players", n: 1 },
+      { t: "Roll the challenge die", n: 2 },
+      { t: "Draw everyday objects", n: 3 },
+      { t: "Invent in 60 seconds", n: 4 },
+      { t: "Pitch and award a point", n: 5 },
+    ],
+  },
 ];
 
 /** Apps on the laptop. */
