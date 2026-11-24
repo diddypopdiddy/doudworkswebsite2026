@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'none'; object-src 'none'; form-action 'none'; base-uri 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Make classroom groups and seating charts. No account; roster data stays in this browser.">
+  <link rel="icon" href="data:,">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grouper — groups & seating charts</title>
+  <link rel="stylesheet" href="styles.css?v=public2">
+</head>
+<body data-view="groups">
+  <header class="topbar">
+    <div class="brand"><span class="logo"><i data-icon="grid"></i></span><span class="brand-name">Grouper <small>Public edition</small></span> <span id="headerClass" class="header-class"></span></div>
+    <nav class="tabs" aria-label="View">
+      <button class="tab" data-act="view" data-view="groups"><i data-icon="users"></i> Groups</button>
+      <button class="tab" data-act="view" data-view="seats"><i data-icon="seat"></i> Seating chart</button>
+    </nav>
+    <div class="top-actions">
+      <button data-act="eye" id="eyeBtn">Rules hidden</button>
+      <span id="saved" class="saved">Saved</span>
+      <div class="btn-group">
+        <button data-act="undo" title="Undo (⌘Z)"><i data-icon="undo"></i> Undo</button>
+        <button data-act="redo" title="Redo (⇧⌘Z)"><i data-icon="redo"></i> Redo</button>
+      </div>
+      <button data-act="print" title="Print"><i data-icon="printer"></i> Print</button>
+      <button data-act="present" class="accent" title="Full-screen view for the projector"><i data-icon="present"></i> Present</button>
+    </div>
+  </header>
+
+  <div class="local-notice"><a href="/teaching/">← Teaching</a><span>No account. Rosters and charts are saved in this browser only. Use fictional data on shared devices.</span><button class="link" data-act="start-blank">Start blank</button></div>
+  <aside class="left" id="left"></aside>
+  <main class="main" id="main"></main>
+  <aside class="right" id="right"></aside>
+
+  <button class="exit-present" data-act="present">Exit present (Esc)</button>
+  <input type="file" id="importFile" accept="application/json" hidden>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="rules.js?v=public2"></script>
+  <script src="app.js?v=public2"></script>
+</body>
+</html>

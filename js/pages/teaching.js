@@ -85,6 +85,10 @@ export default {
             </div>
           </div>
         </div>
+        <div class="teach-grouper">
+          <a class="chip" href="/grouper/" aria-describedby="teach-grouper-note">Open Grouper</a>
+          <small id="teach-grouper-note">No account. Rosters stay in this browser.</small>
+        </div>
         <p class="teach-hint" data-hint aria-hidden="true">${HINT}</p>
         <div class="book-open" data-open hidden role="dialog" aria-modal="true" aria-labelledby="bo-title"></div>
       </section>`;

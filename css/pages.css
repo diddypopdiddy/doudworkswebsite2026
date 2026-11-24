@@ -417,6 +417,17 @@
   --sw: min(calc((96.5dvh - 78px) * 1.5), max(112vw, 900px)); }
 .teach-pan { position: absolute; inset: 0; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .teach-pan::-webkit-scrollbar { display: none; }
+.teach-grouper {
+  position: absolute; right: max(18px, env(safe-area-inset-right)); top: calc(64px + env(safe-area-inset-top));
+  z-index: 8; display: grid; justify-items: end; gap: 4px; max-width: calc(100% - 36px);
+}
+.teach-grouper .chip { background: #312720; color: #fff8ec; }
+.teach-grouper .chip:hover { background: #211a16; }
+.teach-grouper .chip:focus-visible { outline: 2px solid #fff8ec; outline-offset: 3px; }
+.teach-grouper small {
+  color: #fff8ec; background: #312720; padding: 3px 7px; border-radius: 5px;
+  font-size: 11px; line-height: 1.35; text-align: right;
+}
 .teach-inner { position: relative; height: 100%; width: max(100%, calc(var(--sw) * .88)); overflow: hidden; }
 .teach-wall { position: absolute; inset: 0 0 var(--floor) 0; }
 .teach-wall { background-color: #f4f1eb;
