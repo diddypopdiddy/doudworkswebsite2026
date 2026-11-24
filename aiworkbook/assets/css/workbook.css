@@ -470,6 +470,7 @@ button.ans.is-wrong::before { background: var(--surface); content: ""; }
 .station-ico { grid-row: span 4; width: 3rem; height: 3rem; display: grid; place-items: center; background: var(--lc); color: var(--lt); border: var(--b) solid var(--edge); border-radius: 16px; box-shadow: var(--sh-sm); }
 .station-ico .ico { width: 1.55rem; height: 1.55rem; }
 .station-name { font: 600 .74rem/1.2 var(--display); letter-spacing: .08em; text-transform: uppercase; color: var(--li); }
+.station-plain { font: 700 1.05rem/1.2 var(--display); letter-spacing: -.01em; color: var(--ink); }
 .station-game { font: 700 1.22rem/1.1 var(--display); letter-spacing: -.025em; }
 .station-blurb { color: var(--ink-2); font-size: .95rem; line-height: 1.45; }
 .station-stamp { margin-top: .4rem; display: flex; align-items: center; gap: .5rem; font-weight: 700; font-size: .92rem; color: var(--li); }

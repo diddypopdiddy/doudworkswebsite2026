@@ -149,7 +149,7 @@ export const BOOKS = [
     id: "ai-workbook",
     title: "AI Production Student Workbook",
     kind: "Interactive practice",
-    summary: "Play the free Quiz Board and see how the full Workbook practices the Core Competencies and AI Modes.",
+    summary: "Play the Quiz Board, rotate through four Core Competency stations, and face the Final Boss to practice the five AI Modes.",
     href: "/aiworkbook/",
     sameTab: true,
     action: "Open the Workbook",
