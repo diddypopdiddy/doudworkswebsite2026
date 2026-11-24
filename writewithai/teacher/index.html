@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <base href="../">
+  <meta name="write-with-ai-api-origin" content="https://write-with-ai-classroom-game.diddypopdiddy.chatgpt.site">
+  <link rel="canonical" href="https://www.vincedoud.com/writewithai/teacher/">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Write with AI · Teacher</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="t-page board">
+  <header class="t-head">
+    <span class="logo-badge"><span class="spark">✦</span>Write with AI</span>
+    <h1>Teacher controls</h1>
+    <a href="./" target="_blank" rel="noopener">Open the student game ↗</a>
+  </header>
+
+  <main class="t-main">
+    <section class="t-card" id="aiCard">
+      <h2>1 · AI connection</h2>
+      <div class="t-row" style="margin-bottom:12px"><span class="t-status warn" id="aiStatus">Checking…</span><span id="aiModel" style="color:var(--muted)"></span></div>
+      <p id="aiHelp"></p>
+      <div class="t-row"><button class="btn white small" id="testBtn">Send a test message</button><span id="testOut" style="color:var(--ink-2)"></span></div>
+    </section>
+
+    <section class="t-card" id="setupCard">
+      <h2>2 · Set up the game</h2>
+      <div class="t-grid">
+        <div>
+          <label class="t-field"><span>Writing topic</span>
+            <select id="topicPreset"></select>
+          </label>
+          <label class="t-field" id="customWrap" hidden><span>Your topic</span>
+            <input id="topicCustom" maxlength="300" placeholder="Type the topic students will write about">
+          </label>
+          <div class="t-field"><span>How students play</span>
+            <div class="seg">
+              <label><input type="radio" name="mode" value="partner" checked><span><b>🔄 Partner swap</b><small>Students switch computers and grade each other. The classroom classic.</small></span></label>
+              <label><input type="radio" name="mode" value="solo"><span><b>🎧 Solo</b><small>Each student grades their own chat or lets the AI referee score it.</small></span></label>
+            </div>
+          </div>
+          <label class="t-field"><span>Minutes per round</span>
+            <input id="minutes" type="number" min="1" max="30" value="5" style="max-width:120px">
+          </label>
+        </div>
+        <div>
+          <p><strong>Class game (recommended):</strong> students join with a code, you start each round so everyone's clock runs together, and you see every score live. At the end you crown a winner.</p>
+          <div class="t-row" style="margin-bottom:14px"><button class="btn" id="createBtn">Create class game</button></div>
+          <p><strong>No class code:</strong> share this link and students play at their own pace (solo or in pairs).</p>
+          <div class="join-url" id="soloLink"></div>
+          <div class="t-row" style="margin-top:8px"><button class="btn white small" id="copySolo">Copy link</button></div>
+          <p class="t-err" id="setupErr" style="color:#c2260c"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="t-card" id="roomCard" hidden>
+      <div class="t-row" style="justify-content:space-between;align-items:flex-start">
+        <div>
+          <h2 style="margin-bottom:0">3 · Run the game</h2>
+          <p style="margin:6px 0 0">Students go to the link below (or the game page) and enter the class code.</p>
+        </div>
+        <button class="btn white small" id="endBtn">End game</button>
+      </div>
+      <div class="t-grid" style="margin-top:12px">
+        <div>
+          <div class="kicker" style="margin-bottom:6px">Class code</div><br>
+          <div class="room-code" id="roomCode">----</div>
+          <div class="join-url" id="joinUrl"></div>
+          <p style="margin-top:12px" id="roomTopic"></p>
+        </div>
+        <div>
+          <div class="phases" id="phases"></div>
+          <p id="phaseHelp" style="min-height:48px"></p>
+          <div class="t-row">
+            <button class="btn" id="nextPhase">Start Round 1</button>
+            <span id="roundClock" style="font-family:var(--display);font-size:34px;font-variant-numeric:tabular-nums"></span>
+          </div>
+          <div class="t-row" style="margin-top:10px"><button class="btn white small" id="backPhase">Back a step</button><button class="btn white small" id="crownBtn">Show crown screen</button></div>
+        </div>
+      </div>
+      <h2 style="margin-top:28px">Players <span id="playerCount" style="color:var(--muted);font-weight:600"></span></h2>
+      <div style="overflow-x:auto">
+        <table class="roster">
+          <thead><tr><th>Nickname</th><th>Status</th><th>Round 1</th><th>Round 2</th><th>Change</th><th>Level</th></tr></thead>
+          <tbody id="roster"><tr><td colspan="6" style="color:var(--muted)">No one has joined yet.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="t-card">
+      <h2>Facilitator script</h2>
+      <p>This is how the lesson runs in a real classroom. The app follows the same order.</p>
+      <ol class="script">
+        <li><div>Walk in and keep it vague. <q>Do you guys want to play a game?</q> Don't mention AI rules, integrity, or grading.</div></li>
+        <li><div>Students open the game, tap <em>Yes</em>, and enter a nickname and the class code.</div></li>
+        <li><div><strong>Start Round 1.</strong> Say only: <q>Write the best paragraph on this topic. You have five minutes. Use the chatbot.</q> No more instructions. Most students will ask it to write the paragraph and then sit back.</div></li>
+        <li><div>When time's up, screens lock. <q>Hands off. Switch seats with the person next to you.</q></div></li>
+        <li><div><em>(Solo mode skips the seat swap. Each student grades their own chat or taps “grade it for me.”)</em> Each screen shows two example conversations, one offloading and one tutor-style. Ask: <q>Which one is cheating, and which one is learning? What's different?</q> Then everyone taps <em>Show the points</em>.</div></li>
+        <li><div>Students see the rubric and grade the classmate's chat they're sitting at, message by message. (The optional AI referee can settle arguments.)</div></li>
+        <li><div>The scores land. Most are negative (−20, −30). Let the groans happen. Students go back to their own seat and see their breakdown.</div></li>
+        <li><div>Reteach in one line: <q>AI is a feedback tool, not a writing tool. You write, and it helps you get better.</q> The screen shows the three moves that earn points.</div></li>
+        <li><div><strong>Start Round 2.</strong> Same topic, new blank chat, same clock. Now they bring their own sentences: <q>Here's my opening. Don't rewrite it. What do you think?</q></div></li>
+        <li><div>Call time, swap and grade again, then hand back. Everyone sees their comeback.</div></li>
+        <li><div>Each student lands on a practice level: Passenger → Learner → AI Permit → AI License. It's a conversation starter about the pathway, not an official credential.</div></li>
+        <li><div><strong>Crown the winner.</strong> Put the crown screen on the projector: top score, biggest comeback, and how many students reached each level.</div></li>
+      </ol>
+    </section>
+
+    <section class="t-card">
+      <h2>Privacy and limits</h2>
+      <p>OpenAI processes messages for live replies and referee grading. The game saves the conversation in the student's browser. Use <strong>New player</strong> to clear it from a shared device. The class roster shows nicknames and scores to the teacher who created the room. Rooms close after eight hours. Use <strong>End game</strong> to clear a roster immediately. Ask students to use a nickname and keep personal information out of the chat.</p>
+    </section>
+  </main>
+</div>
+<script type="module" src="teacher.js"></script>
+</body>
+</html>

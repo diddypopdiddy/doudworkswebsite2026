@@ -77,7 +77,8 @@ const WRITE = {
   summary: "Write a paragraph with a chatbot in two rounds, then review the conversation and compare what you contributed. Play solo, with a partner or in a teacher-paced class.",
   preview: "write-with-ai-2026-11-21.webp",
   previewAlt: "Round 1 challenges the player to write one paragraph in five minutes using a chatbot.",
-  href: "https://write-with-ai-classroom-game.diddypopdiddy.chatgpt.site/",
+  href: "/writewithai/",
+  sameTab: true,
   action: "Play Write with AI",
 };
 
