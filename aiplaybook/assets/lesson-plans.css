@@ -24,3 +24,21 @@
   .lesson-plan .plan-table :is(th, td) { padding: .15rem .21rem; line-height: 1.15; }
   .lesson-plan .plan-table tr, .lesson-plan li { break-inside: avoid; }
 }
+.lesson-plan .sequence-table :is(th, td):nth-child(2) { width: 11%; }
+.lesson-plan .plan-session .card { margin-block: .5rem; }
+@media print {
+  .lesson-plan .plan-session + .plan-session { break-before: page; }
+  .lesson-plan .plan-session .card { padding: .4rem .55rem; break-inside: avoid; }
+  .lesson-plan .plan-session .card h3 { margin: 0; font-size: 9pt; }
+  .lesson-plan .plan-session .card :is(p, ol) { margin-block: .2rem; }
+}
+.student-directions h2 { margin: 1.15rem 0 .35rem; font-size: 1.35em; }
+.student-directions ol, .student-directions ul { margin-block: .2rem .6rem; padding-inline-start: 1.4em; }
+.student-directions ol { list-style: decimal; }
+.student-directions ul { list-style: disc; }
+.student-directions li + li { margin-block-start: .32rem; }
+@media print {
+  .student-directions { font-size: 11pt; line-height: 1.35; }
+  .student-directions h2 { margin-top: .72rem; }
+  .student-directions li { break-inside: avoid; }
+}

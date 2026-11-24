@@ -186,10 +186,10 @@ WB.literacy = {
     }
   ],
   final: {
-    category: "The Human Finish",
+    category: "What You Do Yourself",
     q: "Finish the Framework's motto: “Understand the system. Direct the help. ______.”",
     a: ["What is “Trust the output”?", "What is “Own the thinking”?", "What is “Save the chat”?", "What is “Go faster”?"],
     c: 1,
-    why: "Own the thinking. AI can help, but the human finishes the work. That's what Chapters 2 and 3 are all about."
+    why: "Use AI for the help your teacher allows. Check the reply and finish the work yourself."
   }
 };

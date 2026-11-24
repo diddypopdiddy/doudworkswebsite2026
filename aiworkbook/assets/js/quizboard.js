@@ -253,7 +253,7 @@
         ${G.solo ? "" : scoreStrip(true)}
         <div class="takeaways">
           <div><b>AI predicts, classifies, recommends and generates.</b> A chatbot is one kind.</div>
-          <div><b>It writes by predicting what comes next,</b> guided by your prompt, sources and the chat so far.</div>
+          <div><b>It writes by predicting what comes next,</b> using what you wrote, the sources it can see, and the chat so far.</div>
           <div><b>Fluent can still be wrong.</b> Check important claims, and own the thinking.</div>
         </div>
         <div id="ticket"></div>

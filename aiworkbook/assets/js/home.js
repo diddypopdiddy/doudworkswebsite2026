@@ -107,10 +107,10 @@
           ${ch(1, "#/literacy", "Understand AI", "The Quiz Board",
             "AI Literacy as a game-show board: what AI is, how it works, its history, where it shows up and its limits. Solo or teams.",
             s.literacy.done, WB.starRow(WB.totalStars()) + status(s.literacy.done, started))}
-          ${ch(2, "#/stations", "Use judgment", "Station Rotation",
+          ${ch(2, "#/stations", "Make good choices", "Station Rotation",
             "Four stations, one per Core Competency, in any order. Then the Crossroads puts all four to work at once.",
             false, '<span class="pill">Full Workbook</span>')}
-          ${ch(3, "#/boss", "Apply the help", "Final Boss: The Autopilot",
+          ${ch(3, "#/boss", "Choose the help you need", "Final Boss: The Autopilot",
             "Match each need to the right AI Mode, steer the conversation, and finish like a human before the Autopilot takes the wheel.",
             false, '<span class="pill">Full Workbook</span>')}
         </div>
