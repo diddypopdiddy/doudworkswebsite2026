@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Production Studio</title>
 <link rel="stylesheet" href="../shared/studio.css">
+  <link rel="stylesheet" href="/css/analytics-standalone.css">
 </head>
 <body class="st-page">
 <div id="studio"></div>
@@ -15,5 +16,6 @@
 <script type="text/textbook-script" src="../shared/studio-kit.js"></script>
 <script type="text/textbook-script" src="../shared/studio.js"></script>
 <script type="text/textbook-script">ProductionStudio.mount(document.getElementById('studio'), { root: '../' });</script>
+  <script type="module" src="/js/analytics.js" data-vd-page="/textbook/production-studio/" data-vd-title="Production Studio"></script>
 </body>
 </html>

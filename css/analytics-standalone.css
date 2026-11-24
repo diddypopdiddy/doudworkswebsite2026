@@ -1,0 +1,9 @@
+/* Consent notice only: does not import or restyle standalone apps. */
+.analytics-notice[hidden]{display:none!important}
+.analytics-notice{position:fixed!important;inset:auto max(12px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) auto!important;width:min(380px,calc(100% - 24px));box-sizing:border-box;z-index:2147483647;background:#fff9ec;color:#28201c;border:1px solid #685f56;border-radius:12px;padding:14px 16px;font:14px/1.45 system-ui,sans-serif;box-shadow:0 4px 18px #0004}
+.analytics-notice h2{font:700 16px/1.3 system-ui,sans-serif;margin:0!important;color:inherit}
+.analytics-notice p{margin:6px 0 12px!important;color:inherit}
+.analytics-notice a{color:inherit;text-decoration:underline}
+.analytics-notice .analytics-actions{display:flex;gap:8px;flex-wrap:wrap}
+.analytics-notice .analytics-actions button{font:600 14px/1.2 system-ui,sans-serif;background:#fff;color:#28201c;border:1px solid #685f56;border-radius:8px;padding:8px 11px;min-height:44px;cursor:pointer}
+.analytics-notice :focus-visible{outline:2px solid #004aa6;outline-offset:2px}
