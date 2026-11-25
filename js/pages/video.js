@@ -6,15 +6,15 @@ import { SITE } from "../data.js";
 /* The TV on its cart with a DVD player, plus the remote. A classic DVD menu you click through:
    boot → Main Menu → Scene Selection / Collections / Extras → playback.
    Works from the remote, the DVD player's buttons, the keyboard (arrows, Enter, Esc, Space) or the mouse.
-   There is one disc and every video is on it. Collections are chapters of that disc, so picking one
-   never loads anything. The tray only moves when you press OPEN/CLOSE. */
+   Collections are chapters of one disc, so picking one never loads anything.
+   The tray only moves when you press OPEN/CLOSE. */
 
 const COLLECTIONS = [
   { id: "covers", label: "Covers" },
   { id: "woodbury", label: "School Videos" },
-  { id: "archive", label: "TV Archive" },
   { id: "memorial", label: "Memorial" },
 ];
+const discVideos = videos.filter((v) => COLLECTIONS.some((c) => c.id === v.collection));
 // Art coordinates (tv-dvd-cart-front: 832 × 1437).
 const CART = { w: 832, h: 1437, show: 990 };
 const SCREEN = { x: 151, y: 101, w: 536, h: 410 };
@@ -49,9 +49,10 @@ export default {
     const S = scope();
     // `coll` narrows Scene Selection to one collection; null means the whole disc.
     let coll = COLLECTIONS.find((c) => c.id === route.param)?.id || null;
+    if (route.param && !coll) replaceDetailAddress("/video");
     // Scenes that play right on the TV come first; YouTube-only ones follow (stable order otherwise).
     const lists = {};
-    const listOf = (id) => (lists[id] ||= videos.filter((v) => v.collection === id).map((v, i) => [v, i]).sort((a, b) => (canEmbed(b[0]) - canEmbed(a[0])) || a[1] - b[1]).map(([v]) => v));
+    const listOf = (id) => (lists[id] ||= discVideos.filter((v) => v.collection === id).map((v, i) => [v, i]).sort((a, b) => (canEmbed(b[0]) - canEmbed(a[0])) || a[1] - b[1]).map(([v]) => v));
     const everything = COLLECTIONS.flatMap((c) => listOf(c.id));
     const list = () => (coll ? listOf(coll) : everything);
     const collLabel = () => COLLECTIONS.find((c) => c.id === coll)?.label || "All videos";
@@ -141,13 +142,13 @@ export default {
     }
 
     const bgMosaic = () => {
-      const ids = videos.slice(0, 24).map((v) => v.id);
+      const ids = discVideos.slice(0, 24).map((v) => v.id);
       return `<div class="menu-bg" aria-hidden="true"><div class="menu-bg-grid">${[...ids, ...ids].map((id) => `<img src="${thumb(id)}" alt="">`).join("")}</div></div>`;
     };
     const mainHTML = () => `
       ${bgMosaic()}
       <div class="menu-main">
-        <div class="menu-title"><span class="menu-kicker">THE BASEMENT SESSIONS</span><h3>VINCE<br>DOUD</h3><span class="menu-disc">${videos.length} VIDEOS · ${COLLECTIONS.length} COLLECTIONS</span></div>
+        <div class="menu-title"><span class="menu-kicker">THE BASEMENT SESSIONS</span><h3>VINCE<br>DOUD</h3><span class="menu-disc">${discVideos.length} VIDEOS · ${COLLECTIONS.length} COLLECTIONS</span></div>
         <ul class="menu-list">
           ${[["playall", "Play All"], ["scenes", "Scene Selection"], ["colls", "Collections"], ["extras", "Extras"]].map(([id, label]) => `<li><button data-item="${id}"><i class="menu-pick" aria-hidden="true"></i>${label}</button></li>`).join("")}
         </ul>
@@ -176,7 +177,7 @@ export default {
     // Collections are picture cards (a frame from the first video in each), not discs.
     const collsHTML = () => `
       <div class="menu-discs">
-        <header><h3>Collections</h3><span>${videos.length} videos on this disc</span></header>
+        <header><h3>Collections</h3><span>${discVideos.length} videos on this disc</span></header>
         <div class="scene-grid coll-grid">
           ${COLLECTIONS.map((c) => {
             const L = listOf(c.id), count = L.length;
@@ -196,7 +197,7 @@ export default {
           <li><button data-item="x-credits"><i class="menu-pick"></i>Credits</button></li>
           <li><button data-item="main"><i class="menu-pick"></i>Main Menu</button></li>
         </ul>
-        <p class="menu-note">${videos.length} recordings in ${COLLECTIONS.length} collections, all on this disc.</p>
+        <p class="menu-note">${discVideos.length} recordings in ${COLLECTIONS.length} collections, all on this disc.</p>
       </div>`;
 
     /* ---------- focus + spatial navigation ---------- */
