@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>Seat Wizard · Vince Doud</title>
+<meta name="description" content="Try Vince Doud’s classroom grouping tool with a sample class. Shuffle groups, build production crews, and make a seating chart.">
+<link rel="canonical" href="https://www.vincedoud.com/seat-wizard/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Seat Wizard · Vince Doud">
+<meta property="og:description" content="Shuffle groups, build production crews, and make a seating chart with a sample class.">
+<meta property="og:url" content="https://www.vincedoud.com/seat-wizard/">
+<meta property="og:image" content="https://www.vincedoud.com/assets/covers/seat-wizard.webp">
+<link rel="icon" type="image/svg+xml" href="/assets/media/seat-wizard.svg">
+<link rel="stylesheet" href="demo.css">
+<script defer src="/grouper/rules.js"></script>
+<script defer src="demo.js"></script>
+</head>
+<body>
+<header class="site-head"><div class="wrap top"><a href="/teaching/">← Teaching bookshelf</a><span>Vince Doud</span></div></header>
+<main class="wrap">
+  <section class="intro" aria-labelledby="title">
+    <img src="/assets/media/seat-wizard.svg" width="82" height="82" alt="">
+    <div><p class="eyebrow">Classroom tool · Interactive demo</p><h1 id="title">Seat Wizard</h1>
+    <p>I built this to make groups and seating charts without starting from scratch every time.</p></div>
+  </section>
+  <section class="demo" aria-labelledby="demo-title">
+    <div class="demo-head"><div><p class="eyebrow">Fictional roster · 12 students</p><h2 id="demo-title">Try a sample class</h2></div>
+      <button class="reset" type="button" id="reset">Reset demo</button></div>
+    <div class="modes" role="group" aria-label="Choose a demo view">
+      <button type="button" data-mode="groups" aria-pressed="true">Groups</button>
+      <button type="button" data-mode="crews" aria-pressed="false">Production crews</button>
+      <button type="button" data-mode="seats" aria-pressed="false">Seating chart</button>
+    </div>
+    <div class="controls">
+      <div><p id="mode-note"></p><label class="rule"><input id="rule" type="checkbox" checked><span id="rule-label"></span></label></div>
+      <button class="main-action" id="shuffle" type="button">Shuffle groups</button>
+    </div>
+    <div id="result" class="result"></div>
+    <p id="status" class="status" role="status"></p>
+    <noscript><p>Turn on JavaScript to try the sample class.</p></noscript>
+  </section>
+  <footer class="bottom"><p>Try anything here. No account, real student data, or saved changes.</p><a href="/teaching/">Back to the bookshelf</a></footer>
+</main>
+</body></html>

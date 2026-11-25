@@ -181,6 +181,23 @@ export const BOOKS = [
       { t: "Pitch and award a point", n: 5 },
     ],
   },
+  {
+    id: "seat-wizard",
+    title: "Seat Wizard",
+    kind: "Interactive classroom demo",
+    summary: "Try my classroom grouping tool with a sample class. Shuffle groups, build production crews, and make a seating chart.",
+    href: "/seat-wizard/",
+    sameTab: true,
+    action: "Try Seat Wizard",
+    art: "book-plain-plum", color: "#483568", spine: "Seat Wizard",
+    coverAddress: "vincedoud.com/seat-wizard",
+    emblem: "seat-wizard.svg",
+    chapters: [
+      { t: "Shuffle a sample class", n: 1 },
+      { t: "Build production crews", n: 2 },
+      { t: "Make a seating chart", n: 3 },
+    ],
+  },
 ];
 
 /** Apps on the laptop. */

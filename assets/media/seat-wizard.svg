@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <title>Seat Wizard emblem</title>
+  <circle cx="49" cy="51" r="44" fill="#29203F" stroke="#A999D0" stroke-width="2"/>
+  <circle cx="49" cy="51" r="37" fill="none" stroke="#796797" stroke-width="1.2" stroke-dasharray="1 4"/>
+  <path d="M35 58V37c0-5 4-9 9-9h12c5 0 9 4 9 9v21" fill="#C9B8EE" stroke="#FFF2D8" stroke-width="3.5" stroke-linejoin="round"/>
+  <path d="M40 39h20" fill="none" stroke="#9271BB" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="m32 61-3 17m36-17 4 17" fill="none" stroke="#FFF2D8" stroke-width="4" stroke-linecap="round"/>
+  <rect x="27" y="54" width="46" height="10" rx="4" fill="#FFF2D8"/>
+  <path d="M78 12c1.4 8.3 3.5 10.4 11 12-7.5 1.6-9.6 3.8-11 12-1.5-8.2-3.6-10.4-11-12 7.4-1.6 9.5-3.7 11-12Z" fill="#FFD181" stroke="#29203F" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M22 41v8m-4-4h8" stroke="#C9B8EE" stroke-width="2" stroke-linecap="round"/>
+</svg>

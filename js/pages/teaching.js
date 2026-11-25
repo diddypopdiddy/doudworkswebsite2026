@@ -33,7 +33,7 @@ const P = (book, t = 1.25, hs = 1) => ({ book, t, hs });
 export const SHELVES = [
   { floorY: 135, row: [B("orange", 1.2, 1.0), B("brown", 1.3, 0.96), B("ivory", 1.15, 1.04), P(1, 1.3, 1.075), B("slate", 1.15, 0.82), P(6, 1.275, 0.955), P(0, 1.3, 0.925),
     B("ivory", 1.3, 0.98), B("sand", 1.15, 1.06), P(2, 1.3, 0.96), B("brown", 1.15, 1.0), B("orange", 1.3, 0.95), B("sand", 1.2, 1.0)] },
-  { floorY: 568, row: [P(5, 1.3, 1.09), B("ivory", 1.2, 1.05), P(3, 1.3, 1.05), B("ink-blue", 1.2, 0.86), B("brick", 1.25, 0.97), B("sky", 1.15, 0.86), P(4, 1.3, 1.0),
+  { floorY: 568, row: [P(5, 1.3, 1.09), B("ivory", 1.2, 1.05), P(3, 1.3, 1.05), B("ink-blue", 1.2, 0.86), B("brick", 1.25, 0.97), P(7, 1.3, 0.95), P(4, 1.3, 1.0),
     B("sand", 1.15, 1.02), B("brown", 1.3, 1.04), { ...B("rust", 1.2, 1), gap: 34 }, { plant: true }] },
 ];
 
@@ -84,10 +84,6 @@ export default {
               <div class="shelf-books">${items.map(bookHTML).join("")}</div>
             </div>
           </div>
-        </div>
-        <div class="teach-grouper">
-          <a class="chip" href="/grouper/" aria-describedby="teach-grouper-note">Open Grouper</a>
-          <small id="teach-grouper-note">No account. Rosters stay in this browser.</small>
         </div>
         <p class="teach-hint" data-hint aria-hidden="true">${HINT}</p>
         <div class="book-open" data-open hidden role="dialog" aria-modal="true" aria-labelledby="bo-title"></div>
